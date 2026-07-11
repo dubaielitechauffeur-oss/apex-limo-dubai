@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------------------------------------------------- */
+/* Base layer                                                            */
+/* -------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-obsidian text-ivory font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-medium tracking-tight;
+  }
+
+  /* Visible keyboard focus everywhere — accessibility floor */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: #d4af37;
+    color: #0b0b0b;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* Component layer                                                       */
+/* -------------------------------------------------------------------- */
+@layer components {
+  /* Eyebrow / label text used above section headings */
+  .label-eyebrow {
+    @apply font-body text-xs uppercase tracking-widest text-gold;
+  }
+
+  /* Signature element: the "route line" — a thin gold line with a
+     diamond marker at its centre, echoing a mapped chauffeur route /
+     the pinstripe on a driver's uniform. Used as a section divider. */
+  .route-line {
+    @apply relative h-px w-full bg-route-line;
+  }
+
+  .route-line::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: #d4af37;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  /* Compact variant used under the logo / small headers */
+  .route-line-sm {
+    @apply relative h-px w-16 bg-gold;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 bg-gold px-6 py-3 text-sm font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border border-gold/60 bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-ivory transition-colors duration-200 hover:border-gold hover:bg-gold/10;
+  }
+
+  /* Shared control style for text inputs, selects, and textareas across
+     the booking and quote forms. */
+  .field-input {
+    @apply w-full border border-gold/20 bg-obsidian px-4 py-3 text-sm text-ivory placeholder:text-smoke/50 transition-colors duration-150 focus:border-gold focus:outline-none;
+  }
+
+  .field-input-error {
+    @apply border-red-400/60;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* Reduced motion                                                        */
+/* -------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
