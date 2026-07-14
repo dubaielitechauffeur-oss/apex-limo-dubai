@@ -40,7 +40,7 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-screen flex-col">
         <Header />
-        <main className="flex-1 pt-20">{children}</main>
+        <main className="flex-1 pt-[117px]">{children}</main>
         <Footer />
         <WhatsAppFloatButton />
       </body>
