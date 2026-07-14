@@ -1,3 +1,4 @@
+// Homepage hero section
 import Image from "next/image";
 import Link from "next/link";
 import { Clock, Car, Languages } from "lucide-react";
