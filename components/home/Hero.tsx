@@ -13,22 +13,22 @@ const TRUST_INDICATORS = [
 export default function Hero() {
   return (
     <section className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-obsidian lg:min-h-[calc(100vh-117px)]">
-      {/* Full-bleed hero photograph */}
+      {/* Full-bleed hero photograph — chauffeur and Mercedes framed on the right */}
       <div className="absolute inset-0">
         <Image
-          src="/images/home/hero-homepage.webp"
-          alt="Business executive working on a laptop in the back seat of an Apex Limo chauffeur-driven car in Dubai"
+          src="/images/home/hero-luxury-dubai.webp"
+          alt="Apex Limo chauffeur standing beside a Mercedes S-Class with the Dubai skyline and Burj Khalifa at dusk"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[70%_center]"
+          className="object-cover object-[80%_center] md:object-[70%_center] lg:object-[75%_center]"
         />
       </div>
 
       {/* Large left-side dark gradient overlay for text legibility */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/85 to-obsidian/10"
+        className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent"
       />
       {/* Vignette for overall contrast */}
       <div
