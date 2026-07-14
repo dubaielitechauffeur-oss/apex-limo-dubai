@@ -10,15 +10,16 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-obsidian py-24">
+    <section className="border-t border-gold/10 bg-ivory py-24">
       <Container className="max-w-4xl">
         <SectionHeading
           eyebrow="Good to Know"
           title="Frequently Asked Questions"
           subtitle="Answers to the questions we hear most from first-time and returning clients."
+          tone="light"
         />
 
-        <div className="mt-14 divide-y divide-gold/15 border-y border-gold/15">
+        <div className="mt-14 divide-y divide-obsidian/10 border-y border-obsidian/10">
           {FAQS.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
@@ -28,11 +29,11 @@ export default function FAQSection() {
                   aria-expanded={isOpen}
                   className="flex w-full items-center justify-between gap-6 py-6 text-left"
                 >
-                  <span className="font-display text-lg text-ivory sm:text-xl">
+                  <span className="font-display text-lg text-obsidian sm:text-xl">
                     {faq.question}
                   </span>
                   <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-gold transition-transform duration-200 ${
+                    className={`h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                     strokeWidth={1.5}
@@ -43,7 +44,7 @@ export default function FAQSection() {
                     isOpen ? "grid-rows-[1fr] pb-6 opacity-100" : "grid-rows-[0fr] opacity-0"
                   }`}
                 >
-                  <p className="overflow-hidden text-sm leading-relaxed text-smoke sm:text-base">
+                  <p className="overflow-hidden text-sm leading-relaxed text-graphite sm:text-base">
                     {faq.answer}
                   </p>
                 </div>

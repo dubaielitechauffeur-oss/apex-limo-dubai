@@ -5,7 +5,7 @@ import { PRIMARY_CTA, SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constant
 
 export default function BookingCTA() {
   return (
-    <section className="relative overflow-hidden bg-charcoal py-24">
+    <section className="relative overflow-hidden border-t border-gold/10 bg-ink py-24">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-0 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-gold/10 blur-3xl"
