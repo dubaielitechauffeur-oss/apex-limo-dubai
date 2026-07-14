@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Phone, MessageCircle, Clock } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
+import Card from "@/components/shared/Card";
 import BookingForm from "@/components/booking/BookingForm";
 import { buildMetadata } from "@/lib/seo";
 import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
@@ -14,29 +16,29 @@ export const metadata: Metadata = buildMetadata({
 
 export default function BookingPage() {
   return (
-    <div className="py-16 sm:py-24">
+    <Section tone="ivory" separator={false}>
       <Container>
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1.6fr_1fr]">
           <div>
-            <span className="label-eyebrow">Reserve Your Chauffeur</span>
-            <h1 className="mt-4 font-display text-3xl text-ivory sm:text-4xl">
+            <span className="label-eyebrow text-graphite">Reserve Your Chauffeur</span>
+            <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-4xl">
               Book Your Dubai Chauffeur
             </h1>
-            <p className="mt-4 max-w-lg text-sm leading-relaxed text-smoke sm:text-base">
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-graphite sm:text-base">
               Fill in your trip details and we'll confirm your vehicle and
               chauffeur directly. For urgent same-day requests, WhatsApp is
               usually fastest.
             </p>
 
-            <div className="mt-10 border border-gold/15 bg-charcoal/40 p-6 sm:p-10">
+            <Card tone="dark" className="mt-10 p-6 sm:p-10">
               <BookingForm />
-            </div>
+            </Card>
           </div>
 
           {/* Sidebar */}
           <aside className="lg:pt-24">
             <div className="sticky top-28 space-y-6">
-              <div className="border border-gold/15 bg-charcoal p-6">
+              <Card tone="dark" className="p-6">
                 <h2 className="font-display text-lg text-ivory">
                   Prefer to Talk?
                 </h2>
@@ -66,9 +68,9 @@ export default function BookingPage() {
                     Available 24/7
                   </li>
                 </ul>
-              </div>
+              </Card>
 
-              <div className="border border-gold/15 bg-charcoal p-6">
+              <Card tone="dark" className="p-6">
                 <h2 className="font-display text-lg text-ivory">
                   What Happens Next
                 </h2>
@@ -77,11 +79,11 @@ export default function BookingPage() {
                   <li>You receive driver details ahead of pickup.</li>
                   <li>Your chauffeur arrives ready, on time, every time.</li>
                 </ol>
-              </div>
+              </Card>
             </div>
           </aside>
         </div>
       </Container>
-    </div>
+    </Section>
   );
 }

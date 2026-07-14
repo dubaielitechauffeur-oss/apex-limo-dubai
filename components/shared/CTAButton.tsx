@@ -5,6 +5,10 @@ interface CTAButtonProps {
   href: string;
   children: ReactNode;
   variant?: "solid" | "outline";
+  /** "dark" (default) for use on a dark section, "light" for the outline
+   *  variant on a white/cream section (fixes its text color, which
+   *  otherwise defaults to ivory and is invisible on light backgrounds). */
+  tone?: "dark" | "light";
   icon?: ReactNode;
   className?: string;
   external?: boolean;
@@ -19,11 +23,14 @@ export default function CTAButton({
   href,
   children,
   variant = "solid",
+  tone = "dark",
   icon,
   className = "",
   external = false,
 }: CTAButtonProps) {
-  const styles = variant === "solid" ? "btn-gold" : "btn-outline";
+  const base = variant === "solid" ? "btn-gold" : "btn-outline";
+  const toneOverride = variant === "outline" && tone === "light" ? "text-obsidian" : "";
+  const styles = `${base} ${toneOverride}`;
 
   if (external) {
     return (

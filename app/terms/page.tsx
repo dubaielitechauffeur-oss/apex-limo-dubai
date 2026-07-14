@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Info } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
+import Card from "@/components/shared/Card";
 import { buildMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 
@@ -17,30 +19,30 @@ const LAST_UPDATED = "July 9, 2026";
 
 export default function TermsPage() {
   return (
-    <div className="py-16 sm:py-24">
+    <Section tone="ivory" separator={false}>
       <Container className="max-w-3xl">
-        <span className="label-eyebrow">Legal</span>
-        <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
+        <span className="label-eyebrow text-graphite">Legal</span>
+        <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-5xl">
           Terms &amp; Conditions
         </h1>
-        <p className="mt-4 text-xs uppercase tracking-wide text-smoke">
+        <p className="mt-4 text-xs uppercase tracking-wide text-graphite">
           Last updated: {LAST_UPDATED}
         </p>
 
-        <div className="mt-8 flex items-start gap-3 border border-gold/20 bg-charcoal p-5">
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
-          <p className="text-sm leading-relaxed text-smoke">
+        <Card tone="light" className="mt-8 flex items-start gap-3 p-5">
+          <Info className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
+          <p className="text-sm leading-relaxed text-graphite">
             This page is a template and does not constitute legal advice.
             Before publishing, have these terms reviewed by qualified legal
             counsel to confirm they meet applicable UAE consumer protection
             and transportation regulations, and reflect your actual
             operating policies.
           </p>
-        </div>
+        </Card>
 
-        <div className="mt-12 space-y-10 text-sm leading-relaxed text-smoke sm:text-base">
+        <div className="mt-12 space-y-10 text-sm leading-relaxed text-graphite sm:text-base">
           <section>
-            <h2 className="font-display text-2xl text-ivory">1. Booking Terms</h2>
+            <h2 className="font-display text-2xl text-obsidian">1. Booking Terms</h2>
             <p className="mt-4">
               By booking a chauffeur service with {SITE.name}, you confirm
               that the details provided — including pickup and drop-off
@@ -52,7 +54,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">2. Cancellation Policy</h2>
+            <h2 className="font-display text-2xl text-obsidian">2. Cancellation Policy</h2>
             <ul className="mt-4 space-y-2">
               {[
                 "Cancellations made more than 24 hours before pickup are eligible for a full refund or free rescheduling.",
@@ -61,7 +63,7 @@ export default function TermsPage() {
                 "Weddings and event bookings may carry a separate cancellation policy, confirmed at the time of booking.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-deep" />
                   {item}
                 </li>
               ))}
@@ -69,7 +71,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">3. Waiting Time Policy</h2>
+            <h2 className="font-display text-2xl text-obsidian">3. Waiting Time Policy</h2>
             <p className="mt-4">
               For airport pickups, complimentary waiting time is included to
               account for immigration and baggage claim, tracked from actual
@@ -82,7 +84,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">4. Airport Transfer Terms</h2>
+            <h2 className="font-display text-2xl text-obsidian">4. Airport Transfer Terms</h2>
             <ul className="mt-4 space-y-2">
               {[
                 "Flight numbers must be provided at the time of booking so we can track your flight.",
@@ -91,7 +93,7 @@ export default function TermsPage() {
                 "Meet-and-greet service includes name signage in the arrivals hall and assistance with luggage to the vehicle.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-deep" />
                   {item}
                 </li>
               ))}
@@ -99,7 +101,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">5. Customer Responsibilities</h2>
+            <h2 className="font-display text-2xl text-obsidian">5. Customer Responsibilities</h2>
             <ul className="mt-4 space-y-2">
               {[
                 "Provide accurate contact details, locations, and timing at the time of booking.",
@@ -109,7 +111,7 @@ export default function TermsPage() {
                 "Be responsible for the conduct of all passengers travelling under a single booking.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-deep" />
                   {item}
                 </li>
               ))}
@@ -117,7 +119,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">6. Payment Terms</h2>
+            <h2 className="font-display text-2xl text-obsidian">6. Payment Terms</h2>
             <p className="mt-4">
               Pricing is confirmed at the time of booking or quote and is
               fixed for the agreed itinerary, except where the scope of the
@@ -129,7 +131,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">7. Liability</h2>
+            <h2 className="font-display text-2xl text-obsidian">7. Liability</h2>
             <p className="mt-4">
               {SITE.name} carries commercial insurance for its fleet and
               chauffeurs. Our liability for any claim arising from a booking
@@ -139,7 +141,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">8. Governing Law</h2>
+            <h2 className="font-display text-2xl text-obsidian">8. Governing Law</h2>
             <p className="mt-4">
               These terms are governed by the laws of the United Arab
               Emirates, and any disputes will be subject to the exclusive
@@ -148,10 +150,13 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">9. Contact Us</h2>
+            <h2 className="font-display text-2xl text-obsidian">9. Contact Us</h2>
             <p className="mt-4">
               For questions about these Terms &amp; Conditions, contact us at{" "}
-              <a href={`mailto:${SITE.email}`} className="text-gold underline underline-offset-4">
+              <a
+                href={`mailto:${SITE.email}`}
+                className="text-obsidian underline underline-offset-4 transition-colors hover:text-gold-deep"
+              >
                 {SITE.email}
               </a>{" "}
               or {SITE.phoneDisplay}.
@@ -159,6 +164,6 @@ export default function TermsPage() {
           </section>
         </div>
       </Container>
-    </div>
+    </Section>
   );
 }

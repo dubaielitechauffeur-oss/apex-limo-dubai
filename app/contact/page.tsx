@@ -9,8 +9,10 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
+import Card from "@/components/shared/Card";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd } from "@/lib/seo";
 import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
@@ -57,7 +59,7 @@ export default function ContactPage() {
       />
 
       {/* Hero */}
-      <section className="py-16 sm:py-24">
+      <Section tone="obsidian" padding="sm" separator={false}>
         <Container className="max-w-3xl">
           <span className="label-eyebrow">Get in Touch</span>
           <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
@@ -68,14 +70,14 @@ export default function ContactPage() {
             same-hour requests, WhatsApp and phone are fastest.
           </p>
         </Container>
-      </section>
+      </Section>
 
-      {/* Form + sidebar */}
-      <section className="pb-20">
+      {/* Form + sidebar — a focused dark "console" sitting on the light page */}
+      <Section tone="ivory" padding="sm">
         <Container>
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1.5fr_1fr]">
             {/* Contact form placeholder */}
-            <div>
+            <Card tone="dark" className="p-6 sm:p-10">
               <h2 className="font-display text-2xl text-ivory">Send a Message</h2>
               <p className="mt-3 text-sm text-smoke">
                 This form isn't connected to email yet — for an immediate
@@ -176,11 +178,11 @@ export default function ContactPage() {
                   WhatsApp or phone.
                 </p>
               </form>
-            </div>
+            </Card>
 
             {/* Sidebar */}
             <aside className="space-y-6">
-              <div className="border border-gold/15 bg-charcoal p-6">
+              <Card tone="dark" className="p-6">
                 <h2 className="font-display text-lg text-ivory">Reach Us Directly</h2>
                 <ul className="mt-5 space-y-4 text-sm text-smoke">
                   <li>
@@ -225,10 +227,10 @@ export default function ContactPage() {
                     Call {SITE.phoneDisplay}
                   </CTAButton>
                 </div>
-              </div>
+              </Card>
 
               {/* Business hours */}
-              <div className="border border-gold/15 bg-charcoal p-6">
+              <Card tone="dark" className="p-6">
                 <h2 className="flex items-center gap-2 font-display text-lg text-ivory">
                   <Clock className="h-4 w-4 text-gold" strokeWidth={1.5} />
                   Business Hours
@@ -247,10 +249,10 @@ export default function ContactPage() {
                   Bookings and urgent requests are handled around the clock,
                   every day of the year, including public holidays.
                 </p>
-              </div>
+              </Card>
 
               {/* Emergency booking */}
-              <div className="border border-gold/30 bg-charcoal p-6">
+              <Card tone="dark" className="border-gold/30 p-6">
                 <h2 className="flex items-center gap-2 font-display text-lg text-ivory">
                   <Siren className="h-4 w-4 text-gold" strokeWidth={1.5} />
                   Need a Chauffeur Right Now?
@@ -270,34 +272,34 @@ export default function ContactPage() {
                     WhatsApp Now
                   </CTAButton>
                 </div>
-              </div>
+              </Card>
             </aside>
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* FAQ */}
-      <section className="bg-charcoal py-20">
+      <Section tone="linen">
         <Container className="max-w-3xl">
-          <SectionHeading eyebrow="Common Questions" title="Contact FAQs" align="left" />
-          <div className="mt-8 divide-y divide-gold/15 border-y border-gold/15">
+          <SectionHeading eyebrow="Common Questions" title="Contact FAQs" align="left" tone="light" />
+          <div className="mt-8 divide-y divide-obsidian/10 border-y border-obsidian/10">
             {CONTACT_FAQS.map((faq) => (
               <details key={faq.question} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-ivory marker:content-none [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
                   {faq.question}
                   <ChevronDown
-                    className="h-5 w-5 shrink-0 text-gold transition-transform duration-200 group-open:rotate-180"
+                    className="h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 group-open:rotate-180"
                     strokeWidth={1.5}
                   />
                 </summary>
-                <p className="mt-4 text-sm leading-relaxed text-smoke sm:text-base">
+                <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
                   {faq.answer}
                 </p>
               </details>
             ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
       <BookingCTA />
     </div>

@@ -11,6 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata } from "@/lib/seo";
@@ -64,52 +65,53 @@ function servicesJsonLd() {
 
 export default function ServicesPage() {
   return (
-    <div className="py-16 sm:py-24">
+    <div>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd()) }}
       />
 
-      <Container>
-        <SectionHeading
-          eyebrow="What We Offer"
-          title="Chauffeur Services in Dubai"
-          subtitle="From a single airport pickup to a fully coordinated wedding convoy, every Apex service is built around punctuality, discretion, and a fleet that matches the occasion."
-        />
+      <Section tone="ivory" separator={false}>
+        <Container>
+          <SectionHeading
+            eyebrow="What We Offer"
+            title="Chauffeur Services in Dubai"
+            subtitle="From a single airport pickup to a fully coordinated wedding convoy, every Apex service is built around punctuality, discretion, and a fleet that matches the occasion."
+            tone="light"
+          />
 
-        <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((service) => {
-            const Icon = ICONS[service.slug] ?? Crown;
-            return (
-              <Link
-                key={service.slug}
-                href={`/services/${service.slug}`}
-                className="group flex flex-col justify-between bg-obsidian p-8 transition-colors duration-200 hover:bg-charcoal"
-              >
-                <div>
-                  <Icon className="h-7 w-7 text-gold" strokeWidth={1.5} />
-                  <h2 className="mt-6 font-display text-xl text-ivory">
-                    {service.name}
-                  </h2>
-                  <p className="mt-1 text-xs italic text-gold/90">{service.tagline}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-smoke">
-                    {service.shortDescription}
-                  </p>
-                </div>
-                <span className="mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-gold opacity-80 transition-opacity group-hover:opacity-100">
-                  Learn more
-                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </Container>
+          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
+            {SERVICES.map((service) => {
+              const Icon = ICONS[service.slug] ?? Crown;
+              return (
+                <Link
+                  key={service.slug}
+                  href={`/services/${service.slug}`}
+                  className="group flex flex-col justify-between bg-ivory p-8 transition-colors duration-200 hover:bg-ivory-off"
+                >
+                  <div>
+                    <Icon className="h-7 w-7 text-gold-deep" strokeWidth={1.5} />
+                    <h2 className="mt-6 font-display text-xl text-obsidian">
+                      {service.name}
+                    </h2>
+                    <p className="mt-1 text-xs italic text-graphite">{service.tagline}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-graphite">
+                      {service.shortDescription}
+                    </p>
+                  </div>
+                  <span className="mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
+                    Learn more
+                    <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </Container>
+      </Section>
 
-      <div className="mt-24">
-        <BookingCTA />
-      </div>
+      <BookingCTA />
     </div>
   );
 }

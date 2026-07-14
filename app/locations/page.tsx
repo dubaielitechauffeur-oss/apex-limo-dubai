@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, Plane, ArrowUpRight } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata } from "@/lib/seo";
@@ -38,52 +39,53 @@ function locationsJsonLd() {
 
 export default function LocationsPage() {
   return (
-    <div className="py-16 sm:py-24">
+    <div>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(locationsJsonLd()) }}
       />
 
-      <Container>
-        <SectionHeading
-          eyebrow="Where We Drive"
-          title="Areas We Serve Across Dubai"
-          subtitle="From beachfront residences to the business district, Apex chauffeurs know Dubai's neighborhoods, pickup points, and traffic patterns in detail."
-        />
+      <Section tone="ivory" separator={false}>
+        <Container>
+          <SectionHeading
+            eyebrow="Where We Drive"
+            title="Areas We Serve Across Dubai"
+            subtitle="From beachfront residences to the business district, Apex chauffeurs know Dubai's neighborhoods, pickup points, and traffic patterns in detail."
+            tone="light"
+          />
 
-        <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
-          {LOCATIONS.map((location) => {
-            const Icon = location.isAirport ? Plane : MapPin;
-            return (
-              <Link
-                key={location.slug}
-                href={`/locations/${location.slug}`}
-                className="group flex flex-col justify-between bg-obsidian p-8 transition-colors duration-200 hover:bg-charcoal"
-              >
-                <div>
-                  <Icon className="h-7 w-7 text-gold" strokeWidth={1.5} />
-                  <h2 className="mt-6 font-display text-xl text-ivory">
-                    {location.name}
-                  </h2>
-                  <p className="mt-1 text-xs italic text-gold/90">{location.tagline}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-smoke">
-                    {location.shortDescription}
-                  </p>
-                </div>
-                <span className="mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-gold opacity-80 transition-opacity group-hover:opacity-100">
-                  Explore area
-                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </Container>
+          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
+            {LOCATIONS.map((location) => {
+              const Icon = location.isAirport ? Plane : MapPin;
+              return (
+                <Link
+                  key={location.slug}
+                  href={`/locations/${location.slug}`}
+                  className="group flex flex-col justify-between bg-ivory p-8 transition-colors duration-200 hover:bg-ivory-off"
+                >
+                  <div>
+                    <Icon className="h-7 w-7 text-gold-deep" strokeWidth={1.5} />
+                    <h2 className="mt-6 font-display text-xl text-obsidian">
+                      {location.name}
+                    </h2>
+                    <p className="mt-1 text-xs italic text-graphite">{location.tagline}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-graphite">
+                      {location.shortDescription}
+                    </p>
+                  </div>
+                  <span className="mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
+                    Explore area
+                    <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </Container>
+      </Section>
 
-      <div className="mt-24">
-        <BookingCTA />
-      </div>
+      <BookingCTA />
     </div>
   );
 }

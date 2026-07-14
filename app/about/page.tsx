@@ -9,7 +9,9 @@ import {
   Award,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
+import CTAButton from "@/components/shared/CTAButton";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata } from "@/lib/seo";
@@ -65,7 +67,7 @@ export default function AboutPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="py-16 sm:py-24">
+      <Section tone="obsidian" padding="sm" separator={false}>
         <Container className="max-w-3xl">
           <span className="label-eyebrow">About Apex</span>
           <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
@@ -79,13 +81,13 @@ export default function AboutPage() {
             UAE.
           </p>
         </Container>
-      </section>
+      </Section>
 
       {/* Company introduction */}
-      <section className="bg-charcoal py-20">
+      <Section tone="ivory" padding="sm">
         <Container className="max-w-3xl">
-          <h2 className="font-display text-2xl text-ivory sm:text-3xl">Our Story</h2>
-          <div className="mt-5 space-y-4 text-sm leading-relaxed text-smoke sm:text-base">
+          <h2 className="font-display text-2xl text-obsidian sm:text-3xl">Our Story</h2>
+          <div className="mt-5 space-y-4 text-sm leading-relaxed text-graphite sm:text-base">
             <p>
               Dubai's roads move fast, and so do the schedules of the people
               who rely on us — executives between meetings, families landing
@@ -104,116 +106,120 @@ export default function AboutPage() {
             </p>
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Mission & Values */}
-      <section className="py-20">
+      <Section tone="linen">
         <Container>
           <SectionHeading
             eyebrow="What Drives Us"
             title="Our Mission &amp; Values"
             subtitle="Four principles that shape every booking, from a single airport pickup to a full-scale event fleet."
+            tone="light"
           />
           <div className="mt-16 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map((value) => (
               <div key={value.title} className="flex flex-col items-start">
-                <value.icon className="h-7 w-7 text-gold" strokeWidth={1.5} />
-                <h3 className="mt-5 font-display text-lg text-ivory">{value.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-smoke">
+                <value.icon className="h-7 w-7 text-gold-deep" strokeWidth={1.5} />
+                <h3 className="mt-5 font-display text-lg text-obsidian">{value.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-graphite">
                   {value.description}
                 </p>
               </div>
             ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Reused: why choose Apex */}
       <WhyChooseUs />
 
       {/* Service areas */}
-      <section className="bg-charcoal py-20">
+      <Section tone="pearl">
         <Container>
           <SectionHeading
             eyebrow="Where We Drive"
             title="Service Areas Across Dubai &amp; the UAE"
             subtitle="Our chauffeurs know these neighborhoods in detail — pickup points, traffic patterns, and the quickest routes between them."
+            tone="light"
           />
           <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {LOCATIONS.map((location) => (
               <Link
                 key={location.slug}
                 href={`/locations/${location.slug}`}
-                className="group flex items-center justify-between gap-3 border border-gold/15 bg-obsidian p-5 transition-colors duration-200 hover:border-gold/40"
+                className="group flex items-center justify-between gap-3 border border-gold/15 bg-ivory p-5 transition-colors duration-200 hover:border-gold/40"
               >
-                <span className="flex items-center gap-3 text-sm text-ivory">
-                  <MapPin className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+                <span className="flex items-center gap-3 text-sm text-obsidian">
+                  <MapPin className="h-4 w-4 shrink-0 text-gold-deep" strokeWidth={1.5} />
                   {location.name}
                 </span>
-                <span className="text-xs text-smoke opacity-0 transition-opacity group-hover:opacity-100">
+                <span className="text-xs text-graphite opacity-0 transition-opacity group-hover:opacity-100">
                   View
                 </span>
               </Link>
             ))}
           </div>
           <div className="mt-8 text-center">
-            <Link href="/locations" className="btn-outline">
+            <CTAButton href="/locations" variant="outline" tone="light">
               View All Locations
-            </Link>
+            </CTAButton>
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Chauffeur standards */}
-      <section className="py-20">
+      <Section tone="ivory">
         <Container className="max-w-3xl">
           <SectionHeading
             eyebrow="Our People"
             title="Professional Chauffeur Standards"
             align="left"
+            tone="light"
           />
-          <p className="mt-6 text-sm leading-relaxed text-smoke sm:text-base">
+          <p className="mt-6 text-sm leading-relaxed text-graphite sm:text-base">
             Every chauffeur who drives for Apex meets the same baseline before
             they're assigned a single booking:
           </p>
           <ul className="mt-6 space-y-3">
             {STANDARDS.map((item) => (
-              <li key={item} className="flex items-start gap-2.5 text-sm text-smoke sm:text-base">
-                <Award className="mt-0.5 h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+              <li key={item} className="flex items-start gap-2.5 text-sm text-graphite sm:text-base">
+                <Award className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" strokeWidth={1.5} />
                 {item}
               </li>
             ))}
           </ul>
         </Container>
-      </section>
+      </Section>
 
       {/* Fleet overview */}
-      <section className="bg-charcoal py-20">
+      <Section tone="linen">
         <Container>
           <SectionHeading
             eyebrow="Our Fleet"
             title="A Vehicle for Every Occasion"
             subtitle="Six vehicle classes, all late-model, detailed before every trip, and matched to the journey."
+            tone="light"
           />
           <div className="mt-14 flex flex-wrap justify-center gap-3">
             {FLEET.map((vehicle) => (
               <Link
                 key={vehicle.slug}
                 href={`/fleet/${vehicle.slug}`}
-                className="border border-gold/20 bg-obsidian px-5 py-3 text-sm text-ivory transition-colors duration-200 hover:border-gold hover:text-gold"
+                className="border border-gold/20 bg-ivory px-5 py-3 text-sm text-obsidian transition-colors duration-200 hover:border-gold hover:text-gold-deep"
               >
                 {vehicle.name}
-                <span className="ml-2 text-xs text-smoke">{vehicle.category}</span>
+                <span className="ml-2 text-xs text-graphite">{vehicle.category}</span>
               </Link>
             ))}
           </div>
           <div className="mt-10 text-center">
-            <Link href="/fleet" className="btn-outline">
+            <CTAButton href="/fleet" variant="outline" tone="light">
               Explore the Full Fleet
-            </Link>
+            </CTAButton>
           </div>
         </Container>
-      </section>
+      </Section>
 
       <BookingCTA />
     </div>

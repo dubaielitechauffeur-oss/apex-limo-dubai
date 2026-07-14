@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Phone, MessageCircle, Clock } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
+import Card from "@/components/shared/Card";
+import CTAButton from "@/components/shared/CTAButton";
 import QuoteForm from "@/components/booking/QuoteForm";
 import { buildMetadata } from "@/lib/seo";
 import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
@@ -14,28 +17,28 @@ export const metadata: Metadata = buildMetadata({
 
 export default function QuotePage() {
   return (
-    <div className="py-16 sm:py-24">
+    <Section tone="ivory" separator={false}>
       <Container>
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1.6fr_1fr]">
           <div>
-            <span className="label-eyebrow">Fast, No-Obligation</span>
-            <h1 className="mt-4 font-display text-3xl text-ivory sm:text-4xl">
+            <span className="label-eyebrow text-graphite">Fast, No-Obligation</span>
+            <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-4xl">
               Get an Instant Quote
             </h1>
-            <p className="mt-4 max-w-lg text-sm leading-relaxed text-smoke sm:text-base">
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-graphite sm:text-base">
               Share a few trip details and we'll send pricing back quickly —
               no account, no commitment.
             </p>
 
-            <div className="mt-10 border border-gold/15 bg-charcoal/40 p-6 sm:p-10">
+            <Card tone="dark" className="mt-10 p-6 sm:p-10">
               <QuoteForm />
-            </div>
+            </Card>
           </div>
 
           {/* Sidebar */}
           <aside className="lg:pt-24">
             <div className="sticky top-28 space-y-6">
-              <div className="border border-gold/15 bg-charcoal p-6">
+              <Card tone="dark" className="p-6">
                 <h2 className="font-display text-lg text-ivory">
                   Need It Faster?
                 </h2>
@@ -65,9 +68,9 @@ export default function QuotePage() {
                     Available 24/7
                   </li>
                 </ul>
-              </div>
+              </Card>
 
-              <div className="border border-gold/15 bg-charcoal p-6">
+              <Card tone="dark" className="p-6">
                 <h2 className="font-display text-lg text-ivory">
                   Ready to Confirm?
                 </h2>
@@ -75,17 +78,14 @@ export default function QuotePage() {
                   Already know your details? Skip straight to a full booking
                   instead of a quote.
                 </p>
-                <a
-                  href="/booking"
-                  className="btn-outline mt-5 inline-flex w-full"
-                >
+                <CTAButton href="/booking" variant="outline" className="mt-5 w-full">
                   Book Now
-                </a>
-              </div>
+                </CTAButton>
+              </Card>
             </div>
           </aside>
         </div>
       </Container>
-    </div>
+    </Section>
   );
 }
