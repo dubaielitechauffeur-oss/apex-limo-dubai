@@ -38,6 +38,14 @@ export interface FleetVehicle {
   whyChoose: string[];
   faqs: VehicleFAQ[];
   images?: VehicleGalleryImages;
+  /**
+   * Marks an entry added to reach full fleet-listing coverage ahead of
+   * real photography/copy being finalized. Placeholder vehicles render
+   * with the existing icon/gradient gallery fallback (no `images`) and a
+   * small "Preview" badge — swap in real photos and this flag can be
+   * removed. Not rendered anywhere as a claim about vehicle availability.
+   */
+  isPlaceholder?: boolean;
 }
 
 export const FLEET: FleetVehicle[] = [
@@ -385,5 +393,412 @@ export const FLEET: FleetVehicle[] = [
         alt: "Rolls-Royce Phantom Spirit of Ecstasy hood ornament close-up",
       },
     },
+  },
+
+  // ---------------------------------------------------------------------
+  // Placeholder entries (isPlaceholder: true) — added to bring the fleet
+  // listing to full strength ahead of real photography and confirmed
+  // copy. Each renders with the existing icon/gradient gallery fallback
+  // and a small "Preview" badge. Replace `isPlaceholder`/add `images`
+  // once real vehicles are confirmed and photographed.
+  // ---------------------------------------------------------------------
+  {
+    slug: "audi-a8-l",
+    name: "Audi A8 L",
+    category: "Sedan",
+    tagline: "Quiet, technological luxury",
+    description:
+      "A technologically advanced executive sedan with a whisper-quiet cabin and predictive air suspension — a refined choice for clients who prefer understated precision.",
+    longDescription:
+      "The A8 L brings Audi's engineering discipline to chauffeured travel — predictive air suspension reads the road ahead to smooth out the ride, while a minimalist, technology-forward cabin keeps the journey calm and distraction-free. A strong choice for executives who value quiet competence over overt display.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Business travel & discreet arrivals",
+    features: [
+      "Predictive air suspension",
+      "Massaging front & rear seats",
+      "Premium surround sound system",
+      "Ambient interior lighting",
+      "Onboard Wi-Fi",
+      "Privacy glass",
+    ],
+    whyChoose: [
+      "Predictive suspension reads the road ahead for an exceptionally smooth ride",
+      "A quieter, more understated alternative to a traditional flagship sedan",
+      "Technology-forward cabin keeps you connected between meetings",
+      "Consistently available for same-day business travel",
+    ],
+    faqs: [
+      {
+        question: "Is the Audi A8 L a good fit for airport transfers?",
+        answer:
+          "Yes — it offers the same flight-tracking and meet-and-greet service as our other sedans, with a particularly smooth ride from its air suspension.",
+      },
+      {
+        question: "How does the A8 L compare to the S-Class?",
+        answer:
+          "Both are quiet, comfortable executive sedans. The A8 L leans toward a minimalist, tech-forward cabin, while the S-Class has a more traditional luxury presentation.",
+      },
+      {
+        question: "Can the A8 L be booked for multi-stop city travel?",
+        answer:
+          "Yes, hourly hire is available for itineraries with multiple stops across Dubai.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "bmw-5-series",
+    name: "BMW 5 Series",
+    category: "Sedan",
+    tagline: "Business-class comfort, everyday reach",
+    description:
+      "A dependable, business-ready sedan for daily transfers and meetings — the same chauffeur standard as our flagship cars, sized for frequent city travel.",
+    longDescription:
+      "The 5 Series is our everyday business sedan — the same professional chauffeur standard and cabin comfort as our flagship vehicles, right-sized for quick, frequent city transfers. A practical choice for standing corporate accounts with regular bookings across Dubai.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Daily corporate transfers",
+    features: [
+      "Leather executive seating",
+      "Rear-seat climate control",
+      "Onboard Wi-Fi",
+      "Privacy glass",
+      "Ambient interior lighting",
+      "Bottled water & amenities",
+    ],
+    whyChoose: [
+      "A cost-efficient option for standing corporate accounts with frequent bookings",
+      "The same professional chauffeur standard as every vehicle in the fleet",
+      "Comfortably sized for quick point-to-point city transfers",
+      "Reliable same-day and next-day availability",
+    ],
+    faqs: [
+      {
+        question: "Is the BMW 5 Series suitable for corporate accounts?",
+        answer:
+          "Yes — it's a popular choice for standing corporate accounts that need dependable, frequent city transfers.",
+      },
+      {
+        question: "How much luggage fits in the 5 Series?",
+        answer: "The 5 Series comfortably holds 2 standard suitcases plus carry-ons.",
+      },
+      {
+        question: "Can I book the 5 Series for a full business day?",
+        answer: "Yes, hourly and full-day hire are both available on request.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "lincoln-navigator",
+    name: "Lincoln Navigator",
+    category: "SUV",
+    tagline: "American presence, effortless space",
+    description:
+      "A full-size luxury SUV with commanding road presence and a genuinely spacious cabin — built for VIP travel and larger groups who still expect a premium finish.",
+    longDescription:
+      "The Navigator pairs an imposing exterior with one of the most spacious cabins in the fleet — three rows of reclining leather seating, a calm ride, and enough presence to suit VIP arrivals where size matters as much as comfort.",
+    passengers: 6,
+    luggage: 4,
+    idealFor: "VIP travel & larger groups",
+    features: [
+      "Three-row reclining leather seating",
+      "Perfect Position captain's chairs",
+      "Premium sound system",
+      "Ample luggage space",
+      "Tinted privacy windows",
+      "Onboard Wi-Fi",
+    ],
+    whyChoose: [
+      "One of the most spacious cabins in the fleet, ideal for larger travel parties",
+      "Commanding size and presence for VIP arrivals",
+      "Reclining captain's chairs for genuinely restful longer journeys",
+      "Ample luggage capacity even with a full passenger count",
+    ],
+    faqs: [
+      {
+        question: "How many passengers can the Navigator seat?",
+        answer:
+          "Up to 6 passengers across three rows, with generous luggage space alongside.",
+      },
+      {
+        question: "Is the Navigator a good choice for family travel?",
+        answer:
+          "Yes — its spacious three-row cabin and luggage capacity make it a strong fit for families traveling together.",
+      },
+      {
+        question: "Can I request a child seat in the Navigator?",
+        answer: "Yes, child seats are available on request — note it under special requests when booking.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "gmc-yukon-denali",
+    name: "GMC Yukon Denali",
+    category: "SUV",
+    tagline: "Confident, spacious, dependable",
+    description:
+      "A dependable full-size SUV that balances a commanding presence with everyday practicality — a versatile choice for VIP transportation and group travel alike.",
+    longDescription:
+      "The Yukon Denali brings a confident, dependable presence to VIP transportation — spacious leather seating, a smooth ride, and enough room for passengers and luggage on longer itineraries or airport runs with a full travel party.",
+    passengers: 6,
+    luggage: 4,
+    idealFor: "VIP transportation & group travel",
+    features: [
+      "Three-row leather seating",
+      "Elevated ride height",
+      "Premium sound system",
+      "Ample luggage space",
+      "Climate-controlled cabin",
+      "Tinted privacy windows",
+    ],
+    whyChoose: [
+      "Dependable availability for both VIP transport and larger group travel",
+      "Confident road presence without sacrificing ride comfort",
+      "Three rows of seating with luggage capacity to match",
+      "A versatile alternative to a full-size van for mid-sized groups",
+    ],
+    faqs: [
+      {
+        question: "Is the Yukon Denali suitable for airport transfers?",
+        answer:
+          "Yes — it comfortably handles a full travel party and their luggage on airport runs, with the same flight-tracking service as our sedans.",
+      },
+      {
+        question: "How does the Yukon Denali compare to the Escalade?",
+        answer:
+          "Both are full-size, three-row luxury SUVs with similar capacity. The Escalade leans slightly more upscale in cabin finish; the Yukon Denali is a dependable, confident alternative.",
+      },
+      {
+        question: "Can the Yukon Denali be booked hourly?",
+        answer: "Yes, hourly and full-day hire are both available.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "mercedes-sprinter-vip",
+    name: "Mercedes Sprinter VIP",
+    category: "Van",
+    tagline: "Boardroom on wheels",
+    description:
+      "A premium VIP van configured for larger groups and executive travel — conference-style seating and a genuinely spacious cabin for meetings on the move.",
+    longDescription:
+      "The Sprinter VIP is built for groups that need real space without sacrificing a premium finish — configurable conference-style seating, individual climate zones, and enough room to hold a working meeting between stops. Our largest-capacity vehicle for coordinated group and event transport.",
+    passengers: 10,
+    luggage: 8,
+    idealFor: "Large groups & event transportation",
+    features: [
+      "Configurable conference-style seating",
+      "Individual climate zones",
+      "Onboard Wi-Fi",
+      "Extra luggage capacity",
+      "Rear entertainment screen",
+      "Individual reading lights",
+    ],
+    whyChoose: [
+      "Our largest-capacity vehicle — ideal for full delegations and event groups",
+      "Conference-style seating supports working meetings in transit",
+      "One coordinated vehicle instead of multiple sedans for a large party",
+      "Extra luggage capacity for group airport transfers",
+    ],
+    faqs: [
+      {
+        question: "How many passengers fit in the Sprinter VIP?",
+        answer:
+          "The Sprinter VIP seats up to 10 passengers in a configurable conference-style layout, with generous luggage space.",
+      },
+      {
+        question: "Is the Sprinter VIP suitable for corporate events?",
+        answer:
+          "Yes — it's a popular choice for coordinated group transport at conferences, galas, and multi-day corporate events.",
+      },
+      {
+        question: "Can the Sprinter VIP be booked alongside other vehicles?",
+        answer:
+          "Yes, we regularly coordinate the Sprinter VIP with sedans or SUVs for events requiring a mixed fleet.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "mercedes-maybach-s-class",
+    name: "Mercedes-Maybach S-Class",
+    category: "Ultra-Luxury",
+    tagline: "Maybach-level hush and presence",
+    description:
+      "The most exclusive sedan in the fleet — extended rear legroom, reclining executive seats, and a cabin engineered for complete calm on longer journeys.",
+    longDescription:
+      "The Maybach S-Class takes everything that makes the S-Class the executive standard and elevates it further — an extended wheelbase, fully reclining rear executive seats, and cabin insulation tuned for near-total silence. Reserved for clients who want the very top of the fleet.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Signature executive arrivals",
+    features: [
+      "Fully reclining rear executive seats",
+      "Extended rear legroom",
+      "Burmester premium sound system",
+      "Rear-seat climate control",
+      "Privacy glass with rear curtains",
+      "Bespoke welcome amenities",
+    ],
+    whyChoose: [
+      "The quietest, most spacious cabin in the fleet",
+      "Fully reclining rear seats for genuinely restful longer journeys",
+      "Reserved for clients seeking the most exclusive sedan available",
+      "A natural choice for high-profile executive arrivals",
+    ],
+    faqs: [
+      {
+        question: "How is the Maybach S-Class different from the standard S-Class?",
+        answer:
+          "The Maybach adds an extended wheelbase, fully reclining rear executive seats, and additional sound insulation for an even quieter, more spacious ride.",
+      },
+      {
+        question: "Is the Maybach S-Class available for airport transfers?",
+        answer:
+          "Yes, with the same live flight tracking and meet-and-greet service as the rest of the fleet.",
+      },
+      {
+        question: "How far in advance should I book the Maybach S-Class?",
+        answer:
+          "As our most exclusive sedan, we recommend booking at least a few days ahead where possible to guarantee availability.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "rolls-royce-ghost",
+    name: "Rolls-Royce Ghost",
+    category: "Ultra-Luxury",
+    tagline: "Effortless, understated power",
+    description:
+      "A more understated Rolls-Royce for clients who want the marque's effortless refinement without the Phantom's full occasion-level presence.",
+    longDescription:
+      "The Ghost delivers the same handcrafted Rolls-Royce refinement as the Phantom in a more understated package — effortless power, a hushed cabin, and quiet confidence for executive travel that still calls for something exceptional.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Executive arrivals & signature occasions",
+    features: [
+      "Handcrafted leather interior",
+      "Starlight headliner",
+      "Bespoke welcome amenities",
+      "Champagne chilling compartment",
+      "Rear-seat climate control",
+      "Chauffeur in formal attire",
+    ],
+    whyChoose: [
+      "The effortless refinement of Rolls-Royce in a more understated package",
+      "Handcrafted interior with the signature starlight headliner",
+      "A strong alternative to the Phantom for executive-level occasions",
+      "Chauffeur in formal attire as standard",
+    ],
+    faqs: [
+      {
+        question: "How does the Ghost compare to the Phantom?",
+        answer:
+          "Both share the same handcrafted Rolls-Royce quality. The Phantom is the larger, more occasion-focused flagship; the Ghost is slightly more understated and versatile for executive travel.",
+      },
+      {
+        question: "Is the Ghost available for weddings?",
+        answer:
+          "Yes, though many clients choose the Phantom for weddings specifically — the Ghost suits executive and signature-occasion bookings equally well.",
+      },
+      {
+        question: "How far in advance should I book the Ghost?",
+        answer:
+          "We recommend booking at least a few days ahead for this vehicle, particularly during peak season.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "rolls-royce-cullinan",
+    name: "Rolls-Royce Cullinan",
+    category: "Ultra-Luxury",
+    tagline: "Commanding presence, uncompromising comfort",
+    description:
+      "The Rolls-Royce approach to an SUV — a commanding presence with the same handcrafted cabin and effortless ride quality as the rest of the marque's flagship range.",
+    longDescription:
+      "The Cullinan brings genuine SUV capability to the Rolls-Royce experience — a commanding, elevated presence outside, and the same handcrafted cabin, effortless ride, and quiet confidence inside. Reserved for clients who want flagship prestige with the versatility of an SUV.",
+    passengers: 4,
+    luggage: 3,
+    idealFor: "VIP arrivals & signature occasions",
+    features: [
+      "Handcrafted leather interior",
+      "Starlight headliner",
+      "Elevated ride height",
+      "Bespoke welcome amenities",
+      "Rear-seat climate control",
+      "Chauffeur in formal attire",
+    ],
+    whyChoose: [
+      "The commanding presence of an SUV with full Rolls-Royce craftsmanship",
+      "Handcrafted interior with the signature starlight headliner",
+      "A versatile flagship choice for VIP arrivals beyond the standard sedan",
+      "Chauffeur in formal attire as standard",
+    ],
+    faqs: [
+      {
+        question: "Is the Cullinan available for airport transfers?",
+        answer:
+          "Yes, with the same live flight tracking and meet-and-greet service as the rest of the fleet.",
+      },
+      {
+        question: "How many passengers does the Cullinan seat?",
+        answer: "Up to 4 passengers in full comfort, with generous luggage space alongside.",
+      },
+      {
+        question: "How far in advance should I book the Cullinan?",
+        answer:
+          "As one of our most requested vehicles, we recommend booking at least a few days ahead where possible.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "bentley-flying-spur",
+    name: "Bentley Flying Spur",
+    category: "Ultra-Luxury",
+    tagline: "Handcrafted performance",
+    description:
+      "A handcrafted flagship sedan that pairs true performance with Bentley's signature craftsmanship — luxury for clients who want presence with a sportier edge.",
+    longDescription:
+      "The Flying Spur brings genuine performance to flagship chauffeured travel — a handcrafted cabin finished to Bentley's exacting standard, paired with a more dynamic character than a traditional limousine. A distinctive choice for clients who want luxury with real driving pedigree behind it.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Signature executive arrivals",
+    features: [
+      "Handcrafted leather interior",
+      "Diamond-quilted seating",
+      "Naim premium sound system",
+      "Rear-seat climate control",
+      "Privacy glass",
+      "Bespoke welcome amenities",
+    ],
+    whyChoose: [
+      "Handcrafted Bentley craftsmanship with a distinctly sportier character",
+      "A strong alternative to a traditional limousine for clients who want presence with pedigree",
+      "Diamond-quilted leather interior finished to an exacting standard",
+      "Reserved availability — a frequently requested flagship vehicle",
+    ],
+    faqs: [
+      {
+        question: "How is the Flying Spur different from the Phantom?",
+        answer:
+          "The Phantom is the more traditional, occasion-focused flagship. The Flying Spur offers the same handcrafted quality with a sportier, more dynamic driving character.",
+      },
+      {
+        question: "Is the Flying Spur available for weddings?",
+        answer: "Yes, it's available for weddings and signature occasions alongside our other flagship vehicles.",
+      },
+      {
+        question: "How far in advance should I book the Flying Spur?",
+        answer:
+          "As a frequently requested flagship vehicle, we recommend booking at least a few days ahead where possible.",
+      },
+    ],
+    isPlaceholder: true,
   },
 ];
