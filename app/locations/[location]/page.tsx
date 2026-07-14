@@ -11,8 +11,10 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
+import Card from "@/components/shared/Card";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
@@ -94,7 +96,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
     : undefined;
 
   return (
-    <div className="py-16 sm:py-24">
+    <div>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
@@ -106,6 +108,8 @@ export default async function LocationDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(location.faqs)) }}
       />
 
+      {/* Hero zone */}
+      <Section tone="obsidian" padding="sm" separator={false}>
       <Container>
         <Link
           href="/locations"
@@ -115,7 +119,6 @@ export default async function LocationDetailPage({ params }: PageProps) {
           Back to Locations
         </Link>
 
-        {/* Hero */}
         <div className="mt-8 max-w-3xl">
           <Icon className="h-9 w-9 text-gold" strokeWidth={1.5} />
           <span className="mt-5 block label-eyebrow">{location.tagline}</span>
@@ -149,29 +152,34 @@ export default async function LocationDetailPage({ params }: PageProps) {
             </p>
           ) : null}
         </div>
+      </Container>
+      </Section>
 
+      {/* Body zone */}
+      <Section tone="ivory">
+      <Container>
         {/* Long-form SEO copy */}
-        <div className="mt-20 max-w-3xl space-y-5">
+        <div className="max-w-3xl space-y-5">
           {location.longDescription.map((paragraph, index) => (
-            <p key={index} className="text-sm leading-relaxed text-smoke sm:text-base">
+            <p key={index} className="text-sm leading-relaxed text-graphite sm:text-base">
               {paragraph}
             </p>
           ))}
 
           {!location.isAirport ? (
-            <div className="flex items-start gap-3 border border-gold/20 bg-charcoal p-5">
-              <Plane className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
-              <p className="text-sm leading-relaxed text-smoke">
+            <Card tone="light" className="flex items-start gap-3 p-5">
+              <Plane className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
+              <p className="text-sm leading-relaxed text-graphite">
                 Traveling to or from the airport?{" "}
                 <Link
                   href="/services/airport-transfers"
-                  className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
+                  className="text-obsidian underline underline-offset-4 transition-colors hover:text-gold-deep"
                 >
                   See our Airport Transfer service
                 </Link>{" "}
                 for flight tracking and meet-and-greet details.
               </p>
-            </div>
+            </Card>
           ) : null}
         </div>
 
@@ -181,22 +189,24 @@ export default async function LocationDetailPage({ params }: PageProps) {
             eyebrow="Popular Routes"
             title={`Common Journeys From ${location.name}`}
             align="left"
+            tone="light"
           />
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {location.popularRoutes.map((route) => (
-              <div
+              <Card
                 key={`${route.from}-${route.to}`}
-                className="flex items-center justify-between gap-4 border border-gold/15 bg-charcoal p-5"
+                tone="light"
+                className="flex items-center justify-between gap-4 p-5"
               >
-                <div className="flex items-center gap-2 text-sm text-ivory">
+                <div className="flex items-center gap-2 text-sm text-obsidian">
                   <span>{route.from}</span>
-                  <ArrowRight className="h-3.5 w-3.5 shrink-0 text-gold" strokeWidth={2} />
+                  <ArrowRight className="h-3.5 w-3.5 shrink-0 text-gold-deep" strokeWidth={2} />
                   <span>{route.to}</span>
                 </div>
-                <span className="shrink-0 text-xs uppercase tracking-wide text-smoke">
+                <span className="shrink-0 text-xs uppercase tracking-wide text-graphite">
                   {route.duration}
                 </span>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
@@ -207,36 +217,43 @@ export default async function LocationDetailPage({ params }: PageProps) {
             eyebrow="Why Apex"
             title={`Why Choose Apex in ${location.name}`}
             align="left"
+            tone="light"
           />
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {location.whyChoose.map((reason) => (
               <div key={reason} className="flex items-start gap-3">
-                <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
-                <p className="text-sm leading-relaxed text-smoke">{reason}</p>
+                <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
+                <p className="text-sm leading-relaxed text-graphite">{reason}</p>
               </div>
             ))}
           </div>
         </div>
+      </Container>
+      </Section>
 
+      {/* FAQ + related locations zone */}
+      <Section tone="linen">
+      <Container>
         {/* FAQ — native <details>/<summary> keeps this interactive without
             a client component, so the page stays fully server-rendered. */}
-        <div className="mt-20 max-w-3xl">
+        <div className="max-w-3xl">
           <SectionHeading
             eyebrow="Common Questions"
             title={`${location.name} FAQs`}
             align="left"
+            tone="light"
           />
-          <div className="mt-8 divide-y divide-gold/15 border-y border-gold/15">
+          <div className="mt-8 divide-y divide-obsidian/10 border-y border-obsidian/10">
             {location.faqs.map((faq) => (
               <details key={faq.question} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-ivory marker:content-none [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
                   {faq.question}
                   <ChevronDown
-                    className="h-5 w-5 shrink-0 text-gold transition-transform duration-200 group-open:rotate-180"
+                    className="h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 group-open:rotate-180"
                     strokeWidth={1.5}
                   />
                 </summary>
-                <p className="mt-4 text-sm leading-relaxed text-smoke sm:text-base">
+                <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
                   {faq.answer}
                 </p>
               </details>
@@ -246,7 +263,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
 
         {/* Related locations */}
         <div className="mt-24">
-          <SectionHeading eyebrow="Explore More" title="Other Areas We Serve" />
+          <SectionHeading eyebrow="Explore More" title="Other Areas We Serve" tone="light" />
           <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-3">
             {otherLocations.map((related) => {
               const RelatedIcon = related.isAirport ? Plane : MapPin;
@@ -254,18 +271,18 @@ export default async function LocationDetailPage({ params }: PageProps) {
                 <Link
                   key={related.slug}
                   href={`/locations/${related.slug}`}
-                  className="group flex flex-col justify-between bg-obsidian p-7 transition-colors duration-200 hover:bg-charcoal"
+                  className="group flex flex-col justify-between bg-ivory p-7 transition-colors duration-200 hover:bg-ivory-off"
                 >
                   <div>
-                    <RelatedIcon className="h-6 w-6 text-gold" strokeWidth={1.5} />
-                    <h3 className="mt-4 font-display text-lg text-ivory">
+                    <RelatedIcon className="h-6 w-6 text-gold-deep" strokeWidth={1.5} />
+                    <h3 className="mt-4 font-display text-lg text-obsidian">
                       {related.name}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-smoke">
+                    <p className="mt-2 text-sm leading-relaxed text-graphite">
                       {related.shortDescription}
                     </p>
                   </div>
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-gold opacity-80 transition-opacity group-hover:opacity-100">
+                  <span className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
                     Explore area
                     <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
                   </span>
@@ -275,10 +292,9 @@ export default async function LocationDetailPage({ params }: PageProps) {
           </div>
         </div>
       </Container>
+      </Section>
 
-      <div className="mt-24">
-        <BookingCTA />
-      </div>
+      <BookingCTA />
     </div>
   );
 }

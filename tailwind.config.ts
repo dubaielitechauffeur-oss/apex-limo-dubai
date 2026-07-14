@@ -55,6 +55,10 @@ const config: Config = {
       maxWidth: {
         "8xl": "90rem",
       },
+      spacing: {
+        section: "6rem", // standard vertical section padding (py-section)
+        "section-sm": "4rem", // denser section padding for legal/utility pages
+      },
     },
   },
   plugins: [],

@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Users, Briefcase, Star, ChevronDown, ArrowLeft } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
+import Card from "@/components/shared/Card";
 import VehicleGallery from "@/components/fleet/VehicleGallery";
 import VehicleCard from "@/components/fleet/VehicleCard";
 import BookingCTA from "@/components/home/BookingCTA";
@@ -83,7 +85,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     : undefined;
 
   return (
-    <div className="py-16 sm:py-24">
+    <div>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
@@ -95,6 +97,8 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(vehicle.faqs)) }}
       />
 
+      {/* Hero zone */}
+      <Section tone="obsidian" padding="sm" separator={false}>
       <Container>
         <Link
           href="/fleet"
@@ -104,7 +108,6 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           Back to Fleet
         </Link>
 
-        {/* Hero */}
         <div className="mt-8 grid grid-cols-1 items-start gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <VehicleGallery vehicle={vehicle} priority />
 
@@ -168,13 +171,18 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             ) : null}
           </div>
         </div>
+      </Container>
+      </Section>
 
+      {/* Body zone */}
+      <Section tone="ivory">
+      <Container>
         {/* About this vehicle */}
-        <div className="mt-20 max-w-3xl">
-          <h2 className="font-display text-2xl text-ivory sm:text-3xl">
+        <div className="max-w-3xl">
+          <h2 className="font-display text-2xl text-obsidian sm:text-3xl">
             About the {vehicle.name}
           </h2>
-          <p className="mt-4 text-sm leading-relaxed text-smoke sm:text-base">
+          <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
             {vehicle.longDescription}
           </p>
         </div>
@@ -187,12 +195,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             { label: "Luggage", value: `${vehicle.luggage} bags` },
             { label: "Ideal For", value: vehicle.idealFor },
           ].map((stat) => (
-            <div key={stat.label} className="border border-gold/15 bg-charcoal p-5">
-              <p className="text-[10px] uppercase tracking-wide text-smoke">
+            <Card key={stat.label} tone="light" className="p-5">
+              <p className="text-[10px] uppercase tracking-wide text-graphite">
                 {stat.label}
               </p>
-              <p className="mt-2 font-display text-lg text-gold">{stat.value}</p>
-            </div>
+              <p className="mt-2 font-display text-lg text-gold-deep">{stat.value}</p>
+            </Card>
           ))}
         </div>
 
@@ -202,11 +210,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             eyebrow="Onboard"
             title="Features & Amenities"
             align="left"
+            tone="light"
           />
           <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
             {vehicle.features.map((feature) => (
-              <li key={feature} className="flex items-start gap-2.5 text-sm text-smoke">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+              <li key={feature} className="flex items-start gap-2.5 text-sm text-graphite">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-deep" />
                 {feature}
               </li>
             ))}
@@ -219,36 +228,43 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             eyebrow="Why This Vehicle"
             title={`Why Choose the ${vehicle.name}`}
             align="left"
+            tone="light"
           />
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {vehicle.whyChoose.map((reason) => (
               <div key={reason} className="flex items-start gap-3">
-                <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
-                <p className="text-sm leading-relaxed text-smoke">{reason}</p>
+                <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
+                <p className="text-sm leading-relaxed text-graphite">{reason}</p>
               </div>
             ))}
           </div>
         </div>
+      </Container>
+      </Section>
 
+      {/* FAQ + related vehicles zone */}
+      <Section tone="linen">
+      <Container>
         {/* FAQ — native <details>/<summary> keeps this interactive without
             requiring a client component, so the page stays fully server-rendered. */}
-        <div className="mt-20 max-w-3xl">
+        <div className="max-w-3xl">
           <SectionHeading
             eyebrow="Common Questions"
             title={`${vehicle.name} FAQs`}
             align="left"
+            tone="light"
           />
-          <div className="mt-8 divide-y divide-gold/15 border-y border-gold/15">
+          <div className="mt-8 divide-y divide-obsidian/10 border-y border-obsidian/10">
             {vehicle.faqs.map((faq) => (
               <details key={faq.question} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-ivory marker:content-none [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
                   {faq.question}
                   <ChevronDown
-                    className="h-5 w-5 shrink-0 text-gold transition-transform duration-200 group-open:rotate-180"
+                    className="h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 group-open:rotate-180"
                     strokeWidth={1.5}
                   />
                 </summary>
-                <p className="mt-4 text-sm leading-relaxed text-smoke sm:text-base">
+                <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
                   {faq.answer}
                 </p>
               </details>
@@ -261,18 +277,18 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <SectionHeading
             eyebrow="Explore More"
             title="Other Vehicles in the Fleet"
+            tone="light"
           />
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {otherVehicles.map((related) => (
-              <VehicleCard key={related.slug} vehicle={related} />
+              <VehicleCard key={related.slug} vehicle={related} tone="light" />
             ))}
           </div>
         </div>
       </Container>
+      </Section>
 
-      <div className="mt-24">
-        <BookingCTA />
-      </div>
+      <BookingCTA />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Info } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Section from "@/components/shared/Section";
+import Card from "@/components/shared/Card";
 import { buildMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 
@@ -17,30 +19,30 @@ const LAST_UPDATED = "July 9, 2026";
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="py-16 sm:py-24">
+    <Section tone="ivory" separator={false}>
       <Container className="max-w-3xl">
-        <span className="label-eyebrow">Legal</span>
-        <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
+        <span className="label-eyebrow text-graphite">Legal</span>
+        <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-5xl">
           Privacy Policy
         </h1>
-        <p className="mt-4 text-xs uppercase tracking-wide text-smoke">
+        <p className="mt-4 text-xs uppercase tracking-wide text-graphite">
           Last updated: {LAST_UPDATED}
         </p>
 
-        <div className="mt-8 flex items-start gap-3 border border-gold/20 bg-charcoal p-5">
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
-          <p className="text-sm leading-relaxed text-smoke">
+        <Card tone="light" className="mt-8 flex items-start gap-3 p-5">
+          <Info className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
+          <p className="text-sm leading-relaxed text-graphite">
             This page is a template and does not constitute legal advice.
             Before publishing, have this policy reviewed by qualified legal
             counsel to confirm it meets applicable data protection
             obligations, including UAE data protection law and, where
             relevant, GDPR.
           </p>
-        </div>
+        </Card>
 
-        <div className="mt-12 space-y-10 text-sm leading-relaxed text-smoke sm:text-base">
+        <div className="mt-12 space-y-10 text-sm leading-relaxed text-graphite sm:text-base">
           <section>
-            <h2 className="font-display text-2xl text-ivory">1. Introduction</h2>
+            <h2 className="font-display text-2xl text-obsidian">1. Introduction</h2>
             <p className="mt-4">
               {SITE.name} ("Apex," "we," "us," or "our") respects your privacy
               and is committed to protecting the personal data you share with
@@ -52,8 +54,8 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">2. Information We Collect</h2>
-            <h3 className="mt-6 font-display text-lg text-ivory">Booking Data</h3>
+            <h2 className="font-display text-2xl text-obsidian">2. Information We Collect</h2>
+            <h3 className="mt-6 font-display text-lg text-obsidian">Booking Data</h3>
             <p className="mt-3">
               When you make a booking or request a quote, we collect
               information necessary to fulfil the service, including your
@@ -61,14 +63,14 @@ export default function PrivacyPolicyPage() {
               locations, travel date and time, vehicle preference, passenger
               count, and any special requests you provide.
             </p>
-            <h3 className="mt-6 font-display text-lg text-ivory">Contact Data</h3>
+            <h3 className="mt-6 font-display text-lg text-obsidian">Contact Data</h3>
             <p className="mt-3">
               When you contact us through our website form, phone, or
               WhatsApp, we collect the information you provide in that
               conversation, such as your name, contact details, and the
               content of your enquiry, in order to respond to you.
             </p>
-            <h3 className="mt-6 font-display text-lg text-ivory">Automatically Collected Data</h3>
+            <h3 className="mt-6 font-display text-lg text-obsidian">Automatically Collected Data</h3>
             <p className="mt-3">
               Like most websites, we may automatically collect limited
               technical information — such as browser type, device type, and
@@ -78,7 +80,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">3. How We Use Your Information</h2>
+            <h2 className="font-display text-2xl text-obsidian">3. How We Use Your Information</h2>
             <ul className="mt-4 space-y-2">
               {[
                 "To confirm, manage, and fulfil your booking or quote request",
@@ -89,7 +91,7 @@ export default function PrivacyPolicyPage() {
                 "To comply with legal and regulatory obligations",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-deep" />
                   {item}
                 </li>
               ))}
@@ -97,7 +99,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">4. Cookies Policy</h2>
+            <h2 className="font-display text-2xl text-obsidian">4. Cookies Policy</h2>
             <p className="mt-4">
               Our website may use cookies and similar technologies to
               remember preferences, understand how visitors use the site, and
@@ -108,7 +110,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">5. Sharing of Information</h2>
+            <h2 className="font-display text-2xl text-obsidian">5. Sharing of Information</h2>
             <p className="mt-4">
               We do not sell your personal data. We may share limited booking
               information with the chauffeur assigned to your trip, and with
@@ -120,7 +122,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">6. Data Retention</h2>
+            <h2 className="font-display text-2xl text-obsidian">6. Data Retention</h2>
             <p className="mt-4">
               We retain booking and contact data for as long as necessary to
               fulfil the purposes described in this policy, including
@@ -130,7 +132,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">7. Your Rights</h2>
+            <h2 className="font-display text-2xl text-obsidian">7. Your Rights</h2>
             <p className="mt-4">
               Depending on your location, you may have the right to access,
               correct, delete, or restrict the use of your personal data, and
@@ -140,7 +142,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">8. Data Security</h2>
+            <h2 className="font-display text-2xl text-obsidian">8. Data Security</h2>
             <p className="mt-4">
               We take reasonable technical and organizational measures to
               protect your personal data against unauthorized access, loss,
@@ -150,7 +152,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">9. Changes to This Policy</h2>
+            <h2 className="font-display text-2xl text-obsidian">9. Changes to This Policy</h2>
             <p className="mt-4">
               We may update this Privacy Policy from time to time. Any
               changes will be posted on this page with a revised "Last
@@ -159,11 +161,14 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-ivory">10. Contact Us</h2>
+            <h2 className="font-display text-2xl text-obsidian">10. Contact Us</h2>
             <p className="mt-4">
               For any questions about this Privacy Policy or how your data is
               handled, contact us at{" "}
-              <a href={`mailto:${SITE.email}`} className="text-gold underline underline-offset-4">
+              <a
+                href={`mailto:${SITE.email}`}
+                className="text-obsidian underline underline-offset-4 transition-colors hover:text-gold-deep"
+              >
                 {SITE.email}
               </a>{" "}
               or {SITE.phoneDisplay}.
@@ -171,6 +176,6 @@ export default function PrivacyPolicyPage() {
           </section>
         </div>
       </Container>
-    </div>
+    </Section>
   );
 }
