@@ -27,7 +27,7 @@ export default function Hero() {
         <div>
           <span className="label-eyebrow">Dubai &amp; UAE Chauffeur Service</span>
           <h1 className="mt-5 font-display text-4xl leading-[1.08] text-ivory sm:text-5xl lg:text-6xl">
-            Premium Chauffeur &amp; Limousine Service in Dubai
+            Dubai&apos;s Premier Luxury Chauffeur Service
           </h1>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-smoke sm:text-lg">
             Luxury airport transfers, corporate chauffeur services, VIP
