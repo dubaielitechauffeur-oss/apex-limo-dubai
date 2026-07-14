@@ -12,7 +12,7 @@ function StarRow({ rating, size = "h-4 w-4" }: { rating: number; size?: string }
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`${size} ${i < rating ? "fill-gold text-gold" : "fill-transparent text-gold/30"}`}
+          className={`${size} ${i < rating ? "fill-gold-deep text-gold-deep" : "fill-transparent text-gold-deep/30"}`}
           strokeWidth={1.5}
         />
       ))}
@@ -77,7 +77,7 @@ export default function Testimonials() {
   )}`;
 
   return (
-    <section className="bg-charcoal py-24">
+    <section className="border-t border-gold/10 bg-pearl py-24">
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
@@ -88,24 +88,25 @@ export default function Testimonials() {
         <SectionHeading
           eyebrow="Client Words"
           title="What Riding With Apex Feels Like"
+          tone="light"
         />
 
         {/* Aggregate rating summary, styled after a Google Reviews snippet */}
         <div className="mx-auto mt-10 flex max-w-md flex-col items-center gap-2 text-center">
           <div className="flex items-baseline gap-2">
-            <span className="font-display text-4xl text-gold">
+            <span className="font-display text-4xl text-gold-deep">
               {avgRating.toFixed(1)}
             </span>
             <StarRow rating={Math.round(avgRating)} size="h-5 w-5" />
           </div>
-          <p className="text-xs uppercase tracking-wide text-smoke">
+          <p className="text-xs uppercase tracking-wide text-graphite">
             Based on {TESTIMONIALS.length} client reviews
           </p>
           <a
             href={mapsSearchUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 text-xs text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
+            className="mt-1 text-xs text-obsidian underline underline-offset-4 transition-colors hover:text-gold-deep"
           >
             Find us on Google Maps
           </a>
@@ -115,7 +116,7 @@ export default function Testimonials() {
           {TESTIMONIALS.map((testimonial) => (
             <figure
               key={testimonial.id}
-              className="flex flex-col border border-gold/15 bg-obsidian p-7"
+              className="flex flex-col border border-gold/15 bg-ivory p-7"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -126,32 +127,32 @@ export default function Testimonials() {
                     {testimonial.avatarInitials}
                   </span>
                   <div>
-                    <figcaption className="font-display text-base text-ivory">
+                    <figcaption className="font-display text-base text-obsidian">
                       {testimonial.name}
                     </figcaption>
                     <StarRow rating={testimonial.rating} />
                   </div>
                 </div>
                 <Quote
-                  className="h-5 w-5 shrink-0 text-gold/50"
+                  className="h-5 w-5 shrink-0 text-gold-deep/50"
                   strokeWidth={1.5}
                   aria-hidden="true"
                 />
               </div>
 
-              <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-ivory/90">
+              <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-graphite">
                 &ldquo;{testimonial.text}&rdquo;
               </blockquote>
 
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-4 text-xs text-smoke">
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-obsidian/10 pt-4 text-xs text-graphite">
                 <span>
                   {testimonial.serviceUsed} · {testimonial.location}
                 </span>
                 <span>{relativeDate(testimonial.date)}</span>
               </div>
 
-              <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wide text-gold/80">
-                <BadgeCheck className="h-3.5 w-3.5" strokeWidth={1.5} />
+              <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wide text-graphite">
+                <BadgeCheck className="h-3.5 w-3.5 text-gold-deep" strokeWidth={1.5} />
                 Verified Booking
               </span>
             </figure>

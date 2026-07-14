@@ -12,16 +12,19 @@ const config: Config = {
       colors: {
         // Core brand palette
         obsidian: {
-          DEFAULT: "#0B0B0B", // primary background
+          DEFAULT: "#0A0A0A", // primary background
           light: "#141414",
         },
         charcoal: {
           DEFAULT: "#18181B", // surface / card background
           light: "#232326",
         },
+        ink: "#111111", // booking CTA panel background
+        linen: "#FAF8F3", // fleet showcase section background
+        pearl: "#F5F2EB", // testimonials section background
         gold: {
           DEFAULT: "#D4AF37", // primary accent
-          deep: "#A8842C", // hover / active state
+          deep: "#A8842C", // hover / active state, and accent text/icons on light backgrounds
           pale: "#E9D68A", // subtle highlight, borders
         },
         ivory: {
@@ -29,6 +32,7 @@ const config: Config = {
           off: "#F6F4EF", // light-section background
         },
         smoke: "#B8B5AE", // muted text on dark backgrounds
+        graphite: "#57534E", // muted text on light backgrounds
       },
       fontFamily: {
         display: ["var(--font-display)", "Georgia", "serif"],

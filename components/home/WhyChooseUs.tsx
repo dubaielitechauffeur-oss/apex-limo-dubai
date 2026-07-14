@@ -57,26 +57,27 @@ const REASONS: Reason[] = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="bg-obsidian py-24">
+    <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
         <SectionHeading
           eyebrow="Why Apex"
           title="Consistency Is the Luxury"
           subtitle="Anyone can drive a nice car. What clients come back for is knowing exactly what to expect, every single time."
+          tone="light"
         />
 
         <div className="mt-16 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {REASONS.map((reason) => (
             <div key={reason.title} className="flex gap-4">
               <reason.icon
-                className="mt-1 h-6 w-6 shrink-0 text-gold"
+                className="mt-1 h-6 w-6 shrink-0 text-gold-deep"
                 strokeWidth={1.5}
               />
               <div>
-                <h3 className="font-display text-lg text-ivory">
+                <h3 className="font-display text-lg text-obsidian">
                   {reason.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-smoke">
+                <p className="mt-2 text-sm leading-relaxed text-graphite">
                   {reason.description}
                 </p>
               </div>
