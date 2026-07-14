@@ -10,8 +10,14 @@ import {
   PRIMARY_CTA,
   SITE,
   getPhoneLink,
-  getWhatsAppLink,
 } from "@/lib/constants";
+
+/** Desktop nav order for the luxury header redesign — pulled from the
+ *  shared NAV_LINKS source of truth so hrefs/children stay in sync. */
+const HEADER_NAV_ORDER = ["Services", "Fleet", "About", "Locations", "Contact"];
+const headerNavLinks = HEADER_NAV_ORDER.map((label) =>
+  NAV_LINKS.find((link) => link.label === label)
+).filter((link): link is (typeof NAV_LINKS)[number] => Boolean(link));
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -34,31 +40,40 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled ? "bg-obsidian/95 backdrop-blur" : "bg-obsidian/70 backdrop-blur-sm"
+      className={`fixed inset-x-0 top-0 z-50 bg-obsidian transition-shadow duration-300 ${
+        scrolled ? "shadow-[0_8px_30px_rgba(0,0,0,0.55)]" : ""
       }`}
     >
+      {/* Promotional bar */}
+      <div className="flex h-9 items-center justify-center border-b border-gold/20 bg-obsidian px-4">
+        <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-gold/90 sm:text-[11px] sm:tracking-[0.25em]">
+          Premium Chauffeur Service Across Dubai &amp; UAE
+        </p>
+      </div>
+
+      {/* Main nav row */}
       <Container>
-        <div className="flex h-20 items-center justify-between">
-          {/* Logo */}
+        <div className="grid h-20 grid-cols-[auto_1fr_auto] items-center gap-4">
+          {/* Logo — far left */}
           <Link href="/" className="flex shrink-0 items-center">
             <Image
               src="/images/brand/apex-logo.webp"
               alt={`${SITE.name} logo`}
               width={220}
               height={225}
-              className="h-12 w-auto sm:h-14"
+              className="h-11 w-auto sm:h-12"
+              priority
             />
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:block">
-            <ul className="flex items-center gap-9">
-              {NAV_LINKS.map((link) => (
+          {/* Desktop nav — centered */}
+          <nav className="hidden justify-self-center lg:block">
+            <ul className="flex items-center gap-10">
+              {headerNavLinks.map((link) => (
                 <li key={link.href} className="group relative">
                   <Link
                     href={link.href}
-                    className="font-body text-sm uppercase tracking-wide text-ivory/90 transition-colors duration-200 hover:text-gold"
+                    className="font-body text-[13px] uppercase tracking-[0.12em] text-ivory/90 transition-colors duration-200 hover:text-gold"
                   >
                     {link.label}
                   </Link>
@@ -86,24 +101,19 @@ export default function Header() {
             </ul>
           </nav>
 
-          {/* Desktop CTAs */}
-          <div className="hidden items-center gap-4 lg:flex">
+          {/* Desktop CTA — far right */}
+          <div className="hidden items-center gap-5 justify-self-end lg:flex">
             <a
               href={getPhoneLink()}
-              className="text-sm tracking-wide text-ivory/90 transition-colors hover:text-gold"
+              className="text-[13px] tracking-wide text-ivory/80 transition-colors duration-200 hover:text-gold"
             >
               {SITE.phoneDisplay}
             </a>
-            <a
-              href={getWhatsAppLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-outline"
+            <Link
+              href={PRIMARY_CTA.book.href}
+              className="inline-flex items-center justify-center rounded-sm bg-gold px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
             >
-              {PRIMARY_CTA.whatsapp.label}
-            </a>
-            <Link href={PRIMARY_CTA.book.href} className="btn-gold">
-              {PRIMARY_CTA.book.label}
+              Book Chauffeur
             </Link>
           </div>
 
@@ -112,7 +122,7 @@ export default function Header() {
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
             aria-expanded={mobileOpen}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
+            className="flex h-10 w-10 flex-col items-center justify-center justify-self-end gap-1.5 lg:hidden"
           >
             <span className="h-px w-6 bg-gold" />
             <span className="h-px w-6 bg-gold" />
@@ -121,8 +131,8 @@ export default function Header() {
         </div>
       </Container>
 
-      {/* Bottom hairline — thin gold route line under the header */}
-      <div className="route-line opacity-60" />
+      {/* Bottom hairline — thin gold border under the header */}
+      <div className="h-px w-full bg-gold/30" />
 
       <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
 

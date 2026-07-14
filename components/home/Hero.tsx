@@ -1,94 +1,97 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Clock, Car, Languages } from "lucide-react";
 import Container from "@/components/shared/Container";
-import CTAButton from "@/components/shared/CTAButton";
-import { PRIMARY_CTA, getWhatsAppLink } from "@/lib/constants";
+import { PRIMARY_CTA, getPhoneLink } from "@/lib/constants";
 
-const STATS = [
-  { value: "10+", label: "Years on Dubai roads" },
-  { value: "24/7", label: "Availability" },
-  { value: "6", label: "Vehicle classes" },
+const TRUST_INDICATORS = [
+  { icon: Clock, label: "24/7 Concierge" },
+  { icon: Car, label: "50+ Luxury Vehicles" },
+  { icon: Languages, label: "Multilingual Chauffeurs" },
 ];
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Ambient gold glow, purely decorative */}
+    <section className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-obsidian lg:min-h-[calc(100vh-117px)]">
+      {/* Full-bleed hero photograph */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/home/hero-homepage.webp"
+          alt="Business executive working on a laptop in the back seat of an Apex Limo chauffeur-driven car in Dubai"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[70%_center]"
+        />
+      </div>
+
+      {/* Large left-side dark gradient overlay for text legibility */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-40 -top-40 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-3xl"
+        className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/85 to-obsidian/10"
       />
+      {/* Vignette for overall contrast */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -left-32 bottom-0 h-96 w-96 rounded-full bg-gold/5 blur-3xl"
+        className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-obsidian/30"
       />
 
-      <Container className="relative grid grid-cols-1 items-center gap-16 py-20 sm:py-28 lg:grid-cols-[1.1fr_0.9fr] lg:py-32">
-        {/* Copy column */}
-        <div>
-          <span className="label-eyebrow">Dubai &amp; UAE Chauffeur Service</span>
-          <h1 className="mt-5 font-display text-4xl leading-[1.08] text-ivory sm:text-5xl lg:text-6xl">
-            Dubai&apos;s Premier Luxury Chauffeur Service
+      <Container className="relative z-10 py-24 sm:py-28">
+        <div className="max-w-2xl">
+          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
+            Dubai&apos;s Premier Chauffeur Service
+          </span>
+
+          <h1 className="mt-6 font-display text-5xl leading-[1.05] text-ivory sm:text-6xl lg:text-7xl">
+            <span className="block">Elevate Every Journey</span>
+            <span className="block text-ivory">
+              with <span className="text-gold">Apex Limo</span>
+            </span>
           </h1>
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-smoke sm:text-lg">
-            Luxury airport transfers, corporate chauffeur services, VIP
-            transportation and executive travel across Dubai and the UAE.
+
+          <p className="mt-7 max-w-lg text-base leading-relaxed text-smoke sm:text-lg">
+            Experience discreet, professional and luxurious chauffeur-driven
+            travel across Dubai and the UAE. Airport transfers, corporate
+            travel and private chauffeur services tailored to perfection.
           </p>
 
-          <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <CTAButton href={PRIMARY_CTA.book.href}>
-              {PRIMARY_CTA.book.label}
-            </CTAButton>
-            <CTAButton href={PRIMARY_CTA.quote.href} variant="outline">
-              {PRIMARY_CTA.quote.label}
-            </CTAButton>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <Link
+              href={PRIMARY_CTA.book.href}
+              className="inline-flex items-center justify-center rounded-sm bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+            >
+              Book Chauffeur
+            </Link>
+            <a
+              href={getPhoneLink()}
+              className="inline-flex items-center justify-center rounded-sm border border-gold/60 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-gold hover:bg-gold/10"
+            >
+              Call Now
+            </a>
           </div>
 
-          <a
-            href={getWhatsAppLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 inline-block text-sm text-smoke underline decoration-gold/40 underline-offset-4 transition-colors hover:text-gold"
-          >
-            or WhatsApp us for an instant reply →
-          </a>
-
-          {/* Trust stats */}
-          <dl className="mt-12 flex max-w-md items-center gap-6 sm:gap-10">
-            {STATS.map((stat, i) => (
-              <div key={stat.label} className="flex items-center gap-6 sm:gap-10">
-                <div>
-                  <dt className="sr-only">{stat.label}</dt>
-                  <dd className="font-display text-2xl text-gold sm:text-3xl">
-                    {stat.value}
-                  </dd>
-                  <p className="mt-1 text-xs uppercase tracking-wide text-smoke">
-                    {stat.label}
-                  </p>
+          {/* Trust indicators */}
+          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-4 sm:gap-x-8">
+            {TRUST_INDICATORS.map((item, i) => (
+              <div key={item.label} className="flex items-center gap-6 sm:gap-8">
+                <div className="flex items-center gap-2.5">
+                  <item.icon
+                    className="h-4 w-4 shrink-0 text-gold"
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
+                  <span className="text-xs uppercase tracking-wide text-ivory/90 sm:text-sm">
+                    {item.label}
+                  </span>
                 </div>
-                {i < STATS.length - 1 ? (
-                  <span className="h-10 w-px bg-gold/20" aria-hidden="true" />
+                {i < TRUST_INDICATORS.length - 1 ? (
+                  <span
+                    className="hidden h-8 w-px bg-gold/25 sm:block"
+                    aria-hidden="true"
+                  />
                 ) : null}
               </div>
             ))}
-          </dl>
-        </div>
-
-        {/* Hero photograph, framed with the same bordered/shadow treatment
-            used elsewhere on the site (e.g. the vehicle gallery panels). */}
-        <div className="relative mx-auto w-full max-w-md">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-sm border border-gold/25 shadow-gold-lg">
-            <Image
-              src="/images/home/hero-homepage.webp"
-              alt="Business executive working on a laptop in the back seat of an Apex Limo chauffeur-driven car in Dubai"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 500px"
-              className="object-cover"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-obsidian/60 via-transparent to-transparent"
-            />
           </div>
         </div>
       </Container>
