@@ -15,7 +15,7 @@ export default function FleetShowcase() {
           tone="light"
         />
 
-        <div className="mt-16 grid grid-cols-1 gap-8 xl:grid-cols-2">
+        <div className="mx-auto mt-16 max-w-6xl space-y-8">
           {FLEET.map((vehicle) => (
             <FleetVehicleCard key={vehicle.slug} vehicle={vehicle} />
           ))}
