@@ -3,6 +3,11 @@ export interface ServiceFAQ {
   answer: string;
 }
 
+export interface ServiceImage {
+  src: string;
+  alt: string;
+}
+
 export interface Service {
   slug: string;
   name: string;
@@ -13,12 +18,22 @@ export interface Service {
   benefits: string[];
   whyChoose: string[];
   faqs: ServiceFAQ[];
+  /**
+   * Card image for the /services listing page. Reuses existing licensed
+   * fleet photography as a placeholder — swap for dedicated service
+   * photography later; the field/shape stays the same either way.
+   */
+  image: ServiceImage;
 }
 
 export const SERVICES: Service[] = [
   {
     slug: "airport-transfers",
     name: "Airport Transfers",
+    image: {
+      src: "/images/fleet/mercedes-s-class/mercedes-s-class-front-exterior.webp",
+      alt: "Black Mercedes S-Class chauffeur car used for Apex Limo airport transfers in Dubai",
+    },
     tagline: "Meet-and-greet, every time",
     heroSubtitle:
       "Meet-and-greet arrivals and punctual departures at DXB and DWC, with live flight tracking built into every booking.",
@@ -66,6 +81,10 @@ export const SERVICES: Service[] = [
   {
     slug: "corporate-chauffeur",
     name: "Corporate Chauffeur Service",
+    image: {
+      src: "/images/fleet/bmw-7-series/bmw-7-series-exterior.webp",
+      alt: "Black BMW 7 Series chauffeur car used for Apex Limo corporate travel in Dubai",
+    },
     tagline: "Consistency your calendar can rely on",
     heroSubtitle:
       "Reliable, discreet transport for executives and business travel across the UAE.",
@@ -112,6 +131,10 @@ export const SERVICES: Service[] = [
   {
     slug: "luxury-chauffeur",
     name: "Luxury Chauffeur Service",
+    image: {
+      src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-exterior.webp",
+      alt: "Black Range Rover Autobiography used for Apex Limo luxury chauffeur service in Dubai",
+    },
     tagline: "Everyday travel, elevated",
     heroSubtitle:
       "A premium fleet and professionally trained drivers for everyday luxury travel.",
@@ -158,6 +181,10 @@ export const SERVICES: Service[] = [
   {
     slug: "vip-transportation",
     name: "VIP Transportation",
+    image: {
+      src: "/images/fleet/cadillac-escalade/cadillac-escalade-exterior.webp",
+      alt: "Black Cadillac Escalade used for Apex Limo VIP transportation in Dubai",
+    },
     tagline: "Planned, discreet, dependable",
     heroSubtitle:
       "Private, secure transport for high-profile guests, delegations, and dignitaries.",
@@ -204,6 +231,10 @@ export const SERVICES: Service[] = [
   {
     slug: "event-transportation",
     name: "Event Transportation",
+    image: {
+      src: "/images/fleet/mercedes-v-class/mercedes-v-class-exterior-dubai-skyline.webp",
+      alt: "Black Mercedes V-Class van used for Apex Limo event and group transportation in Dubai",
+    },
     tagline: "One fleet plan, no bottlenecks",
     heroSubtitle:
       "Coordinated fleets for conferences, galas, and large-scale corporate events.",
@@ -251,6 +282,10 @@ export const SERVICES: Service[] = [
   {
     slug: "wedding-chauffeur",
     name: "Wedding Chauffeur Service",
+    image: {
+      src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-exterior.webp",
+      alt: "Black Rolls-Royce Phantom used for Apex Limo wedding chauffeur service in Dubai",
+    },
     tagline: "An entrance worth remembering",
     heroSubtitle:
       "Elegant bridal cars and coordinated convoys for a flawless wedding day.",
