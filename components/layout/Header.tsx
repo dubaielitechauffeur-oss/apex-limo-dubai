@@ -15,7 +15,7 @@ import {
 
 /** Desktop nav order for the luxury header redesign — pulled from the
  *  shared NAV_LINKS source of truth so hrefs/children stay in sync. */
-const HEADER_NAV_ORDER = ["Services", "Fleet", "About", "Locations", "Contact"];
+const HEADER_NAV_ORDER = ["Home", "Services", "Fleet", "About", "Locations", "Contact"];
 const headerNavLinks = HEADER_NAV_ORDER.map((label) =>
   NAV_LINKS.find((link) => link.label === label)
 ).filter((link): link is (typeof NAV_LINKS)[number] => Boolean(link));
@@ -113,17 +113,17 @@ export default function Header() {
           </div>
 
           {/* Mobile: compact language switcher + menu trigger */}
-          <div className="flex items-center gap-4 justify-self-end lg:hidden">
-            <LanguageSwitcher compact />
+          <div className="flex items-center gap-3 justify-self-end lg:hidden">
+            <LanguageSwitcher compact className="flex h-10 items-center" />
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
               aria-expanded={mobileOpen}
-              className="flex h-10 w-10 flex-col items-center justify-center gap-1.5"
+              className="flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5"
             >
               <span className="h-px w-6 bg-gold" />
               <span className="h-px w-6 bg-gold" />
-              <span className="h-px w-4 self-end bg-gold" />
+              <span className="h-px w-6 bg-gold" />
             </button>
           </div>
         </div>
