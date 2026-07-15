@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import Container from "@/components/shared/Container";
 import MobileNav from "./MobileNav";
 import LanguageSwitcher from "./LanguageSwitcher";
+import ApexLogo from "./ApexLogo";
 import {
   NAV_LINKS,
   PRIMARY_CTA,
@@ -56,15 +56,8 @@ export default function Header() {
       <Container>
         <div className="grid h-20 grid-cols-[auto_1fr_auto] items-center gap-4">
           {/* Logo — far left */}
-          <Link href="/" className="flex shrink-0 items-center">
-            <Image
-              src="/images/brand/apex-logo.webp"
-              alt={`${SITE.name} logo`}
-              width={220}
-              height={225}
-              className="h-11 w-auto sm:h-12"
-              priority
-            />
+          <Link href="/" className="flex shrink-0 items-center" aria-label={SITE.name}>
+            <ApexLogo layout="row" size="sm" />
           </Link>
 
           {/* Desktop nav — centered */}

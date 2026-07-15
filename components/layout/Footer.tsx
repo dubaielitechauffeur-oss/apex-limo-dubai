@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import Container from "@/components/shared/Container";
+import ApexLogo from "./ApexLogo";
 import {
   NAV_LINKS,
   SERVICES,
@@ -18,14 +18,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div>
-            <Image
-              src="/images/brand/apex-logo.webp"
-              alt={`${SITE.name} logo`}
-              width={220}
-              height={225}
-              className="h-16 w-auto"
-            />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-smoke">
+            <ApexLogo layout="stacked" size="md" tagline="Private Chauffeur Service" />
+            <p className="mt-6 max-w-xs text-center text-sm leading-relaxed text-smoke sm:text-left">
               {SITE.tagline}. Professional chauffeurs, a premium fleet, and
               dependable service across Dubai.
             </p>
