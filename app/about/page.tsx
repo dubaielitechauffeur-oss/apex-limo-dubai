@@ -11,11 +11,10 @@ import {
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
-import CTAButton from "@/components/shared/CTAButton";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BookingCTA from "@/components/home/BookingCTA";
+import AboutHero from "@/components/about/AboutHero";
 import { buildMetadata } from "@/lib/seo";
-import { SITE } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { LOCATIONS } from "@/data/locations";
 
@@ -67,21 +66,7 @@ export default function AboutPage() {
   return (
     <div>
       {/* Hero */}
-      <Section tone="obsidian" padding="sm" separator={false}>
-        <Container className="max-w-3xl">
-          <span className="label-eyebrow">About Apex</span>
-          <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
-            Dubai's Trusted Name in Chauffeur-Driven Luxury
-          </h1>
-          <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">
-            {SITE.name} was built on a simple premise: luxury transportation
-            should be as dependable as it is comfortable. From a single
-            airport transfer to a full wedding convoy, we bring the same
-            standard of professionalism to every booking across Dubai and the
-            UAE.
-          </p>
-        </Container>
-      </Section>
+      <AboutHero />
 
       {/* Company introduction */}
       <Section tone="ivory" padding="sm">
@@ -145,25 +130,16 @@ export default function AboutPage() {
           />
           <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {LOCATIONS.map((location) => (
-              <Link
-                key={location.slug}
-                href={`/locations/${location.slug}`}
-                className="group flex items-center justify-between gap-3 border border-gold/15 bg-ivory p-5 transition-colors duration-200 hover:border-gold/40"
-              >
-                <span className="flex items-center gap-3 text-sm text-obsidian">
-                  <MapPin className="h-4 w-4 shrink-0 text-gold-deep" strokeWidth={1.5} />
-                  {location.name}
-                </span>
-                <span className="text-xs text-graphite opacity-0 transition-opacity group-hover:opacity-100">
-                  View
-                </span>
+              <Link key={location.slug} href={`/locations/${location.slug}`} className="btn-gold">
+                <MapPin className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+                {location.name}
               </Link>
             ))}
           </div>
           <div className="mt-8 text-center">
-            <CTAButton href="/locations" variant="outline" tone="light">
+            <Link href="/locations" className="btn-black">
               View All Locations
-            </CTAButton>
+            </Link>
           </div>
         </Container>
       </Section>
@@ -198,25 +174,23 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="Our Fleet"
             title="A Vehicle for Every Occasion"
-            subtitle="Six vehicle classes, all late-model, detailed before every trip, and matched to the journey."
+            subtitle="Fifteen vehicles, all late-model, detailed before every trip, and matched to the journey."
             tone="light"
           />
           <div className="mt-14 flex flex-wrap justify-center gap-3">
             {FLEET.map((vehicle) => (
-              <Link
-                key={vehicle.slug}
-                href={`/fleet/${vehicle.slug}`}
-                className="border border-gold/20 bg-ivory px-5 py-3 text-sm text-obsidian transition-colors duration-200 hover:border-gold hover:text-gold-deep"
-              >
+              <Link key={vehicle.slug} href={`/fleet/${vehicle.slug}`} className="btn-gold">
                 {vehicle.name}
-                <span className="ml-2 text-xs text-graphite">{vehicle.category}</span>
+                <span className="text-xs font-normal normal-case tracking-normal text-obsidian/70">
+                  {vehicle.category}
+                </span>
               </Link>
             ))}
           </div>
           <div className="mt-10 text-center">
-            <CTAButton href="/fleet" variant="outline" tone="light">
+            <Link href="/fleet" className="btn-black">
               Explore the Full Fleet
-            </CTAButton>
+            </Link>
           </div>
         </Container>
       </Section>

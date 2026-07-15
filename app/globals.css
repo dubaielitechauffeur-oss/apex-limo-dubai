@@ -78,6 +78,13 @@
     @apply inline-flex items-center justify-center gap-2 border border-gold/60 bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-ivory transition-colors duration-200 hover:border-gold hover:bg-gold/10;
   }
 
+  /* Solid black CTA — for secondary actions on a light section that
+     still need real weight (e.g. "View All Locations", "Explore the
+     Full Fleet") without competing with a page's primary gold CTA. */
+  .btn-black {
+    @apply inline-flex items-center justify-center gap-2 bg-obsidian px-6 py-3 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 hover:bg-charcoal;
+  }
+
   /* Shared control style for text inputs, selects, and textareas across
      the booking and quote forms. */
   .field-input {
