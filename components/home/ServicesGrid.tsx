@@ -51,8 +51,8 @@ export default function ServicesGrid() {
                     {service.description}
                   </p>
                 </div>
-                <span className="mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
-                  Learn more
+                <span className="mt-8 inline-flex w-fit items-center gap-2 bg-gold px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 group-hover:bg-gold-deep">
+                  Learn More
                   <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
                 </span>
               </Link>
