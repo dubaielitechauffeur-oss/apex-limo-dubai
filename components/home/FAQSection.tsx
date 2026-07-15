@@ -18,9 +18,9 @@ export default function FAQSection() {
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-scroll bg-cover bg-center md:bg-fixed"
-        style={{ backgroundImage: "url(/images/home/hero-homepage.webp)" }}
+        style={{ backgroundImage: "url(/images/home/faq-mercedes-dubai-skyline.webp)" }}
       />
-      <div aria-hidden="true" className="absolute inset-0 bg-obsidian/75" />
+      <div aria-hidden="true" className="absolute inset-0 bg-obsidian/80" />
 
       <Container className="relative z-10 max-w-4xl">
         <SectionHeading
