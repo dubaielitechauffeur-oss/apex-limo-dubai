@@ -31,8 +31,8 @@ export const SERVICES: Service[] = [
     slug: "airport-transfers",
     name: "Airport Transfers",
     image: {
-      src: "/images/fleet/mercedes-s-class/mercedes-s-class-front-exterior.webp",
-      alt: "Black Mercedes S-Class chauffeur car used for Apex Limo airport transfers in Dubai",
+      src: "/images/services/airport-transfer-jet-tarmac.webp",
+      alt: "Apex Limo Mercedes V-Class parked on the tarmac beside a private jet at dusk, ready for an airport transfer",
     },
     tagline: "Meet-and-greet, every time",
     heroSubtitle:
@@ -82,8 +82,8 @@ export const SERVICES: Service[] = [
     slug: "corporate-chauffeur",
     name: "Corporate Chauffeur Service",
     image: {
-      src: "/images/fleet/bmw-7-series/bmw-7-series-exterior.webp",
-      alt: "Black BMW 7 Series chauffeur car used for Apex Limo corporate travel in Dubai",
+      src: "/images/services/corporate-chauffeur-working-in-car.webp",
+      alt: "Businessman working on a laptop and taking a call in the back seat of an Apex Limo chauffeur car",
     },
     tagline: "Consistency your calendar can rely on",
     heroSubtitle:
@@ -132,8 +132,8 @@ export const SERVICES: Service[] = [
     slug: "luxury-chauffeur",
     name: "Luxury Chauffeur Service",
     image: {
-      src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-exterior.webp",
-      alt: "Black Range Rover Autobiography used for Apex Limo luxury chauffeur service in Dubai",
+      src: "/images/services/luxury-chauffeur-door-service.webp",
+      alt: "Apex Limo chauffeur opening the car door for a client outside an office building",
     },
     tagline: "Everyday travel, elevated",
     heroSubtitle:
@@ -182,8 +182,8 @@ export const SERVICES: Service[] = [
     slug: "vip-transportation",
     name: "VIP Transportation",
     image: {
-      src: "/images/fleet/cadillac-escalade/cadillac-escalade-exterior.webp",
-      alt: "Black Cadillac Escalade used for Apex Limo VIP transportation in Dubai",
+      src: "/images/services/vip-transportation-motorcade.webp",
+      alt: "Apex Limo motorcade of a Mercedes S-Class and V-Class vans moving together as a coordinated VIP convoy",
     },
     tagline: "Planned, discreet, dependable",
     heroSubtitle:
@@ -232,8 +232,8 @@ export const SERVICES: Service[] = [
     slug: "event-transportation",
     name: "Event Transportation",
     image: {
-      src: "/images/fleet/mercedes-v-class/mercedes-v-class-exterior-dubai-skyline.webp",
-      alt: "Black Mercedes V-Class van used for Apex Limo event and group transportation in Dubai",
+      src: "/images/services/event-transportation-fleet-lineup.webp",
+      alt: "Three Apex Limo chauffeurs standing beside a Mercedes S-Class, BMW, and Cadillac Escalade outside a Dubai hotel, ready for event transportation",
     },
     tagline: "One fleet plan, no bottlenecks",
     heroSubtitle:
@@ -283,8 +283,8 @@ export const SERVICES: Service[] = [
     slug: "wedding-chauffeur",
     name: "Wedding Chauffeur Service",
     image: {
-      src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-exterior.webp",
-      alt: "Black Rolls-Royce Phantom used for Apex Limo wedding chauffeur service in Dubai",
+      src: "/images/services/wedding-chauffeur-cars.webp",
+      alt: "Two black Mercedes S-Class wedding cars decorated with floral arrangements, with the bride and groom in the background",
     },
     tagline: "An entrance worth remembering",
     heroSubtitle:
