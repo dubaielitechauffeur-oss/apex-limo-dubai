@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import ServicesGrid from "@/components/home/ServicesGrid";
 import FleetCarousel from "@/components/home/FleetCarousel";
+import BrandsShowcase from "@/components/home/BrandsShowcase";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Testimonials from "@/components/home/Testimonials";
 import FAQSection from "@/components/home/FAQSection";
@@ -26,6 +27,7 @@ export default function Home() {
       />
       <Hero />
       <FleetCarousel />
+      <BrandsShowcase />
       <ServicesGrid />
       <WhyChooseUs />
       <Testimonials />
