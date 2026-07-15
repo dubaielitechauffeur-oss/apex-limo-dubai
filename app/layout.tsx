@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloatButton from "@/components/layout/WhatsAppFloatButton";
+import { LanguageProvider } from "@/components/layout/LanguageContext";
 import { defaultMetadata, organizationJsonLd } from "@/lib/seo";
 
 const cormorant = Cormorant({
@@ -39,10 +40,12 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1 pt-[117px]">{children}</main>
-        <Footer />
-        <WhatsAppFloatButton />
+        <LanguageProvider>
+          <Header />
+          <main className="flex-1 pt-[117px]">{children}</main>
+          <Footer />
+          <WhatsAppFloatButton />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/shared/Container";
 import MobileNav from "./MobileNav";
+import LanguageSwitcher from "./LanguageSwitcher";
 import {
   NAV_LINKS,
   PRIMARY_CTA,
@@ -115,19 +116,23 @@ export default function Header() {
             >
               Book Chauffeur
             </Link>
+            <LanguageSwitcher />
           </div>
 
-          {/* Mobile menu trigger */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
-            aria-expanded={mobileOpen}
-            className="flex h-10 w-10 flex-col items-center justify-center justify-self-end gap-1.5 lg:hidden"
-          >
-            <span className="h-px w-6 bg-gold" />
-            <span className="h-px w-6 bg-gold" />
-            <span className="h-px w-4 self-end bg-gold" />
-          </button>
+          {/* Mobile: compact language switcher + menu trigger */}
+          <div className="flex items-center gap-4 justify-self-end lg:hidden">
+            <LanguageSwitcher compact />
+            <button
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
+              aria-expanded={mobileOpen}
+              className="flex h-10 w-10 flex-col items-center justify-center gap-1.5"
+            >
+              <span className="h-px w-6 bg-gold" />
+              <span className="h-px w-6 bg-gold" />
+              <span className="h-px w-4 self-end bg-gold" />
+            </button>
+          </div>
         </div>
       </Container>
 
