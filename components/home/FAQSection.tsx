@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { FAQS } from "@/data/faqs";
@@ -10,41 +10,60 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="border-t border-gold/10 bg-ivory py-24">
-      <Container className="max-w-4xl">
+    <section className="relative isolate overflow-hidden border-t border-gold/10 bg-obsidian py-24">
+      {/* Fixed background photograph — bg-fixed only above the mobile
+          breakpoint, since background-attachment: fixed is unreliable on
+          iOS Safari; below md it falls back to the normal scrolling
+          background (still bg-cover, just moves with the page). */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-scroll bg-cover bg-center md:bg-fixed"
+        style={{ backgroundImage: "url(/images/home/hero-homepage.webp)" }}
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-obsidian/75" />
+
+      <Container className="relative z-10 max-w-4xl">
         <SectionHeading
           eyebrow="Good to Know"
           title="Frequently Asked Questions"
           subtitle="Answers to the questions we hear most from first-time and returning clients."
-          tone="light"
+          tone="dark"
         />
 
-        <div className="mt-14 divide-y divide-obsidian/10 border-y border-obsidian/10">
+        <div className="mt-14 divide-y divide-white/10 border-y border-white/10 bg-charcoal/40 backdrop-blur-sm">
           {FAQS.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
-              <div key={faq.question}>
+              <div
+                key={faq.question}
+                className={`border-l-2 transition-colors duration-200 ${
+                  isOpen ? "border-gold" : "border-transparent"
+                }`}
+              >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-6 py-6 text-left"
+                  className="flex w-full items-center justify-between gap-6 px-6 py-6 text-left"
                 >
-                  <span className="font-display text-lg text-obsidian sm:text-xl">
+                  <span
+                    className={`font-display text-lg transition-colors duration-200 sm:text-xl ${
+                      isOpen ? "text-gold" : "text-ivory"
+                    }`}
+                  >
                     {faq.question}
                   </span>
-                  <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                    strokeWidth={1.5}
-                  />
+                  {isOpen ? (
+                    <ChevronUp className="h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 shrink-0 text-smoke" strokeWidth={1.5} />
+                  )}
                 </button>
                 <div
                   className={`grid overflow-hidden transition-all duration-300 ${
-                    isOpen ? "grid-rows-[1fr] pb-6 opacity-100" : "grid-rows-[0fr] opacity-0"
+                    isOpen ? "grid-rows-[1fr] px-6 pb-6 opacity-100" : "grid-rows-[0fr] px-6 opacity-0"
                   }`}
                 >
-                  <p className="overflow-hidden text-sm leading-relaxed text-graphite sm:text-base">
+                  <p className="overflow-hidden text-sm leading-relaxed text-smoke sm:text-base">
                     {faq.answer}
                   </p>
                 </div>
