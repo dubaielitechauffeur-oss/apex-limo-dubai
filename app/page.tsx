@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import ServicesGrid from "@/components/home/ServicesGrid";
-import FleetShowcase from "@/components/home/FleetShowcase";
+import FleetCarousel from "@/components/home/FleetCarousel";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Testimonials from "@/components/home/Testimonials";
 import FAQSection from "@/components/home/FAQSection";
@@ -25,7 +25,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(FAQS)) }}
       />
       <Hero />
-      <FleetShowcase />
+      <FleetCarousel />
       <ServicesGrid />
       <WhyChooseUs />
       <Testimonials />

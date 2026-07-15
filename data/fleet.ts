@@ -24,9 +24,34 @@ export interface VehicleGalleryImages {
   detail: VehicleImage;
 }
 
+/**
+ * Chauffeur-hire rates in AED shown on the homepage fleet carousel.
+ *
+ * ⚠️ PLACEHOLDER VALUES — the figures currently in this file are sample
+ * prices based on typical Dubai chauffeur market rates, added for layout
+ * review only. Replace every value with confirmed Apex Limo pricing
+ * before treating them as real quotes.
+ */
+export interface VehicleRates {
+  /** Full-day hire (10 hours), AED */
+  tenHours: number;
+  /** Half-day hire (5 hours), AED */
+  fiveHours: number;
+  /** Hourly hire (1 hour), AED */
+  oneHour: number;
+  /** Airport transfer (one way), AED */
+  airport: number;
+}
+
 export interface FleetVehicle {
   slug: string;
   name: string;
+  /** Manufacturer label, e.g. "Rolls-Royce" — used for the carousel badge and brand bar. */
+  brand: string;
+  /** Model name without the brand, e.g. "Phantom" — used for the carousel model bar. */
+  model: string;
+  /** See VehicleRates — currently PLACEHOLDER sample figures. */
+  rates: VehicleRates;
   category: FleetCategory;
   tagline: string;
   description: string;
@@ -51,6 +76,10 @@ export interface FleetVehicle {
 export const FLEET: FleetVehicle[] = [
   {
     slug: "mercedes-s-class",
+    brand: "Mercedes-Benz",
+    model: "S-Class",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 500 },
     name: "Mercedes S-Class",
     category: "Sedan",
     tagline: "The executive standard",
@@ -109,6 +138,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "mercedes-v-class",
+    brand: "Mercedes-Benz",
+    model: "V-Class",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2200, fiveHours: 1300, oneHour: 350, airport: 450 },
     name: "Mercedes V-Class",
     category: "Van",
     tagline: "Space, styled",
@@ -167,6 +200,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "bmw-7-series",
+    brand: "BMW",
+    model: "7 Series",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 500 },
     name: "BMW 7 Series",
     category: "Sedan",
     tagline: "Refined power",
@@ -224,6 +261,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "cadillac-escalade",
+    brand: "Cadillac",
+    model: "Escalade",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2800, fiveHours: 1700, oneHour: 450, airport: 600 },
     name: "Cadillac Escalade",
     category: "SUV",
     tagline: "A bold, commanding presence",
@@ -282,6 +323,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "range-rover-autobiography",
+    brand: "Range Rover",
+    model: "Autobiography",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 3200, fiveHours: 1900, oneHour: 500, airport: 650 },
     name: "Range Rover Autobiography",
     category: "SUV",
     tagline: "Effortless, elevated comfort",
@@ -339,6 +384,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "rolls-royce-phantom",
+    brand: "Rolls-Royce",
+    model: "Phantom",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 9500, fiveHours: 5500, oneHour: 1500, airport: 2000 },
     name: "Rolls-Royce Phantom",
     category: "Ultra-Luxury",
     tagline: "The pinnacle of arrival",
@@ -404,6 +453,10 @@ export const FLEET: FleetVehicle[] = [
   // ---------------------------------------------------------------------
   {
     slug: "audi-a8-l",
+    brand: "Audi",
+    model: "A8 L",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2400, fiveHours: 1400, oneHour: 400, airport: 500 },
     name: "Audi A8 L",
     category: "Sedan",
     tagline: "Quiet, technological luxury",
@@ -449,6 +502,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "bmw-5-series",
+    brand: "BMW",
+    model: "5 Series",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 1600, fiveHours: 950, oneHour: 250, airport: 350 },
     name: "BMW 5 Series",
     category: "Sedan",
     tagline: "Business-class comfort, everyday reach",
@@ -492,6 +549,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "lincoln-navigator",
+    brand: "Lincoln",
+    model: "Navigator",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2800, fiveHours: 1700, oneHour: 450, airport: 600 },
     name: "Lincoln Navigator",
     category: "SUV",
     tagline: "American presence, effortless space",
@@ -536,6 +597,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "gmc-yukon-denali",
+    brand: "GMC",
+    model: "Yukon Denali",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 550 },
     name: "GMC Yukon Denali",
     category: "SUV",
     tagline: "Confident, spacious, dependable",
@@ -580,6 +645,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "mercedes-sprinter-vip",
+    brand: "Mercedes-Benz",
+    model: "Sprinter VIP",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 3200, fiveHours: 1900, oneHour: 500, airport: 700 },
     name: "Mercedes Sprinter VIP",
     category: "Van",
     tagline: "Boardroom on wheels",
@@ -625,6 +694,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "mercedes-maybach-s-class",
+    brand: "Mercedes-Maybach",
+    model: "S-Class",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 5000, fiveHours: 3000, oneHour: 800, airport: 1000 },
     name: "Mercedes-Maybach S-Class",
     category: "Ultra-Luxury",
     tagline: "Maybach-level hush and presence",
@@ -670,6 +743,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "rolls-royce-ghost",
+    brand: "Rolls-Royce",
+    model: "Ghost",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 8000, fiveHours: 4500, oneHour: 1200, airport: 1600 },
     name: "Rolls-Royce Ghost",
     category: "Ultra-Luxury",
     tagline: "Effortless, understated power",
@@ -715,6 +792,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "rolls-royce-cullinan",
+    brand: "Rolls-Royce",
+    model: "Cullinan",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 8500, fiveHours: 5000, oneHour: 1300, airport: 1800 },
     name: "Rolls-Royce Cullinan",
     category: "Ultra-Luxury",
     tagline: "Commanding presence, uncompromising comfort",
@@ -759,6 +840,10 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "bentley-flying-spur",
+    brand: "Bentley",
+    model: "Flying Spur",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 7500, fiveHours: 4200, oneHour: 1100, airport: 1500 },
     name: "Bentley Flying Spur",
     category: "Ultra-Luxury",
     tagline: "Handcrafted performance",
