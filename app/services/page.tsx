@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Plane,
@@ -13,10 +14,13 @@ import {
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
+import FAQAccordion from "@/components/shared/FAQAccordion";
+import ServicesHero from "@/components/services/ServicesHero";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 import { SERVICES } from "@/data/services";
+import { SERVICES_FAQS } from "@/data/servicesFaqs";
 
 const ICONS: Record<string, LucideIcon> = {
   "airport-transfers": Plane,
@@ -72,6 +76,8 @@ export default function ServicesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd()) }}
       />
 
+      <ServicesHero />
+
       <Section tone="ivory" separator={false}>
         <Container>
           <SectionHeading
@@ -88,28 +94,47 @@ export default function ServicesPage() {
                 <Link
                   key={service.slug}
                   href={`/services/${service.slug}`}
-                  className="group flex flex-col justify-between bg-ivory p-8 transition-colors duration-200 hover:bg-ivory-off"
+                  className="group flex flex-col bg-ivory transition-colors duration-200 hover:bg-ivory-off"
                 >
-                  <div>
-                    <Icon className="h-7 w-7 text-gold-deep" strokeWidth={1.5} />
-                    <h2 className="mt-6 font-display text-xl text-obsidian">
-                      {service.name}
-                    </h2>
-                    <p className="mt-1 text-xs italic text-graphite">{service.tagline}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-graphite">
-                      {service.shortDescription}
-                    </p>
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-sm">
+                    <Image
+                      src={service.image.src}
+                      alt={service.image.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
                   </div>
-                  <span className="mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
-                    Learn more
-                    <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-                  </span>
+
+                  <div className="flex flex-1 flex-col justify-between p-8">
+                    <div>
+                      <Icon className="h-7 w-7 text-gold-deep" strokeWidth={1.5} />
+                      <h2 className="mt-6 font-display text-xl text-obsidian">
+                        {service.name}
+                      </h2>
+                      <p className="mt-1 text-xs italic text-graphite">{service.tagline}</p>
+                      <p className="mt-3 text-sm leading-relaxed text-graphite">
+                        {service.shortDescription}
+                      </p>
+                    </div>
+                    <span className="mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
+                      Learn more
+                      <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
+                    </span>
+                  </div>
                 </Link>
               );
             })}
           </div>
         </Container>
       </Section>
+
+      <FAQAccordion
+        faqs={SERVICES_FAQS}
+        eyebrow="Good to Know"
+        title="Frequently Asked Questions"
+        subtitle="Everything you need to know about booking, pricing, and what to expect from an Apex chauffeur service."
+      />
 
       <BookingCTA />
     </div>
