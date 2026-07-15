@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Plane, ArrowUpRight } from "lucide-react";
+import { MapPin, Plane } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import BookingCTA from "@/components/home/BookingCTA";
+import LocationsHero from "@/components/locations/LocationsHero";
 import { buildMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 import { LOCATIONS } from "@/data/locations";
@@ -46,6 +48,8 @@ export default function LocationsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(locationsJsonLd()) }}
       />
 
+      <LocationsHero />
+
       <Section tone="ivory" separator={false}>
         <Container>
           <SectionHeading
@@ -62,22 +66,31 @@ export default function LocationsPage() {
                 <Link
                   key={location.slug}
                   href={`/locations/${location.slug}`}
-                  className="group flex flex-col justify-between bg-ivory p-8 transition-colors duration-200 hover:bg-ivory-off"
+                  className="group flex flex-col bg-ivory transition-colors duration-200 hover:bg-ivory-off"
                 >
-                  <div>
-                    <Icon className="h-7 w-7 text-gold-deep" strokeWidth={1.5} />
-                    <h2 className="mt-6 font-display text-xl text-obsidian">
-                      {location.name}
-                    </h2>
-                    <p className="mt-1 text-xs italic text-graphite">{location.tagline}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-graphite">
-                      {location.shortDescription}
-                    </p>
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-sm">
+                    <Image
+                      src={location.image.src}
+                      alt={location.image.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
                   </div>
-                  <span className="mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
-                    Explore area
-                    <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-                  </span>
+
+                  <div className="flex flex-1 flex-col justify-between p-8">
+                    <div>
+                      <Icon className="h-7 w-7 text-gold-deep" strokeWidth={1.5} />
+                      <h2 className="mt-6 font-display text-xl text-obsidian">
+                        {location.name}
+                      </h2>
+                      <p className="mt-1 text-xs italic text-graphite">{location.tagline}</p>
+                      <p className="mt-3 text-sm leading-relaxed text-graphite">
+                        {location.shortDescription}
+                      </p>
+                    </div>
+                    <span className="btn-gold mt-8 w-fit">Explore Area</span>
+                  </div>
                 </Link>
               );
             })}
