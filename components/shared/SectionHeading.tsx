@@ -20,7 +20,7 @@ export default function SectionHeading({
   const alignment = align === "center" ? "mx-auto text-center items-center" : "text-left items-start";
   const eyebrowColor = tone === "light" ? "text-graphite" : "";
   const dividerColor = tone === "light" ? "bg-gold-deep" : "";
-  const titleColor = tone === "light" ? "text-obsidian" : "text-ivory";
+  const titleColor = tone === "light" ? "text-obsidian" : "text-heading";
   const subtitleColor = tone === "light" ? "text-graphite" : "text-smoke";
 
   return (

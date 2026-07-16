@@ -27,7 +27,7 @@ export default function VehicleCard({ vehicle, tone = "dark" }: VehicleCardProps
         <p className={`text-xs italic ${isLight ? "text-graphite" : "text-gold/90"}`}>
           {vehicle.tagline}
         </p>
-        <h2 className={`mt-1 font-display text-2xl ${isLight ? "text-obsidian" : "text-ivory"}`}>
+        <h2 className={`mt-1 font-display text-2xl ${isLight ? "text-obsidian" : "text-heading"}`}>
           {vehicle.name}
         </h2>
         <p className={`mt-3 text-sm leading-relaxed ${isLight ? "text-graphite" : "text-smoke"}`}>

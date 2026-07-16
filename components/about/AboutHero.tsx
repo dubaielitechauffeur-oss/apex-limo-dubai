@@ -34,7 +34,7 @@ export default function AboutHero() {
 
       <Container className="relative z-10 max-w-3xl">
         <span className="label-eyebrow">About Apex</span>
-        <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
+        <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
           Dubai&apos;s Trusted Name in Chauffeur-Driven Luxury
         </h1>
         <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">
