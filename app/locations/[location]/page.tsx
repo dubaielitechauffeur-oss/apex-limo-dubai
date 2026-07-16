@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -108,52 +109,72 @@ export default async function LocationDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(location.faqs)) }}
       />
 
-      {/* Hero zone */}
-      <Section tone="obsidian" padding="sm" separator={false}>
-      <Container>
-        <Link
-          href="/locations"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} />
-          Back to Locations
-        </Link>
-
-        <div className="mt-8 max-w-3xl">
-          <Icon className="h-9 w-9 text-gold" strokeWidth={1.5} />
-          <span className="mt-5 block label-eyebrow">{location.tagline}</span>
-          <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
-            Chauffeur Service in {location.name}
-          </h1>
-          <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">
-            {location.heroSubtitle}
-          </p>
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <CTAButton href={`/booking?location=${location.slug}`}>Book Now</CTAButton>
-            <CTAButton href={`/quote?location=${location.slug}`} variant="outline">
-              Get Quote
-            </CTAButton>
-            <CTAButton href={getWhatsAppLink(whatsappMessage)} variant="outline" external>
-              WhatsApp Us
-            </CTAButton>
-          </div>
-
-          {relatedVehicle ? (
-            <p className="mt-6 text-sm text-smoke">
-              A popular choice in {location.name}:{" "}
-              <Link
-                href={`/fleet/${relatedVehicle.slug}`}
-                className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
-              >
-                {relatedVehicle.name}
-              </Link>
-              .
-            </p>
-          ) : null}
+      {/* Hero zone — reuses the same location.image shown on this
+          location's /locations listing card, so both stay in sync. */}
+      <section className="relative isolate overflow-hidden bg-obsidian py-16 sm:py-20">
+        <div className="absolute inset-0">
+          <Image
+            src={location.image.src}
+            alt={location.image.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
         </div>
-      </Container>
-      </Section>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-obsidian/70 via-transparent to-obsidian/30"
+        />
+
+        <Container className="relative z-10">
+          <Link
+            href="/locations"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} />
+            Back to Locations
+          </Link>
+
+          <div className="mt-8 max-w-3xl">
+            <Icon className="h-9 w-9 text-gold" strokeWidth={1.5} />
+            <span className="mt-5 block label-eyebrow">{location.tagline}</span>
+            <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
+              Chauffeur Service in {location.name}
+            </h1>
+            <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">
+              {location.heroSubtitle}
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <CTAButton href={`/booking?location=${location.slug}`}>Book Now</CTAButton>
+              <CTAButton href={`/quote?location=${location.slug}`} variant="outline">
+                Get Quote
+              </CTAButton>
+              <CTAButton href={getWhatsAppLink(whatsappMessage)} variant="outline" external>
+                WhatsApp Us
+              </CTAButton>
+            </div>
+
+            {relatedVehicle ? (
+              <p className="mt-6 text-sm text-smoke">
+                A popular choice in {location.name}:{" "}
+                <Link
+                  href={`/fleet/${relatedVehicle.slug}`}
+                  className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
+                >
+                  {relatedVehicle.name}
+                </Link>
+                .
+              </p>
+            ) : null}
+          </div>
+        </Container>
+      </section>
 
       {/* Body zone */}
       <Section tone="ivory">
