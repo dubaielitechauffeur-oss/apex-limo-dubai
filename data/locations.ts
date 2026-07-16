@@ -9,6 +9,11 @@ export interface LocationFAQ {
   answer: string;
 }
 
+export interface LocationImage {
+  src: string;
+  alt: string;
+}
+
 export interface Location {
   slug: string;
   name: string;
@@ -21,12 +26,18 @@ export interface Location {
   whyChoose: string[];
   faqs: LocationFAQ[];
   landmarks: string[];
+  /** Card image for the /locations listing page. */
+  image: LocationImage;
 }
 
 export const LOCATIONS: Location[] = [
   {
     slug: "dubai-marina",
     name: "Dubai Marina",
+    image: {
+      src: "/images/locations/dubai-marina.webp",
+      alt: "Aerial view of Dubai Marina at sunset with the Cayan Tower and marina waterfront",
+    },
     tagline: "Waterfront living, door-to-door service",
     heroSubtitle:
       "Chauffeur-driven transport across Dubai Marina — hotel pickups, dinner reservations, and DXB transfers in a premium vehicle.",
@@ -75,6 +86,10 @@ export const LOCATIONS: Location[] = [
   {
     slug: "palm-jumeirah",
     name: "Palm Jumeirah",
+    image: {
+      src: "/images/locations/palm-jumeirah.webp",
+      alt: "Luxury resort courtyard and pool lined with palm trees on Palm Jumeirah at dusk",
+    },
     tagline: "Island access, without the wait",
     heroSubtitle:
       "Private chauffeur service to and from Palm Jumeirah's hotels, villas, and beach clubs.",
@@ -122,6 +137,10 @@ export const LOCATIONS: Location[] = [
   {
     slug: "downtown-dubai",
     name: "Downtown Dubai",
+    image: {
+      src: "/images/locations/downtown-dubai.webp",
+      alt: "Aerial night view of Burj Khalifa, The Address Downtown, and Dubai Fountain",
+    },
     tagline: "The city's front door",
     heroSubtitle:
       "Chauffeur service around Burj Khalifa, Dubai Mall, and Downtown's hotels and residences.",
@@ -168,6 +187,10 @@ export const LOCATIONS: Location[] = [
   {
     slug: "business-bay",
     name: "Business Bay",
+    image: {
+      src: "/images/locations/business-bay.webp",
+      alt: "Burj Khalifa and Business Bay skyline at dusk, viewed from the Dubai Water Canal bridge",
+    },
     tagline: "Built for the working day",
     heroSubtitle:
       "Dependable chauffeur transport for Business Bay's offices, towers, and waterfront hotels.",
@@ -213,6 +236,10 @@ export const LOCATIONS: Location[] = [
   {
     slug: "jbr",
     name: "JBR",
+    image: {
+      src: "/images/locations/jbr.webp",
+      alt: "JBR beach at sunset with Ain Dubai observation wheel in the background",
+    },
     tagline: "Beachfront pickups, made simple",
     heroSubtitle: "Chauffeur service along JBR's beachfront towers, The Walk, and The Beach.",
     shortDescription:
@@ -259,6 +286,10 @@ export const LOCATIONS: Location[] = [
   {
     slug: "dubai-international-airport-dxb",
     name: "Dubai International Airport (DXB)",
+    image: {
+      src: "/images/locations/dubai-international-airport-dxb.webp",
+      alt: "Emirates aircraft lined up at Dubai International Airport terminal",
+    },
     tagline: "Meet-and-greet, every arrival",
     heroSubtitle:
       "Chauffeur-driven transfers to and from Dubai International Airport, with live flight tracking on every booking.",
