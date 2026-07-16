@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Calendar } from "lucide-react";
 import Container from "@/components/shared/Container";
 import MobileNav from "./MobileNav";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -23,6 +25,7 @@ const headerNavLinks = HEADER_NAV_ORDER.map((label) =>
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -57,20 +60,31 @@ export default function Header() {
         <div className="grid h-20 grid-cols-[auto_1fr_auto] items-center gap-4">
           {/* Logo — far left */}
           <Link href="/" className="flex shrink-0 items-center" aria-label={SITE.name}>
-            <ApexLogo layout="row" size="sm" />
+            <ApexLogo layout="header" size="sm" tagline={SITE.tagline} />
           </Link>
 
           {/* Desktop nav — centered */}
           <nav className="hidden justify-self-center lg:block">
             <ul className="flex items-center gap-10">
-              {headerNavLinks.map((link) => (
+              {headerNavLinks.map((link) => {
+                const isActive =
+                  link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+                return (
                 <li key={link.href} className="group relative">
                   <Link
                     href={link.href}
-                    className="font-body text-[13px] uppercase tracking-[0.12em] text-ivory/90 transition-colors duration-200 hover:text-gold"
+                    className={`font-body text-[13px] uppercase tracking-[0.12em] transition-colors duration-200 hover:text-gold ${
+                      isActive ? "text-gold" : "text-ivory/90"
+                    }`}
                   >
                     {link.label}
                   </Link>
+                  <span
+                    className={`absolute -bottom-1.5 left-0 h-px w-full bg-gold transition-opacity duration-200 ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                    aria-hidden="true"
+                  />
 
                   {"children" in link && link.children ? (
                     <div className="invisible absolute left-1/2 top-full w-64 -translate-x-1/2 translate-y-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-3 group-hover:opacity-100">
@@ -91,7 +105,8 @@ export default function Header() {
                     </div>
                   ) : null}
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </nav>
 
@@ -105,9 +120,10 @@ export default function Header() {
             </a>
             <Link
               href={PRIMARY_CTA.book.href}
-              className="inline-flex items-center justify-center rounded-sm bg-gold px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
             >
-              Book Chauffeur
+              <Calendar className="h-3.5 w-3.5" strokeWidth={2} />
+              Book Now
             </Link>
             <LanguageSwitcher />
           </div>
@@ -128,9 +144,6 @@ export default function Header() {
           </div>
         </div>
       </Container>
-
-      {/* Bottom hairline — thin gold border under the header */}
-      <div className="h-px w-full bg-gold/30" />
 
       <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
 
