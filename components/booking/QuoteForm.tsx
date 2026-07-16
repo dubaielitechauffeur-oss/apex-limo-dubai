@@ -140,7 +140,7 @@ function QuoteFormFields() {
         className="flex flex-col items-center border border-gold/25 bg-charcoal p-10 text-center"
       >
         <CheckCircle2 className="h-10 w-10 text-gold" strokeWidth={1.5} />
-        <h3 className="mt-5 font-display text-2xl text-ivory">
+        <h3 className="mt-5 font-display text-2xl text-heading">
           Quote Request Sent
         </h3>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-smoke">

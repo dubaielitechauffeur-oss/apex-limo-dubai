@@ -44,9 +44,9 @@ export default function Hero() {
             Dubai&apos;s Premier Chauffeur Service
           </span>
 
-          <h1 className="mt-6 font-display text-5xl leading-[1.05] text-ivory sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
             <span className="block">Elevate Every Journey</span>
-            <span className="block text-ivory">
+            <span className="block text-heading">
               with <span className="text-gold">Apex Limo</span>
             </span>
           </h1>

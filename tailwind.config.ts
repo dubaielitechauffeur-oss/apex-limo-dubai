@@ -31,8 +31,13 @@ const config: Config = {
           DEFAULT: "#FFFFFF",
           off: "#F6F4EF", // light-section background
         },
-        smoke: "#B8B5AE", // muted text on dark backgrounds
+        smoke: "#A7A7A7", // paragraph text on dark backgrounds
         graphite: "#57534E", // muted text on light backgrounds
+        heading: "#F5F5F5", // heading text on dark backgrounds
+        champagne: {
+          DEFAULT: "#C9A96E", // primary button background
+          bright: "#D3B988", // primary button hover
+        },
       },
       fontFamily: {
         display: ["var(--font-display)", "Georgia", "serif"],

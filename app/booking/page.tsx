@@ -39,7 +39,7 @@ export default function BookingPage() {
           <aside className="lg:pt-24">
             <div className="sticky top-28 space-y-6">
               <Card tone="dark" className="p-6">
-                <h2 className="font-display text-lg text-ivory">
+                <h2 className="font-display text-lg text-heading">
                   Prefer to Talk?
                 </h2>
                 <ul className="mt-5 space-y-4 text-sm text-smoke">
@@ -71,7 +71,7 @@ export default function BookingPage() {
               </Card>
 
               <Card tone="dark" className="p-6">
-                <h2 className="font-display text-lg text-ivory">
+                <h2 className="font-display text-lg text-heading">
                   What Happens Next
                 </h2>
                 <ol className="mt-5 space-y-3 text-sm leading-relaxed text-smoke">

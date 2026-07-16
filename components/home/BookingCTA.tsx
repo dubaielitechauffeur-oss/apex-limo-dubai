@@ -12,7 +12,7 @@ export default function BookingCTA() {
       />
       <Container className="relative text-center">
         <span className="label-eyebrow">Ready When You Are</span>
-        <h2 className="mx-auto mt-5 max-w-2xl font-display text-3xl text-ivory sm:text-5xl">
+        <h2 className="mx-auto mt-5 max-w-2xl font-display text-3xl text-heading sm:text-5xl">
           Reserve Your Chauffeur in Dubai Today
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">

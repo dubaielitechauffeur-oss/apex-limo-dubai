@@ -62,7 +62,7 @@ export default function ContactPage() {
       <Section tone="obsidian" padding="sm" separator={false}>
         <Container className="max-w-3xl">
           <span className="label-eyebrow">Get in Touch</span>
-          <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
+          <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
             Contact {SITE.name}
           </h1>
           <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">
@@ -78,7 +78,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1.5fr_1fr]">
             {/* Contact form placeholder */}
             <Card tone="dark" className="p-6 sm:p-10">
-              <h2 className="font-display text-2xl text-ivory">Send a Message</h2>
+              <h2 className="font-display text-2xl text-heading">Send a Message</h2>
               <p className="mt-3 text-sm text-smoke">
                 This form isn't connected to email yet — for an immediate
                 response, please use WhatsApp or call us using the details
@@ -183,7 +183,7 @@ export default function ContactPage() {
             {/* Sidebar */}
             <aside className="space-y-6">
               <Card tone="dark" className="p-6">
-                <h2 className="font-display text-lg text-ivory">Reach Us Directly</h2>
+                <h2 className="font-display text-lg text-heading">Reach Us Directly</h2>
                 <ul className="mt-5 space-y-4 text-sm text-smoke">
                   <li>
                     <a
@@ -231,7 +231,7 @@ export default function ContactPage() {
 
               {/* Business hours */}
               <Card tone="dark" className="p-6">
-                <h2 className="flex items-center gap-2 font-display text-lg text-ivory">
+                <h2 className="flex items-center gap-2 font-display text-lg text-heading">
                   <Clock className="h-4 w-4 text-gold" strokeWidth={1.5} />
                   Business Hours
                 </h2>
@@ -253,7 +253,7 @@ export default function ContactPage() {
 
               {/* Emergency booking */}
               <Card tone="dark" className="border-gold/30 p-6">
-                <h2 className="flex items-center gap-2 font-display text-lg text-ivory">
+                <h2 className="flex items-center gap-2 font-display text-lg text-heading">
                   <Siren className="h-4 w-4 text-gold" strokeWidth={1.5} />
                   Need a Chauffeur Right Now?
                 </h2>

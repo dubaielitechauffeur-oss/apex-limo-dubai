@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant, Manrope } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -7,14 +7,14 @@ import WhatsAppFloatButton from "@/components/layout/WhatsAppFloatButton";
 import { LanguageProvider } from "@/components/layout/LanguageContext";
 import { defaultMetadata, organizationJsonLd } from "@/lib/seo";
 
-const cormorant = Cormorant({
+const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",
   display: "swap",
 });
 
-const manrope = Manrope({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-body",
@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang="en" className={`${playfairDisplay.variable} ${inter.variable}`}>
       <head>
         <script
           type="application/ld+json"

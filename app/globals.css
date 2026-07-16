@@ -18,7 +18,7 @@
   h2,
   h3,
   h4 {
-    @apply font-display font-medium tracking-tight;
+    @apply font-display font-medium tracking-tight text-heading;
   }
 
   /* Visible keyboard focus everywhere — accessibility floor */
@@ -71,7 +71,7 @@
   }
 
   .btn-gold {
-    @apply inline-flex items-center justify-center gap-2 bg-gold px-6 py-3 text-sm font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep;
+    @apply inline-flex h-14 items-center justify-center gap-2 rounded-none bg-champagne px-6 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-colors duration-200 hover:bg-champagne-bright;
   }
 
   .btn-outline {

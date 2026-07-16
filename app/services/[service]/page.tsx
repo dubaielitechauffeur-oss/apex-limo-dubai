@@ -149,7 +149,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <div className="mt-8 max-w-3xl">
             <Icon className="h-9 w-9 text-gold" strokeWidth={1.5} />
             <span className="mt-5 block label-eyebrow">{service.tagline}</span>
-            <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
+            <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
               {service.name} in Dubai
             </h1>
             <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">

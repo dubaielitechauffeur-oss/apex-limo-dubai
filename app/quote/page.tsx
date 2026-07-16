@@ -39,7 +39,7 @@ export default function QuotePage() {
           <aside className="lg:pt-24">
             <div className="sticky top-28 space-y-6">
               <Card tone="dark" className="p-6">
-                <h2 className="font-display text-lg text-ivory">
+                <h2 className="font-display text-lg text-heading">
                   Need It Faster?
                 </h2>
                 <ul className="mt-5 space-y-4 text-sm text-smoke">
@@ -71,7 +71,7 @@ export default function QuotePage() {
               </Card>
 
               <Card tone="dark" className="p-6">
-                <h2 className="font-display text-lg text-ivory">
+                <h2 className="font-display text-lg text-heading">
                   Ready to Confirm?
                 </h2>
                 <p className="mt-4 text-sm leading-relaxed text-smoke">

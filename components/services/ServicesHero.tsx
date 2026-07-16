@@ -37,7 +37,7 @@ export default function ServicesHero() {
           <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
             Our Services
           </span>
-          <h1 className="mt-5 font-display text-4xl leading-[1.1] text-ivory sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 font-display text-4xl leading-[1.1] text-heading sm:text-5xl lg:text-6xl">
             Chauffeur Services in Dubai
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-smoke sm:text-lg">

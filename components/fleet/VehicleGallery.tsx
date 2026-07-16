@@ -95,7 +95,7 @@ export default function VehicleGallery({ vehicle, priority = false }: VehicleGal
 
         <div className="relative">
           <div className="route-line-sm mb-3 w-10 opacity-70" />
-          <p className="font-display text-lg text-ivory">{vehicle.name}</p>
+          <p className="font-display text-lg text-smoke">{vehicle.name}</p>
           <p className="mt-1 text-xs text-smoke">{active.caption}</p>
         </div>
       </div>

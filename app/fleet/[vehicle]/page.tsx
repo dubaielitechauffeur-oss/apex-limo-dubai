@@ -113,7 +113,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
           <div>
             <span className="label-eyebrow">{vehicle.category}</span>
-            <h1 className="mt-4 font-display text-3xl text-ivory sm:text-5xl">
+            <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
               {vehicle.name}
             </h1>
             <p className="mt-2 text-sm italic text-gold/90 sm:text-base">
