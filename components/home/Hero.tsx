@@ -1,9 +1,9 @@
 // Homepage hero section
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Car, Languages } from "lucide-react";
+import { Clock, Car, Languages, Calendar, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
-import { PRIMARY_CTA, getPhoneLink } from "@/lib/constants";
+import { PRIMARY_CTA } from "@/lib/constants";
 
 const TRUST_INDICATORS = [
   { icon: Clock, label: "24/7 Concierge" },
@@ -13,16 +13,17 @@ const TRUST_INDICATORS = [
 
 export default function Hero() {
   return (
-    <section className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-obsidian lg:min-h-[calc(100vh-117px)]">
-      {/* Full-bleed hero photograph — chauffeur and Mercedes framed on the right */}
+    <section className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-obsidian sm:min-h-[85vh] lg:min-h-[88vh]">
+      {/* Full-bleed hero photograph — chauffeur opening the rear door of a
+          Mercedes S-Class outside a hotel entrance at night */}
       <div className="absolute inset-0">
         <Image
-          src="/images/home/hero-luxury-dubai.webp"
-          alt="Apex Limo chauffeur standing beside a Mercedes S-Class with the Dubai skyline and Burj Khalifa at dusk"
+          src="/images/home/hero-chauffeur-door-night.webp"
+          alt="Apex Limo chauffeur in white gloves opening the rear door of a black Mercedes S-Class outside a hotel entrance at night"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[80%_center] md:object-[70%_center] lg:object-[75%_center]"
+          className="object-cover object-[70%_center] lg:object-[65%_center]"
         />
       </div>
 
@@ -59,16 +60,18 @@ export default function Hero() {
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Link
               href={PRIMARY_CTA.book.href}
-              className="inline-flex items-center justify-center rounded-sm bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+              className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
             >
-              Book Chauffeur
+              <Calendar className="h-4 w-4" strokeWidth={2} />
+              Book Now
             </Link>
-            <a
-              href={getPhoneLink()}
-              className="inline-flex items-center justify-center rounded-sm border border-gold/60 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-gold hover:bg-gold/10"
+            <Link
+              href="/services"
+              className="inline-flex items-center justify-center gap-2 rounded-sm border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10"
             >
-              Call Now
-            </a>
+              Our Services
+              <ArrowRight className="h-4 w-4" strokeWidth={2} />
+            </Link>
           </div>
 
           {/* Trust indicators */}
