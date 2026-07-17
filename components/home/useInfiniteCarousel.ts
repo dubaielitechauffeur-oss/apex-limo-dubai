@@ -7,12 +7,25 @@ interface UseInfiniteCarouselOptions {
   itemCount: number;
   /** How many items are visible at once — may change on resize. */
   slidesPerView: number;
-  /** Delay after the section first enters the viewport before autoplay starts, ms. */
+  /** Delay after the section enters the viewport before autoplay starts, ms. */
   autoplayDelayMs: number;
   /** Interval between automatic one-item advances, ms. */
   autoplayIntervalMs: number;
-  /** How long to wait after manual interaction before autoplay resumes, ms. */
+  /** How long to wait after manual interaction before autoplay resumes, ms.
+   *  Ignored when `stopOnInteraction` is true. */
   resumeDelayMs?: number;
+  /** When true, any manual next/prev/goTo permanently stops autoplay for
+   *  the rest of the page's lifetime — it never resumes on its own again.
+   *  When false (default), autoplay pauses on interaction and resumes
+   *  after `resumeDelayMs` of inactivity. */
+  stopOnInteraction?: boolean;
+  /** When true, autoplay pauses whenever the section scrolls out of the
+   *  viewport and re-arms (after `autoplayDelayMs`) each time it scrolls
+   *  back in — as long as it hasn't been permanently stopped by manual
+   *  interaction. When false (default), autoplay arms once the first time
+   *  the section becomes visible and then keeps running regardless of
+   *  later visibility changes. */
+  pauseWhenOffscreen?: boolean;
 }
 
 /**
@@ -26,10 +39,6 @@ interface UseInfiniteCarouselOptions {
  * real item). Once a transition into a cloned edge finishes, it snaps
  * (transition disabled for one paint) to the equivalent real position —
  * always moving in the same direction, never animating backward.
- *
- * An IntersectionObserver arms autoplay once, `autoplayDelayMs` after the
- * section first scrolls into view; manual next/prev/goTo calls pause
- * autoplay and restart it after `resumeDelayMs` of inactivity.
  */
 export function useInfiniteCarousel({
   itemCount,
@@ -37,26 +46,38 @@ export function useInfiniteCarousel({
   autoplayDelayMs,
   autoplayIntervalMs,
   resumeDelayMs = 5000,
+  stopOnInteraction = false,
+  pauseWhenOffscreen = false,
 }: UseInfiniteCarouselOptions) {
   const [index, setIndex] = useState(slidesPerView);
   const [instant, setInstant] = useState(false);
   const [autoplayActive, setAutoplayActive] = useState(false);
 
   const sectionRef = useRef<HTMLElement | null>(null);
-  const armedRef = useRef(false);
+  // Once true (stopOnInteraction mode only), autoplay must never turn back
+  // on — not on a resume timer, not on scrolling back into view.
+  const stoppedRef = useRef(false);
   // Generation token: whichever scheduled activation is requested most
-  // recently "wins". Without this, a manual interaction that happens
-  // before the initial IntersectionObserver delay elapses would get
-  // silently overridden when that earlier timer fires and force-resumes
-  // autoplay — this makes any stale, superseded timer a no-op instead.
+  // recently "wins", so an earlier still-pending timer (e.g. the initial
+  // viewport-entry delay) can't silently override a later pause/stop.
   const activationTokenRef = useRef(0);
   const pendingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelPending = useCallback(() => {
+    activationTokenRef.current += 1;
+    if (pendingTimerRef.current) {
+      clearTimeout(pendingTimerRef.current);
+      pendingTimerRef.current = null;
+    }
+  }, []);
 
   const scheduleActivation = useCallback((delay: number) => {
     const token = ++activationTokenRef.current;
     if (pendingTimerRef.current) clearTimeout(pendingTimerRef.current);
     pendingTimerRef.current = setTimeout(() => {
-      if (activationTokenRef.current === token) setAutoplayActive(true);
+      if (activationTokenRef.current === token && !stoppedRef.current) {
+        setAutoplayActive(true);
+      }
     }, delay);
   }, []);
 
@@ -66,25 +87,41 @@ export function useInfiniteCarousel({
     setIndex(slidesPerView);
   }, [slidesPerView]);
 
-  // Arm autoplay once, after `autoplayDelayMs`, the first time the section
-  // enters the viewport — never starts while off-screen.
+  // Visibility handling: either arm autoplay once (default) or continuously
+  // pause/resume it as the section leaves/re-enters the viewport.
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el || armedRef.current) return;
+    if (!el) return;
+
+    if (!pauseWhenOffscreen) {
+      let armed = false;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting || armed) return;
+          armed = true;
+          scheduleActivation(autoplayDelayMs);
+          observer.disconnect();
+        },
+        { threshold: 0.3 },
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting || armedRef.current) return;
-        armedRef.current = true;
-        scheduleActivation(autoplayDelayMs);
-        observer.disconnect();
+        if (entry.isIntersecting) {
+          if (!stoppedRef.current) scheduleActivation(autoplayDelayMs);
+        } else {
+          setAutoplayActive(false);
+          cancelPending();
+        }
       },
       { threshold: 0.3 },
     );
     observer.observe(el);
-
     return () => observer.disconnect();
-  }, [autoplayDelayMs, scheduleActivation]);
+  }, [autoplayDelayMs, pauseWhenOffscreen, scheduleActivation, cancelPending]);
 
   const next = useCallback(() => setIndex((current) => current + 1), []);
   const prev = useCallback(() => setIndex((current) => current - 1), []);
@@ -101,27 +138,33 @@ export function useInfiniteCarousel({
     };
   }, []);
 
-  const pauseThenResume = useCallback(() => {
-    setAutoplayActive(false);
-    scheduleActivation(resumeDelayMs);
-  }, [resumeDelayMs, scheduleActivation]);
+  const handleInteraction = useCallback(() => {
+    if (stopOnInteraction) {
+      stoppedRef.current = true;
+      setAutoplayActive(false);
+      cancelPending();
+    } else {
+      setAutoplayActive(false);
+      scheduleActivation(resumeDelayMs);
+    }
+  }, [stopOnInteraction, resumeDelayMs, scheduleActivation, cancelPending]);
 
   const goNext = useCallback(() => {
-    pauseThenResume();
+    handleInteraction();
     next();
-  }, [pauseThenResume, next]);
+  }, [handleInteraction, next]);
 
   const goPrev = useCallback(() => {
-    pauseThenResume();
+    handleInteraction();
     prev();
-  }, [pauseThenResume, prev]);
+  }, [handleInteraction, prev]);
 
   const goToRealIndex = useCallback(
     (realIndex: number) => {
-      pauseThenResume();
+      handleInteraction();
       setIndex(slidesPerView + realIndex);
     },
-    [pauseThenResume, slidesPerView],
+    [handleInteraction, slidesPerView],
   );
 
   // Once the CSS transition into a cloned edge finishes, snap invisibly

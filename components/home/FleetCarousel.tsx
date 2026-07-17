@@ -34,10 +34,11 @@ const AUTOPLAY_INTERVAL_MS = 4000;
 /**
  * "Explore Our Fleet" — the primary homepage fleet section: an infinite,
  * one-card-at-a-time carousel with side arrows and dot indicators.
- * Auto-plays once the section scrolls into view (after a short delay),
- * pausing whenever the arrows/dots are used manually and resuming after a
- * few seconds of inactivity. Loops seamlessly in both directions via
- * cloned edge cards — see useInfiniteCarousel.
+ * Auto-plays only while the section is on-screen (pausing when scrolled
+ * away and re-arming, after a short delay, when it scrolls back into
+ * view) — but only until the user manually touches the arrows/dots, at
+ * which point auto-play stops for good. Loops seamlessly in both
+ * directions via cloned edge cards — see useInfiniteCarousel.
  */
 export default function FleetCarousel() {
   const slidesPerView = useSlidesPerView();
@@ -47,6 +48,8 @@ export default function FleetCarousel() {
       slidesPerView,
       autoplayDelayMs: AUTOPLAY_DELAY_MS,
       autoplayIntervalMs: AUTOPLAY_INTERVAL_MS,
+      stopOnInteraction: true,
+      pauseWhenOffscreen: true,
     });
 
   // Clone `slidesPerView` cards from each edge so the track can keep
