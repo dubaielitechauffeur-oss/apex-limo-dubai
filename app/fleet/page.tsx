@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
-import VehicleCard from "@/components/fleet/VehicleCard";
+import FleetListingCard from "@/components/fleet/FleetListingCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
@@ -62,9 +62,9 @@ export default function FleetPage() {
             tone="light"
           />
 
-          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 flex flex-col gap-8">
             {FLEET.map((vehicle) => (
-              <VehicleCard key={vehicle.slug} vehicle={vehicle} tone="light" />
+              <FleetListingCard key={vehicle.slug} vehicle={vehicle} />
             ))}
           </div>
 
