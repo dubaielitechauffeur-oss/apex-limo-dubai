@@ -10,9 +10,9 @@ interface ApexLogoProps {
 
 /**
  * Premium text-only brand wordmark — no icon, no logo image. "APEX" set in
- * a bold condensed display face, with a small wide-tracked "LUXURY
- * CHAUFFEUR" underneath. Pure white on the header/footer's black
- * background, per the brand redesign.
+ * a bold italic geometric display face (tight tracking, slanted), with a
+ * small wide-tracked "LUXURY CHAUFFEUR" underneath. Pure white on the
+ * header/footer's black background, per the brand redesign.
  */
 export default function ApexLogo({ size = "sm", align = "left", className = "" }: ApexLogoProps) {
   const nameSize = size === "sm" ? "text-2xl sm:text-3xl" : "text-4xl sm:text-5xl";
@@ -23,7 +23,9 @@ export default function ApexLogo({ size = "sm", align = "left", className = "" }
     <div
       className={`flex flex-col ${align === "center" ? "items-center text-center" : "items-start text-left"} ${className}`}
     >
-      <span className={`font-logo leading-none tracking-wide text-white ${nameSize}`}>APEX</span>
+      <span className={`font-logo italic leading-none tracking-tighter text-white ${nameSize}`}>
+        APEX
+      </span>
       <span
         className={`${taglineGap} font-body font-medium uppercase tracking-[0.32em] text-white ${taglineSize}`}
       >

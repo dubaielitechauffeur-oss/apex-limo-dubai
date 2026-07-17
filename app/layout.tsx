@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Bebas_Neue } from "next/font/google";
+import { Playfair_Display, Inter, Saira } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -21,11 +21,12 @@ const inter = Inter({
   display: "swap",
 });
 
-/** Used only for the "APEX" brand wordmark (header + footer) — a bold,
- *  condensed display face for a clean, premium, text-only logo. */
-const bebasNeue = Bebas_Neue({
+/** Used only for the "APEX" brand wordmark (header + footer) — a bold
+ *  italic geometric display face for a clean, premium, text-only logo. */
+const saira = Saira({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["800", "900"],
+  style: ["italic"],
   variable: "--font-logo",
   display: "swap",
 });
@@ -40,7 +41,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfairDisplay.variable} ${inter.variable} ${bebasNeue.variable}`}
+      className={`${playfairDisplay.variable} ${inter.variable} ${saira.variable}`}
     >
       <head>
         <script
