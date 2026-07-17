@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import BrandBadge from "./BrandBadge";
 import { BRANDS } from "@/data/brands";
+import { useInfiniteCarousel } from "./useInfiniteCarousel";
 
 /** Badges visible at once: 2 on mobile, 3 on tablet, 5 on desktop. */
 function useSlidesPerView() {
@@ -25,54 +26,53 @@ function useSlidesPerView() {
   return slidesPerView;
 }
 
-const AUTO_ADVANCE_MS = 4000;
+const AUTOPLAY_DELAY_MS = 500;
+const AUTOPLAY_INTERVAL_MS = 2500;
 
 /**
- * "Our Brands" — a looping badge carousel beneath the homepage fleet
- * section. Pages advance one full view (5 badges desktop / 3 tablet /
- * 2 mobile) and wrap from the last page back to the first, both via
- * the arrow buttons and on a timer; hovering the track pauses the timer.
+ * "Our Brands" — an infinite, one-logo-at-a-time badge carousel beneath
+ * the homepage fleet section. Auto-plays once the section scrolls into
+ * view (after a short delay), pausing on manual arrow/dot use and
+ * resuming after a few seconds of inactivity. Always advances forward
+ * (or backward) through cloned edge badges rather than rewinding — see
+ * useInfiniteCarousel.
  */
 export default function BrandsShowcase() {
   const slidesPerView = useSlidesPerView();
-  const pageCount = Math.ceil(BRANDS.length / slidesPerView);
-  const [page, setPage] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const { sectionRef, index, instant, activeRealIndex, goNext, goPrev, goToRealIndex, handleTransitionEnd } =
+    useInfiniteCarousel({
+      itemCount: BRANDS.length,
+      slidesPerView,
+      autoplayDelayMs: AUTOPLAY_DELAY_MS,
+      autoplayIntervalMs: AUTOPLAY_INTERVAL_MS,
+    });
 
-  useEffect(() => {
-    setPage((current) => current % pageCount);
-  }, [pageCount]);
-
-  useEffect(() => {
-    if (paused || pageCount <= 1) return;
-    const timer = setInterval(() => {
-      setPage((current) => (current + 1) % pageCount);
-    }, AUTO_ADVANCE_MS);
-    return () => clearInterval(timer);
-  }, [paused, pageCount]);
-
-  const startIndex = Math.min(page * slidesPerView, BRANDS.length - slidesPerView);
+  const extended = useMemo(() => {
+    const startClones = BRANDS.slice(-slidesPerView);
+    const endClones = BRANDS.slice(0, slidesPerView);
+    return [...startClones, ...BRANDS, ...endClones];
+  }, [slidesPerView]);
 
   return (
-    <section className="border-t border-gold/10 bg-ivory py-24">
+    <section
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="border-t border-gold/10 bg-ivory py-24"
+    >
       <Container>
         <h2 className="text-center font-display text-3xl font-semibold text-obsidian sm:text-4xl">
           Our Brands
         </h2>
 
-        <div
-          className="relative mx-auto mt-14 max-w-5xl"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-        >
+        <div className="relative mx-auto mt-14 max-w-5xl">
           <div className="overflow-hidden" role="region" aria-label="Brand carousel">
             <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${(startIndex * 100) / slidesPerView}%)` }}
+              className={`flex ${instant ? "" : "transition-transform duration-500 ease-out"}`}
+              style={{ transform: `translateX(-${(index * 100) / slidesPerView}%)` }}
+              onTransitionEnd={handleTransitionEnd}
             >
-              {BRANDS.map((brand) => (
+              {extended.map((brand, position) => (
                 <div
-                  key={brand.name}
+                  key={`${brand.name}-${position}`}
                   className="flex w-1/2 shrink-0 justify-center px-3 sm:w-1/3 lg:w-1/5"
                 >
                   <BrandBadge brand={brand} />
@@ -83,7 +83,7 @@ export default function BrandsShowcase() {
 
           <button
             type="button"
-            onClick={() => setPage((current) => (current - 1 + pageCount) % pageCount)}
+            onClick={goPrev}
             aria-label="Previous brands"
             className="absolute -left-2 top-14 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold sm:-left-4 lg:-left-8"
           >
@@ -91,7 +91,7 @@ export default function BrandsShowcase() {
           </button>
           <button
             type="button"
-            onClick={() => setPage((current) => (current + 1) % pageCount)}
+            onClick={goNext}
             aria-label="Next brands"
             className="absolute -right-2 top-14 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold sm:-right-4 lg:-right-8"
           >
@@ -99,22 +99,20 @@ export default function BrandsShowcase() {
           </button>
         </div>
 
-        {pageCount > 1 ? (
-          <div className="mt-8 flex justify-center gap-2">
-            {Array.from({ length: pageCount }, (_, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => setPage(index)}
-                aria-label={`Go to brand page ${index + 1} of ${pageCount}`}
-                aria-current={index === page ? "true" : undefined}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === page ? "w-6 bg-gold" : "w-2 bg-gold/30 hover:bg-gold/50"
-                }`}
-              />
-            ))}
-          </div>
-        ) : null}
+        <div className="mt-8 flex justify-center gap-2">
+          {BRANDS.map((brand, realIndex) => (
+            <button
+              key={brand.name}
+              type="button"
+              onClick={() => goToRealIndex(realIndex)}
+              aria-label={`Go to ${brand.name}`}
+              aria-current={realIndex === activeRealIndex ? "true" : undefined}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                realIndex === activeRealIndex ? "w-6 bg-gold" : "w-2 bg-gold/30 hover:bg-gold/50"
+              }`}
+            />
+          ))}
+        </div>
 
         <div className="mx-auto mt-12 flex max-w-2xl flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
           <Link
