@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div>
-            <ApexLogo layout="stacked" size="md" tagline="Private Chauffeur Service" />
+            <ApexLogo size="md" align="center" className="sm:items-start sm:text-left" />
             <p className="mt-6 max-w-xs text-center text-sm leading-relaxed text-smoke sm:text-left">
               {SITE.tagline}. Professional chauffeurs, a premium fleet, and
               dependable service across Dubai.

@@ -44,13 +44,13 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 bg-obsidian transition-shadow duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 border-b border-[#1F1F1F] bg-black transition-shadow duration-300 ${
         scrolled ? "shadow-[0_8px_30px_rgba(0,0,0,0.55)]" : ""
       }`}
     >
       {/* Promotional bar */}
-      <div className="flex h-9 items-center justify-center border-b border-gold/20 bg-obsidian px-4">
-        <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-gold/90 sm:text-[11px] sm:tracking-[0.25em]">
+      <div className="flex h-9 items-center justify-center border-b border-[#1F1F1F] bg-black px-4">
+        <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-white sm:text-[11px] sm:tracking-[0.25em]">
           Premium Chauffeur Service Across Dubai &amp; UAE
         </p>
       </div>
@@ -60,7 +60,7 @@ export default function Header() {
         <div className="grid h-20 grid-cols-[auto_1fr_auto] items-center gap-4">
           {/* Logo — far left */}
           <Link href="/" className="flex shrink-0 items-center" aria-label={SITE.name}>
-            <ApexLogo layout="header" size="sm" tagline={SITE.tagline} />
+            <ApexLogo size="sm" />
           </Link>
 
           {/* Desktop nav — centered */}
@@ -73,14 +73,14 @@ export default function Header() {
                 <li key={link.href} className="group relative">
                   <Link
                     href={link.href}
-                    className={`font-body text-[13px] uppercase tracking-[0.12em] transition-colors duration-200 hover:text-gold ${
-                      isActive ? "text-gold" : "text-ivory/90"
+                    className={`font-body text-[13px] uppercase tracking-[0.12em] transition-colors duration-200 hover:text-[#C8A35F] ${
+                      isActive ? "text-[#C8A35F]" : "text-white"
                     }`}
                   >
                     {link.label}
                   </Link>
                   <span
-                    className={`absolute -bottom-1.5 left-0 h-px w-full bg-gold transition-opacity duration-200 ${
+                    className={`absolute -bottom-1.5 left-0 h-px w-full bg-[#C8A35F] transition-opacity duration-200 ${
                       isActive ? "opacity-100" : "opacity-0"
                     }`}
                     aria-hidden="true"
@@ -88,13 +88,13 @@ export default function Header() {
 
                   {"children" in link && link.children ? (
                     <div className="invisible absolute left-1/2 top-full w-64 -translate-x-1/2 translate-y-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-3 group-hover:opacity-100">
-                      <div className="rounded-sm border border-gold/20 bg-charcoal p-4 shadow-gold-lg">
+                      <div className="rounded-sm border border-[#1F1F1F] bg-black p-4 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)]">
                         <ul className="flex flex-col gap-3">
                           {link.children.map((child) => (
                             <li key={child.href}>
                               <Link
                                 href={child.href}
-                                className="block text-sm text-smoke transition-colors hover:text-gold"
+                                className="block text-sm text-[#BDBDBD] transition-colors hover:text-[#C8A35F]"
                               >
                                 {child.label}
                               </Link>
@@ -114,13 +114,13 @@ export default function Header() {
           <div className="hidden items-center gap-5 justify-self-end lg:flex">
             <a
               href={getPhoneLink()}
-              className="text-[13px] tracking-wide text-ivory/80 transition-colors duration-200 hover:text-gold"
+              className="text-[13px] tracking-wide text-[#BDBDBD] transition-colors duration-200 hover:text-[#C8A35F]"
             >
               {SITE.phoneDisplay}
             </a>
             <Link
               href={PRIMARY_CTA.book.href}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C8A35F] px-6 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#B8935A]"
             >
               <Calendar className="h-3.5 w-3.5" strokeWidth={2} />
               Book Now
@@ -137,9 +137,9 @@ export default function Header() {
               aria-expanded={mobileOpen}
               className="flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5"
             >
-              <span className="h-px w-6 bg-gold" />
-              <span className="h-px w-6 bg-gold" />
-              <span className="h-px w-6 bg-gold" />
+              <span className="h-px w-6 bg-white" />
+              <span className="h-px w-6 bg-white" />
+              <span className="h-px w-6 bg-white" />
             </button>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function Header() {
         <button
           onClick={() => setMobileOpen(false)}
           aria-label="Close menu"
-          className="fixed right-5 top-6 z-50 flex h-10 w-10 items-center justify-center text-2xl text-gold lg:hidden"
+          className="fixed right-5 top-6 z-50 flex h-10 w-10 items-center justify-center text-2xl text-white lg:hidden"
         >
           ×
         </button>

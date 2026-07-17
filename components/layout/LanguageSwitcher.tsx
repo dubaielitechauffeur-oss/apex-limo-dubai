@@ -46,7 +46,7 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="flex items-center gap-1.5 text-[13px] uppercase tracking-[0.12em] text-ivory/90 transition-colors duration-200 hover:text-gold"
+        className="flex items-center gap-1.5 text-[13px] uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:text-[#C8A35F]"
       >
         <Globe className="h-4 w-4" strokeWidth={1.5} />
         {!compact ? <span>{language.code}</span> : null}
@@ -58,7 +58,7 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
 
       <div
         role="listbox"
-        className={`absolute right-0 top-full z-50 mt-3 w-44 origin-top-right rounded-md border border-gold/20 bg-charcoal py-2 shadow-gold-lg transition-all duration-150 ${
+        className={`absolute right-0 top-full z-50 mt-3 w-44 origin-top-right rounded-md border border-[#1F1F1F] bg-black py-2 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)] transition-all duration-150 ${
           open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
         }`}
       >
@@ -73,8 +73,8 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
                 setLanguage(option);
                 setOpen(false);
               }}
-              className={`flex w-full items-center justify-between gap-3 px-4 py-2 text-left text-sm transition-colors duration-150 hover:bg-gold/10 ${
-                selected ? "text-gold" : "text-ivory/90"
+              className={`flex w-full items-center justify-between gap-3 px-4 py-2 text-left text-sm transition-colors duration-150 hover:bg-[#C8A35F]/10 ${
+                selected ? "text-[#C8A35F]" : "text-[#BDBDBD]"
               }`}
             >
               <span className="flex items-center gap-2.5">

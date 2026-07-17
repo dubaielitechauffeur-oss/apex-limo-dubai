@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Playfair_Display, Inter, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -21,6 +21,15 @@ const inter = Inter({
   display: "swap",
 });
 
+/** Used only for the "APEX" brand wordmark (header + footer) — a bold,
+ *  condensed display face for a clean, premium, text-only logo. */
+const bebasNeue = Bebas_Neue({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-logo",
+  display: "swap",
+});
+
 export const metadata: Metadata = defaultMetadata;
 
 export default function RootLayout({
@@ -29,7 +38,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfairDisplay.variable} ${inter.variable}`}>
+    <html
+      lang="en"
+      className={`${playfairDisplay.variable} ${inter.variable} ${bebasNeue.variable}`}
+    >
       <head>
         <script
           type="application/ld+json"
