@@ -1,5 +1,4 @@
 // Homepage hero section
-import Image from "next/image";
 import Link from "next/link";
 import { Clock, Car, Languages, Calendar, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -14,17 +13,23 @@ const TRUST_INDICATORS = [
 export default function Hero() {
   return (
     <section className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-obsidian sm:min-h-[85vh] lg:min-h-[88vh]">
-      {/* Full-bleed hero photograph — chauffeur opening the rear door of a
-          Mercedes S-Class outside a hotel entrance at night */}
+      {/* Full-bleed hero photograph. `<picture>` + `<source media>` swaps the
+          file itself (not just the CSS) below 768px, so mobile only ever
+          downloads the portrait shot and never the desktop one. */}
       <div className="absolute inset-0">
-        <Image
-          src="/images/home/hero-chauffeur-door-night.webp"
-          alt="Apex Limo chauffeur in white gloves opening the rear door of a black Mercedes S-Class outside a hotel entrance at night"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[70%_center] lg:object-[65%_center]"
-        />
+        <picture>
+          <source
+            media="(max-width: 767px)"
+            srcSet="/images/home/hero-mobile-burj-khalifa.webp"
+          />
+          <img
+            src="/images/home/hero-chauffeur-door-night.webp"
+            alt="Apex Limo chauffeur beside a black Mercedes S-Class in Dubai"
+            fetchPriority="high"
+            decoding="async"
+            className="h-full w-full object-cover object-[center_65%] md:object-[70%_center] lg:object-[65%_center]"
+          />
+        </picture>
       </div>
 
       {/* Large left-side dark gradient overlay for text legibility */}
