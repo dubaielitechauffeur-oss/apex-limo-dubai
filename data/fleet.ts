@@ -79,6 +79,165 @@ export interface FleetVehicle {
 
 export const FLEET: FleetVehicle[] = [
   {
+    slug: "mercedes-maybach-s-class",
+    brand: "Mercedes-Maybach",
+    model: "S-Class",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 5000, fiveHours: 3000, oneHour: 800, airport: 1000, extraHour: 650, additionalCity: 650 },
+    name: "Mercedes-Maybach S-Class",
+    category: "Ultra-Luxury",
+    tagline: "Maybach-level hush and presence",
+    description:
+      "The most exclusive sedan in the fleet — extended rear legroom, reclining executive seats, and a cabin engineered for complete calm on longer journeys.",
+    longDescription:
+      "The Maybach S-Class takes everything that makes the S-Class the executive standard and elevates it further — an extended wheelbase, fully reclining rear executive seats, and cabin insulation tuned for near-total silence. Reserved for clients who want the very top of the fleet.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Signature executive arrivals",
+    features: [
+      "Fully reclining rear executive seats",
+      "Extended rear legroom",
+      "Burmester premium sound system",
+      "Rear-seat climate control",
+      "Privacy glass with rear curtains",
+      "Bespoke welcome amenities",
+    ],
+    whyChoose: [
+      "The quietest, most spacious cabin in the fleet",
+      "Fully reclining rear seats for genuinely restful longer journeys",
+      "Reserved for clients seeking the most exclusive sedan available",
+      "A natural choice for high-profile executive arrivals",
+    ],
+    faqs: [
+      {
+        question: "How is the Maybach S-Class different from the standard S-Class?",
+        answer:
+          "The Maybach adds an extended wheelbase, fully reclining rear executive seats, and additional sound insulation for an even quieter, more spacious ride.",
+      },
+      {
+        question: "Is the Maybach S-Class available for airport transfers?",
+        answer:
+          "Yes, with the same live flight tracking and meet-and-greet service as the rest of the fleet.",
+      },
+      {
+        question: "How far in advance should I book the Maybach S-Class?",
+        answer:
+          "As our most exclusive sedan, we recommend booking at least a few days ahead where possible to guarantee availability.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "rolls-royce-phantom",
+    brand: "Rolls-Royce",
+    model: "Phantom",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 9500, fiveHours: 5500, oneHour: 1500, airport: 2000, extraHour: 1200, additionalCity: 1200 },
+    name: "Rolls-Royce Phantom",
+    category: "Ultra-Luxury",
+    tagline: "The pinnacle of arrival",
+    description:
+      "The most prestigious way to arrive in Dubai — reserved for weddings, milestone occasions, and clients who expect nothing less than the finest.",
+    longDescription:
+      "There's a reason the Phantom remains shorthand for arriving in style. Handcrafted, deliberate, and unmistakable, it's reserved for moments where the vehicle itself becomes part of the occasion — a wedding, an anniversary, a milestone worth marking properly.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Weddings & signature occasions",
+    features: [
+      "Handcrafted leather interior",
+      "Starlight headliner",
+      "Chauffeur in formal attire",
+      "Red carpet service available",
+      "Champagne chilling compartment",
+      "Bespoke welcome amenities",
+    ],
+    whyChoose: [
+      "The most recognized symbol of luxury arrival in Dubai",
+      "Handcrafted interior with a signature starlight headliner",
+      "Chauffeur in formal attire with optional red carpet service",
+      "Reserved availability — book early to secure wedding dates",
+    ],
+    faqs: [
+      {
+        question: "How far in advance should I book the Rolls-Royce Phantom?",
+        answer:
+          "For weddings and peak dates, we recommend booking at least 2–3 weeks ahead, as the Phantom is our most requested vehicle.",
+      },
+      {
+        question: "Does the Phantom include red carpet service?",
+        answer: "Yes, red carpet service is available on request for weddings and special occasions.",
+      },
+      {
+        question: "Can the Phantom be booked for just a few hours?",
+        answer:
+          "Yes, the Phantom can be booked hourly for ceremonies and photo sessions, not only full-day hire.",
+      },
+    ],
+    images: {
+      exterior: {
+        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-exterior.webp",
+        alt: "Black Rolls-Royce Phantom chauffeur car front exterior view with palm trees",
+      },
+      interior: {
+        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-interior.webp",
+        alt: "Rolls-Royce Phantom rear cabin with cognac leather seats and starlight headliner",
+      },
+      detail: {
+        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-detail.webp",
+        alt: "Rolls-Royce Phantom Spirit of Ecstasy hood ornament close-up",
+      },
+    },
+  },
+  {
+    slug: "rolls-royce-ghost",
+    brand: "Rolls-Royce",
+    model: "Ghost",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 8000, fiveHours: 4500, oneHour: 1200, airport: 1600, extraHour: 950, additionalCity: 950 },
+    name: "Rolls-Royce Ghost",
+    category: "Ultra-Luxury",
+    tagline: "Effortless, understated power",
+    description:
+      "A more understated Rolls-Royce for clients who want the marque's effortless refinement without the Phantom's full occasion-level presence.",
+    longDescription:
+      "The Ghost delivers the same handcrafted Rolls-Royce refinement as the Phantom in a more understated package — effortless power, a hushed cabin, and quiet confidence for executive travel that still calls for something exceptional.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Executive arrivals & signature occasions",
+    features: [
+      "Handcrafted leather interior",
+      "Starlight headliner",
+      "Bespoke welcome amenities",
+      "Champagne chilling compartment",
+      "Rear-seat climate control",
+      "Chauffeur in formal attire",
+    ],
+    whyChoose: [
+      "The effortless refinement of Rolls-Royce in a more understated package",
+      "Handcrafted interior with the signature starlight headliner",
+      "A strong alternative to the Phantom for executive-level occasions",
+      "Chauffeur in formal attire as standard",
+    ],
+    faqs: [
+      {
+        question: "How does the Ghost compare to the Phantom?",
+        answer:
+          "Both share the same handcrafted Rolls-Royce quality. The Phantom is the larger, more occasion-focused flagship; the Ghost is slightly more understated and versatile for executive travel.",
+      },
+      {
+        question: "Is the Ghost available for weddings?",
+        answer:
+          "Yes, though many clients choose the Phantom for weddings specifically — the Ghost suits executive and signature-occasion bookings equally well.",
+      },
+      {
+        question: "How far in advance should I book the Ghost?",
+        answer:
+          "We recommend booking at least a few days ahead for this vehicle, particularly during peak season.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
     slug: "mercedes-s-class",
     brand: "Mercedes-Benz",
     model: "S-Class",
@@ -137,6 +296,177 @@ export const FLEET: FleetVehicle[] = [
       detail: {
         src: "/images/fleet/mercedes-s-class/mercedes-s-class-steering-wheel-detail.webp",
         alt: "Mercedes S-Class steering wheel and digital dashboard close-up",
+      },
+    },
+  },
+  {
+    slug: "bentley-flying-spur",
+    brand: "Bentley",
+    model: "Flying Spur",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 7500, fiveHours: 4200, oneHour: 1100, airport: 1500, extraHour: 900, additionalCity: 900 },
+    name: "Bentley Flying Spur",
+    category: "Ultra-Luxury",
+    tagline: "Handcrafted performance",
+    description:
+      "A handcrafted flagship sedan that pairs true performance with Bentley's signature craftsmanship — luxury for clients who want presence with a sportier edge.",
+    longDescription:
+      "The Flying Spur brings genuine performance to flagship chauffeured travel — a handcrafted cabin finished to Bentley's exacting standard, paired with a more dynamic character than a traditional limousine. A distinctive choice for clients who want luxury with real driving pedigree behind it.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Signature executive arrivals",
+    features: [
+      "Handcrafted leather interior",
+      "Diamond-quilted seating",
+      "Naim premium sound system",
+      "Rear-seat climate control",
+      "Privacy glass",
+      "Bespoke welcome amenities",
+    ],
+    whyChoose: [
+      "Handcrafted Bentley craftsmanship with a distinctly sportier character",
+      "A strong alternative to a traditional limousine for clients who want presence with pedigree",
+      "Diamond-quilted leather interior finished to an exacting standard",
+      "Reserved availability — a frequently requested flagship vehicle",
+    ],
+    faqs: [
+      {
+        question: "How is the Flying Spur different from the Phantom?",
+        answer:
+          "The Phantom is the more traditional, occasion-focused flagship. The Flying Spur offers the same handcrafted quality with a sportier, more dynamic driving character.",
+      },
+      {
+        question: "Is the Flying Spur available for weddings?",
+        answer: "Yes, it's available for weddings and signature occasions alongside our other flagship vehicles.",
+      },
+      {
+        question: "How far in advance should I book the Flying Spur?",
+        answer:
+          "As a frequently requested flagship vehicle, we recommend booking at least a few days ahead where possible.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "range-rover-autobiography",
+    brand: "Range Rover",
+    model: "Autobiography",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 3200, fiveHours: 1900, oneHour: 500, airport: 650, extraHour: 400, additionalCity: 400 },
+    name: "Range Rover Autobiography",
+    category: "SUV",
+    tagline: "Effortless, elevated comfort",
+    description:
+      "Effortless comfort with genuine capability — a versatile choice for VIP transportation across the city or beyond it.",
+    longDescription:
+      "The Autobiography combines the comfort of a luxury saloon with the versatility of a true SUV — equally at home on a smooth airport run or an itinerary that strays from the main road.",
+    passengers: 4,
+    luggage: 3,
+    idealFor: "VIP transportation",
+    features: [
+      "Executive rear seating",
+      "Adjustable air suspension",
+      "Premium Meridian sound system",
+      "Panoramic roof",
+      "Climate-controlled cabin",
+      "Onboard Wi-Fi",
+    ],
+    whyChoose: [
+      "Air suspension smooths out any road surface",
+      "A more versatile option than a sedan for varied itineraries",
+      "Premium Meridian sound system and panoramic roof",
+      "A refined, understated alternative to a traditional limousine",
+    ],
+    faqs: [
+      {
+        question: "Is the Range Rover Autobiography good for airport transfers?",
+        answer:
+          "Yes — it's comfortable for airport transfers and works equally well for city touring or VIP transportation.",
+      },
+      {
+        question: "How much luggage fits in the Range Rover?",
+        answer:
+          "The Autobiography holds up to 3 pieces of luggage comfortably alongside up to 4 passengers.",
+      },
+      {
+        question: "Is the Range Rover available with a professional chauffeur?",
+        answer: "Yes, every booking includes a professionally trained, licensed chauffeur.",
+      },
+    ],
+    images: {
+      exterior: {
+        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-exterior.webp",
+        alt: "Black Range Rover Autobiography chauffeur SUV front exterior three-quarter view",
+      },
+      interior: {
+        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-interior.webp",
+        alt: "Range Rover Autobiography rear cabin with tan leather seats and rear-seat entertainment screens",
+      },
+      detail: {
+        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-detail.webp",
+        alt: "Range Rover Autobiography steering wheel and digital dashboard close-up",
+      },
+    },
+  },
+  {
+    slug: "cadillac-escalade",
+    brand: "Cadillac",
+    model: "Escalade",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2800, fiveHours: 1700, oneHour: 450, airport: 600, extraHour: 350, additionalCity: 350 },
+    name: "Cadillac Escalade",
+    category: "SUV",
+    tagline: "A bold, commanding presence",
+    description:
+      "A full-size luxury SUV built for VIP and family travel — commanding road presence with generous room for passengers and luggage alike.",
+    longDescription:
+      "The Escalade brings genuine road presence to VIP transportation — a full-size SUV with three rows of leather seating, ideal when the arrival itself needs to make an impression.",
+    passengers: 5,
+    luggage: 4,
+    idealFor: "VIP & family travel",
+    features: [
+      "Three-row leather seating",
+      "Elevated ride height",
+      "Premium sound system",
+      "Ample luggage space",
+      "Tinted privacy windows",
+      "Child seat available on request",
+    ],
+    whyChoose: [
+      "Commanding size and presence for VIP arrivals",
+      "Three rows accommodate larger groups or families with luggage",
+      "Elevated seating position for added comfort and visibility",
+      "A frequent choice for security-conscious VIP transportation",
+    ],
+    faqs: [
+      {
+        question: "How many passengers can the Escalade seat?",
+        answer:
+          "Up to 5 passengers with full comfort, with three-row seating and generous luggage space.",
+      },
+      {
+        question: "Is the Escalade suitable for VIP security details?",
+        answer:
+          "Yes, it's a frequent choice for VIP and dignitary transport where size and presence matter.",
+      },
+      {
+        question: "Can I request a child seat in the Escalade?",
+        answer:
+          "Yes, child seats are available on request — note it under special requests when booking.",
+      },
+    ],
+    images: {
+      exterior: {
+        src: "/images/fleet/cadillac-escalade/cadillac-escalade-exterior.webp",
+        alt: "Black Cadillac Escalade chauffeur SUV front exterior view with illuminated grille",
+      },
+      interior: {
+        src: "/images/fleet/cadillac-escalade/cadillac-escalade-interior.webp",
+        alt: "Cadillac Escalade rear passenger bench seats in cognac leather",
+      },
+      detail: {
+        src: "/images/fleet/cadillac-escalade/cadillac-escalade-detail.webp",
+        alt: "Cadillac Escalade leather seat close-up showing stitching detail and craftsmanship",
       },
     },
   },
@@ -264,337 +594,98 @@ export const FLEET: FleetVehicle[] = [
     },
   },
   {
-    slug: "cadillac-escalade",
-    brand: "Cadillac",
-    model: "Escalade",
+    slug: "lexus-lm",
+    brand: "Lexus",
+    model: "LM",
     // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2800, fiveHours: 1700, oneHour: 450, airport: 600, extraHour: 350, additionalCity: 350 },
-    name: "Cadillac Escalade",
-    category: "SUV",
-    tagline: "A bold, commanding presence",
+    rates: { tenHours: 4500, fiveHours: 2700, oneHour: 700, airport: 900, extraHour: 550, additionalCity: 550 },
+    name: "Lexus LM",
+    category: "Van",
+    tagline: "First-class travel, four seats only",
     description:
-      "A full-size luxury SUV built for VIP and family travel — commanding road presence with generous room for passengers and luggage alike.",
+      "The Lexus LM redefines chauffeured travel in Dubai with an ultra-exclusive four-seat executive lounge cabin — reclining ottoman-style seats, ambient lighting, and hushed cabin insulation more akin to a private jet than a minivan. Ideal for VIP airport transfers, high-profile business travel, and clients who want maximum privacy and comfort on every journey.",
     longDescription:
-      "The Escalade brings genuine road presence to VIP transportation — a full-size SUV with three rows of leather seating, ideal when the arrival itself needs to make an impression.",
-    passengers: 5,
-    luggage: 4,
-    idealFor: "VIP & family travel",
-    features: [
-      "Three-row leather seating",
-      "Elevated ride height",
-      "Premium sound system",
-      "Ample luggage space",
-      "Tinted privacy windows",
-      "Child seat available on request",
-    ],
-    whyChoose: [
-      "Commanding size and presence for VIP arrivals",
-      "Three rows accommodate larger groups or families with luggage",
-      "Elevated seating position for added comfort and visibility",
-      "A frequent choice for security-conscious VIP transportation",
-    ],
-    faqs: [
-      {
-        question: "How many passengers can the Escalade seat?",
-        answer:
-          "Up to 5 passengers with full comfort, with three-row seating and generous luggage space.",
-      },
-      {
-        question: "Is the Escalade suitable for VIP security details?",
-        answer:
-          "Yes, it's a frequent choice for VIP and dignitary transport where size and presence matter.",
-      },
-      {
-        question: "Can I request a child seat in the Escalade?",
-        answer:
-          "Yes, child seats are available on request — note it under special requests when booking.",
-      },
-    ],
-    images: {
-      exterior: {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-exterior.webp",
-        alt: "Black Cadillac Escalade chauffeur SUV front exterior view with illuminated grille",
-      },
-      interior: {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-interior.webp",
-        alt: "Cadillac Escalade rear passenger bench seats in cognac leather",
-      },
-      detail: {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-detail.webp",
-        alt: "Cadillac Escalade leather seat close-up showing stitching detail and craftsmanship",
-      },
-    },
-  },
-  {
-    slug: "range-rover-autobiography",
-    brand: "Range Rover",
-    model: "Autobiography",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 3200, fiveHours: 1900, oneHour: 500, airport: 650, extraHour: 400, additionalCity: 400 },
-    name: "Range Rover Autobiography",
-    category: "SUV",
-    tagline: "Effortless, elevated comfort",
-    description:
-      "Effortless comfort with genuine capability — a versatile choice for VIP transportation across the city or beyond it.",
-    longDescription:
-      "The Autobiography combines the comfort of a luxury saloon with the versatility of a true SUV — equally at home on a smooth airport run or an itinerary that strays from the main road.",
+      "Step aboard the Lexus LM and experience Dubai's most exclusive people-mover — a four-passenger executive lounge with fully reclining ottoman seating, a curtained-off cabin, and whisper-quiet ride comfort engineered for total privacy. Reserved for clients who want the space and calm of a private cabin on every airport transfer, roadshow, or VIP itinerary across the Emirates.",
     passengers: 4,
     luggage: 3,
-    idealFor: "VIP transportation",
+    idealFor: "VIP airport transfers & ultra-premium executive travel",
     features: [
-      "Executive rear seating",
-      "Adjustable air suspension",
-      "Premium Meridian sound system",
-      "Panoramic roof",
-      "Climate-controlled cabin",
+      "Four-seat executive lounge configuration",
+      "Fully reclining ottoman-style seats",
+      "Curtained privacy partition",
+      "Ambient cabin lighting",
+      "Premium sound insulation",
       "Onboard Wi-Fi",
     ],
     whyChoose: [
-      "Air suspension smooths out any road surface",
-      "A more versatile option than a sedan for varied itineraries",
-      "Premium Meridian sound system and panoramic roof",
-      "A refined, understated alternative to a traditional limousine",
+      "The most exclusive people-mover in the fleet — only four seats, maximum privacy",
+      "Reclining executive seats rival first-class air travel",
+      "Curtained cabin keeps VIP passengers fully private in transit",
+      "A natural upgrade from a standard van for high-profile arrivals",
     ],
     faqs: [
       {
-        question: "Is the Range Rover Autobiography good for airport transfers?",
+        question: "How many passengers does the Lexus LM seat?",
         answer:
-          "Yes — it's comfortable for airport transfers and works equally well for city touring or VIP transportation.",
+          "The LM is configured as an exclusive four-seat executive lounge, prioritizing space and privacy over passenger count.",
       },
       {
-        question: "How much luggage fits in the Range Rover?",
+        question: "Is the Lexus LM suitable for airport transfers?",
         answer:
-          "The Autobiography holds up to 3 pieces of luggage comfortably alongside up to 4 passengers.",
+          "Yes — it's one of our most requested vehicles for VIP airport transfers, with the same live flight tracking as the rest of the fleet.",
       },
       {
-        question: "Is the Range Rover available with a professional chauffeur?",
-        answer: "Yes, every booking includes a professionally trained, licensed chauffeur.",
-      },
-    ],
-    images: {
-      exterior: {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-exterior.webp",
-        alt: "Black Range Rover Autobiography chauffeur SUV front exterior three-quarter view",
-      },
-      interior: {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-interior.webp",
-        alt: "Range Rover Autobiography rear cabin with tan leather seats and rear-seat entertainment screens",
-      },
-      detail: {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-detail.webp",
-        alt: "Range Rover Autobiography steering wheel and digital dashboard close-up",
-      },
-    },
-  },
-  {
-    slug: "rolls-royce-phantom",
-    brand: "Rolls-Royce",
-    model: "Phantom",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 9500, fiveHours: 5500, oneHour: 1500, airport: 2000, extraHour: 1200, additionalCity: 1200 },
-    name: "Rolls-Royce Phantom",
-    category: "Ultra-Luxury",
-    tagline: "The pinnacle of arrival",
-    description:
-      "The most prestigious way to arrive in Dubai — reserved for weddings, milestone occasions, and clients who expect nothing less than the finest.",
-    longDescription:
-      "There's a reason the Phantom remains shorthand for arriving in style. Handcrafted, deliberate, and unmistakable, it's reserved for moments where the vehicle itself becomes part of the occasion — a wedding, an anniversary, a milestone worth marking properly.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Weddings & signature occasions",
-    features: [
-      "Handcrafted leather interior",
-      "Starlight headliner",
-      "Chauffeur in formal attire",
-      "Red carpet service available",
-      "Champagne chilling compartment",
-      "Bespoke welcome amenities",
-    ],
-    whyChoose: [
-      "The most recognized symbol of luxury arrival in Dubai",
-      "Handcrafted interior with a signature starlight headliner",
-      "Chauffeur in formal attire with optional red carpet service",
-      "Reserved availability — book early to secure wedding dates",
-    ],
-    faqs: [
-      {
-        question: "How far in advance should I book the Rolls-Royce Phantom?",
+        question: "Can the LM be booked for roadshows or multi-stop business travel?",
         answer:
-          "For weddings and peak dates, we recommend booking at least 2–3 weeks ahead, as the Phantom is our most requested vehicle.",
-      },
-      {
-        question: "Does the Phantom include red carpet service?",
-        answer: "Yes, red carpet service is available on request for weddings and special occasions.",
-      },
-      {
-        question: "Can the Phantom be booked for just a few hours?",
-        answer:
-          "Yes, the Phantom can be booked hourly for ceremonies and photo sessions, not only full-day hire.",
-      },
-    ],
-    images: {
-      exterior: {
-        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-exterior.webp",
-        alt: "Black Rolls-Royce Phantom chauffeur car front exterior view with palm trees",
-      },
-      interior: {
-        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-interior.webp",
-        alt: "Rolls-Royce Phantom rear cabin with cognac leather seats and starlight headliner",
-      },
-      detail: {
-        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-detail.webp",
-        alt: "Rolls-Royce Phantom Spirit of Ecstasy hood ornament close-up",
-      },
-    },
-  },
-
-  // ---------------------------------------------------------------------
-  // Placeholder entries (isPlaceholder: true) — added to bring the fleet
-  // listing to full strength ahead of real photography and confirmed
-  // copy. Each renders with the existing icon/gradient gallery fallback
-  // and a small "Preview" badge. Replace `isPlaceholder`/add `images`
-  // once real vehicles are confirmed and photographed.
-  // ---------------------------------------------------------------------
-  {
-    slug: "audi-a8-l",
-    brand: "Audi",
-    model: "A8 L",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2400, fiveHours: 1400, oneHour: 400, airport: 500, extraHour: 300, additionalCity: 300 },
-    name: "Audi A8 L",
-    category: "Sedan",
-    tagline: "Quiet, technological luxury",
-    description:
-      "A technologically advanced executive sedan with a whisper-quiet cabin and predictive air suspension — a refined choice for clients who prefer understated precision.",
-    longDescription:
-      "The A8 L brings Audi's engineering discipline to chauffeured travel — predictive air suspension reads the road ahead to smooth out the ride, while a minimalist, technology-forward cabin keeps the journey calm and distraction-free. A strong choice for executives who value quiet competence over overt display.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Business travel & discreet arrivals",
-    features: [
-      "Predictive air suspension",
-      "Massaging front & rear seats",
-      "Premium surround sound system",
-      "Ambient interior lighting",
-      "Onboard Wi-Fi",
-      "Privacy glass",
-    ],
-    whyChoose: [
-      "Predictive suspension reads the road ahead for an exceptionally smooth ride",
-      "A quieter, more understated alternative to a traditional flagship sedan",
-      "Technology-forward cabin keeps you connected between meetings",
-      "Consistently available for same-day business travel",
-    ],
-    faqs: [
-      {
-        question: "Is the Audi A8 L a good fit for airport transfers?",
-        answer:
-          "Yes — it offers the same flight-tracking and meet-and-greet service as our other sedans, with a particularly smooth ride from its air suspension.",
-      },
-      {
-        question: "How does the A8 L compare to the S-Class?",
-        answer:
-          "Both are quiet, comfortable executive sedans. The A8 L leans toward a minimalist, tech-forward cabin, while the S-Class has a more traditional luxury presentation.",
-      },
-      {
-        question: "Can the A8 L be booked for multi-stop city travel?",
-        answer:
-          "Yes, hourly hire is available for itineraries with multiple stops across Dubai.",
+          "Yes, hourly hire is available for itineraries with multiple stops, and the cabin is built for comfortable work or rest between meetings.",
       },
     ],
     isPlaceholder: true,
   },
   {
-    slug: "bmw-5-series",
-    brand: "BMW",
-    model: "5 Series",
+    slug: "mercedes-e-class",
+    brand: "Mercedes-Benz",
+    model: "E-Class",
     // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 1600, fiveHours: 950, oneHour: 250, airport: 350, extraHour: 200, additionalCity: 200 },
-    name: "BMW 5 Series",
+    rates: { tenHours: 1900, fiveHours: 1100, oneHour: 280, airport: 380, extraHour: 220, additionalCity: 220 },
+    name: "Mercedes E-Class",
     category: "Sedan",
-    tagline: "Business-class comfort, everyday reach",
+    tagline: "Accessible executive elegance",
     description:
-      "A dependable, business-ready sedan for daily transfers and meetings — the same chauffeur standard as our flagship cars, sized for frequent city travel.",
+      "The Mercedes E-Class brings the brand's signature comfort and quiet sophistication to everyday chauffeured travel in Dubai — a smooth ride, elegant cabin, and dependable presence for business meetings, airport transfers, and city-to-city journeys. A practical, polished choice for clients who want genuine Mercedes luxury without the flagship S-Class price point.",
     longDescription:
-      "The 5 Series is our everyday business sedan — the same professional chauffeur standard and cabin comfort as our flagship vehicles, right-sized for quick, frequent city transfers. A practical choice for standing corporate accounts with regular bookings across Dubai.",
+      "The E-Class carries forward the same chauffeur-grade comfort as our flagship Mercedes sedans in a right-sized, cost-efficient package — a calm, well-insulated cabin, smooth ride quality, and the same professional chauffeur standard on every booking. A dependable choice for standing corporate accounts and frequent business travel across Dubai.",
     passengers: 3,
     luggage: 2,
-    idealFor: "Daily corporate transfers",
+    idealFor: "Business travel & daily corporate transfers",
     features: [
       "Leather executive seating",
       "Rear-seat climate control",
+      "Ambient interior lighting",
       "Onboard Wi-Fi",
       "Privacy glass",
-      "Ambient interior lighting",
       "Bottled water & amenities",
     ],
     whyChoose: [
-      "A cost-efficient option for standing corporate accounts with frequent bookings",
-      "The same professional chauffeur standard as every vehicle in the fleet",
-      "Comfortably sized for quick point-to-point city transfers",
-      "Reliable same-day and next-day availability",
+      "The same Mercedes chauffeur standard as our flagship sedans, at a more accessible tier",
+      "A smooth, quiet ride well suited to back-to-back meetings",
+      "Dependable same-day and next-day availability",
+      "A practical choice for standing corporate accounts with frequent bookings",
     ],
     faqs: [
       {
-        question: "Is the BMW 5 Series suitable for corporate accounts?",
+        question: "How does the E-Class compare to the S-Class?",
         answer:
-          "Yes — it's a popular choice for standing corporate accounts that need dependable, frequent city transfers.",
+          "Both offer the same chauffeur standard and Mercedes comfort — the S-Class is our flagship with a longer wheelbase and extra amenities, while the E-Class is a right-sized, cost-efficient alternative for everyday business travel.",
       },
       {
-        question: "How much luggage fits in the 5 Series?",
-        answer: "The 5 Series comfortably holds 2 standard suitcases plus carry-ons.",
-      },
-      {
-        question: "Can I book the 5 Series for a full business day?",
-        answer: "Yes, hourly and full-day hire are both available on request.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "lincoln-navigator",
-    brand: "Lincoln",
-    model: "Navigator",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2800, fiveHours: 1700, oneHour: 450, airport: 600, extraHour: 350, additionalCity: 350 },
-    name: "Lincoln Navigator",
-    category: "SUV",
-    tagline: "American presence, effortless space",
-    description:
-      "A full-size luxury SUV with commanding road presence and a genuinely spacious cabin — built for VIP travel and larger groups who still expect a premium finish.",
-    longDescription:
-      "The Navigator pairs an imposing exterior with one of the most spacious cabins in the fleet — three rows of reclining leather seating, a calm ride, and enough presence to suit VIP arrivals where size matters as much as comfort.",
-    passengers: 6,
-    luggage: 4,
-    idealFor: "VIP travel & larger groups",
-    features: [
-      "Three-row reclining leather seating",
-      "Perfect Position captain's chairs",
-      "Premium sound system",
-      "Ample luggage space",
-      "Tinted privacy windows",
-      "Onboard Wi-Fi",
-    ],
-    whyChoose: [
-      "One of the most spacious cabins in the fleet, ideal for larger travel parties",
-      "Commanding size and presence for VIP arrivals",
-      "Reclining captain's chairs for genuinely restful longer journeys",
-      "Ample luggage capacity even with a full passenger count",
-    ],
-    faqs: [
-      {
-        question: "How many passengers can the Navigator seat?",
+        question: "Is the E-Class suitable for airport transfers?",
         answer:
-          "Up to 6 passengers across three rows, with generous luggage space alongside.",
+          "Yes — it includes the same live flight tracking and meet-and-greet service as the rest of our sedan fleet.",
       },
       {
-        question: "Is the Navigator a good choice for family travel?",
-        answer:
-          "Yes — its spacious three-row cabin and luggage capacity make it a strong fit for families traveling together.",
-      },
-      {
-        question: "Can I request a child seat in the Navigator?",
-        answer: "Yes, child seats are available on request — note it under special requests when booking.",
+        question: "Can I book the E-Class for a full business day?",
+        answer: "Yes, hourly and full-day hire are both available.",
       },
     ],
     isPlaceholder: true,
@@ -648,244 +739,144 @@ export const FLEET: FleetVehicle[] = [
     isPlaceholder: true,
   },
   {
-    slug: "mercedes-sprinter-vip",
-    brand: "Mercedes-Benz",
-    model: "Sprinter VIP",
+    slug: "bmw-5-series",
+    brand: "BMW",
+    model: "5 Series",
     // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 3200, fiveHours: 1900, oneHour: 500, airport: 700, extraHour: 400, additionalCity: 400 },
-    name: "Mercedes Sprinter VIP",
-    category: "Van",
-    tagline: "Boardroom on wheels",
+    rates: { tenHours: 1600, fiveHours: 950, oneHour: 250, airport: 350, extraHour: 200, additionalCity: 200 },
+    name: "BMW 5 Series",
+    category: "Sedan",
+    tagline: "Business-class comfort, everyday reach",
     description:
-      "A premium VIP van configured for larger groups and executive travel — conference-style seating and a genuinely spacious cabin for meetings on the move.",
+      "A dependable, business-ready sedan for daily transfers and meetings — the same chauffeur standard as our flagship cars, sized for frequent city travel.",
     longDescription:
-      "The Sprinter VIP is built for groups that need real space without sacrificing a premium finish — configurable conference-style seating, individual climate zones, and enough room to hold a working meeting between stops. Our largest-capacity vehicle for coordinated group and event transport.",
-    passengers: 10,
-    luggage: 8,
-    idealFor: "Large groups & event transportation",
+      "The 5 Series is our everyday business sedan — the same professional chauffeur standard and cabin comfort as our flagship vehicles, right-sized for quick, frequent city transfers. A practical choice for standing corporate accounts with regular bookings across Dubai.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Daily corporate transfers",
     features: [
-      "Configurable conference-style seating",
-      "Individual climate zones",
+      "Leather executive seating",
+      "Rear-seat climate control",
       "Onboard Wi-Fi",
-      "Extra luggage capacity",
-      "Rear entertainment screen",
-      "Individual reading lights",
-    ],
-    whyChoose: [
-      "Our largest-capacity vehicle — ideal for full delegations and event groups",
-      "Conference-style seating supports working meetings in transit",
-      "One coordinated vehicle instead of multiple sedans for a large party",
-      "Extra luggage capacity for group airport transfers",
-    ],
-    faqs: [
-      {
-        question: "How many passengers fit in the Sprinter VIP?",
-        answer:
-          "The Sprinter VIP seats up to 10 passengers in a configurable conference-style layout, with generous luggage space.",
-      },
-      {
-        question: "Is the Sprinter VIP suitable for corporate events?",
-        answer:
-          "Yes — it's a popular choice for coordinated group transport at conferences, galas, and multi-day corporate events.",
-      },
-      {
-        question: "Can the Sprinter VIP be booked alongside other vehicles?",
-        answer:
-          "Yes, we regularly coordinate the Sprinter VIP with sedans or SUVs for events requiring a mixed fleet.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "mercedes-maybach-s-class",
-    brand: "Mercedes-Maybach",
-    model: "S-Class",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 5000, fiveHours: 3000, oneHour: 800, airport: 1000, extraHour: 650, additionalCity: 650 },
-    name: "Mercedes-Maybach S-Class",
-    category: "Ultra-Luxury",
-    tagline: "Maybach-level hush and presence",
-    description:
-      "The most exclusive sedan in the fleet — extended rear legroom, reclining executive seats, and a cabin engineered for complete calm on longer journeys.",
-    longDescription:
-      "The Maybach S-Class takes everything that makes the S-Class the executive standard and elevates it further — an extended wheelbase, fully reclining rear executive seats, and cabin insulation tuned for near-total silence. Reserved for clients who want the very top of the fleet.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Signature executive arrivals",
-    features: [
-      "Fully reclining rear executive seats",
-      "Extended rear legroom",
-      "Burmester premium sound system",
-      "Rear-seat climate control",
-      "Privacy glass with rear curtains",
-      "Bespoke welcome amenities",
-    ],
-    whyChoose: [
-      "The quietest, most spacious cabin in the fleet",
-      "Fully reclining rear seats for genuinely restful longer journeys",
-      "Reserved for clients seeking the most exclusive sedan available",
-      "A natural choice for high-profile executive arrivals",
-    ],
-    faqs: [
-      {
-        question: "How is the Maybach S-Class different from the standard S-Class?",
-        answer:
-          "The Maybach adds an extended wheelbase, fully reclining rear executive seats, and additional sound insulation for an even quieter, more spacious ride.",
-      },
-      {
-        question: "Is the Maybach S-Class available for airport transfers?",
-        answer:
-          "Yes, with the same live flight tracking and meet-and-greet service as the rest of the fleet.",
-      },
-      {
-        question: "How far in advance should I book the Maybach S-Class?",
-        answer:
-          "As our most exclusive sedan, we recommend booking at least a few days ahead where possible to guarantee availability.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "rolls-royce-ghost",
-    brand: "Rolls-Royce",
-    model: "Ghost",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 8000, fiveHours: 4500, oneHour: 1200, airport: 1600, extraHour: 950, additionalCity: 950 },
-    name: "Rolls-Royce Ghost",
-    category: "Ultra-Luxury",
-    tagline: "Effortless, understated power",
-    description:
-      "A more understated Rolls-Royce for clients who want the marque's effortless refinement without the Phantom's full occasion-level presence.",
-    longDescription:
-      "The Ghost delivers the same handcrafted Rolls-Royce refinement as the Phantom in a more understated package — effortless power, a hushed cabin, and quiet confidence for executive travel that still calls for something exceptional.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Executive arrivals & signature occasions",
-    features: [
-      "Handcrafted leather interior",
-      "Starlight headliner",
-      "Bespoke welcome amenities",
-      "Champagne chilling compartment",
-      "Rear-seat climate control",
-      "Chauffeur in formal attire",
-    ],
-    whyChoose: [
-      "The effortless refinement of Rolls-Royce in a more understated package",
-      "Handcrafted interior with the signature starlight headliner",
-      "A strong alternative to the Phantom for executive-level occasions",
-      "Chauffeur in formal attire as standard",
-    ],
-    faqs: [
-      {
-        question: "How does the Ghost compare to the Phantom?",
-        answer:
-          "Both share the same handcrafted Rolls-Royce quality. The Phantom is the larger, more occasion-focused flagship; the Ghost is slightly more understated and versatile for executive travel.",
-      },
-      {
-        question: "Is the Ghost available for weddings?",
-        answer:
-          "Yes, though many clients choose the Phantom for weddings specifically — the Ghost suits executive and signature-occasion bookings equally well.",
-      },
-      {
-        question: "How far in advance should I book the Ghost?",
-        answer:
-          "We recommend booking at least a few days ahead for this vehicle, particularly during peak season.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "rolls-royce-cullinan",
-    brand: "Rolls-Royce",
-    model: "Cullinan",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 8500, fiveHours: 5000, oneHour: 1300, airport: 1800, extraHour: 1000, additionalCity: 1000 },
-    name: "Rolls-Royce Cullinan",
-    category: "Ultra-Luxury",
-    tagline: "Commanding presence, uncompromising comfort",
-    description:
-      "The Rolls-Royce approach to an SUV — a commanding presence with the same handcrafted cabin and effortless ride quality as the rest of the marque's flagship range.",
-    longDescription:
-      "The Cullinan brings genuine SUV capability to the Rolls-Royce experience — a commanding, elevated presence outside, and the same handcrafted cabin, effortless ride, and quiet confidence inside. Reserved for clients who want flagship prestige with the versatility of an SUV.",
-    passengers: 4,
-    luggage: 3,
-    idealFor: "VIP arrivals & signature occasions",
-    features: [
-      "Handcrafted leather interior",
-      "Starlight headliner",
-      "Elevated ride height",
-      "Bespoke welcome amenities",
-      "Rear-seat climate control",
-      "Chauffeur in formal attire",
-    ],
-    whyChoose: [
-      "The commanding presence of an SUV with full Rolls-Royce craftsmanship",
-      "Handcrafted interior with the signature starlight headliner",
-      "A versatile flagship choice for VIP arrivals beyond the standard sedan",
-      "Chauffeur in formal attire as standard",
-    ],
-    faqs: [
-      {
-        question: "Is the Cullinan available for airport transfers?",
-        answer:
-          "Yes, with the same live flight tracking and meet-and-greet service as the rest of the fleet.",
-      },
-      {
-        question: "How many passengers does the Cullinan seat?",
-        answer: "Up to 4 passengers in full comfort, with generous luggage space alongside.",
-      },
-      {
-        question: "How far in advance should I book the Cullinan?",
-        answer:
-          "As one of our most requested vehicles, we recommend booking at least a few days ahead where possible.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "bentley-flying-spur",
-    brand: "Bentley",
-    model: "Flying Spur",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 7500, fiveHours: 4200, oneHour: 1100, airport: 1500, extraHour: 900, additionalCity: 900 },
-    name: "Bentley Flying Spur",
-    category: "Ultra-Luxury",
-    tagline: "Handcrafted performance",
-    description:
-      "A handcrafted flagship sedan that pairs true performance with Bentley's signature craftsmanship — luxury for clients who want presence with a sportier edge.",
-    longDescription:
-      "The Flying Spur brings genuine performance to flagship chauffeured travel — a handcrafted cabin finished to Bentley's exacting standard, paired with a more dynamic character than a traditional limousine. A distinctive choice for clients who want luxury with real driving pedigree behind it.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Signature executive arrivals",
-    features: [
-      "Handcrafted leather interior",
-      "Diamond-quilted seating",
-      "Naim premium sound system",
-      "Rear-seat climate control",
       "Privacy glass",
-      "Bespoke welcome amenities",
+      "Ambient interior lighting",
+      "Bottled water & amenities",
     ],
     whyChoose: [
-      "Handcrafted Bentley craftsmanship with a distinctly sportier character",
-      "A strong alternative to a traditional limousine for clients who want presence with pedigree",
-      "Diamond-quilted leather interior finished to an exacting standard",
-      "Reserved availability — a frequently requested flagship vehicle",
+      "A cost-efficient option for standing corporate accounts with frequent bookings",
+      "The same professional chauffeur standard as every vehicle in the fleet",
+      "Comfortably sized for quick point-to-point city transfers",
+      "Reliable same-day and next-day availability",
     ],
     faqs: [
       {
-        question: "How is the Flying Spur different from the Phantom?",
+        question: "Is the BMW 5 Series suitable for corporate accounts?",
         answer:
-          "The Phantom is the more traditional, occasion-focused flagship. The Flying Spur offers the same handcrafted quality with a sportier, more dynamic driving character.",
+          "Yes — it's a popular choice for standing corporate accounts that need dependable, frequent city transfers.",
       },
       {
-        question: "Is the Flying Spur available for weddings?",
-        answer: "Yes, it's available for weddings and signature occasions alongside our other flagship vehicles.",
+        question: "How much luggage fits in the 5 Series?",
+        answer: "The 5 Series comfortably holds 2 standard suitcases plus carry-ons.",
       },
       {
-        question: "How far in advance should I book the Flying Spur?",
+        question: "Can I book the 5 Series for a full business day?",
+        answer: "Yes, hourly and full-day hire are both available on request.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "toyota-land-cruiser",
+    brand: "Toyota",
+    model: "Land Cruiser",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 2200, fiveHours: 1300, oneHour: 380, airport: 500, extraHour: 280, additionalCity: 280 },
+    name: "Toyota Land Cruiser",
+    category: "SUV",
+    tagline: "Dependable presence, effortless comfort",
+    description:
+      "The Toyota Land Cruiser pairs a commanding, capable presence with a genuinely comfortable cabin — a dependable full-size SUV for family travel, group airport transfers, and city touring across Dubai. Spacious seating and generous luggage capacity make it a versatile, trusted choice for clients who want a premium ride without compromise.",
+    longDescription:
+      "Built for both comfort and capability, the Land Cruiser brings a spacious three-row cabin and a smooth, composed ride to chauffeured travel in Dubai — equally suited to a full family airport transfer or a group outing beyond the city. A dependable, versatile alternative to a traditional luxury SUV.",
+    passengers: 6,
+    luggage: 4,
+    idealFor: "Family travel & group airport transfers",
+    features: [
+      "Three-row leather seating",
+      "Elevated ride height",
+      "Ample luggage space",
+      "Climate-controlled cabin",
+      "Tinted privacy windows",
+      "Child seat available on request",
+    ],
+    whyChoose: [
+      "A dependable, versatile SUV for families and small groups alike",
+      "Spacious three-row cabin with luggage capacity to match",
+      "Composed, comfortable ride on both city roads and longer routes",
+      "A trusted, practical alternative to a full-size luxury SUV",
+    ],
+    faqs: [
+      {
+        question: "How many passengers can the Land Cruiser seat?",
         answer:
-          "As a frequently requested flagship vehicle, we recommend booking at least a few days ahead where possible.",
+          "Up to 6 passengers across three rows, with generous luggage space for a full family or small group.",
+      },
+      {
+        question: "Is the Land Cruiser good for airport transfers?",
+        answer:
+          "Yes — it comfortably handles a full travel party and their luggage, with the same flight-tracking service as our other vehicles.",
+      },
+      {
+        question: "Can I request a child seat in the Land Cruiser?",
+        answer: "Yes, child seats are available on request — note it under special requests when booking.",
+      },
+    ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "lexus-es-300h",
+    brand: "Lexus",
+    model: "ES 300h",
+    // PLACEHOLDER sample rates — replace with confirmed pricing
+    rates: { tenHours: 1700, fiveHours: 1000, oneHour: 260, airport: 360, extraHour: 210, additionalCity: 210 },
+    name: "Lexus ES 300h",
+    category: "Sedan",
+    tagline: "Quiet, efficient executive comfort",
+    description:
+      "The Lexus ES 300h combines a whisper-quiet hybrid powertrain with a refined, comfortable cabin — an efficient, dependable executive sedan for business travel and airport transfers across Dubai. Its smooth ride and understated elegance suit clients who want genuine comfort and a lower environmental footprint on every chauffeured journey.",
+    longDescription:
+      "The ES 300h pairs Lexus's renowned reliability with a quiet hybrid drivetrain and a calm, well-appointed cabin — a dependable executive sedan for business travel, airport transfers, and daily corporate accounts. A smooth, efficient choice for clients who value understated comfort over overt display.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Business travel & eco-conscious executive transfers",
+    features: [
+      "Hybrid-quiet cabin insulation",
+      "Leather executive seating",
+      "Rear-seat climate control",
+      "Onboard Wi-Fi",
+      "Privacy glass",
+      "Bottled water & amenities",
+    ],
+    whyChoose: [
+      "A quiet, efficient hybrid ride with genuine Lexus reliability",
+      "Understated comfort for clients who prefer a lower profile",
+      "Dependable same-day availability for business travel",
+      "A cost-efficient option for standing corporate accounts",
+    ],
+    faqs: [
+      {
+        question: "Is the ES 300h a hybrid?",
+        answer:
+          "Yes — it pairs a quiet hybrid powertrain with a refined cabin, offering a smooth ride with a lower environmental footprint.",
+      },
+      {
+        question: "Is the ES 300h suitable for airport transfers?",
+        answer:
+          "Yes, with the same live flight tracking and meet-and-greet service as the rest of our sedan fleet.",
+      },
+      {
+        question: "Can I book the ES 300h for a full business day?",
+        answer: "Yes, hourly and full-day hire are both available on request.",
       },
     ],
     isPlaceholder: true,

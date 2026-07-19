@@ -55,8 +55,15 @@ const config: Config = {
         gold: "0 0 0 1px rgba(212,175,55,0.35)",
         "gold-lg": "0 20px 40px -12px rgba(212,175,55,0.25)",
       },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
       animation: {
         "pulse-slow": "pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "brand-marquee": "marquee 36s linear infinite",
       },
       maxWidth: {
         "8xl": "90rem",

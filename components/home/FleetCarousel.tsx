@@ -7,6 +7,7 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import FleetCarouselCard from "./FleetCarouselCard";
 import { FLEET } from "@/data/fleet";
+import { useInfiniteCarousel } from "./useInfiniteCarousel";
 
 /** Cards visible at once: 1 on mobile, 2 on tablet, 3 on desktop.
  *  Must stay in sync with the card wrapper's w-full/md:w-1/2/lg:w-1/3. */
@@ -27,29 +28,43 @@ function useSlidesPerView() {
   return slidesPerView;
 }
 
+const AUTOPLAY_DELAY_MS = 1000;
+const AUTOPLAY_INTERVAL_MS = 4000;
+
 /**
- * "Explore Our Fleet" — the primary homepage fleet section: a paged
- * carousel of compact vehicle cards with side arrows and dot indicators.
- * Pages advance one full view (3 cards on desktop, 2 tablet, 1 mobile);
- * the final page clamps so the track never scrolls past the last card.
+ * "Explore Our Fleet" — the primary homepage fleet section: an infinite,
+ * one-card-at-a-time carousel with side arrows and dot indicators.
+ * Auto-plays only while the section is on-screen (pausing when scrolled
+ * away and re-arming, after a short delay, when it scrolls back into
+ * view) — but only until the user manually touches the arrows/dots, at
+ * which point auto-play stops for good. Loops seamlessly in both
+ * directions via cloned edge cards — see useInfiniteCarousel.
  */
 export default function FleetCarousel() {
   const slidesPerView = useSlidesPerView();
-  const pageCount = Math.ceil(FLEET.length / slidesPerView);
-  const [page, setPage] = useState(0);
+  const { sectionRef, index, instant, activeRealIndex, goNext, goPrev, goToRealIndex, handleTransitionEnd } =
+    useInfiniteCarousel({
+      itemCount: FLEET.length,
+      slidesPerView,
+      autoplayDelayMs: AUTOPLAY_DELAY_MS,
+      autoplayIntervalMs: AUTOPLAY_INTERVAL_MS,
+      stopOnInteraction: true,
+      pauseWhenOffscreen: true,
+    });
 
-  useEffect(() => {
-    setPage((current) => Math.min(current, pageCount - 1));
-  }, [pageCount]);
-
-  // First visible card, clamped so a partial last page stays flush right.
-  const startIndex = useMemo(
-    () => Math.min(page * slidesPerView, FLEET.length - slidesPerView),
-    [page, slidesPerView]
-  );
+  // Clone `slidesPerView` cards from each edge so the track can keep
+  // sliding in one direction through the wrap point (see useInfiniteCarousel).
+  const extended = useMemo(() => {
+    const startClones = FLEET.slice(-slidesPerView);
+    const endClones = FLEET.slice(0, slidesPerView);
+    return [...startClones, ...FLEET, ...endClones];
+  }, [slidesPerView]);
 
   return (
-    <section className="border-t border-gold/10 bg-linen py-24">
+    <section
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="border-t border-gold/10 bg-linen py-24"
+    >
       <Container>
         <SectionHeading
           eyebrow="The Fleet"
@@ -62,13 +77,12 @@ export default function FleetCarousel() {
           {/* Track */}
           <div className="overflow-hidden" role="region" aria-label="Fleet vehicles carousel">
             <div
-              className="flex transition-transform duration-500 ease-out"
-              // translateX % is relative to the track (container width), so one
-              // card = 100/slidesPerView %.
-              style={{ transform: `translateX(-${(startIndex * 100) / slidesPerView}%)` }}
+              className={`flex ${instant ? "" : "transition-transform duration-500 ease-out"}`}
+              style={{ transform: `translateX(-${(index * 100) / slidesPerView}%)` }}
+              onTransitionEnd={handleTransitionEnd}
             >
-              {FLEET.map((vehicle) => (
-                <div key={vehicle.slug} className="w-full shrink-0 px-3 md:w-1/2 lg:w-1/3">
+              {extended.map((vehicle, position) => (
+                <div key={`${vehicle.slug}-${position}`} className="w-full shrink-0 px-3 md:w-1/2 lg:w-1/3">
                   <FleetCarouselCard vehicle={vehicle} />
                 </div>
               ))}
@@ -78,42 +92,43 @@ export default function FleetCarousel() {
           {/* Arrows */}
           <button
             type="button"
-            onClick={() => setPage((current) => Math.max(current - 1, 0))}
-            disabled={page === 0}
+            onClick={goPrev}
             aria-label="Previous vehicles"
-            className="absolute -left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian disabled:cursor-default disabled:opacity-30 disabled:hover:bg-ivory sm:-left-4 lg:-left-6"
+            className="absolute -left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-left-4 lg:-left-6"
           >
             <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
           </button>
           <button
             type="button"
-            onClick={() => setPage((current) => Math.min(current + 1, pageCount - 1))}
-            disabled={page === pageCount - 1}
+            onClick={goNext}
             aria-label="Next vehicles"
-            className="absolute -right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian disabled:cursor-default disabled:opacity-30 disabled:hover:bg-ivory sm:-right-4 lg:-right-6"
+            className="absolute -right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-right-4 lg:-right-6"
           >
             <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
           </button>
         </div>
 
-        {/* Dot indicators */}
-        <div className="mt-8 flex justify-center gap-2">
-          {Array.from({ length: pageCount }, (_, index) => (
+        {/* Dot indicators — one per vehicle */}
+        <div className="mt-8 flex flex-wrap justify-center gap-2">
+          {FLEET.map((vehicle, realIndex) => (
             <button
-              key={index}
+              key={vehicle.slug}
               type="button"
-              onClick={() => setPage(index)}
-              aria-label={`Go to page ${index + 1} of ${pageCount}`}
-              aria-current={index === page ? "true" : undefined}
+              onClick={() => goToRealIndex(realIndex)}
+              aria-label={`Go to ${vehicle.name}`}
+              aria-current={realIndex === activeRealIndex ? "true" : undefined}
               className={`h-2 rounded-full transition-all duration-300 ${
-                index === page ? "w-6 bg-gold" : "w-2 bg-gold/30 hover:bg-gold/50"
+                realIndex === activeRealIndex ? "w-6 bg-gold" : "w-2 bg-gold/30 hover:bg-gold/50"
               }`}
             />
           ))}
         </div>
 
         <div className="mt-12 text-center">
-          <Link href="/fleet" className="btn-gold px-12">
+          <Link
+            href="/fleet"
+            className="inline-flex items-center justify-center bg-gold px-12 py-4 text-sm font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+          >
             View Our Full Fleet
           </Link>
         </div>
