@@ -37,7 +37,7 @@ const FEATURES: Feature[] = [
  */
 export default function FeatureStrip() {
   return (
-    <section className="border-t border-gold/10 bg-obsidian py-16">
+    <section className="border-t border-gold/10 bg-obsidian py-24">
       <Container>
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-4">
           {FEATURES.map((feature) => (

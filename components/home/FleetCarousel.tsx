@@ -73,7 +73,7 @@ export default function FleetCarousel() {
           tone="light"
         />
 
-        <div className="relative mt-14">
+        <div className="relative mt-16">
           {/* Track */}
           <div className="overflow-hidden" role="region" aria-label="Fleet vehicles carousel">
             <div
@@ -127,7 +127,7 @@ export default function FleetCarousel() {
         <div className="mt-12 text-center">
           <Link
             href="/fleet"
-            className="inline-flex items-center justify-center bg-gold px-12 py-4 text-sm font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+            className="inline-flex items-center justify-center rounded-sm bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
           >
             View Our Full Fleet
           </Link>

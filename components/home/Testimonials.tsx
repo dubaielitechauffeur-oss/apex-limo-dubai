@@ -117,7 +117,7 @@ export default function Testimonials() {
           {featured.map((testimonial) => (
             <figure
               key={testimonial.id}
-              className="relative flex flex-col overflow-hidden border border-gold/20 bg-ivory p-10 shadow-[0_20px_45px_-28px_rgba(10,10,10,0.3)] sm:p-12"
+              className="relative flex flex-col overflow-hidden rounded-2xl border border-gold/20 bg-ivory p-10 shadow-[0_16px_35px_-22px_rgba(10,10,10,0.35)] sm:p-12"
             >
               <span
                 aria-hidden="true"
