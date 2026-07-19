@@ -1,6 +1,7 @@
 import { Phone } from "lucide-react";
 import Container from "@/components/shared/Container";
 import CTAButton from "@/components/shared/CTAButton";
+import SectionHeading from "@/components/shared/SectionHeading";
 import { PRIMARY_CTA, SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 
 export default function BookingCTA() {
@@ -11,14 +12,12 @@ export default function BookingCTA() {
         className="pointer-events-none absolute left-1/2 top-0 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-gold/10 blur-3xl"
       />
       <Container className="relative text-center">
-        <span className="label-eyebrow">Ready When You Are</span>
-        <h2 className="mx-auto mt-5 max-w-2xl font-display text-3xl text-heading sm:text-5xl">
-          Reserve Your Chauffeur in Dubai Today
-        </h2>
-        <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
-          Tell us where you're headed and we'll match you with the right
-          vehicle and driver — usually confirmed within minutes.
-        </p>
+        <SectionHeading
+          eyebrow="Ready When You Are"
+          title="Reserve Your Chauffeur in Dubai Today"
+          subtitle="Tell us where you're headed and we'll match you with the right vehicle and driver — usually confirmed within minutes."
+          tone="dark"
+        />
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <CTAButton href={PRIMARY_CTA.book.href}>

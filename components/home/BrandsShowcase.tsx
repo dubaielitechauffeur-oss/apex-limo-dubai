@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Container from "@/components/shared/Container";
+import SectionHeading from "@/components/shared/SectionHeading";
 import BrandBadge from "./BrandBadge";
 import { BRANDS } from "@/data/brands";
 
@@ -15,11 +16,9 @@ export default function BrandsShowcase() {
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
-        <h2 className="text-center font-display text-3xl font-semibold text-obsidian sm:text-4xl">
-          Our Brands
-        </h2>
+        <SectionHeading eyebrow="Our Partners" title="Our Brands" tone="light" />
 
-        <div className="relative mx-auto mt-14 max-w-5xl overflow-hidden">
+        <div className="relative mx-auto mt-16 max-w-5xl overflow-hidden">
           <div className="flex w-max animate-brand-marquee">
             {[...BRANDS, ...BRANDS].map((brand, position) => (
               <div key={`${brand.name}-${position}`} className="flex shrink-0 justify-center px-6 sm:px-8">
@@ -32,19 +31,19 @@ export default function BrandsShowcase() {
         <div className="mx-auto mt-12 flex max-w-2xl flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
           <Link
             href="/fleet"
-            className="w-full bg-gold px-8 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
+            className="w-full rounded-sm bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
             View Our Fleet
           </Link>
           <Link
             href="/booking"
-            className="w-full bg-gold px-8 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
+            className="w-full rounded-sm bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
             Book a Car
           </Link>
           <Link
             href="/contact"
-            className="w-full bg-gold px-8 py-3.5 text-center text-xs font-bold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
+            className="w-full rounded-sm bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
             Request Details
           </Link>

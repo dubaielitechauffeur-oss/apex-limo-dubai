@@ -77,13 +77,13 @@ export default function FleetCarouselCard({ vehicle }: FleetCarouselCardProps) {
       <div className="mt-auto grid grid-cols-2 gap-3 px-4 pb-5">
         <Link
           href={`/fleet/${vehicle.slug}`}
-          className="inline-flex items-center justify-center bg-gold px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+          className="inline-flex items-center justify-center rounded-sm bg-gold px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep"
         >
           View Car
         </Link>
         <Link
           href="/contact"
-          className="inline-flex items-center justify-center border border-obsidian/30 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:border-obsidian hover:bg-obsidian hover:text-ivory"
+          className="inline-flex items-center justify-center rounded-sm border border-obsidian/30 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:border-obsidian hover:bg-obsidian hover:text-ivory"
         >
           Contact Us
         </Link>
