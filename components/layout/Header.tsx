@@ -17,7 +17,7 @@ import {
 
 /** Desktop nav order for the luxury header redesign — pulled from the
  *  shared NAV_LINKS source of truth so hrefs/children stay in sync. */
-const HEADER_NAV_ORDER = ["Home", "Services", "Fleet", "About", "Locations", "Contact"];
+const HEADER_NAV_ORDER = ["Home", "Services", "Fleet", "About", "Locations", "FAQs", "Contact"];
 const headerNavLinks = HEADER_NAV_ORDER.map((label) =>
   NAV_LINKS.find((link) => link.label === label)
 ).filter((link): link is (typeof NAV_LINKS)[number] => Boolean(link));
