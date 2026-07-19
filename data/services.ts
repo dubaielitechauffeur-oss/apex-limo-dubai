@@ -24,12 +24,15 @@ export interface Service {
    * photography later; the field/shape stays the same either way.
    */
   image: ServiceImage;
+  /** Short 2-3 word chips shown on the homepage service card (not full sentences). */
+  tags: string[];
 }
 
 export const SERVICES: Service[] = [
   {
     slug: "airport-transfers",
     name: "Airport Transfers",
+    tags: ["Flight Tracking", "Meet & Greet", "Luggage Assistance"],
     image: {
       src: "/images/services/airport-transfer-jet-tarmac.webp",
       alt: "Apex Limo Mercedes V-Class parked on the tarmac beside a private jet at dusk, ready for an airport transfer",
@@ -81,6 +84,7 @@ export const SERVICES: Service[] = [
   {
     slug: "corporate-chauffeur",
     name: "Corporate Chauffeur Service",
+    tags: ["Executive Travel", "Business Meetings", "Priority Service"],
     image: {
       src: "/images/services/corporate-chauffeur-working-in-car.webp",
       alt: "Businessman working on a laptop and taking a call in the back seat of an Apex Limo chauffeur car",
@@ -131,6 +135,7 @@ export const SERVICES: Service[] = [
   {
     slug: "luxury-chauffeur",
     name: "Luxury Chauffeur Service",
+    tags: ["Mercedes S-Class", "VIP Experience", "Professional Chauffeurs"],
     image: {
       src: "/images/services/luxury-chauffeur-door-service.webp",
       alt: "Apex Limo chauffeur opening the car door for a client outside an office building",
@@ -181,6 +186,7 @@ export const SERVICES: Service[] = [
   {
     slug: "vip-transportation",
     name: "VIP Transportation",
+    tags: ["Privacy First", "Elite Fleet", "Concierge Service"],
     image: {
       src: "/images/services/vip-transportation-motorcade.webp",
       alt: "Apex Limo motorcade of a Mercedes S-Class and V-Class vans moving together as a coordinated VIP convoy",
@@ -231,6 +237,7 @@ export const SERVICES: Service[] = [
   {
     slug: "event-transportation",
     name: "Event Transportation",
+    tags: ["Fleet Coordination", "Guest Logistics", "On-Time Arrival"],
     image: {
       src: "/images/services/event-transportation-fleet-lineup.webp",
       alt: "Three Apex Limo chauffeurs standing beside a Mercedes S-Class, BMW, and Cadillac Escalade outside a Dubai hotel, ready for event transportation",
@@ -282,6 +289,7 @@ export const SERVICES: Service[] = [
   {
     slug: "wedding-chauffeur",
     name: "Wedding Chauffeur Service",
+    tags: ["Luxury Fleet", "Wedding Packages", "Professional Service"],
     image: {
       src: "/images/services/wedding-chauffeur-cars.webp",
       alt: "Two black Mercedes S-Class wedding cars decorated with floral arrangements, with the bride and groom in the background",
