@@ -482,7 +482,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "A spacious, beautifully finished van for group transfers and events — seating for up to six without sacrificing the comfort of a luxury sedan.",
     longDescription:
-      "Built for groups who still expect a luxury experience, the V-Class pairs generous cabin space with the fit and finish of a Mercedes flagship. Captain's chairs, individual climate zones, and room for six make it the natural choice for events and family travel alike.",
+      "The Mercedes V-Class is Apex Limo's answer to a simple problem: most \"group\" vehicles feel like a step down from a proper luxury sedan. This one doesn't. Configurable captain's chairs, individually controlled rear climate zones, and the same meticulous fit and finish found across the Mercedes range mean six passengers travel with exactly the comfort a solo executive would expect in an S-Class — nobody in the party is treated as an afterthought.\n\nFor executive and corporate transportation, the V-Class solves a scheduling problem as much as a comfort one. A visiting leadership team, a delegation arriving for a signing ceremony, or a project team moving between meetings can travel together in one coordinated vehicle rather than splitting across two or three sedans — one pickup time, one route, one chauffeur who already knows the day's itinerary. It's a frequent choice for corporate roadshows moving between DIFC and Business Bay in a single afternoon, where keeping a team together matters as much as the vehicle itself.\n\nAirport transfers are where the V-Class earns its reputation fastest. Families and groups landing at DXB or DWC with a genuine amount of luggage need more than a sedan's boot can offer, and the V-Class's dedicated luggage area handles it without anyone holding a bag on their lap. Every airport booking includes the same live flight tracking and meet-and-greet service as any other Apex vehicle, so a group of six is met with exactly the same attentiveness as a solo executive arrival.\n\nFamily travel is arguably where this vehicle feels most at home. Sliding doors make loading car seats and strollers straightforward rather than an exercise in patience, individual reading lights and captain's chairs keep children comfortable on longer drives, and the rear entertainment screen helps the miles pass on a trip out to the desert or between hotels. It's the vehicle we recommend most often to families visiting Dubai for the first time.\n\nFor group and event travel, the V-Class scales in a way a sedan simply can't. Wedding parties, conference delegates, and tour groups all move as a single unit rather than a convoy of separate cars, which simplifies timing enormously — one chauffeur to brief, one pickup point to coordinate, one vehicle to track. Multiple V-Class vans are frequently deployed together for larger events, running on the same shared timeline as the rest of an Apex fleet booking.\n\nHotel transfers benefit from the same practicality: a family or small group checking into or out of a Dubai hotel moves as one party, met by one chauffeur, in one vehicle sized correctly for their luggage and headcount. And because it's still a Mercedes-Benz built to the brand's usual standard, none of that practicality comes at the expense of comfort — the V-Class simply proves that traveling as a group and traveling in luxury were never mutually exclusive.",
     passengers: 6,
     luggage: 6,
     idealFor: "Group transfers & events",
@@ -499,6 +499,8 @@ export const FLEET: FleetVehicle[] = [
       "Luggage capacity matched to passenger count for full travel parties",
       "Sliding doors make loading and unloading effortless at hotels",
       "One coordinated vehicle instead of multiple sedans",
+      "Individual climate zones keep every passenger comfortable, not just the front row",
+      "The same fixed pricing and live flight tracking as every other Apex vehicle",
     ],
     faqs: [
       {
@@ -515,6 +517,31 @@ export const FLEET: FleetVehicle[] = [
         question: "Can the V-Class be booked for events?",
         answer:
           "Absolutely. We regularly deploy multiple V-Class vans for conferences and weddings needing coordinated group transport.",
+      },
+      {
+        question: "Is a professional chauffeur included with every V-Class booking?",
+        answer:
+          "Yes, every V-Class booking includes a professional, licensed chauffeur — the vehicle is never available for self-drive hire.",
+      },
+      {
+        question: "Can I book the Mercedes V-Class for a full day?",
+        answer:
+          "Yes, full-day (10-hour) and half-day (5-hour) hire are both available, in addition to hourly and airport transfer bookings.",
+      },
+      {
+        question: "Is the V-Class suitable for corporate roadshows?",
+        answer:
+          "Yes, it's a popular choice for teams moving between several meetings in one day, keeping the whole group together in one vehicle.",
+      },
+      {
+        question: "Does the V-Class have Wi-Fi and phone charging onboard?",
+        answer:
+          "Yes, onboard Wi-Fi and phone charging are available, alongside individual reading lights for each seat.",
+      },
+      {
+        question: "How much luggage can the Mercedes V-Class carry?",
+        answer:
+          "The V-Class comfortably carries luggage for all 6 passengers in its dedicated rear luggage area, in addition to seating.",
       },
     ],
     images: {

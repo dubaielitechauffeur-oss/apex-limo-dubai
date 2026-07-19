@@ -10,6 +10,7 @@ import Card from "@/components/shared/Card";
 import VehicleGallery from "@/components/fleet/VehicleGallery";
 import VehicleCard from "@/components/fleet/VehicleCard";
 import BookingCTA from "@/components/home/BookingCTA";
+import MercedesVClassPremiumPage from "@/components/fleet/premium/MercedesVClassPremiumPage";
 import { buildMetadata, faqJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
@@ -84,8 +85,8 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     ? LOCATIONS.find((l) => l.slug === crossLinks.locationSlug)
     : undefined;
 
-  return (
-    <div>
+  const jsonLdScripts = (
+    <>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
@@ -96,6 +97,28 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(vehicle.faqs)) }}
       />
+    </>
+  );
+
+  // Premium page pilot — Mercedes V-Class only, per the current test scope.
+  // Every other vehicle continues to render the default template below.
+  if (vehicle.slug === "mercedes-v-class") {
+    return (
+      <>
+        {jsonLdScripts}
+        <MercedesVClassPremiumPage
+          vehicle={vehicle}
+          otherVehicles={otherVehicles}
+          relatedService={relatedService}
+          relatedLocation={relatedLocation}
+        />
+      </>
+    );
+  }
+
+  return (
+    <div>
+      {jsonLdScripts}
 
       {/* Hero zone */}
       <Section tone="obsidian" padding="sm" separator={false}>
