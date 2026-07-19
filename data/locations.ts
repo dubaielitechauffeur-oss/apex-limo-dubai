@@ -28,12 +28,15 @@ export interface Location {
   landmarks: string[];
   /** Card image for the /locations listing page. */
   image: LocationImage;
+  /** Short 2-3 word chips shown on the homepage location card (not full sentences). */
+  tags: string[];
 }
 
 export const LOCATIONS: Location[] = [
   {
     slug: "dubai-marina",
     name: "Dubai Marina",
+    tags: ["Luxury Hotels", "Private Transfers", "VIP Pickups"],
     image: {
       src: "/images/locations/dubai-marina.webp",
       alt: "Aerial view of Dubai Marina at sunset with the Cayan Tower and marina waterfront",
@@ -86,6 +89,7 @@ export const LOCATIONS: Location[] = [
   {
     slug: "palm-jumeirah",
     name: "Palm Jumeirah",
+    tags: ["Resorts", "Luxury Villas", "Airport Transfers"],
     image: {
       src: "/images/locations/palm-jumeirah.webp",
       alt: "Luxury resort courtyard and pool lined with palm trees on Palm Jumeirah at dusk",
@@ -137,6 +141,7 @@ export const LOCATIONS: Location[] = [
   {
     slug: "downtown-dubai",
     name: "Downtown Dubai",
+    tags: ["Burj Khalifa", "Dubai Mall", "Executive Travel"],
     image: {
       src: "/images/locations/downtown-dubai.webp",
       alt: "Aerial night view of Burj Khalifa, The Address Downtown, and Dubai Fountain",
@@ -187,6 +192,7 @@ export const LOCATIONS: Location[] = [
   {
     slug: "business-bay",
     name: "Business Bay",
+    tags: ["Corporate Travel", "Business Meetings", "Executive Chauffeurs"],
     image: {
       src: "/images/locations/business-bay.webp",
       alt: "Burj Khalifa and Business Bay skyline at dusk, viewed from the Dubai Water Canal bridge",
@@ -236,6 +242,7 @@ export const LOCATIONS: Location[] = [
   {
     slug: "jbr",
     name: "JBR",
+    tags: ["Luxury Residences", "VIP Transportation", "Leisure Travel"],
     image: {
       src: "/images/locations/jbr.webp",
       alt: "JBR beach at sunset with Ain Dubai observation wheel in the background",
@@ -286,6 +293,7 @@ export const LOCATIONS: Location[] = [
   {
     slug: "dubai-international-airport-dxb",
     name: "Dubai International Airport (DXB)",
+    tags: ["Meet & Greet", "Flight Tracking", "Executive Pickup"],
     image: {
       src: "/images/locations/dubai-international-airport-dxb.webp",
       alt: "Emirates aircraft lined up at Dubai International Airport terminal",
