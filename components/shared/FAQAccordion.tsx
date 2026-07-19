@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 
@@ -89,6 +90,16 @@ export default function FAQAccordion({
               </div>
             );
           })}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            href="/faqs"
+            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 hover:text-gold-deep"
+          >
+            View All FAQs
+            <ArrowRight className="h-4 w-4" strokeWidth={2} />
+          </Link>
         </div>
       </Container>
     </section>
