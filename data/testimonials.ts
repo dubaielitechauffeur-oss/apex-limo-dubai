@@ -20,6 +20,8 @@ export interface Testimonial {
   avatarInitials: string;
   /** Populated once synced from a real Google review. */
   profileUrl?: string;
+  /** Shown in the homepage's 3-card featured spotlight; all reviews still count toward the aggregate rating/JSON-LD regardless of this flag. */
+  featured?: boolean;
 }
 
 export const TESTIMONIALS: Testimonial[] = [
@@ -33,6 +35,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "2026-06-25",
     source: "direct",
     avatarInitials: "RA",
+    featured: true,
   },
   {
     id: "review-002",
@@ -55,6 +58,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "2026-05-28",
     source: "direct",
     avatarInitials: "SL",
+    featured: true,
   },
   {
     id: "review-004",
@@ -88,5 +92,6 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "2026-06-30",
     source: "direct",
     avatarInitials: "OC",
+    featured: true,
   },
 ];
