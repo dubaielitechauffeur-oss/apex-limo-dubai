@@ -25,6 +25,14 @@ const FEATURED_LOCATIONS: { slug: string; displayName?: string }[] = [
   { slug: "jbr", displayName: "Jumeirah" },
 ];
 
+interface LocationsShowcaseProps {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  /** "light" (default) — matches the homepage's ivory section. "dark" — for reuse on a black section elsewhere on the site. */
+  tone?: "light" | "dark";
+}
+
 /**
  * "Where We Operate" — a luxury editorial locations showcase, matching the
  * homepage Services section's card design exactly: large 4:5 portrait
@@ -32,7 +40,12 @@ const FEATURED_LOCATIONS: { slug: string; displayName?: string }[] = [
  * scoped gold accent (#C9A14A). Desktop shows 3 per row, tablet 2, and
  * mobile falls back to a native horizontal scroll-snap swipe row.
  */
-export default function LocationsShowcase() {
+export default function LocationsShowcase({
+  eyebrow = "Where We Operate",
+  title = "Premium Chauffeur Service Across Dubai & UAE",
+  subtitle = "Luxury chauffeur services available across Dubai's most important business, leisure and residential destinations.",
+  tone = "light",
+}: LocationsShowcaseProps) {
   const cards = FEATURED_LOCATIONS.reduce<FeaturedCard[]>((acc, { slug, displayName }) => {
     const location = LOCATIONS.find((l) => l.slug === slug);
     if (location) acc.push({ location, displayName });
@@ -40,14 +53,9 @@ export default function LocationsShowcase() {
   }, []);
 
   return (
-    <section className="border-t border-gold/10 bg-ivory py-24">
+    <section className={`border-t border-gold/10 py-24 ${tone === "dark" ? "bg-obsidian" : "bg-ivory"}`}>
       <Container>
-        <SectionHeading
-          eyebrow="Where We Operate"
-          title="Premium Chauffeur Service Across Dubai & UAE"
-          subtitle="Luxury chauffeur services available across Dubai's most important business, leisure and residential destinations."
-          tone="light"
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} tone={tone} />
 
         <div className="mt-16 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
           {cards.map(({ location, displayName }) => (
