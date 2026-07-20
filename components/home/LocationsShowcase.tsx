@@ -5,7 +5,7 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { LOCATIONS, type Location } from "@/data/locations";
 
-interface FeaturedCard {
+export interface FeaturedCard {
   location: Location;
   displayName?: string;
 }
@@ -31,6 +31,10 @@ interface LocationsShowcaseProps {
   subtitle?: string;
   /** "light" (default) — matches the homepage's ivory section. "dark" — for reuse on a black section elsewhere on the site. */
   tone?: "light" | "dark";
+  /** Cards to display — defaults to the curated homepage selection.
+   *  Pass a custom list (e.g. a location detail page's "other areas")
+   *  to reuse this exact card design with a different set of locations. */
+  cards?: FeaturedCard[];
 }
 
 /**
@@ -45,12 +49,15 @@ export default function LocationsShowcase({
   title = "Premium Chauffeur Service Across Dubai & UAE",
   subtitle = "Luxury chauffeur services available across Dubai's most important business, leisure and residential destinations.",
   tone = "light",
+  cards,
 }: LocationsShowcaseProps) {
-  const cards = FEATURED_LOCATIONS.reduce<FeaturedCard[]>((acc, { slug, displayName }) => {
-    const location = LOCATIONS.find((l) => l.slug === slug);
-    if (location) acc.push({ location, displayName });
-    return acc;
-  }, []);
+  const resolvedCards =
+    cards ??
+    FEATURED_LOCATIONS.reduce<FeaturedCard[]>((acc, { slug, displayName }) => {
+      const location = LOCATIONS.find((l) => l.slug === slug);
+      if (location) acc.push({ location, displayName });
+      return acc;
+    }, []);
 
   return (
     <section className={`border-t border-gold/10 py-24 ${tone === "dark" ? "bg-obsidian" : "bg-ivory"}`}>
@@ -58,7 +65,7 @@ export default function LocationsShowcase({
         <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} tone={tone} />
 
         <div className="mt-16 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
-          {cards.map(({ location, displayName }) => (
+          {resolvedCards.map(({ location, displayName }) => (
             <Link
               key={location.slug}
               href={`/locations/${location.slug}`}

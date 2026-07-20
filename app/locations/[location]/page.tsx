@@ -8,7 +8,6 @@ import {
   Star,
   ChevronDown,
   ArrowLeft,
-  ArrowUpRight,
   ArrowRight,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -20,6 +19,7 @@ import FleetCarousel from "@/components/home/FleetCarousel";
 import BrandsShowcase from "@/components/home/BrandsShowcase";
 import TrustStats from "@/components/home/TrustStats";
 import ServicesGrid from "@/components/home/ServicesGrid";
+import LocationsShowcase from "@/components/home/LocationsShowcase";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
@@ -323,38 +323,14 @@ export default async function LocationDetailPage({ params }: PageProps) {
       {/* Other Services — identical to the homepage services showcase. */}
       <ServicesGrid />
 
-      {/* Related locations */}
-      <Section tone="linen">
-        <Container>
-          <SectionHeading eyebrow="Explore More" title="Other Areas We Serve" tone="light" />
-          <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-3">
-            {otherLocations.map((related) => {
-              const RelatedIcon = related.isAirport ? Plane : MapPin;
-              return (
-                <Link
-                  key={related.slug}
-                  href={`/locations/${related.slug}`}
-                  className="group flex flex-col justify-between bg-ivory p-7 transition-colors duration-200 hover:bg-ivory-off"
-                >
-                  <div>
-                    <RelatedIcon className="h-6 w-6 text-gold-deep" strokeWidth={1.5} />
-                    <h3 className="mt-4 font-display text-lg text-obsidian">
-                      {related.name}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-graphite">
-                      {related.shortDescription}
-                    </p>
-                  </div>
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
-                    Explore area
-                    <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </Container>
-      </Section>
+      {/* Related locations — identical to the homepage locations showcase,
+          scoped to the other areas we serve besides this one. */}
+      <LocationsShowcase
+        eyebrow="Explore More"
+        title="Other Areas We Serve"
+        subtitle={`Chauffeur service is also available across these nearby ${SITE.name} destinations.`}
+        cards={otherLocations.map((related) => ({ location: related }))}
+      />
 
       <BookingCTA />
     </div>
