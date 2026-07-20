@@ -2,11 +2,11 @@
 import Link from "next/link";
 import { Clock, Car, Languages, Calendar, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
-import { PRIMARY_CTA } from "@/lib/constants";
+import { PRIMARY_CTA, FLEET_SIZE } from "@/lib/constants";
 
 const TRUST_INDICATORS = [
   { icon: Clock, label: "24/7 Concierge" },
-  { icon: Car, label: "50+ Luxury Vehicles" },
+  { icon: Car, label: `${FLEET_SIZE} Luxury Vehicles` },
   { icon: Languages, label: "Multilingual Chauffeurs" },
 ];
 

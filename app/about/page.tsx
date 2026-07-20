@@ -23,6 +23,7 @@ import BookingCTA from "@/components/home/BookingCTA";
 import AboutHero from "@/components/about/AboutHero";
 import { buildMetadata } from "@/lib/seo";
 import { FLEET } from "@/data/fleet";
+import { FLEET_SIZE } from "@/lib/constants";
 import { LOCATIONS } from "@/data/locations";
 import { TESTIMONIALS } from "@/data/testimonials";
 
@@ -72,7 +73,7 @@ const STANDARDS = [
 
 const BY_THE_NUMBERS = [
   { icon: Award, value: "10+", label: "Years of Experience" },
-  { icon: Car, value: `${FLEET.length}`, label: "Luxury Vehicles" },
+  { icon: Car, value: `${FLEET_SIZE}`, label: "Luxury Vehicles" },
   { icon: Users, value: "1000+", label: "Happy Clients" },
   { icon: Star, value: "5.0", label: "Average Rating" },
 ];
@@ -256,7 +257,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="Our Fleet"
             title="A Vehicle for Every Occasion"
-            subtitle={`${FLEET.length} vehicles, all late-model, detailed before every trip, and matched to the journey.`}
+            subtitle={`${FLEET_SIZE} vehicles, all late-model, detailed before every trip, and matched to the journey.`}
             tone="light"
           />
           <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
