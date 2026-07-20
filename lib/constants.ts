@@ -18,6 +18,12 @@ export const SITE = {
   email: "bookings@apexlimodubai.com",
 } as const;
 
+/**
+ * Official aggregate client rating, quoted consistently in copy and
+ * structured data everywhere the site references a rating.
+ */
+export const RATING = "4.9";
+
 /** WhatsApp deep link with a pre-filled inquiry message. */
 export const getWhatsAppLink = (message?: string) => {
   const defaultMessage =
