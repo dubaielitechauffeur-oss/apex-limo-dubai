@@ -22,6 +22,7 @@ import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import AboutHero from "@/components/about/AboutHero";
 import { buildMetadata } from "@/lib/seo";
+import { RATING } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { FLEET_SIZE } from "@/lib/constants";
 import { LOCATIONS } from "@/data/locations";
@@ -75,7 +76,7 @@ const BY_THE_NUMBERS = [
   { icon: Award, value: "10+", label: "Years of Experience" },
   { icon: Car, value: `${FLEET_SIZE}`, label: "Luxury Vehicles" },
   { icon: Users, value: "1000+", label: "Happy Clients" },
-  { icon: Star, value: "5.0", label: "Average Rating" },
+  { icon: Star, value: RATING, label: "Average Rating" },
 ];
 
 const FEATURED_FLEET_SLUGS = [
@@ -98,8 +99,8 @@ const WHY_CLIENTS_CHOOSE = [
   },
   {
     icon: Star,
-    title: "5-Star Client Reviews",
-    description: "Consistently rated 5.0 by verified clients across every service we offer.",
+    title: "4.9-Star Client Reviews",
+    description: "Consistently rated 4.9 by verified clients across every service we offer.",
   },
   {
     icon: HeartHandshake,

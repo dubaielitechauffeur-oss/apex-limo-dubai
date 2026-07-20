@@ -2,7 +2,7 @@ import { Star, BadgeCheck } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { TESTIMONIALS } from "@/data/testimonials";
-import { SITE } from "@/lib/constants";
+import { SITE, RATING } from "@/lib/constants";
 import { organizationId } from "@/lib/seo";
 
 /** Renders a row of filled/outline stars for a given rating out of 5. */
@@ -28,9 +28,6 @@ function StarRow({ rating, size = "h-4 w-4" }: { rating: number; size?: string }
  * aggregate rating reflects the full review count.
  */
 function reviewsJsonLd() {
-  const avg =
-    TESTIMONIALS.reduce((sum, t) => sum + t.rating, 0) / TESTIMONIALS.length;
-
   return {
     "@context": "https://schema.org",
     "@type": "LimousineService",
@@ -38,7 +35,7 @@ function reviewsJsonLd() {
     name: SITE.name,
     aggregateRating: {
       "@type": "AggregateRating",
-      ratingValue: avg.toFixed(1),
+      ratingValue: RATING,
       reviewCount: TESTIMONIALS.length,
       bestRating: 5,
     },
@@ -65,8 +62,6 @@ function reviewsJsonLd() {
  */
 export default function Testimonials() {
   const featured = TESTIMONIALS.filter((t) => t.featured);
-  const avgRating =
-    TESTIMONIALS.reduce((sum, t) => sum + t.rating, 0) / TESTIMONIALS.length;
   const mapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     SITE.name
   )}`;
@@ -89,8 +84,8 @@ export default function Testimonials() {
         {/* Google-style aggregate rating */}
         <div className="mx-auto mt-10 flex flex-col items-center gap-3 text-center">
           <div className="flex items-center gap-3">
-            <StarRow rating={Math.round(avgRating)} size="h-6 w-6" />
-            <span className="font-display text-3xl text-obsidian">{avgRating.toFixed(1)}</span>
+            <StarRow rating={Math.round(parseFloat(RATING))} size="h-6 w-6" />
+            <span className="font-display text-3xl text-obsidian">{RATING}</span>
           </div>
           <p className="text-xs uppercase tracking-[0.2em] text-graphite">
             Based on verified client reviews

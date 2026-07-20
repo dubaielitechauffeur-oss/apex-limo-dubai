@@ -1,8 +1,9 @@
 import { Star, Plane, Users, Clock } from "lucide-react";
 import Container from "@/components/shared/Container";
+import { RATING } from "@/lib/constants";
 
 const TRUST_METRICS = [
-  { icon: Star, value: "4.9", label: "Rating" },
+  { icon: Star, value: RATING, label: "Rating" },
   { icon: Plane, value: "500+", label: "Airport Transfers" },
   { icon: Users, value: "1000+", label: "Happy Clients" },
   { icon: Clock, value: "24/7", label: "Concierge" },
