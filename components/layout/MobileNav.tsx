@@ -17,7 +17,11 @@ interface MobileNavProps {
 
 /** Full-screen mobile navigation panel, shown when the header's menu button is tapped. */
 export default function MobileNav({ open, onClose }: MobileNavProps) {
-  const [servicesOpen, setServicesOpen] = useState(false);
+  // Tracks which single nav item's submenu is expanded (accordion-style).
+  // Kept by href rather than a per-item boolean so Services and Locations
+  // each expand/collapse independently via their own "+" toggle, while the
+  // label itself stays a plain link straight to that section's main page.
+  const [openHref, setOpenHref] = useState<string | null>(null);
 
   return (
     // `inert` removes the panel's links/buttons from keyboard tab order and
@@ -37,26 +41,40 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
             <li key={link.href} className="py-4">
               {"children" in link && link.children ? (
                 <div>
-                  <button
-                    onClick={() => setServicesOpen((v) => !v)}
-                    className="flex w-full items-center justify-between font-display text-2xl text-ivory"
-                    aria-expanded={servicesOpen}
-                  >
-                    {link.label}
-                    <span
-                      className={`text-gold transition-transform duration-200 ${
-                        servicesOpen ? "rotate-45" : ""
-                      }`}
+                  <div className="flex items-center justify-between gap-3">
+                    <Link
+                      href={link.href}
+                      onClick={onClose}
+                      className="font-display text-2xl text-ivory transition-colors hover:text-gold"
                     >
-                      +
-                    </span>
-                  </button>
+                      {link.label}
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setOpenHref((current) => (current === link.href ? null : link.href))
+                      }
+                      aria-expanded={openHref === link.href}
+                      aria-label={`${openHref === link.href ? "Collapse" : "Expand"} ${link.label} submenu`}
+                      className="flex h-11 w-11 shrink-0 items-center justify-center text-2xl text-gold"
+                    >
+                      <span
+                        className={`inline-block transition-transform duration-200 ${
+                          openHref === link.href ? "rotate-45" : ""
+                        }`}
+                      >
+                        +
+                      </span>
+                    </button>
+                  </div>
                   <div
                     className={`grid overflow-hidden transition-all duration-300 ${
-                      servicesOpen
+                      openHref === link.href
                         ? "mt-3 grid-rows-[1fr] opacity-100"
                         : "grid-rows-[0fr] opacity-0"
                     }`}
+                    aria-hidden={openHref !== link.href}
+                    inert={openHref !== link.href}
                   >
                     <ul className="flex flex-col gap-3 overflow-hidden pl-1">
                       {link.children.map((child) => (
