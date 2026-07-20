@@ -67,8 +67,8 @@ export default function FleetCarouselCard({ vehicle }: FleetCarouselCardProps) {
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/15">
               <Icon className="h-4 w-4 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
             </span>
-            <span className="text-[10px] uppercase tracking-wide text-graphite">{label}</span>
-            <span className="text-xs font-semibold text-obsidian">{formatAed(amount)}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-obsidian/75">{label}</span>
+            <span className="text-xs font-bold text-obsidian">{formatAed(amount)}</span>
           </div>
         ))}
       </div>

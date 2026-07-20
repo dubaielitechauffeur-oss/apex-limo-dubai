@@ -1,4 +1,4 @@
-import { Star, BadgeCheck, Plane, Users, Clock } from "lucide-react";
+import { Star, BadgeCheck } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { TESTIMONIALS } from "@/data/testimonials";
@@ -19,13 +19,6 @@ function StarRow({ rating, size = "h-4 w-4" }: { rating: number; size?: string }
     </div>
   );
 }
-
-const TRUST_METRICS = [
-  { icon: Star, value: "5.0", label: "Rating" },
-  { icon: Plane, value: "500+", label: "Airport Transfers" },
-  { icon: Users, value: "1000+", label: "Happy Clients" },
-  { icon: Clock, value: "24/7", label: "Concierge" },
-];
 
 /**
  * Review + AggregateRating JSON-LD for the business. Uses the same @id as
@@ -146,17 +139,6 @@ export default function Testimonials() {
                 </div>
               </div>
             </figure>
-          ))}
-        </div>
-
-        {/* Trust metrics */}
-        <div className="mt-16 grid grid-cols-2 gap-8 border-t border-gold/15 pt-10 sm:grid-cols-4">
-          {TRUST_METRICS.map((metric) => (
-            <div key={metric.label} className="flex flex-col items-center gap-2 text-center">
-              <metric.icon className="h-5 w-5 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
-              <span className="font-display text-2xl text-obsidian sm:text-3xl">{metric.value}</span>
-              <span className="text-xs uppercase tracking-wide text-graphite">{metric.label}</span>
-            </div>
           ))}
         </div>
       </Container>

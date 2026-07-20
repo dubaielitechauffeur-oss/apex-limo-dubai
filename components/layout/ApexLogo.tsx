@@ -15,19 +15,21 @@ interface ApexLogoProps {
  * header/footer's black background, per the brand redesign.
  */
 export default function ApexLogo({ size = "sm", align = "left", className = "" }: ApexLogoProps) {
-  const nameSize = size === "sm" ? "text-2xl sm:text-3xl" : "text-4xl sm:text-5xl";
+  const nameSize = size === "sm" ? "text-4xl sm:text-5xl" : "text-6xl sm:text-7xl";
+  const nameTracking = size === "sm" ? "tracking-[0.135em] sm:tracking-[0.02em]" : "tracking-[-0.02em] sm:tracking-[-0.04em]";
   const taglineSize = size === "sm" ? "text-[9px] sm:text-[10px]" : "text-[11px] sm:text-xs";
-  const taglineGap = size === "sm" ? "mt-0.5" : "mt-1.5";
+  const taglineTracking = size === "sm" ? "tracking-[0.14em] sm:tracking-[0.18em]" : "tracking-[0.22em] sm:tracking-[0.27em]";
+  const taglineGap = size === "sm" ? "mt-1.5" : "mt-2.5";
 
   return (
     <div
       className={`flex flex-col ${align === "center" ? "items-center text-center" : "items-start text-left"} ${className}`}
     >
-      <span className={`font-logo italic leading-none tracking-tighter text-white ${nameSize}`}>
+      <span className={`font-logo font-black italic leading-none text-white ${nameSize} ${nameTracking}`}>
         APEX
       </span>
       <span
-        className={`${taglineGap} font-body font-medium uppercase tracking-[0.32em] text-white ${taglineSize}`}
+        className={`${taglineGap} font-body font-medium uppercase text-white ${taglineSize} ${taglineTracking}`}
       >
         Luxury Chauffeur
       </span>
