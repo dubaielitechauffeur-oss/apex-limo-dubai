@@ -5,6 +5,7 @@ import ServicesGrid from "@/components/home/ServicesGrid";
 import LocationsShowcase from "@/components/home/LocationsShowcase";
 import FleetCarousel from "@/components/home/FleetCarousel";
 import BrandsShowcase from "@/components/home/BrandsShowcase";
+import TrustStats from "@/components/home/TrustStats";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Testimonials from "@/components/home/Testimonials";
 import FAQSection from "@/components/home/FAQSection";
@@ -31,6 +32,7 @@ export default function Home() {
       <FeatureStrip />
       <FleetCarousel />
       <BrandsShowcase />
+      <TrustStats />
       <ServicesGrid />
       <LocationsShowcase />
       <WhyChooseUs />

@@ -9,13 +9,24 @@ import {
   getWhatsAppLink,
 } from "@/lib/constants";
 
+/** Curated footer order + display-name override, mirroring the homepage
+ *  LocationsShowcase pattern — "Jumeirah" links to the existing JBR page. */
+const FOOTER_LOCATIONS = [
+  { slug: "dubai-marina", label: "Dubai Marina" },
+  { slug: "downtown-dubai", label: "Downtown Dubai" },
+  { slug: "palm-jumeirah", label: "Palm Jumeirah" },
+  { slug: "business-bay", label: "Business Bay" },
+  { slug: "jbr", label: "Jumeirah" },
+  { slug: "dubai-international-airport-dxb", label: "Dubai Airport" },
+];
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="border-t border-gold/15 bg-obsidian">
       <Container className="py-16">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div>
             <ApexLogo size="md" align="center" className="sm:items-start sm:text-left" />
@@ -53,6 +64,23 @@ export default function Footer() {
                     className="text-sm text-smoke transition-colors hover:text-gold"
                   >
                     {service.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Locations */}
+          <div>
+            <h3 className="label-eyebrow mb-5">Locations</h3>
+            <ul className="flex flex-col gap-3">
+              {FOOTER_LOCATIONS.map((location) => (
+                <li key={location.slug}>
+                  <Link
+                    href={`/locations/${location.slug}`}
+                    className="text-sm text-smoke transition-colors hover:text-gold"
+                  >
+                    {location.label}
                   </Link>
                 </li>
               ))}

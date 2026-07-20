@@ -15,19 +15,19 @@ interface ApexLogoProps {
  * header/footer's black background, per the brand redesign.
  */
 export default function ApexLogo({ size = "sm", align = "left", className = "" }: ApexLogoProps) {
-  const nameSize = size === "sm" ? "text-2xl sm:text-3xl" : "text-4xl sm:text-5xl";
+  const nameSize = size === "sm" ? "text-3xl sm:text-5xl" : "text-5xl sm:text-7xl";
   const taglineSize = size === "sm" ? "text-[9px] sm:text-[10px]" : "text-[11px] sm:text-xs";
-  const taglineGap = size === "sm" ? "mt-0.5" : "mt-1.5";
+  const taglineGap = size === "sm" ? "mt-1.5" : "mt-2.5";
 
   return (
     <div
       className={`flex flex-col ${align === "center" ? "items-center text-center" : "items-start text-left"} ${className}`}
     >
-      <span className={`font-logo italic leading-none tracking-tighter text-white ${nameSize}`}>
+      <span className={`font-logo font-black italic leading-none tracking-[0.02em] text-white ${nameSize}`}>
         APEX
       </span>
       <span
-        className={`${taglineGap} font-body font-medium uppercase tracking-[0.32em] text-white ${taglineSize}`}
+        className={`${taglineGap} font-body font-medium uppercase tracking-[0.18em] text-white ${taglineSize}`}
       >
         Luxury Chauffeur
       </span>
