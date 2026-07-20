@@ -5,7 +5,7 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import FleetListingCard from "@/components/fleet/FleetListingCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata } from "@/lib/seo";
-import { SITE } from "@/lib/constants";
+import { SITE, FLEET_SIZE } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -57,7 +57,7 @@ export default function FleetPage() {
         <Container>
           <SectionHeading
             eyebrow="The Apex Fleet"
-            title="Six Vehicles, Every Occasion Covered"
+            title={`${FLEET_SIZE} Luxury Vehicles, Every Occasion Covered`}
             subtitle="From a discreet airport transfer to a Rolls-Royce wedding entrance, every vehicle in our Dubai fleet is late-model, meticulously maintained, and matched with a professionally trained chauffeur."
             tone="light"
           />

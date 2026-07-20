@@ -7,6 +7,7 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import FleetCarouselCard from "./FleetCarouselCard";
 import { FLEET } from "@/data/fleet";
+import { FLEET_SIZE } from "@/lib/constants";
 import { useInfiniteCarousel } from "./useInfiniteCarousel";
 
 /** Cards visible at once: 1 on mobile, 2 on tablet, 3 on desktop.
@@ -69,7 +70,7 @@ export default function FleetCarousel() {
         <SectionHeading
           eyebrow="The Fleet"
           title="Explore Our Fleet"
-          subtitle="Fifteen late-model vehicles, one uncompromising standard — every journey with a professional chauffeur included."
+          subtitle={`${FLEET_SIZE} late-model vehicles, one uncompromising standard — every journey with a professional chauffeur included.`}
           tone="light"
         />
 
