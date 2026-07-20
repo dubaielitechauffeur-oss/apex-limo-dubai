@@ -36,7 +36,7 @@ export const getPhoneLink = () => `tel:${SITE.phone}`;
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "Fleet", href: "/fleet" },
   {
     label: "Services",
     href: "/services",
@@ -49,8 +49,19 @@ export const NAV_LINKS = [
       { label: "Wedding Chauffeur", href: "/services/wedding-chauffeur" },
     ],
   },
-  { label: "Fleet", href: "/fleet" },
-  { label: "Locations", href: "/locations" },
+  {
+    label: "Locations",
+    href: "/locations",
+    children: [
+      { label: "Dubai Marina", href: "/locations/dubai-marina" },
+      { label: "Downtown Dubai", href: "/locations/downtown-dubai" },
+      { label: "Palm Jumeirah", href: "/locations/palm-jumeirah" },
+      { label: "Business Bay", href: "/locations/business-bay" },
+      { label: "Jumeirah", href: "/locations/jbr" },
+      { label: "Dubai Airport", href: "/locations/dubai-international-airport-dxb" },
+    ],
+  },
+  { label: "About", href: "/about" },
   { label: "FAQs", href: "/faqs" },
   { label: "Contact", href: "/contact" },
 ] as const;
