@@ -16,6 +16,10 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
+import FleetCarousel from "@/components/home/FleetCarousel";
+import BrandsShowcase from "@/components/home/BrandsShowcase";
+import TrustStats from "@/components/home/TrustStats";
+import ServicesGrid from "@/components/home/ServicesGrid";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
@@ -176,10 +180,20 @@ export default async function LocationDetailPage({ params }: PageProps) {
         </Container>
       </section>
 
-      {/* Body zone */}
+      {/* Our Fleet — identical to the homepage fleet carousel, so visitors
+          landing here from search see the available fleet immediately. */}
+      <FleetCarousel />
+
+      {/* Our Brands — identical to the homepage brand marquee. */}
+      <BrandsShowcase />
+
+      {/* Trust / Stats — identical to the homepage trust band. */}
+      <TrustStats />
+
+      {/* Location content zone */}
       <Section tone="ivory">
       <Container>
-        {/* Long-form SEO copy */}
+        {/* Condensed SEO copy */}
         <div className="max-w-3xl space-y-5">
           {location.longDescription.map((paragraph, index) => (
             <p key={index} className="text-sm leading-relaxed text-graphite sm:text-base">
@@ -204,34 +218,6 @@ export default async function LocationDetailPage({ params }: PageProps) {
           ) : null}
         </div>
 
-        {/* Popular routes */}
-        <div className="mt-20">
-          <SectionHeading
-            eyebrow="Popular Routes"
-            title={`Common Journeys From ${location.name}`}
-            align="left"
-            tone="light"
-          />
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {location.popularRoutes.map((route) => (
-              <Card
-                key={`${route.from}-${route.to}`}
-                tone="light"
-                className="flex items-center justify-between gap-4 p-5"
-              >
-                <div className="flex items-center gap-2 text-sm text-obsidian">
-                  <span>{route.from}</span>
-                  <ArrowRight className="h-3.5 w-3.5 shrink-0 text-gold-deep" strokeWidth={2} />
-                  <span>{route.to}</span>
-                </div>
-                <span className="shrink-0 text-xs uppercase tracking-wide text-graphite">
-                  {route.duration}
-                </span>
-              </Card>
-            ))}
-          </div>
-        </div>
-
         {/* Why Choose Apex in this area */}
         <div className="mt-20">
           <SectionHeading
@@ -252,38 +238,94 @@ export default async function LocationDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      {/* FAQ + related locations zone */}
-      <Section tone="linen">
-      <Container>
-        {/* FAQ — native <details>/<summary> keeps this interactive without
-            a client component, so the page stays fully server-rendered. */}
-        <div className="max-w-3xl">
-          <SectionHeading
-            eyebrow="Common Questions"
-            title={`${location.name} FAQs`}
-            align="left"
-            tone="light"
-          />
-          <div className="mt-8 divide-y divide-obsidian/10 border-y border-obsidian/10">
-            {location.faqs.map((faq) => (
-              <details key={faq.question} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
-                  {faq.question}
-                  <ChevronDown
-                    className="h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 group-open:rotate-180"
-                    strokeWidth={1.5}
-                  />
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
-                  {faq.answer}
-                </p>
-              </details>
+      {/* Common Journeys — black luxury theme matching the FAQ Hub / Contact
+          page color system (#0A0A0A / #111111 / #C9A14A). */}
+      <section className="border-t border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
+        <Container>
+          <span className="label-eyebrow">Popular Routes</span>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl text-white sm:text-4xl">
+            Common Journeys From {location.name}
+          </h2>
+
+          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {location.popularRoutes.map((route) => (
+              <div
+                key={`${route.from}-${route.to}`}
+                className="flex items-center justify-between gap-4 rounded-xl border border-[rgba(201,161,74,0.15)] bg-[#121212] p-6 transition-colors duration-300 hover:bg-[#171717]"
+              >
+                <div className="flex items-center gap-2.5 text-sm text-white sm:text-base">
+                  <span>{route.from}</span>
+                  <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#C9A14A]" strokeWidth={2} />
+                  <span>{route.to}</span>
+                </div>
+                <span className="shrink-0 rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] px-3 py-1 text-xs uppercase tracking-wide text-[#B8B8B8]">
+                  {route.duration}
+                </span>
+              </div>
             ))}
           </div>
-        </div>
+        </Container>
+      </section>
 
-        {/* Related locations */}
-        <div className="mt-24">
+      {/* FAQ — black luxury theme with a visible background photo (this
+          location's own hero image) behind a moderate scrim, matching the
+          FAQ Hub's accordion card styling on top. */}
+      <section className="relative isolate overflow-hidden border-t border-[rgba(201,161,74,0.15)] bg-[#111111] py-20 sm:py-24">
+        <div className="absolute inset-0">
+          <Image
+            src={location.image.src}
+            alt=""
+            aria-hidden="true"
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+        <div aria-hidden="true" className="absolute inset-0 bg-[#0A0A0A]/60" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/40 via-[#0A0A0A]/75 to-[#0A0A0A]/50"
+        />
+
+        <Container className="relative">
+          <div className="max-w-3xl">
+            <span className="label-eyebrow">Common Questions</span>
+            <h2 className="mt-4 font-display text-3xl text-white sm:text-4xl">
+              {location.name} FAQs
+            </h2>
+
+            {/* FAQ — native <details>/<summary> keeps this interactive
+                without a client component, so the page stays fully
+                server-rendered. */}
+            <div className="mt-10 space-y-3">
+              {location.faqs.map((faq) => (
+                <details
+                  key={faq.question}
+                  className="group rounded-xl border border-[rgba(201,161,74,0.15)] bg-[#121212]/90 px-6 py-5 backdrop-blur-sm transition-colors duration-300 open:bg-[#171717]/90"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-base text-white marker:content-none sm:text-lg [&::-webkit-details-marker]:hidden">
+                    {faq.question}
+                    <ChevronDown
+                      className="h-5 w-5 shrink-0 text-[#C9A14A] transition-transform duration-200 group-open:rotate-180"
+                      strokeWidth={1.5}
+                    />
+                  </summary>
+                  <p className="mt-4 text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
+                    {faq.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Other Services — identical to the homepage services showcase. */}
+      <ServicesGrid />
+
+      {/* Related locations */}
+      <Section tone="linen">
+        <Container>
           <SectionHeading eyebrow="Explore More" title="Other Areas We Serve" tone="light" />
           <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-3">
             {otherLocations.map((related) => {
@@ -311,8 +353,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
               );
             })}
           </div>
-        </div>
-      </Container>
+        </Container>
       </Section>
 
       <BookingCTA />
