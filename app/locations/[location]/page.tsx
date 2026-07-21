@@ -133,6 +133,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
                 alt={(location.heroDesktopImage ?? location.image).alt}
                 fetchPriority="high"
                 decoding="async"
+                style={{ objectPosition: location.heroObjectPosition ?? "center" }}
                 className="h-full w-full object-cover"
               />
             </picture>
