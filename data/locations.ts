@@ -37,6 +37,10 @@ export interface Location {
    *  other, and neither affects `image` itself (still used elsewhere, e.g.
    *  the /locations listing card and this page's FAQ background). */
   heroMobileImage?: LocationImage;
+  /** Optional CSS object-position for the hero background (e.g. "80% center").
+   *  Applied via inline style, not a Tailwind class, since this file isn't
+   *  in Tailwind's content scan. Defaults to "center" when unset. */
+  heroObjectPosition?: string;
   /** Short 2-3 word chips shown on the homepage location card (not full sentences). */
   tags: string[];
 }
@@ -401,6 +405,15 @@ export const LOCATIONS: Location[] = [
       src: "/images/locations/jbr.webp",
       alt: "JBR beach at sunset with Ain Dubai observation wheel in the background",
     },
+    heroDesktopImage: {
+      src: "/images/locations/jbr-hero.webp",
+      alt: "Sunset at JBR beach with Ain Dubai observation wheel and The Beach promenade",
+    },
+    heroMobileImage: {
+      src: "/images/locations/jbr-hero.webp",
+      alt: "Sunset at JBR beach with Ain Dubai observation wheel and The Beach promenade",
+    },
+    heroObjectPosition: "80% center",
     tagline: "Beachfront pickups, made simple",
     heroSubtitle: "Chauffeur service along JBR's beachfront towers, The Walk, and The Beach.",
     shortDescription:
