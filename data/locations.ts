@@ -29,10 +29,14 @@ export interface Location {
   /** Card image for the /locations listing page. */
   image: LocationImage;
   /** Optional desktop-only override for this location's detail-page hero
-   *  background. When set, the hero shows this image at >=768px width and
-   *  keeps `image` for mobile; when omitted, `image` is used everywhere,
-   *  unchanged from the previous single-image behavior. */
+   *  background, shown at >=768px width. Falls back to `image` when unset. */
   heroDesktopImage?: LocationImage;
+  /** Optional mobile-only override for this location's detail-page hero
+   *  background, shown below 768px width. Falls back to `image` when unset.
+   *  Independent of `heroDesktopImage` — either can be set without the
+   *  other, and neither affects `image` itself (still used elsewhere, e.g.
+   *  the /locations listing card and this page's FAQ background). */
+  heroMobileImage?: LocationImage;
   /** Short 2-3 word chips shown on the homepage location card (not full sentences). */
   tags: string[];
 }
@@ -45,6 +49,14 @@ export const LOCATIONS: Location[] = [
     image: {
       src: "/images/locations/dubai-marina.webp",
       alt: "Aerial view of Dubai Marina at sunset with the Cayan Tower and marina waterfront",
+    },
+    heroDesktopImage: {
+      src: "/images/locations/dubai-marina-hero-desktop.webp",
+      alt: "Dubai Marina skyline viewed from the water, with the Marina's towers under a clear teal sky",
+    },
+    heroMobileImage: {
+      src: "/images/locations/dubai-marina-hero-mobile.webp",
+      alt: "Aerial dusk view of Dubai Marina's towers, waterway, and yacht-filled harbor",
     },
     tagline: "Waterfront living, door-to-door service",
     heroSubtitle:

@@ -115,17 +115,22 @@ export default async function LocationDetailPage({ params }: PageProps) {
 
       {/* Hero zone — reuses the same location.image shown on this
           location's /locations listing card, so both stay in sync.
-          Locations with a heroDesktopImage (currently only Downtown Dubai)
-          swap in that image at >=768px via <picture>, same pattern as the
-          homepage Hero, while mobile keeps the original location.image. */}
+          Locations with a heroDesktopImage and/or heroMobileImage swap in
+          those images via <picture> (same pattern as the homepage Hero),
+          falling back to location.image for whichever breakpoint has no
+          override. Locations with neither field keep the original
+          single-image behavior unchanged. */}
       <section className="relative isolate overflow-hidden bg-obsidian py-16 sm:py-20">
         <div className="absolute inset-0">
-          {location.heroDesktopImage ? (
+          {location.heroDesktopImage || location.heroMobileImage ? (
             <picture>
-              <source media="(max-width: 767px)" srcSet={location.image.src} />
+              <source
+                media="(max-width: 767px)"
+                srcSet={(location.heroMobileImage ?? location.image).src}
+              />
               <img
-                src={location.heroDesktopImage.src}
-                alt={location.heroDesktopImage.alt}
+                src={(location.heroDesktopImage ?? location.image).src}
+                alt={(location.heroDesktopImage ?? location.image).alt}
                 fetchPriority="high"
                 decoding="async"
                 className="h-full w-full object-cover"
