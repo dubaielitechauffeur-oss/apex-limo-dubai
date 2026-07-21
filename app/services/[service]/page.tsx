@@ -21,7 +21,7 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import BookingCTA from "@/components/home/BookingCTA";
-import { buildMetadata, faqJsonLd } from "@/lib/seo";
+import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { SERVICES } from "@/data/services";
 import { FLEET } from "@/data/fleet";
@@ -73,7 +73,9 @@ function serviceJsonLd(service: (typeof SERVICES)[number]) {
     url: `${SITE.url}/services/${service.slug}`,
     serviceType: service.name,
     provider: {
-      "@type": "LimousineService",
+      "@type": "LocalBusiness",
+      "additionalType": "https://schema.org/LimousineService",
+      "@id": organizationId(),
       name: SITE.name,
       url: SITE.url,
       telephone: SITE.phone,
@@ -113,6 +115,18 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(service.faqs)) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Services", path: "/services" },
+              { name: service.name, path: `/services/${service.slug}` },
+            ])
+          ),
+        }}
       />
 
       {/* Hero zone — reuses the same service.image shown on this service's

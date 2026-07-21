@@ -21,7 +21,7 @@ import TrustStats from "@/components/home/TrustStats";
 import ServicesGrid from "@/components/home/ServicesGrid";
 import LocationsShowcase from "@/components/home/LocationsShowcase";
 import BookingCTA from "@/components/home/BookingCTA";
-import { buildMetadata, faqJsonLd, organizationId } from "@/lib/seo";
+import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { LOCATIONS } from "@/data/locations";
 import { FLEET } from "@/data/fleet";
@@ -55,20 +55,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /**
- * LocalBusiness + FAQPage JSON-LD scoped to this specific service area.
- * Uses the same @id as the root LimousineService entity (see lib/seo.ts)
- * so parsers recognize this as additional area-specific data about the
- * one business, not a separate, unlinked entity per location.
+ * LocalBusiness JSON-LD scoped to this specific service area. Uses its own
+ * unique @id (rather than reusing the root organization's) since each
+ * location page asserts a different areaServed/address for what would
+ * otherwise be the same node — reusing the root @id across 6 location
+ * pages with conflicting properties was the cause of Search Console's
+ * "Invalid object type for field 'parent_node'" Review Snippet error
+ * (the review data on the homepage's LocalBusiness node was getting merged
+ * with these conflicting redeclarations). `parentOrganization` links back
+ * to the root business (see lib/seo.ts) without conflating the two nodes.
  */
 function locationJsonLd(location: (typeof LOCATIONS)[number]) {
   return {
     "@context": "https://schema.org",
-    "@type": "LimousineService",
-    "@id": organizationId(),
-    name: SITE.name,
+    "@type": "LocalBusiness",
+    "additionalType": "https://schema.org/LimousineService",
+    "@id": `${SITE.url}/locations/${location.slug}#localbusiness`,
+    name: `${SITE.name} — ${location.name}`,
     description: location.shortDescription,
-    url: SITE.url,
+    url: `${SITE.url}/locations/${location.slug}`,
     telephone: SITE.phone,
+    parentOrganization: {
+      "@type": "LocalBusiness",
+      "@id": organizationId(),
+    },
     areaServed: {
       "@type": "Place",
       name: location.name,
@@ -111,6 +121,18 @@ export default async function LocationDetailPage({ params }: PageProps) {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(location.faqs)) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Locations", path: "/locations" },
+              { name: location.name, path: `/locations/${location.slug}` },
+            ])
+          ),
+        }}
       />
 
       {/* Hero zone — reuses the same location.image shown on this

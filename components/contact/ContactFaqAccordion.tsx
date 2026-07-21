@@ -39,6 +39,7 @@ export default function ContactFaqAccordion({ faqs }: ContactFaqAccordionProps) 
                   isOpen ? "rotate-180" : ""
                 }`}
                 strokeWidth={1.5}
+                aria-hidden="true"
               />
             </button>
             <div

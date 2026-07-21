@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,7 +17,17 @@ const LAST_UPDATED = "July 9, 2026";
 
 export default function PrivacyPolicyPage() {
   return (
-    <Section tone="ivory" separator={false}>
+    <>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([{ name: "Privacy Policy", path: "/privacy-policy" }])
+          ),
+        }}
+      />
+      <Section tone="ivory" separator={false}>
       <Container className="max-w-3xl">
         <span className="label-eyebrow text-graphite">Legal</span>
         <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-5xl">
@@ -41,7 +51,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="font-display text-2xl text-obsidian">1. Introduction</h2>
             <p className="mt-4">
-              {SITE.name} ("Apex," "we," "us," or "our") respects your privacy
+              {SITE.name} (&quot;Apex,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) respects your privacy
               and is committed to protecting the personal data you share with
               us when you use our website, request a quote, book a chauffeur,
               or otherwise engage with our luxury transportation services in
@@ -79,7 +89,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <h3 className="mt-6 font-display text-lg text-obsidian">Contact &amp; Enquiry Data</h3>
             <p className="mt-3">
-              When you contact us through our website's contact form, by
+              When you contact us through our website&apos;s contact form, by
               phone, or via WhatsApp, we collect the information you provide
               in that conversation — such as your name, contact details, and
               the content of your enquiry — so that we can respond to you and
@@ -217,7 +227,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl text-obsidian">10. Children's Privacy</h2>
+            <h2 className="font-display text-2xl text-obsidian">10. Children&apos;s Privacy</h2>
             <p className="mt-4">
               Our website and booking services are intended for use by
               adults arranging chauffeur transportation, including on behalf
@@ -232,8 +242,8 @@ export default function PrivacyPolicyPage() {
             <p className="mt-4">
               We may update this Privacy Policy from time to time to reflect
               changes in our services, technology, or legal obligations. Any
-              changes will be posted on this page with a revised "Last
-              updated" date, and material changes will be highlighted where
+              changes will be posted on this page with a revised &quot;Last
+              updated&quot; date, and material changes will be highlighted where
               appropriate.
             </p>
           </section>
@@ -258,5 +268,6 @@ export default function PrivacyPolicyPage() {
         </div>
       </Container>
     </Section>
+    </>
   );
 }
