@@ -28,6 +28,11 @@ export interface Location {
   landmarks: string[];
   /** Card image for the /locations listing page. */
   image: LocationImage;
+  /** Optional desktop-only override for this location's detail-page hero
+   *  background. When set, the hero shows this image at >=768px width and
+   *  keeps `image` for mobile; when omitted, `image` is used everywhere,
+   *  unchanged from the previous single-image behavior. */
+  heroDesktopImage?: LocationImage;
   /** Short 2-3 word chips shown on the homepage location card (not full sentences). */
   tags: string[];
 }
@@ -205,6 +210,10 @@ export const LOCATIONS: Location[] = [
     image: {
       src: "/images/locations/downtown-dubai.webp",
       alt: "Aerial night view of Burj Khalifa, The Address Downtown, and Dubai Fountain",
+    },
+    heroDesktopImage: {
+      src: "/images/locations/downtown-dubai-hero-desktop.webp",
+      alt: "Panoramic night skyline of Downtown Dubai with the Burj Khalifa illuminated above the waterfront",
     },
     tagline: "The city's front door",
     heroSubtitle:
