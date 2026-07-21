@@ -4,7 +4,7 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import FleetListingCard from "@/components/fleet/FleetListingCard";
 import BookingCTA from "@/components/home/BookingCTA";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, FLEET_SIZE } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 
@@ -36,7 +36,9 @@ function fleetJsonLd() {
         description: vehicle.description,
         vehicleSeatingCapacity: vehicle.passengers,
         provider: {
-          "@type": "LimousineService",
+          "@type": "LocalBusiness",
+          "additionalType": "https://schema.org/LimousineService",
+          "@id": organizationId(),
           name: SITE.name,
         },
       },
@@ -52,10 +54,18 @@ export default function FleetPage() {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(fleetJsonLd()) }}
       />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "Fleet", path: "/fleet" }])),
+        }}
+      />
 
       <Section tone="ivory" separator={false}>
         <Container>
           <SectionHeading
+            as="h1"
             eyebrow="The Apex Fleet"
             title={`${FLEET_SIZE} Luxury Vehicles, Every Occasion Covered`}
             subtitle="From a discreet airport transfer to a Rolls-Royce wedding entrance, every vehicle in our Dubai fleet is late-model, meticulously maintained, and matched with a professionally trained chauffeur."

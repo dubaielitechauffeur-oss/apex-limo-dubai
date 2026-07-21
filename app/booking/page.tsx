@@ -4,7 +4,7 @@ import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import Card from "@/components/shared/Card";
 import BookingForm from "@/components/booking/BookingForm";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 
 export const metadata: Metadata = buildMetadata({
@@ -16,7 +16,15 @@ export const metadata: Metadata = buildMetadata({
 
 export default function BookingPage() {
   return (
-    <Section tone="ivory" separator={false}>
+    <>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "Booking", path: "/booking" }])),
+        }}
+      />
+      <Section tone="ivory" separator={false}>
       <Container>
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1.6fr_1fr]">
           <div>
@@ -25,7 +33,7 @@ export default function BookingPage() {
               Book Your Dubai Chauffeur
             </h1>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-graphite sm:text-base">
-              Fill in your trip details and we'll confirm your vehicle and
+              Fill in your trip details and we&apos;ll confirm your vehicle and
               chauffeur directly. For urgent same-day requests, WhatsApp is
               usually fastest.
             </p>
@@ -85,5 +93,6 @@ export default function BookingPage() {
         </div>
       </Container>
     </Section>
+    </>
   );
 }

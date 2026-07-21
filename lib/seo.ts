@@ -107,17 +107,32 @@ export function buildMetadata({
 }
 
 /** Stable @id for the business entity, so multiple JSON-LD blocks across the
- *  site (e.g. the root LimousineService and the homepage's review ratings)
- *  can reference the same node instead of declaring duplicate entities. */
+ *  site (e.g. the root LocalBusiness node and the homepage's review ratings)
+ *  can reference the same node instead of declaring duplicate entities.
+ *  Only nodes describing this exact same business (identical properties)
+ *  should ever reuse this @id — a page describing a distinct sub-entity
+ *  (e.g. a specific service area) must use its own unique @id instead, or
+ *  Google's structured-data parser can't cleanly resolve the graph. */
 export function organizationId(): string {
   return `${SITE.url}/#organization`;
 }
 
-/** LocalBusiness / TransportationCompany JSON-LD for the organization. */
+/**
+ * LocalBusiness JSON-LD for the organization. Uses "LocalBusiness" as the
+ * primary @type (rather than the more specific "LimousineService") because
+ * Google's Review Snippet rich result only accepts self-published
+ * aggregateRating/review data when the parent entity is LocalBusiness or a
+ * supported subtype — LimousineService sits under schema.org's Service
+ * branch, not LocalBusiness, which is what previously caused Search
+ * Console's "Invalid object type for field 'parent_node'" error. The more
+ * specific categorization is preserved via `additionalType` instead of
+ * being removed.
+ */
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "LimousineService",
+    "@type": "LocalBusiness",
+    "additionalType": "https://schema.org/LimousineService",
     "@id": organizationId(),
     name: SITE.name,
     description: SITE.description,
@@ -151,6 +166,32 @@ export function faqJsonLd(faqs: FAQ[]) {
         "@type": "Answer",
         text: faq.answer,
       },
+    })),
+  };
+}
+
+interface BreadcrumbItem {
+  name: string;
+  /** Path relative to the site root, e.g. "/fleet" or "/fleet/rolls-royce-phantom". */
+  path: string;
+}
+
+/**
+ * BreadcrumbList JSON-LD for a page's position in the site hierarchy.
+ * Always starts from Home — pass the remaining crumbs down to (and
+ * including) the current page.
+ */
+export function breadcrumbJsonLd(items: BreadcrumbItem[]) {
+  const crumbs: BreadcrumbItem[] = [{ name: "Home", path: "/" }, ...items];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: `${SITE.url}${crumb.path}`,
     })),
   };
 }

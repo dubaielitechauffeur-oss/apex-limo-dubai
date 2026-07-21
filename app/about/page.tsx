@@ -21,7 +21,7 @@ import LocationsShowcase from "@/components/home/LocationsShowcase";
 import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import AboutHero from "@/components/about/AboutHero";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { RATING } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { FLEET_SIZE } from "@/lib/constants";
@@ -126,6 +126,14 @@ const ABOUT_TESTIMONIALS = TESTIMONIALS.filter((t) =>
 export default function AboutPage() {
   return (
     <div>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "About", path: "/about" }])),
+        }}
+      />
+
       {/* Hero */}
       <AboutHero />
 
@@ -135,18 +143,18 @@ export default function AboutPage() {
           <h2 className="font-display text-2xl text-obsidian sm:text-3xl">Our Story</h2>
           <div className="mt-5 space-y-4 text-sm leading-relaxed text-graphite sm:text-base">
             <p>
-              Dubai's roads move fast, and so do the schedules of the people
+              Dubai&apos;s roads move fast, and so do the schedules of the people
               who rely on us — executives between meetings, families landing
               after a long flight, couples on the most important day of their
               lives. Apex Limo & Chauffeur Dubai was formed around a
               straightforward goal: give every one of them a vehicle and
-              driver they don't have to think twice about.
+              driver they don&apos;t have to think twice about.
             </p>
             <p>
               That means transparent, fixed pricing agreed before you travel.
               It means chauffeurs who track your flight rather than just your
-              booking time. And it means a fleet that's inspected and detailed
-              before every single trip, not just when it looks worn. We'd
+              booking time. And it means a fleet that&apos;s inspected and detailed
+              before every single trip, not just when it looks worn. We&apos;d
               rather be the quietly reliable choice than the flashiest one —
               though our fleet tends to cover both.
             </p>
@@ -222,7 +230,7 @@ export default function AboutPage() {
               />
               <p className="mt-6 text-sm leading-relaxed text-graphite sm:text-base">
                 Every chauffeur who drives for Apex meets the same baseline
-                before they're assigned a single booking:
+                before they&apos;re assigned a single booking:
               </p>
               <ul className="mt-6 space-y-3">
                 {STANDARDS.map((item) => (

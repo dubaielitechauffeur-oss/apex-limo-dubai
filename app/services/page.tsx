@@ -16,7 +16,7 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import FAQAccordion from "@/components/shared/FAQAccordion";
 import ServicesHero from "@/components/services/ServicesHero";
 import BookingCTA from "@/components/home/BookingCTA";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { SERVICES } from "@/data/services";
 import { SERVICES_FAQS } from "@/data/servicesFaqs";
@@ -54,7 +54,9 @@ function servicesJsonLd() {
         name: service.name,
         description: service.shortDescription,
         provider: {
-          "@type": "LimousineService",
+          "@type": "LocalBusiness",
+          "additionalType": "https://schema.org/LimousineService",
+          "@id": organizationId(),
           name: SITE.name,
         },
         areaServed: {
@@ -73,6 +75,13 @@ export default function ServicesPage() {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "Services", path: "/services" }])),
+        }}
       />
 
       <ServicesHero />

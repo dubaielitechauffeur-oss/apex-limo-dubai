@@ -7,7 +7,7 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import BookingCTA from "@/components/home/BookingCTA";
 import LocationsHero from "@/components/locations/LocationsHero";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 import { LOCATIONS } from "@/data/locations";
 
@@ -46,6 +46,13 @@ export default function LocationsPage() {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(locationsJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "Locations", path: "/locations" }])),
+        }}
       />
 
       <LocationsHero />

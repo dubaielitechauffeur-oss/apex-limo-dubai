@@ -183,6 +183,7 @@ export default function FaqHubClient() {
                           isOpen ? "rotate-180" : ""
                         }`}
                         strokeWidth={1.5}
+                        aria-hidden="true"
                       />
                     </button>
                     <div

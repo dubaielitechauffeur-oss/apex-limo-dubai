@@ -73,9 +73,9 @@ export default function FAQAccordion({
                     {faq.question}
                   </span>
                   {isOpen ? (
-                    <ChevronUp className="h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
+                    <ChevronUp className="h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} aria-hidden="true" />
                   ) : (
-                    <ChevronDown className="h-5 w-5 shrink-0 text-smoke" strokeWidth={1.5} />
+                    <ChevronDown className="h-5 w-5 shrink-0 text-smoke" strokeWidth={1.5} aria-hidden="true" />
                   )}
                 </button>
                 <div
@@ -98,7 +98,7 @@ export default function FAQAccordion({
             className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 hover:text-gold-deep"
           >
             View All FAQs
-            <ArrowRight className="h-4 w-4" strokeWidth={2} />
+            <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
           </Link>
         </div>
       </Container>

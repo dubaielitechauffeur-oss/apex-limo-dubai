@@ -14,13 +14,12 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
-import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import LocationsShowcase from "@/components/home/LocationsShowcase";
 import BookingCTA from "@/components/home/BookingCTA";
 import ContactFaqAccordion from "@/components/contact/ContactFaqAccordion";
-import { buildMetadata, faqJsonLd } from "@/lib/seo";
+import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -136,6 +135,13 @@ export default function ContactPage() {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(CONTACT_FAQS)) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "Contact", path: "/contact" }])),
+        }}
       />
 
       {/* SECTION 1 — Luxury Contact Hero */}

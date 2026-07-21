@@ -10,7 +10,7 @@ import Card from "@/components/shared/Card";
 import VehicleGallery from "@/components/fleet/VehicleGallery";
 import VehicleCard from "@/components/fleet/VehicleCard";
 import BookingCTA from "@/components/home/BookingCTA";
-import { buildMetadata, faqJsonLd } from "@/lib/seo";
+import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { SERVICES } from "@/data/services";
@@ -54,7 +54,9 @@ function vehicleJsonLd(vehicle: (typeof FLEET)[number]) {
     vehicleSeatingCapacity: vehicle.passengers,
     url: `${SITE.url}/fleet/${vehicle.slug}`,
     provider: {
-      "@type": "LimousineService",
+      "@type": "LocalBusiness",
+      "additionalType": "https://schema.org/LimousineService",
+      "@id": organizationId(),
       name: SITE.name,
       url: SITE.url,
     },
@@ -95,6 +97,18 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(vehicle.faqs)) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Fleet", path: "/fleet" },
+              { name: vehicle.name, path: `/fleet/${vehicle.slug}` },
+            ])
+          ),
+        }}
       />
 
       {/* Hero zone */}

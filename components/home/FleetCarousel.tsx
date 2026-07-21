@@ -97,7 +97,7 @@ export default function FleetCarousel() {
             aria-label="Previous vehicles"
             className="absolute -left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-left-4 lg:-left-6"
           >
-            <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
+            <ChevronLeft className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -105,7 +105,7 @@ export default function FleetCarousel() {
             aria-label="Next vehicles"
             className="absolute -right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-right-4 lg:-right-6"
           >
-            <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
+            <ChevronRight className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
           </button>
         </div>
 

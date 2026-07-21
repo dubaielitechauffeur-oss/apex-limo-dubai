@@ -22,25 +22,34 @@ function StarRow({ rating, size = "h-4 w-4" }: { rating: number; size?: string }
 
 /**
  * Review + AggregateRating JSON-LD for the business. Uses the same @id as
- * the root LimousineService entity (see lib/seo.ts) so parsers recognize
- * this as additional data about the one business, not a second entity.
+ * the root LocalBusiness entity (see lib/seo.ts) so parsers recognize this
+ * as additional data about the one business, not a second entity. @type is
+ * "LocalBusiness" (not the more specific "LimousineService") because
+ * Google's Review Snippet rich result requires the reviewed entity to be
+ * LocalBusiness or a supported subtype — see the comment on
+ * organizationJsonLd in lib/seo.ts for the full explanation.
  * Built from every testimonial, not just the 3 featured on-page, so the
  * aggregate rating reflects the full review count.
  */
 function reviewsJsonLd() {
+  const itemReviewed = { "@type": "LocalBusiness", "@id": organizationId() };
+
   return {
     "@context": "https://schema.org",
-    "@type": "LimousineService",
+    "@type": "LocalBusiness",
+    "additionalType": "https://schema.org/LimousineService",
     "@id": organizationId(),
     name: SITE.name,
     aggregateRating: {
       "@type": "AggregateRating",
+      itemReviewed,
       ratingValue: RATING,
       reviewCount: TESTIMONIALS.length,
       bestRating: 5,
     },
     review: TESTIMONIALS.map((t) => ({
       "@type": "Review",
+      itemReviewed,
       author: { "@type": "Person", name: t.name },
       reviewRating: {
         "@type": "Rating",

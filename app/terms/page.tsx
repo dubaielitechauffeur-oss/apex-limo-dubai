@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,7 +17,15 @@ const LAST_UPDATED = "July 9, 2026";
 
 export default function TermsPage() {
   return (
-    <Section tone="ivory" separator={false}>
+    <>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "Terms & Conditions", path: "/terms" }])),
+        }}
+      />
+      <Section tone="ivory" separator={false}>
       <Container className="max-w-3xl">
         <span className="label-eyebrow text-graphite">Legal</span>
         <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-5xl">
@@ -240,5 +248,6 @@ export default function TermsPage() {
         </div>
       </Container>
     </Section>
+    </>
   );
 }

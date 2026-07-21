@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Container from "@/components/shared/Container";
 import BookingCTA from "@/components/home/BookingCTA";
 import FaqHubClient from "@/components/faqs/FaqHubClient";
-import { buildMetadata, faqJsonLd } from "@/lib/seo";
+import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { ALL_FAQS } from "@/data/faqHub";
 
 export const metadata: Metadata = buildMetadata({
@@ -19,6 +19,13 @@ export default function FaqsPage() {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(ALL_FAQS)) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "FAQs", path: "/faqs" }])),
+        }}
       />
 
       {/* Hero */}

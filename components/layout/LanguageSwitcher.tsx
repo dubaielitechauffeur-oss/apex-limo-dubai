@@ -46,13 +46,15 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-label="Change language"
         className="flex items-center gap-1.5 text-[13px] uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:text-[#C8A35F]"
       >
-        <Globe className="h-4 w-4" strokeWidth={1.5} />
+        <Globe className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
         {!compact ? <span>{language.code}</span> : null}
         <ChevronDown
           className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           strokeWidth={1.5}
+          aria-hidden="true"
         />
       </button>
 

@@ -41,6 +41,42 @@ export const VEHICLE_CROSS_LINKS: Record<string, VehicleCrossLinks> = {
     serviceSlug: "wedding-chauffeur",
     locationSlug: "palm-jumeirah",
   },
+  "mercedes-maybach-s-class": {
+    serviceSlug: "vip-transportation",
+    locationSlug: "dubai-international-airport-dxb",
+  },
+  "rolls-royce-ghost": {
+    serviceSlug: "vip-transportation",
+    locationSlug: "downtown-dubai",
+  },
+  "bentley-flying-spur": {
+    serviceSlug: "corporate-chauffeur",
+    locationSlug: "dubai-marina",
+  },
+  "lexus-lm": {
+    serviceSlug: "airport-transfers",
+    locationSlug: "dubai-international-airport-dxb",
+  },
+  "mercedes-e-class": {
+    serviceSlug: "corporate-chauffeur",
+    locationSlug: "business-bay",
+  },
+  "gmc-yukon-denali": {
+    serviceSlug: "vip-transportation",
+    locationSlug: "jbr",
+  },
+  "bmw-5-series": {
+    serviceSlug: "corporate-chauffeur",
+    locationSlug: "downtown-dubai",
+  },
+  "toyota-land-cruiser": {
+    serviceSlug: "airport-transfers",
+    locationSlug: "dubai-international-airport-dxb",
+  },
+  "lexus-es-300h": {
+    serviceSlug: "corporate-chauffeur",
+    locationSlug: "dubai-marina",
+  },
 };
 
 /** Vehicle slugs recommended for a given service (reverse lookup). */

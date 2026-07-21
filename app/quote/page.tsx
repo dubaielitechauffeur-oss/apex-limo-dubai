@@ -5,7 +5,7 @@ import Section from "@/components/shared/Section";
 import Card from "@/components/shared/Card";
 import CTAButton from "@/components/shared/CTAButton";
 import QuoteForm from "@/components/booking/QuoteForm";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 
 export const metadata: Metadata = buildMetadata({
@@ -17,7 +17,15 @@ export const metadata: Metadata = buildMetadata({
 
 export default function QuotePage() {
   return (
-    <Section tone="ivory" separator={false}>
+    <>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([{ name: "Get a Quote", path: "/quote" }])),
+        }}
+      />
+      <Section tone="ivory" separator={false}>
       <Container>
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1.6fr_1fr]">
           <div>
@@ -26,7 +34,7 @@ export default function QuotePage() {
               Get an Instant Quote
             </h1>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-graphite sm:text-base">
-              Share a few trip details and we'll send pricing back quickly —
+              Share a few trip details and we&apos;ll send pricing back quickly —
               no account, no commitment.
             </p>
 
@@ -87,5 +95,6 @@ export default function QuotePage() {
         </div>
       </Container>
     </Section>
+    </>
   );
 }
