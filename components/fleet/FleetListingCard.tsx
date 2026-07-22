@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Car, Clock, Plane, User, Building2, Info, type LucideIcon } from "lucide-react";
 import type { FleetVehicle } from "@/data/fleet";
-import { SITE, getWhatsAppLink } from "@/lib/constants";
+import { getWhatsAppLink } from "@/lib/constants";
 
 interface FleetListingCardProps {
   vehicle: FleetVehicle;
@@ -13,7 +13,7 @@ const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
 /**
  * Horizontal rate-card layout used only on the /fleet listing page —
  * image left, brand/model/includes header, description, a 6-tile pricing
- * grid, and WhatsApp/Email/Vehicle Details actions. Deliberately a
+ * grid, and a two-tier View Details / Get Quote action row. Deliberately a
  * separate component from VehicleCard (used on the vehicle detail page's
  * "related vehicles" grid) and FleetCarouselCard (homepage carousel), so
  * this redesign never touches either of those.
@@ -23,9 +23,6 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
   const whatsappHref = getWhatsAppLink(
     `Hello Apex Limo, I'd like to book the ${vehicle.name}.`,
   );
-  const emailHref = `mailto:${SITE.email}?subject=${encodeURIComponent(
-    `Booking enquiry — ${vehicle.name}`,
-  )}`;
 
   const priceTiles: { icon: LucideIcon; label: string; amount: number }[] = [
     { icon: Clock, label: "10 Hours", amount: vehicle.rates.tenHours },
@@ -38,14 +35,15 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
 
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)] lg:flex-row">
-      {/* Left — single vehicle image */}
-      <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden rounded-t-2xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 lg:aspect-auto lg:w-[40%] lg:rounded-l-2xl lg:rounded-tr-none">
+      {/* Left — single vehicle image, given slightly more width than the
+          info column so photography carries more of the card. */}
+      <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden rounded-t-2xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 lg:aspect-auto lg:w-[45%] lg:rounded-l-2xl lg:rounded-tr-none">
         {cover ? (
           <Image
             src={cover.src}
             alt={cover.alt}
             fill
-            sizes="(max-width: 1024px) 100vw, 40vw"
+            sizes="(max-width: 1024px) 100vw, 45vw"
             className="object-cover"
           />
         ) : (
@@ -59,6 +57,11 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
         <span className="absolute left-5 top-5 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
           Driver Included
         </span>
+        {vehicle.badge ? (
+          <span className="absolute right-5 top-5 inline-flex items-center rounded-full border border-[#C9A14A]/60 bg-black/55 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#C9A14A] backdrop-blur-sm">
+            {vehicle.badge}
+          </span>
+        ) : null}
       </div>
 
       {/* Right — vehicle info */}
@@ -125,27 +128,20 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
           ))}
         </div>
 
-        {/* Actions */}
+        {/* Actions — View Details is the primary conversion path (vehicle
+            detail page); Get Quote is the secondary action. */}
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex flex-1 items-center justify-center rounded-lg bg-neutral-200 px-4 py-3 text-xs font-bold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-neutral-300 sm:flex-none sm:px-5"
+          <Link
+            href={`/quote?vehicle=${vehicle.slug}`}
+            className="inline-flex flex-1 items-center justify-center rounded-lg border border-neutral-300 bg-white px-5 py-3 text-xs font-bold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-neutral-100 sm:flex-1"
           >
-            WhatsApp
-          </a>
-          <a
-            href={emailHref}
-            className="inline-flex flex-1 items-center justify-center rounded-lg bg-neutral-800 px-4 py-3 text-xs font-bold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-neutral-700 sm:flex-none sm:px-5"
-          >
-            Email
-          </a>
+            Get Quote
+          </Link>
           <Link
             href={`/fleet/${vehicle.slug}`}
-            className="inline-flex flex-[2] items-center justify-center rounded-lg bg-gold px-5 py-3 text-xs font-bold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:flex-1"
+            className="inline-flex flex-1 items-center justify-center rounded-lg bg-gold px-5 py-3 text-xs font-bold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:flex-[2]"
           >
-            Vehicle Details
+            View Details
           </Link>
         </div>
       </div>

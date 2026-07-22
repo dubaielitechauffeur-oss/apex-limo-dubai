@@ -11,20 +11,24 @@ const COVERAGE_LOCATIONS = [
   { name: "Dubai Airport", slug: "dubai-international-airport-dxb" },
 ];
 
+interface CoverageBlockProps {
+  title?: string;
+}
+
 /**
- * Compact service-area strip — a lightweight list of linked locations, not
- * a full Locations section. Sits just above the FAQ block on every service
- * detail page.
+ * Compact area-coverage strip — a lightweight list of linked locations, not
+ * a full Locations section. Shared between the service detail pages (sits
+ * just above the FAQ) and the Fleet page (sits just after the listings).
  */
-export default function ServiceCoverageBlock() {
+export default function CoverageBlock({
+  title = "Available Across Dubai & UAE",
+}: CoverageBlockProps) {
   return (
     <section className="border-t border-gold/10 bg-linen py-14">
       <Container className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
         <div className="flex items-center gap-3">
           <MapPin className="h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
-          <h2 className="font-display text-lg text-obsidian sm:text-xl">
-            Available Across Dubai &amp; UAE
-          </h2>
+          <h2 className="font-display text-lg text-obsidian sm:text-xl">{title}</h2>
         </div>
 
         <nav aria-label="Areas covered" className="flex flex-wrap justify-center gap-2 sm:justify-end">

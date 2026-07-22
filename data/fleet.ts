@@ -68,6 +68,13 @@ export interface FleetVehicle {
   faqs: VehicleFAQ[];
   images?: VehicleGalleryImages;
   /**
+   * Tasteful luxury status badge shown on the Fleet listing card — set on a
+   * handful of standout vehicles only, not every entry, so it stays a
+   * meaningful signal rather than clutter. e.g. "Executive Favorite",
+   * "VIP Choice", "Most Popular", "Corporate Preferred", "Wedding Favorite".
+   */
+  badge?: string;
+  /**
    * Marks an entry added to reach full fleet-listing coverage ahead of
    * real photography/copy being finalized. Placeholder vehicles render
    * with the existing icon/gradient gallery fallback (no `images`) and a
@@ -129,6 +136,7 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "rolls-royce-phantom",
+    badge: "Wedding Favorite",
     brand: "Rolls-Royce",
     model: "Phantom",
     // PLACEHOLDER sample rates — replace with confirmed pricing
@@ -239,6 +247,7 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "mercedes-s-class",
+    badge: "Executive Favorite",
     brand: "Mercedes-Benz",
     model: "S-Class",
     // PLACEHOLDER sample rates — replace with confirmed pricing
@@ -349,6 +358,7 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "range-rover-autobiography",
+    badge: "VIP Choice",
     brand: "Range Rover",
     model: "Autobiography",
     // PLACEHOLDER sample rates — replace with confirmed pricing
@@ -472,6 +482,7 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "mercedes-v-class",
+    badge: "Most Popular",
     brand: "Mercedes-Benz",
     model: "V-Class",
     // PLACEHOLDER sample rates — replace with confirmed pricing
@@ -534,6 +545,7 @@ export const FLEET: FleetVehicle[] = [
   },
   {
     slug: "bmw-7-series",
+    badge: "Corporate Preferred",
     brand: "BMW",
     model: "7 Series",
     // PLACEHOLDER sample rates — replace with confirmed pricing

@@ -26,7 +26,7 @@ import BrandsShowcase from "@/components/home/BrandsShowcase";
 import RichParagraph from "@/components/services/RichParagraph";
 import ServiceRatingSection from "@/components/services/ServiceRatingSection";
 import OtherServicesGrid from "@/components/services/OtherServicesGrid";
-import ServiceCoverageBlock from "@/components/services/ServiceCoverageBlock";
+import CoverageBlock from "@/components/shared/CoverageBlock";
 import ServiceFaqSection from "@/components/services/ServiceFaqSection";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
@@ -276,7 +276,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <OtherServicesGrid services={otherServices} />
 
       {/* Compact service-area coverage strip, before the FAQ */}
-      <ServiceCoverageBlock />
+      <CoverageBlock />
 
       {/* FAQ — redesigned to match the FAQ Hub's premium dark presentation */}
       <ServiceFaqSection
