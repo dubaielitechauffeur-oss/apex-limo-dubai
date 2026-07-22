@@ -9,11 +9,11 @@ import {
   ShieldCheck,
   PartyPopper,
   Heart,
+  Users,
+  TrendingUp,
   Check,
   Star,
-  ChevronDown,
   ArrowLeft,
-  ArrowUpRight,
   type LucideIcon,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -21,6 +21,13 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import BookingCTA from "@/components/home/BookingCTA";
+import FleetCarousel from "@/components/home/FleetCarousel";
+import BrandsShowcase from "@/components/home/BrandsShowcase";
+import RichParagraph from "@/components/services/RichParagraph";
+import ServiceRatingSection from "@/components/services/ServiceRatingSection";
+import OtherServicesGrid from "@/components/services/OtherServicesGrid";
+import ServiceCoverageBlock from "@/components/services/ServiceCoverageBlock";
+import ServiceFaqSection from "@/components/services/ServiceFaqSection";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { SERVICES } from "@/data/services";
@@ -38,6 +45,16 @@ const ICONS: Record<string, LucideIcon> = {
   "vip-transportation": ShieldCheck,
   "event-transportation": PartyPopper,
   "wedding-chauffeur": Heart,
+};
+
+/** Icon shown next to each service's contextual rating metric — keyed by
+ *  the metric's label so data/services.ts can stay plain data. */
+const METRIC_ICONS: Record<string, LucideIcon> = {
+  "Happy Clients": Users,
+  "Airport Transfers": Plane,
+  "Corporate Clients": Briefcase,
+  "VIP Transfers": ShieldCheck,
+  "Executive Journeys": TrendingUp,
 };
 
 export async function generateStaticParams() {
@@ -96,6 +113,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   }
 
   const Icon = ICONS[service.slug] ?? Crown;
+  const MetricIcon = METRIC_ICONS[service.ratingMetric.label] ?? Users;
   const otherServices = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3);
   const whatsappMessage = `Hello Apex Limo, I'd like to enquire about ${service.name}.`;
 
@@ -196,15 +214,28 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </Container>
       </section>
 
-      {/* Body zone */}
+      {/* Fleet discovery — same carousel component and copy as the homepage */}
+      <FleetCarousel />
+
+      {/* Our Brands — identical to the homepage section */}
+      <BrandsShowcase />
+
+      {/* Happy Clients / Rating — homepage rating style, with a metric
+          contextual to this service */}
+      <ServiceRatingSection
+        title={`Why ${service.name} Clients Choose Apex`}
+        metricIcon={MetricIcon}
+        metricValue={service.ratingMetric.value}
+        metricLabel={service.ratingMetric.label}
+      />
+
+      {/* Service content zone */}
       <Section tone="ivory">
       <Container>
-        {/* Long-form SEO copy */}
+        {/* Long-form SEO copy, shortened, with natural internal links */}
         <div className="max-w-3xl space-y-5">
           {service.longDescription.map((paragraph, index) => (
-            <p key={index} className="text-sm leading-relaxed text-graphite sm:text-base">
-              {paragraph}
-            </p>
+            <RichParagraph key={index} text={paragraph} />
           ))}
         </div>
 
@@ -241,68 +272,18 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      {/* FAQ + related services zone */}
-      <Section tone="linen">
-      <Container>
-        {/* FAQ — native <details>/<summary> keeps this interactive without
-            a client component, so the page stays fully server-rendered. */}
-        <div className="max-w-3xl">
-          <SectionHeading
-            eyebrow="Common Questions"
-            title={`${service.name} FAQs`}
-            align="left"
-            tone="light"
-          />
-          <div className="mt-8 divide-y divide-obsidian/10 border-y border-obsidian/10">
-            {service.faqs.map((faq) => (
-              <details key={faq.question} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
-                  {faq.question}
-                  <ChevronDown
-                    className="h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 group-open:rotate-180"
-                    strokeWidth={1.5}
-                  />
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
-                  {faq.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
+      {/* Other Services — homepage-style cards, desktop 3-up / mobile swipe */}
+      <OtherServicesGrid services={otherServices} />
 
-        {/* Related services */}
-        <div className="mt-24">
-          <SectionHeading eyebrow="Explore More" title="Other Services" tone="light" />
-          <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-3">
-            {otherServices.map((related) => {
-              const RelatedIcon = ICONS[related.slug] ?? Crown;
-              return (
-                <Link
-                  key={related.slug}
-                  href={`/services/${related.slug}`}
-                  className="group flex flex-col justify-between bg-ivory p-7 transition-colors duration-200 hover:bg-ivory-off"
-                >
-                  <div>
-                    <RelatedIcon className="h-6 w-6 text-gold-deep" strokeWidth={1.5} />
-                    <h3 className="mt-4 font-display text-lg text-obsidian">
-                      {related.name}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-graphite">
-                      {related.shortDescription}
-                    </p>
-                  </div>
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-obsidian transition-colors duration-200 group-hover:text-gold-deep">
-                    Learn more
-                    <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </Container>
-      </Section>
+      {/* Compact service-area coverage strip, before the FAQ */}
+      <ServiceCoverageBlock />
+
+      {/* FAQ — redesigned to match the FAQ Hub's premium dark presentation */}
+      <ServiceFaqSection
+        faqs={service.faqs}
+        title={`${service.name} FAQs`}
+        subtitle="Answers to the questions we hear most about this service."
+      />
 
       <BookingCTA backgroundImage={false} />
     </div>
