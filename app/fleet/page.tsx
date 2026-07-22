@@ -3,6 +3,10 @@ import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import FleetListingCard from "@/components/fleet/FleetListingCard";
+import FleetTrustSection from "@/components/fleet/FleetTrustSection";
+import FleetConciergeSection from "@/components/fleet/FleetConciergeSection";
+import BrandsShowcase from "@/components/home/BrandsShowcase";
+import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, FLEET_SIZE } from "@/lib/constants";
@@ -62,6 +66,7 @@ export default function FleetPage() {
         }}
       />
 
+      {/* Hero */}
       <Section tone="ivory" separator={false}>
         <Container>
           <SectionHeading
@@ -71,36 +76,55 @@ export default function FleetPage() {
             subtitle="From a discreet airport transfer to a Rolls-Royce wedding entrance, every vehicle in our Dubai fleet is late-model, meticulously maintained, and matched with a professionally trained chauffeur."
             tone="light"
           />
+        </Container>
+      </Section>
 
-          <div className="mt-16 flex flex-col gap-8">
+      {/* Our Brands — identical to the homepage section */}
+      <BrandsShowcase />
+
+      {/* ★★★★★ 4.9 trust band */}
+      <FleetTrustSection />
+
+      {/* Fleet listings */}
+      <Section tone="ivory">
+        <Container>
+          <div className="flex flex-col gap-8">
             {FLEET.map((vehicle) => (
               <FleetListingCard key={vehicle.slug} vehicle={vehicle} />
             ))}
           </div>
+        </Container>
+      </Section>
 
-          {/* SEO-friendly supporting copy */}
-          <div className="mx-auto mt-20 max-w-3xl border-t border-gold/15 pt-12 text-sm leading-relaxed text-graphite">
+      {/* Compact fleet coverage strip */}
+      <CoverageBlock />
+
+      {/* Short, SEO-friendly supporting copy */}
+      <Section tone="ivory">
+        <Container>
+          <div className="mx-auto max-w-3xl text-sm leading-relaxed text-graphite">
             <h2 className="font-display text-2xl text-obsidian">
               Choosing the Right Chauffeur-Driven Vehicle in Dubai
             </h2>
             <p className="mt-4">
               For airport transfers and business travel, the Mercedes S-Class
-              and BMW 7 Series deliver a quiet, dependable ride with the
-              discretion executives expect. Groups and event organizers
-              typically choose the Mercedes V-Class for its combined seating
+              and BMW 7 Series deliver a quiet, discreet ride. Groups and event
+              organizers typically choose the Mercedes V-Class for its seating
               and luggage capacity, while the Cadillac Escalade and Range Rover
               Autobiography suit VIP guests who want a taller, more commanding
               ride. For weddings and once-in-a-lifetime occasions, the
               Rolls-Royce Phantom remains the definitive choice across Dubai.
             </p>
             <p className="mt-4">
-              Every booking includes a professional, licensed chauffeur, live
-              flight tracking on airport transfers, and transparent, fixed
-              pricing confirmed before you travel.
+              Every booking includes a professional, licensed chauffeur and
+              transparent, fixed pricing confirmed before you travel.
             </p>
           </div>
         </Container>
       </Section>
+
+      {/* Fleet Concierge — helps undecided visitors pick a vehicle */}
+      <FleetConciergeSection />
 
       <BookingCTA />
     </div>
