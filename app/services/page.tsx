@@ -162,7 +162,7 @@ export default function ServicesPage() {
         subtitle="Everything you need to know about booking, pricing, and what to expect from an Apex chauffeur service."
       />
 
-      <BookingCTA />
+      <BookingCTA backgroundImage={false} />
     </div>
   );
 }
