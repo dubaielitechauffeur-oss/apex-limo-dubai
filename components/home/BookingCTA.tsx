@@ -56,9 +56,9 @@ export default function BookingCTA({
             }}
           />
 
-          {/* Dark overlay for text contrast — one flat 70% tone across the
+          {/* Dark overlay for text contrast — one flat 85% tone across the
               whole image and every breakpoint. */}
-          <div aria-hidden="true" className="absolute inset-0 bg-black/70" />
+          <div aria-hidden="true" className="absolute inset-0 bg-black/85" />
         </>
       ) : null}
 
