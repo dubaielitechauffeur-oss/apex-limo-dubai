@@ -56,9 +56,15 @@ export default function BookingCTA({
             }}
           />
 
-          {/* Dark overlay for text contrast — one flat 85% tone across the
-              whole image and every breakpoint. */}
-          <div aria-hidden="true" className="absolute inset-0 bg-black/85" />
+          {/* Dark overlay for text contrast. Mobile/tablet keep the original
+              vignette untouched (soft top/bottom, darkest through the
+              middle). Desktop (xl+) uses one flat 85% tone instead. */}
+          <div aria-hidden="true" className="absolute inset-0 bg-black/35 xl:hidden" />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/50 to-black/25 xl:hidden"
+          />
+          <div aria-hidden="true" className="absolute inset-0 hidden bg-black/85 xl:block" />
         </>
       ) : null}
 
