@@ -30,9 +30,9 @@ interface PriceItemProps {
 
 function PriceItem({ label, amount }: PriceItemProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-0.5">
       <span className="text-[10px] font-medium uppercase tracking-wide text-graphite">{label}</span>
-      <span className="font-display text-base font-bold text-obsidian">{formatAed(amount)}</span>
+      <span className="font-display text-sm font-bold text-obsidian">{formatAed(amount)}</span>
     </div>
   );
 }
@@ -61,9 +61,9 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
   ];
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] lg:min-h-[440px] lg:flex-row">
+    <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] lg:min-h-[380px] lg:flex-row">
       {/* Left — hero photograph, the dominant element of the card */}
-      <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden rounded-t-2xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 lg:aspect-auto lg:w-[55%] lg:rounded-l-2xl lg:rounded-tr-none">
+      <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-t-2xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 lg:aspect-auto lg:w-[55%] lg:rounded-l-2xl lg:rounded-tr-none">
         {cover ? (
           <Image
             src={cover.src}
@@ -91,33 +91,33 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
       </div>
 
       {/* Right — lean brochure-style info column */}
-      <div className="flex flex-1 flex-col justify-center p-7 sm:p-9 lg:p-10">
+      <div className="flex flex-1 flex-col justify-center p-5 sm:p-6 lg:p-7">
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-deep">
           {vehicle.brand}
         </p>
-        <h3 className="mt-2 font-display text-3xl font-bold uppercase leading-[1.05] text-obsidian sm:text-4xl">
+        <h3 className="mt-1 font-display text-3xl font-bold uppercase leading-[1.05] text-obsidian sm:text-4xl">
           {vehicle.model}
         </h3>
 
-        <p className="mt-4 line-clamp-2 text-sm leading-relaxed text-graphite">
+        <p className="mt-2 line-clamp-2 text-sm leading-snug text-graphite">
           {vehicle.description}
         </p>
 
         {/* Specifications — capacity and standard amenities only */}
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-y border-neutral-200 py-5">
+        <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-neutral-200 py-2.5">
           <SpecItem icon={Users} label={`${vehicle.passengers} Passengers`} />
           <SpecItem icon={Briefcase} label={`${vehicle.luggage} Luggage`} />
           <SpecItem icon={Wifi} label="WiFi" />
           <SpecItem icon={GlassWater} label="Water" />
         </div>
 
-        <p className="mt-4 text-[11px] italic leading-relaxed text-graphite">
+        <p className="mt-1.5 text-[11px] italic leading-snug text-graphite">
           Includes driver, fuel, tolls (Salik) &amp; VIP valet parking — excludes 5% VAT
         </p>
 
         {/* Chauffeur rates — a refined price panel, not a rental-style
             bordered-tile grid, sitting between specs and the CTAs. */}
-        <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 rounded-xl border border-gold/15 bg-linen/60 px-5 py-5 sm:grid-cols-3">
+        <div className="mt-2.5 grid grid-cols-2 gap-x-6 gap-y-2 rounded-xl border border-gold/15 bg-linen/60 px-5 py-3 sm:grid-cols-3">
           {priceTiers.map((tier) => (
             <PriceItem key={tier.label} label={tier.label} amount={tier.amount} />
           ))}
@@ -125,16 +125,16 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
 
         {/* Actions — View Details is the primary conversion path (vehicle
             detail page); Get Quote is the secondary action. */}
-        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-3.5 flex flex-col gap-3 sm:flex-row">
           <Link
             href={`/quote?vehicle=${vehicle.slug}`}
-            className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-lg border border-neutral-300 bg-white px-4 py-3.5 text-xs font-bold uppercase tracking-wide text-obsidian transition-colors duration-200 hover:border-gold-deep/50 hover:bg-neutral-50"
+            className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-lg border border-neutral-300 bg-white px-4 py-3 text-xs font-bold uppercase tracking-wide text-obsidian transition-colors duration-200 hover:border-gold-deep/50 hover:bg-neutral-50"
           >
             Get Instant Quote
           </Link>
           <Link
             href={`/fleet/${vehicle.slug}`}
-            className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-gold px-4 py-3.5 text-xs font-bold uppercase tracking-wide text-obsidian shadow-sm transition-colors duration-200 hover:bg-gold-deep"
+            className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-gold px-4 py-3 text-xs font-bold uppercase tracking-wide text-obsidian shadow-sm transition-colors duration-200 hover:bg-gold-deep"
           >
             View Details
           </Link>
