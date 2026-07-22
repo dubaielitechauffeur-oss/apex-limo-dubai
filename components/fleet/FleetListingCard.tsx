@@ -21,12 +21,28 @@ function SpecItem({ icon: Icon, label }: SpecItemProps) {
   );
 }
 
+const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
+
+interface PriceItemProps {
+  label: string;
+  amount: number;
+}
+
+function PriceItem({ label, amount }: PriceItemProps) {
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-[10px] font-medium uppercase tracking-wide text-graphite">{label}</span>
+      <span className="font-display text-base font-bold text-obsidian">{formatAed(amount)}</span>
+    </div>
+  );
+}
+
 /**
  * Horizontal luxury showcase card used only on the /fleet listing page —
  * a large hero photograph (55% of the card on desktop) paired with a
  * lean, brochure-style info column: brand/model, a one-line benefit
- * description, a compact spec row (capacity + standard amenities, not a
- * rental-style price grid), and a two-tier View Details / Get Quote
+ * description, a compact spec row (capacity + standard amenities), a
+ * refined chauffeur-rate panel, and a two-tier View Details / Get Quote
  * action row. Deliberately a separate component from VehicleCard (used
  * on the vehicle detail page's "related vehicles" grid) and
  * FleetCarouselCard (homepage carousel), so this redesign never touches
@@ -34,6 +50,15 @@ function SpecItem({ icon: Icon, label }: SpecItemProps) {
  */
 export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
   const cover = vehicle.images?.exterior;
+
+  const priceTiers: { label: string; amount: number }[] = [
+    { label: "1 Hour", amount: vehicle.rates.oneHour },
+    { label: "Airport Transfer", amount: vehicle.rates.airport },
+    { label: "5 Hours", amount: vehicle.rates.fiveHours },
+    { label: "10 Hours", amount: vehicle.rates.tenHours },
+    { label: "Additional Hour", amount: vehicle.rates.extraHour },
+    { label: "Additional City", amount: vehicle.rates.additionalCity },
+  ];
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] lg:min-h-[440px] lg:flex-row">
@@ -89,6 +114,14 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
         <p className="mt-4 text-[11px] italic leading-relaxed text-graphite">
           Includes driver, fuel, tolls (Salik) &amp; VIP valet parking — excludes 5% VAT
         </p>
+
+        {/* Chauffeur rates — a refined price panel, not a rental-style
+            bordered-tile grid, sitting between specs and the CTAs. */}
+        <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 rounded-xl border border-gold/15 bg-linen/60 px-5 py-5 sm:grid-cols-3">
+          {priceTiers.map((tier) => (
+            <PriceItem key={tier.label} label={tier.label} amount={tier.amount} />
+          ))}
+        </div>
 
         {/* Actions — View Details is the primary conversion path (vehicle
             detail page); Get Quote is the secondary action. */}
