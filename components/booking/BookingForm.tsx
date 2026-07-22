@@ -4,6 +4,8 @@ import { useState, Suspense, FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
+import FormSectionHeading from "@/components/shared/FormSectionHeading";
+import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { FLEET } from "@/data/fleet";
 import { LOCATIONS } from "@/data/locations";
@@ -80,7 +82,7 @@ function BookingFormSkeleton() {
   return (
     <div aria-hidden="true" className="space-y-6">
       {[...Array(5)].map((_, i) => (
-        <div key={i} className="h-12 animate-pulse bg-charcoal/70" />
+        <div key={i} className="h-12 animate-pulse bg-[#1A1A1A]" />
       ))}
     </div>
   );
@@ -150,19 +152,19 @@ function BookingFormFields() {
     return (
       <div
         role="status"
-        className="flex flex-col items-center border border-gold/25 bg-charcoal p-10 text-center"
+        className="flex flex-col items-center rounded-2xl border border-[rgba(201,161,74,0.25)] bg-[#111111] p-10 text-center"
       >
-        <CheckCircle2 className="h-10 w-10 text-gold" strokeWidth={1.5} />
-        <h3 className="mt-5 font-display text-2xl text-heading">
+        <CheckCircle2 className="h-10 w-10 text-[#C9A14A]" strokeWidth={1.5} />
+        <h3 className="mt-5 font-display text-2xl text-white">
           Booking Request Received
         </h3>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-smoke">
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-[#B8B8B8]">
           {serverMessage || "Our team will confirm your chauffeur shortly."}
           {reference ? (
             <>
               {" "}
               Your reference is{" "}
-              <span className="font-semibold text-gold">{reference}</span>.
+              <span className="font-semibold text-[#C9A14A]">{reference}</span>.
             </>
           ) : null}
         </p>
@@ -190,7 +192,7 @@ function BookingFormFields() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-10">
       {status === "error" && serverMessage ? (
         <div
           role="alert"
@@ -201,203 +203,210 @@ function BookingFormFields() {
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <FormField id="fullName" label="Full Name" required error={errors.fullName}>
-          <input
-            id="fullName"
-            name="fullName"
-            type="text"
-            autoComplete="name"
-            value={form.fullName}
-            onChange={(e) => update("fullName", e.target.value)}
-            aria-describedby={errors.fullName ? "fullName-error" : undefined}
-            aria-invalid={Boolean(errors.fullName)}
-            className={`field-input ${errors.fullName ? "field-input-error" : ""}`}
-            placeholder="e.g. James Carter"
-          />
-        </FormField>
+      <div className="space-y-6">
+        <FormSectionHeading step={1} title="Personal Details" />
 
-        <FormField id="phone" label="Phone Number" required error={errors.phone}>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <FormField id="fullName" label="Full Name" required error={errors.fullName}>
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              autoComplete="name"
+              value={form.fullName}
+              onChange={(e) => update("fullName", e.target.value)}
+              aria-describedby={errors.fullName ? "fullName-error" : undefined}
+              aria-invalid={Boolean(errors.fullName)}
+              className={`field-input ${errors.fullName ? "field-input-error" : ""}`}
+              placeholder="e.g. James Carter"
+            />
+          </FormField>
+
+          <FormField id="phone" label="Phone Number" required error={errors.phone}>
+            <PhoneInputField
+              id="phone"
+              value={form.phone}
+              onChange={(value) => update("phone", value)}
+              error={Boolean(errors.phone)}
+              ariaDescribedBy={errors.phone ? "phone-error" : undefined}
+            />
+          </FormField>
+        </div>
+
+        <FormField id="email" label="Email" required error={errors.email}>
           <input
-            id="phone"
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            value={form.phone}
-            onChange={(e) => update("phone", e.target.value)}
-            aria-describedby={errors.phone ? "phone-error" : undefined}
-            aria-invalid={Boolean(errors.phone)}
-            className={`field-input ${errors.phone ? "field-input-error" : ""}`}
-            placeholder="+971 5X XXX XXXX"
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            aria-invalid={Boolean(errors.email)}
+            className={`field-input ${errors.email ? "field-input-error" : ""}`}
+            placeholder="you@company.com"
           />
         </FormField>
       </div>
 
-      <FormField id="email" label="Email" required error={errors.email}>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          value={form.email}
-          onChange={(e) => update("email", e.target.value)}
-          aria-describedby={errors.email ? "email-error" : undefined}
-          aria-invalid={Boolean(errors.email)}
-          className={`field-input ${errors.email ? "field-input-error" : ""}`}
-          placeholder="you@company.com"
-        />
-      </FormField>
+      <div className="space-y-6">
+        <FormSectionHeading step={2} title="Journey Details" />
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <FormField
-          id="pickupLocation"
-          label="Pickup Location"
-          required
-          error={errors.pickupLocation}
-        >
-          <input
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <FormField
             id="pickupLocation"
-            name="pickupLocation"
-            type="text"
-            value={form.pickupLocation}
-            onChange={(e) => update("pickupLocation", e.target.value)}
-            aria-describedby={errors.pickupLocation ? "pickupLocation-error" : undefined}
-            aria-invalid={Boolean(errors.pickupLocation)}
-            className={`field-input ${errors.pickupLocation ? "field-input-error" : ""}`}
-            placeholder="e.g. Dubai International Airport, T3"
-          />
-        </FormField>
-
-        <FormField
-          id="dropoffLocation"
-          label="Drop-off Location"
-          required
-          error={errors.dropoffLocation}
-        >
-          <input
-            id="dropoffLocation"
-            name="dropoffLocation"
-            type="text"
-            value={form.dropoffLocation}
-            onChange={(e) => update("dropoffLocation", e.target.value)}
-            aria-describedby={
-              errors.dropoffLocation ? "dropoffLocation-error" : undefined
-            }
-            aria-invalid={Boolean(errors.dropoffLocation)}
-            className={`field-input ${errors.dropoffLocation ? "field-input-error" : ""}`}
-            placeholder="e.g. Burj Al Arab, Jumeirah"
-          />
-        </FormField>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <FormField id="date" label="Date" required error={errors.date}>
-          <input
-            id="date"
-            name="date"
-            type="date"
-            min={todayISO}
-            value={form.date}
-            onChange={(e) => update("date", e.target.value)}
-            aria-describedby={errors.date ? "date-error" : undefined}
-            aria-invalid={Boolean(errors.date)}
-            className={`field-input ${errors.date ? "field-input-error" : ""}`}
-          />
-        </FormField>
-
-        <FormField id="time" label="Time" required error={errors.time}>
-          <input
-            id="time"
-            name="time"
-            type="time"
-            value={form.time}
-            onChange={(e) => update("time", e.target.value)}
-            aria-describedby={errors.time ? "time-error" : undefined}
-            aria-invalid={Boolean(errors.time)}
-            className={`field-input ${errors.time ? "field-input-error" : ""}`}
-          />
-        </FormField>
-      </div>
-
-      <FormField id="vehicle" label="Vehicle Selection" required error={errors.vehicle}>
-        <select
-          id="vehicle"
-          name="vehicle"
-          value={form.vehicle}
-          onChange={(e) => update("vehicle", e.target.value)}
-          aria-describedby={errors.vehicle ? "vehicle-error" : undefined}
-          aria-invalid={Boolean(errors.vehicle)}
-          className={`field-input ${errors.vehicle ? "field-input-error" : ""}`}
-        >
-          <option value="">Select a vehicle</option>
-          {FLEET.map((vehicle) => (
-            <option key={vehicle.slug} value={vehicle.name}>
-              {vehicle.name} — {vehicle.category}
-            </option>
-          ))}
-        </select>
-      </FormField>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <FormField
-          id="passengers"
-          label="Passenger Count"
-          required
-          error={errors.passengers}
-        >
-          <input
-            id="passengers"
-            name="passengers"
-            type="number"
-            min={1}
-            max={14}
-            value={form.passengers}
-            onChange={(e) => update("passengers", Number(e.target.value))}
-            aria-describedby={errors.passengers ? "passengers-error" : undefined}
-            aria-invalid={Boolean(errors.passengers)}
-            className={`field-input ${errors.passengers ? "field-input-error" : ""}`}
-          />
-        </FormField>
-
-        <FormField
-          id="hours"
-          label="Number of Hours"
-          hint="Leave as one-way if this isn't an hourly hire."
-        >
-          <select
-            id="hours"
-            name="hours"
-            value={form.hours}
-            onChange={(e) => update("hours", e.target.value)}
-            aria-describedby="hours-hint"
-            className="field-input"
+            label="Pickup Location"
+            required
+            error={errors.pickupLocation}
           >
-            <option value="">Select duration</option>
-            {HOUR_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}
+            <input
+              id="pickupLocation"
+              name="pickupLocation"
+              type="text"
+              value={form.pickupLocation}
+              onChange={(e) => update("pickupLocation", e.target.value)}
+              aria-describedby={errors.pickupLocation ? "pickupLocation-error" : undefined}
+              aria-invalid={Boolean(errors.pickupLocation)}
+              className={`field-input ${errors.pickupLocation ? "field-input-error" : ""}`}
+              placeholder="e.g. Dubai International Airport, T3"
+            />
+          </FormField>
+
+          <FormField
+            id="dropoffLocation"
+            label="Drop-off Location"
+            required
+            error={errors.dropoffLocation}
+          >
+            <input
+              id="dropoffLocation"
+              name="dropoffLocation"
+              type="text"
+              value={form.dropoffLocation}
+              onChange={(e) => update("dropoffLocation", e.target.value)}
+              aria-describedby={
+                errors.dropoffLocation ? "dropoffLocation-error" : undefined
+              }
+              aria-invalid={Boolean(errors.dropoffLocation)}
+              className={`field-input ${errors.dropoffLocation ? "field-input-error" : ""}`}
+              placeholder="e.g. Burj Al Arab, Jumeirah"
+            />
+          </FormField>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <FormField id="date" label="Date" required error={errors.date}>
+            <input
+              id="date"
+              name="date"
+              type="date"
+              min={todayISO}
+              value={form.date}
+              onChange={(e) => update("date", e.target.value)}
+              aria-describedby={errors.date ? "date-error" : undefined}
+              aria-invalid={Boolean(errors.date)}
+              className={`field-input ${errors.date ? "field-input-error" : ""}`}
+            />
+          </FormField>
+
+          <FormField id="time" label="Time" required error={errors.time}>
+            <input
+              id="time"
+              name="time"
+              type="time"
+              value={form.time}
+              onChange={(e) => update("time", e.target.value)}
+              aria-describedby={errors.time ? "time-error" : undefined}
+              aria-invalid={Boolean(errors.time)}
+              className={`field-input ${errors.time ? "field-input-error" : ""}`}
+            />
+          </FormField>
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        <FormSectionHeading step={3} title="Vehicle & Requirements" />
+
+        <FormField id="vehicle" label="Vehicle Selection" required error={errors.vehicle}>
+          <select
+            id="vehicle"
+            name="vehicle"
+            value={form.vehicle}
+            onChange={(e) => update("vehicle", e.target.value)}
+            aria-describedby={errors.vehicle ? "vehicle-error" : undefined}
+            aria-invalid={Boolean(errors.vehicle)}
+            className={`field-input ${errors.vehicle ? "field-input-error" : ""}`}
+          >
+            <option value="">Select a vehicle</option>
+            {FLEET.map((vehicle) => (
+              <option key={vehicle.slug} value={vehicle.name}>
+                {vehicle.name} — {vehicle.category}
               </option>
             ))}
           </select>
         </FormField>
-      </div>
 
-      <FormField
-        id="specialRequests"
-        label="Special Requests"
-        hint="Child seats, meet-and-greet signage, extra stops, accessibility needs, etc."
-      >
-        <textarea
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <FormField
+            id="passengers"
+            label="Passenger Count"
+            required
+            error={errors.passengers}
+          >
+            <input
+              id="passengers"
+              name="passengers"
+              type="number"
+              min={1}
+              max={14}
+              value={form.passengers}
+              onChange={(e) => update("passengers", Number(e.target.value))}
+              aria-describedby={errors.passengers ? "passengers-error" : undefined}
+              aria-invalid={Boolean(errors.passengers)}
+              className={`field-input ${errors.passengers ? "field-input-error" : ""}`}
+            />
+          </FormField>
+
+          <FormField
+            id="hours"
+            label="Number of Hours"
+            hint="Leave as one-way if this isn't an hourly hire."
+          >
+            <select
+              id="hours"
+              name="hours"
+              value={form.hours}
+              onChange={(e) => update("hours", e.target.value)}
+              aria-describedby="hours-hint"
+              className="field-input"
+            >
+              <option value="">Select duration</option>
+              {HOUR_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </FormField>
+        </div>
+
+        <FormField
           id="specialRequests"
-          name="specialRequests"
-          rows={4}
-          value={form.specialRequests}
-          onChange={(e) => update("specialRequests", e.target.value)}
-          aria-describedby="specialRequests-hint"
-          className="field-input resize-none"
-          placeholder="Anything our chauffeur should know in advance"
-        />
-      </FormField>
+          label="Special Requests"
+          hint="Child seats, meet-and-greet signage, extra stops, accessibility needs, etc."
+        >
+          <textarea
+            id="specialRequests"
+            name="specialRequests"
+            rows={4}
+            value={form.specialRequests}
+            onChange={(e) => update("specialRequests", e.target.value)}
+            aria-describedby="specialRequests-hint"
+            className="field-input resize-none"
+            placeholder="Anything our chauffeur should know in advance"
+          />
+        </FormField>
+      </div>
 
       <button
         type="submit"
@@ -410,7 +419,7 @@ function BookingFormFields() {
             Submitting…
           </>
         ) : (
-          "Book Now"
+          "Reserve Chauffeur"
         )}
       </button>
     </form>
