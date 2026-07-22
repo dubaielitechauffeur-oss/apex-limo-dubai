@@ -8,53 +8,59 @@ interface BookingCTAProps {
   eyebrow?: string;
   heading?: string;
   subtitle?: string;
+  /** Show the Dubai skyline/fleet photograph behind the CTA. Set false for
+   *  pages that should use a plain dark section instead (e.g. Home,
+   *  Services) — defaults to true for every other page. */
+  backgroundImage?: boolean;
 }
 
 export default function BookingCTA({
   eyebrow = "Ready When You Are",
   heading = "Reserve Your Chauffeur in Dubai Today",
   subtitle = "Tell us where you're headed and we'll match you with the right vehicle and driver — usually confirmed within minutes.",
+  backgroundImage = true,
 }: BookingCTAProps) {
   return (
-    <section className="relative overflow-hidden border-t border-gold/10 bg-ink py-24 xl:min-h-[560px] 2xl:min-h-[680px]">
-      {/* Luxury background photograph. Mobile/tablet keep the original
-          <picture> + <source media> crop swap, untouched. Desktop (xl+)
-          swaps to a fixed-attachment CSS background instead: the image
-          stays pinned to the viewport while the section content scrolls
-          over it, and is repositioned lower so the vehicle lineup and Burj
-          Khalifa carry the frame instead of empty sky. */}
-      <picture>
-        <source
-          media="(max-width: 767px)"
-          srcSet="/images/cta/cta-mobile.webp"
-        />
-        <img
-          src="/images/cta/cta-desktop.webp"
-          alt=""
-          aria-hidden="true"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover xl:hidden"
-        />
-      </picture>
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 hidden bg-cover bg-fixed xl:block"
-        style={{
-          backgroundImage: "url('/images/cta/cta-desktop.webp')",
-          backgroundPosition: "center 65%",
-        }}
-      />
+    <section
+      className={`relative overflow-hidden border-t border-gold/10 bg-ink py-24 ${
+        backgroundImage ? "xl:min-h-[560px] 2xl:min-h-[680px]" : ""
+      }`}
+    >
+      {backgroundImage ? (
+        <>
+          {/* Luxury background photograph. Mobile/tablet keep the original
+              <picture> + <source media> crop swap, untouched. Desktop (xl+)
+              swaps to a fixed-attachment CSS background instead: the image
+              stays pinned to the viewport while the section content scrolls
+              over it, and is repositioned lower so the vehicle lineup and
+              Burj Khalifa carry the frame instead of empty sky. */}
+          <picture>
+            <source
+              media="(max-width: 767px)"
+              srcSet="/images/cta/cta-mobile.webp"
+            />
+            <img
+              src="/images/cta/cta-desktop.webp"
+              alt=""
+              aria-hidden="true"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover xl:hidden"
+            />
+          </picture>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 hidden bg-cover bg-fixed xl:block"
+            style={{
+              backgroundImage: "url('/images/cta/cta-desktop.webp')",
+              backgroundPosition: "center 65%",
+            }}
+          />
 
-      {/* Dark overlay for text contrast. Mobile/tablet keep the original
-          vignette (soft top/bottom, darkest through the middle). Desktop
-          (xl+) uses one flat, uniform tone across the whole image instead
-          of a vignette, matching the reference brand's presentation. */}
-      <div aria-hidden="true" className="absolute inset-0 bg-black/35 xl:hidden" />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/50 to-black/25 xl:hidden"
-      />
-      <div aria-hidden="true" className="absolute inset-0 hidden bg-black/45 xl:block" />
+          {/* Dark overlay for text contrast — one flat 70% tone across the
+              whole image and every breakpoint. */}
+          <div aria-hidden="true" className="absolute inset-0 bg-black/70" />
+        </>
+      ) : null}
 
       <div
         aria-hidden="true"

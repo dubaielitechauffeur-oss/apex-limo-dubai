@@ -38,7 +38,7 @@ export default function Home() {
       <WhyChooseUs />
       <Testimonials />
       <FAQSection />
-      <BookingCTA />
+      <BookingCTA backgroundImage={false} />
     </>
   );
 }

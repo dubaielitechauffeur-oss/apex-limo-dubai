@@ -290,7 +290,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      <BookingCTA />
+      <BookingCTA backgroundImage={false} />
     </div>
   );
 }
