@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Phone, MessageCircle, Clock } from "lucide-react";
 import Container from "@/components/shared/Container";
-import Section from "@/components/shared/Section";
-import Card from "@/components/shared/Card";
 import BookingForm from "@/components/booking/BookingForm";
+import ConversionPageIntro from "@/components/booking/ConversionPageIntro";
+import ConversionSeoIntro from "@/components/booking/ConversionSeoIntro";
+import ConversionTrustPanel from "@/components/booking/ConversionTrustPanel";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
-import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 
 export const metadata: Metadata = buildMetadata({
   title: "Book a Chauffeur in Dubai",
@@ -24,75 +23,39 @@ export default function BookingPage() {
           __html: JSON.stringify(breadcrumbJsonLd([{ name: "Booking", path: "/booking" }])),
         }}
       />
-      <Section tone="ivory" separator={false}>
-      <Container>
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1.6fr_1fr]">
-          <div>
-            <span className="label-eyebrow text-graphite">Reserve Your Chauffeur</span>
-            <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-4xl">
-              Book Your Dubai Chauffeur
-            </h1>
-            <p className="mt-4 max-w-lg text-sm leading-relaxed text-graphite sm:text-base">
-              Fill in your trip details and we&apos;ll confirm your vehicle and
-              chauffeur directly. For urgent same-day requests, WhatsApp is
-              usually fastest.
-            </p>
 
-            <Card tone="dark" className="mt-10 p-6 sm:p-10">
+      <ConversionPageIntro
+        heading="Book Your Dubai Chauffeur"
+        description="For airport transfers, business travel, VIP transportation, city rides, and executive chauffeur services across Dubai and the UAE."
+      />
+
+      <ConversionSeoIntro>
+        Apex Limo &amp; Chauffeur Dubai offers a premium Dubai chauffeur service built around
+        reliability and discretion. Whether you need airport transfers to DXB or DWC, business
+        travel between meetings, or executive transportation for a full day, our professional
+        chauffeurs deliver a polished, on-time experience every time. Reserve one of our luxury
+        vehicles — from executive sedans to the Rolls-Royce Phantom — for VIP chauffeur service
+        across Dubai and the wider UAE. Every booking includes a licensed, background-checked
+        driver, fuel, tolls, and VIP valet parking, so you can focus on your journey instead of
+        the details. Complete the form below and our concierge team will confirm your
+        reservation shortly.
+      </ConversionSeoIntro>
+
+      <section className="bg-[#0A0A0A] pb-20 sm:pb-28">
+        <Container>
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.7fr_1fr] lg:gap-10">
+            <div className="rounded-2xl border border-[rgba(201,161,74,0.15)] bg-[#111111] p-6 sm:p-8 lg:p-10">
               <BookingForm />
-            </Card>
-          </div>
-
-          {/* Sidebar */}
-          <aside className="lg:pt-24">
-            <div className="sticky top-28 space-y-6">
-              <Card tone="dark" className="p-6">
-                <h2 className="font-display text-lg text-heading">
-                  Prefer to Talk?
-                </h2>
-                <ul className="mt-5 space-y-4 text-sm text-smoke">
-                  <li>
-                    <a
-                      href={getPhoneLink()}
-                      className="flex items-center gap-3 transition-colors hover:text-gold"
-                    >
-                      <Phone className="h-4 w-4 text-gold" strokeWidth={1.5} />
-                      {SITE.phoneDisplay}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={getWhatsAppLink()}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 transition-colors hover:text-gold"
-                    >
-                      <MessageCircle className="h-4 w-4 text-gold" strokeWidth={1.5} />
-                      WhatsApp Us
-                    </a>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Clock className="h-4 w-4 text-gold" strokeWidth={1.5} />
-                    Available 24/7
-                  </li>
-                </ul>
-              </Card>
-
-              <Card tone="dark" className="p-6">
-                <h2 className="font-display text-lg text-heading">
-                  What Happens Next
-                </h2>
-                <ol className="mt-5 space-y-3 text-sm leading-relaxed text-smoke">
-                  <li>We confirm your vehicle and chauffeur by phone or email.</li>
-                  <li>You receive driver details ahead of pickup.</li>
-                  <li>Your chauffeur arrives ready, on time, every time.</li>
-                </ol>
-              </Card>
             </div>
-          </aside>
-        </div>
-      </Container>
-    </Section>
+
+            <aside>
+              <div className="sticky top-28">
+                <ConversionTrustPanel />
+              </div>
+            </aside>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

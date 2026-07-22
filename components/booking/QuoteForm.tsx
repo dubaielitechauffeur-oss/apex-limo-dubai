@@ -4,6 +4,8 @@ import { useState, Suspense, FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
+import FormSectionHeading from "@/components/shared/FormSectionHeading";
+import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { SERVICES, getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
@@ -67,7 +69,7 @@ function QuoteFormSkeleton() {
   return (
     <div aria-hidden="true" className="space-y-6">
       {[...Array(4)].map((_, i) => (
-        <div key={i} className="h-12 animate-pulse bg-charcoal/70" />
+        <div key={i} className="h-12 animate-pulse bg-[#1A1A1A]" />
       ))}
     </div>
   );
@@ -137,19 +139,19 @@ function QuoteFormFields() {
     return (
       <div
         role="status"
-        className="flex flex-col items-center border border-gold/25 bg-charcoal p-10 text-center"
+        className="flex flex-col items-center rounded-2xl border border-[rgba(201,161,74,0.25)] bg-[#111111] p-10 text-center"
       >
-        <CheckCircle2 className="h-10 w-10 text-gold" strokeWidth={1.5} />
-        <h3 className="mt-5 font-display text-2xl text-heading">
+        <CheckCircle2 className="h-10 w-10 text-[#C9A14A]" strokeWidth={1.5} />
+        <h3 className="mt-5 font-display text-2xl text-white">
           Quote Request Sent
         </h3>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-smoke">
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-[#B8B8B8]">
           {serverMessage || "We'll get back to you with pricing shortly."}
           {reference ? (
             <>
               {" "}
               Your reference is{" "}
-              <span className="font-semibold text-gold">{reference}</span>.
+              <span className="font-semibold text-[#C9A14A]">{reference}</span>.
             </>
           ) : null}
         </p>
@@ -177,7 +179,7 @@ function QuoteFormFields() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-10">
       {status === "error" && serverMessage ? (
         <div
           role="alert"
@@ -188,147 +190,154 @@ function QuoteFormFields() {
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <FormField id="q-fullName" label="Full Name" required error={errors.fullName}>
-          <input
-            id="q-fullName"
-            name="fullName"
-            type="text"
-            autoComplete="name"
-            value={form.fullName}
-            onChange={(e) => update("fullName", e.target.value)}
-            aria-describedby={errors.fullName ? "q-fullName-error" : undefined}
-            aria-invalid={Boolean(errors.fullName)}
-            className={`field-input ${errors.fullName ? "field-input-error" : ""}`}
-            placeholder="e.g. James Carter"
-          />
-        </FormField>
+      <div className="space-y-6">
+        <FormSectionHeading step={1} title="Personal Details" />
 
-        <FormField id="q-phone" label="Phone Number" required error={errors.phone}>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <FormField id="q-fullName" label="Full Name" required error={errors.fullName}>
+            <input
+              id="q-fullName"
+              name="fullName"
+              type="text"
+              autoComplete="name"
+              value={form.fullName}
+              onChange={(e) => update("fullName", e.target.value)}
+              aria-describedby={errors.fullName ? "q-fullName-error" : undefined}
+              aria-invalid={Boolean(errors.fullName)}
+              className={`field-input ${errors.fullName ? "field-input-error" : ""}`}
+              placeholder="e.g. James Carter"
+            />
+          </FormField>
+
+          <FormField id="q-phone" label="Phone Number" required error={errors.phone}>
+            <PhoneInputField
+              id="q-phone"
+              value={form.phone}
+              onChange={(value) => update("phone", value)}
+              error={Boolean(errors.phone)}
+              ariaDescribedBy={errors.phone ? "q-phone-error" : undefined}
+            />
+          </FormField>
+        </div>
+
+        <FormField id="q-email" label="Email" required error={errors.email}>
           <input
-            id="q-phone"
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            value={form.phone}
-            onChange={(e) => update("phone", e.target.value)}
-            aria-describedby={errors.phone ? "q-phone-error" : undefined}
-            aria-invalid={Boolean(errors.phone)}
-            className={`field-input ${errors.phone ? "field-input-error" : ""}`}
-            placeholder="+971 5X XXX XXXX"
+            id="q-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
+            aria-describedby={errors.email ? "q-email-error" : undefined}
+            aria-invalid={Boolean(errors.email)}
+            className={`field-input ${errors.email ? "field-input-error" : ""}`}
+            placeholder="you@company.com"
           />
         </FormField>
       </div>
 
-      <FormField id="q-email" label="Email" required error={errors.email}>
-        <input
-          id="q-email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          value={form.email}
-          onChange={(e) => update("email", e.target.value)}
-          aria-describedby={errors.email ? "q-email-error" : undefined}
-          aria-invalid={Boolean(errors.email)}
-          className={`field-input ${errors.email ? "field-input-error" : ""}`}
-          placeholder="you@company.com"
-        />
-      </FormField>
+      <div className="space-y-6">
+        <FormSectionHeading step={2} title="Journey Details" />
 
-      <FormField
-        id="q-serviceType"
-        label="Service Needed"
-        required
-        error={errors.serviceType}
-      >
-        <select
-          id="q-serviceType"
-          name="serviceType"
-          value={form.serviceType}
-          onChange={(e) => update("serviceType", e.target.value)}
-          aria-describedby={errors.serviceType ? "q-serviceType-error" : undefined}
-          aria-invalid={Boolean(errors.serviceType)}
-          className={`field-input ${errors.serviceType ? "field-input-error" : ""}`}
-        >
-          <option value="">Select a service</option>
-          {SERVICES.map((service) => (
-            <option key={service.slug} value={service.name}>
-              {service.name}
-            </option>
-          ))}
-        </select>
-      </FormField>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <FormField
-          id="q-pickupLocation"
-          label="Pickup Location"
+          id="q-serviceType"
+          label="Service Needed"
           required
-          error={errors.pickupLocation}
+          error={errors.serviceType}
         >
-          <input
-            id="q-pickupLocation"
-            name="pickupLocation"
-            type="text"
-            value={form.pickupLocation}
-            onChange={(e) => update("pickupLocation", e.target.value)}
-            aria-describedby={
-              errors.pickupLocation ? "q-pickupLocation-error" : undefined
-            }
-            aria-invalid={Boolean(errors.pickupLocation)}
-            className={`field-input ${errors.pickupLocation ? "field-input-error" : ""}`}
-            placeholder="e.g. Dubai Marina"
-          />
+          <select
+            id="q-serviceType"
+            name="serviceType"
+            value={form.serviceType}
+            onChange={(e) => update("serviceType", e.target.value)}
+            aria-describedby={errors.serviceType ? "q-serviceType-error" : undefined}
+            aria-invalid={Boolean(errors.serviceType)}
+            className={`field-input ${errors.serviceType ? "field-input-error" : ""}`}
+          >
+            <option value="">Select a service</option>
+            {SERVICES.map((service) => (
+              <option key={service.slug} value={service.name}>
+                {service.name}
+              </option>
+            ))}
+          </select>
         </FormField>
 
-        <FormField id="q-date" label="Date (if known)" error={errors.date}>
-          <input
-            id="q-date"
-            name="date"
-            type="date"
-            min={todayISO}
-            value={form.date}
-            onChange={(e) => update("date", e.target.value)}
-            aria-describedby={errors.date ? "q-date-error" : undefined}
-            aria-invalid={Boolean(errors.date)}
-            className={`field-input ${errors.date ? "field-input-error" : ""}`}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <FormField
+            id="q-pickupLocation"
+            label="Pickup Location"
+            required
+            error={errors.pickupLocation}
+          >
+            <input
+              id="q-pickupLocation"
+              name="pickupLocation"
+              type="text"
+              value={form.pickupLocation}
+              onChange={(e) => update("pickupLocation", e.target.value)}
+              aria-describedby={
+                errors.pickupLocation ? "q-pickupLocation-error" : undefined
+              }
+              aria-invalid={Boolean(errors.pickupLocation)}
+              className={`field-input ${errors.pickupLocation ? "field-input-error" : ""}`}
+              placeholder="e.g. Dubai Marina"
+            />
+          </FormField>
+
+          <FormField id="q-date" label="Date (if known)" error={errors.date}>
+            <input
+              id="q-date"
+              name="date"
+              type="date"
+              min={todayISO}
+              value={form.date}
+              onChange={(e) => update("date", e.target.value)}
+              aria-describedby={errors.date ? "q-date-error" : undefined}
+              aria-invalid={Boolean(errors.date)}
+              className={`field-input ${errors.date ? "field-input-error" : ""}`}
+            />
+          </FormField>
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        <FormSectionHeading step={3} title="Vehicle & Requirements" />
+
+        <FormField id="q-vehicle" label="Preferred Vehicle (optional)">
+          <select
+            id="q-vehicle"
+            name="vehicle"
+            value={form.vehicle}
+            onChange={(e) => update("vehicle", e.target.value)}
+            className="field-input"
+          >
+            <option value="">No preference</option>
+            {FLEET.map((vehicle) => (
+              <option key={vehicle.slug} value={vehicle.name}>
+                {vehicle.name} — {vehicle.category}
+              </option>
+            ))}
+          </select>
+        </FormField>
+
+        <FormField
+          id="q-message"
+          label="Tell Us More"
+          hint="Trip details, number of passengers, or anything that helps us quote accurately."
+        >
+          <textarea
+            id="q-message"
+            name="message"
+            rows={4}
+            value={form.message}
+            onChange={(e) => update("message", e.target.value)}
+            aria-describedby="q-message-hint"
+            className="field-input resize-none"
+            placeholder="Optional — the more detail, the more accurate the quote"
           />
         </FormField>
       </div>
-
-      <FormField id="q-vehicle" label="Preferred Vehicle (optional)">
-        <select
-          id="q-vehicle"
-          name="vehicle"
-          value={form.vehicle}
-          onChange={(e) => update("vehicle", e.target.value)}
-          className="field-input"
-        >
-          <option value="">No preference</option>
-          {FLEET.map((vehicle) => (
-            <option key={vehicle.slug} value={vehicle.name}>
-              {vehicle.name} — {vehicle.category}
-            </option>
-          ))}
-        </select>
-      </FormField>
-
-      <FormField
-        id="q-message"
-        label="Tell Us More"
-        hint="Trip details, number of passengers, or anything that helps us quote accurately."
-      >
-        <textarea
-          id="q-message"
-          name="message"
-          rows={4}
-          value={form.message}
-          onChange={(e) => update("message", e.target.value)}
-          aria-describedby="q-message-hint"
-          className="field-input resize-none"
-          placeholder="Optional — the more detail, the more accurate the quote"
-        />
-      </FormField>
 
       <button
         type="submit"
@@ -341,7 +350,7 @@ function QuoteFormFields() {
             Sending…
           </>
         ) : (
-          "Get Instant Quote"
+          "Request Instant Quote"
         )}
       </button>
     </form>
