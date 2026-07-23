@@ -24,6 +24,13 @@ interface VehicleGalleryProps {
    * multiple images priority/eager-loaded at the same time.
    */
   priority?: boolean;
+  /**
+   * Shows a small real photo in each tab instead of the generic icon, when
+   * that view has a photo. Opt-in and defaults to false so every existing
+   * usage (fleet listing cards, related-vehicle cards) renders byte-for-byte
+   * as before — only the vehicle detail page hero passes this.
+   */
+  showThumbnails?: boolean;
 }
 
 /**
@@ -33,7 +40,11 @@ interface VehicleGalleryProps {
  * gradient + icon treatment, unchanged, so vehicles without photos yet
  * still render exactly as before.
  */
-export default function VehicleGallery({ vehicle, priority = false }: VehicleGalleryProps) {
+export default function VehicleGallery({
+  vehicle,
+  priority = false,
+  showThumbnails = false,
+}: VehicleGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const baseId = useId();
 
@@ -104,6 +115,7 @@ export default function VehicleGallery({ vehicle, priority = false }: VehicleGal
       <div role="tablist" aria-label={`${vehicle.name} views`} className="mt-3 flex gap-2">
         {views.map((view, index) => {
           const isActive = index === activeIndex;
+          const thumb = showThumbnails ? vehicle.images?.[view.key] : undefined;
           return (
             <button
               key={view.key}
@@ -120,7 +132,13 @@ export default function VehicleGallery({ vehicle, priority = false }: VehicleGal
                   : "border-gold/15 text-smoke hover:border-gold/40 hover:text-gold"
               }`}
             >
-              <view.icon className="h-3.5 w-3.5" strokeWidth={1.5} />
+              {thumb ? (
+                <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-sm">
+                  <Image src={thumb.src} alt="" fill sizes="20px" className="object-cover" />
+                </span>
+              ) : (
+                <view.icon className="h-3.5 w-3.5" strokeWidth={1.5} />
+              )}
               {view.label}
             </button>
           );

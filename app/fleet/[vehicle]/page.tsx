@@ -1,7 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Users, Briefcase, Star, ChevronDown, ArrowLeft } from "lucide-react";
+import {
+  Users,
+  Briefcase,
+  Star,
+  ChevronDown,
+  ArrowLeft,
+  Crown,
+  Compass,
+  Wifi,
+  GlassWater,
+  Snowflake,
+  EyeOff,
+  Lightbulb,
+  MonitorPlay,
+  Sun,
+  DoorOpen,
+  Gauge,
+  Volume2,
+  Baby,
+  Gem,
+  Shirt,
+  Sparkles,
+  CheckCircle2,
+  type LucideIcon,
+} from "lucide-react";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
@@ -67,6 +91,42 @@ function vehicleJsonLd(vehicle: (typeof FLEET)[number]) {
   };
 }
 
+const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
+
+/** Best-effort keyword match from a plain-text feature/amenity string to a
+ *  representative icon, purely presentational — the underlying
+ *  `vehicle.features` data is untouched. */
+function amenityIcon(feature: string): LucideIcon {
+  const f = feature.toLowerCase();
+  if (f.includes("wifi") || f.includes("wi-fi")) return Wifi;
+  if (f.includes("child seat")) return Baby;
+  if (f.includes("diamond")) return Gem;
+  if (f.includes("starlight") || f.includes("headliner")) return Sparkles;
+  if (f.includes("attire") || f.includes("red carpet")) return Shirt;
+  if (f.includes("climate") || f.includes("insulation")) return Snowflake;
+  if (f.includes("privacy") || f.includes("curtain") || f.includes("tinted") || f.includes("glass"))
+    return EyeOff;
+  if (f.includes("light")) return Lightbulb;
+  if (f.includes("entertainment") || f.includes("screen")) return MonitorPlay;
+  if (f.includes("roof") || f.includes("sky lounge")) return Sun;
+  if (f.includes("door")) return DoorOpen;
+  if (f.includes("suspension") || f.includes("ride height") || f.includes("elevated")) return Gauge;
+  if (f.includes("sound") || f.includes("audio")) return Volume2;
+  if (f.includes("luggage")) return Briefcase;
+  if (f.includes("water") || f.includes("champagne") || f.includes("amenities")) return GlassWater;
+  if (
+    f.includes("seat") ||
+    f.includes("leg") ||
+    f.includes("lounge") ||
+    f.includes("captain") ||
+    f.includes("bench") ||
+    f.includes("ottoman")
+  )
+    return Sparkles;
+  if (f.includes("leather") || f.includes("handcrafted") || f.includes("quilted")) return Sparkles;
+  return CheckCircle2;
+}
+
 export default async function VehicleDetailPage({ params }: PageProps) {
   const { vehicle: slug } = await params;
   const vehicle = FLEET.find((v) => v.slug === slug);
@@ -75,7 +135,13 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const otherVehicles = FLEET.filter((v) => v.slug !== vehicle.slug).slice(0, 3);
+  // "Similar" prioritizes same-category vehicles first, then fills any
+  // remaining slots from the rest of the fleet — still existing fleet data,
+  // just a more meaningful match than an arbitrary slice.
+  const sameCategory = FLEET.filter((v) => v.slug !== vehicle.slug && v.category === vehicle.category);
+  const otherCategory = FLEET.filter((v) => v.slug !== vehicle.slug && v.category !== vehicle.category);
+  const similarVehicles = [...sameCategory, ...otherCategory].slice(0, 3);
+
   const whatsappMessage = `Hello Apex Limo, I'd like to book the ${vehicle.name}.`;
 
   const crossLinks = VEHICLE_CROSS_LINKS[vehicle.slug];
@@ -85,6 +151,22 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   const relatedLocation = crossLinks
     ? LOCATIONS.find((l) => l.slug === crossLinks.locationSlug)
     : undefined;
+
+  const quickFacts = [
+    { label: "Category", value: vehicle.category, icon: Crown },
+    { label: "Passengers", value: `${vehicle.passengers} Passengers`, icon: Users },
+    { label: "Luggage", value: `${vehicle.luggage} Luggage`, icon: Briefcase },
+    { label: "Best For", value: vehicle.idealFor, icon: Compass },
+  ];
+
+  const priceTiers = [
+    { label: "1 Hour", amount: vehicle.rates.oneHour },
+    { label: "Airport Transfer", amount: vehicle.rates.airport },
+    { label: "5 Hours", amount: vehicle.rates.fiveHours },
+    { label: "10 Hours", amount: vehicle.rates.tenHours },
+    { label: "Additional Hour", amount: vehicle.rates.extraHour },
+    { label: "Additional City", amount: vehicle.rates.additionalCity },
+  ];
 
   return (
     <div>
@@ -123,7 +205,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         </Link>
 
         <div className="mt-8 grid grid-cols-1 items-start gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <VehicleGallery vehicle={vehicle} priority />
+          <VehicleGallery vehicle={vehicle} priority showThumbnails />
 
           <div>
             <span className="label-eyebrow">{vehicle.category}</span>
@@ -191,31 +273,58 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       {/* Body zone */}
       <Section tone="ivory">
       <Container>
+        {/* Quick Facts — compact, immediately below the hero */}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {quickFacts.map((fact) => (
+            <Card key={fact.label} tone="light" className="p-5">
+              <fact.icon className="h-5 w-5 text-gold-deep" strokeWidth={1.5} />
+              <p className="mt-3 text-[10px] uppercase tracking-wide text-graphite">
+                {fact.label}
+              </p>
+              <p className="mt-1 font-display text-lg text-obsidian">{fact.value}</p>
+            </Card>
+          ))}
+        </div>
+
+        {/* Pricing — surfaced directly after Quick Facts for visibility */}
+        <div className="mt-14">
+          <h2 className="font-display text-2xl text-obsidian sm:text-3xl">
+            {vehicle.name} Rates
+          </h2>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-graphite sm:text-base">
+            Transparent chauffeur rates, fixed once your booking is confirmed.
+          </p>
+          <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 rounded-xl border border-gold/15 bg-linen/60 px-6 py-6 sm:grid-cols-3">
+            {priceTiers.map((tier) => (
+              <div key={tier.label} className="flex flex-col gap-1">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-graphite">
+                  {tier.label}
+                </span>
+                <span className="font-display text-lg font-bold text-gold-deep">
+                  {formatAed(tier.amount)}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs italic text-graphite">
+            Includes professional chauffeur, fuel, tolls (Salik) &amp; VIP valet parking — excludes 5% VAT.
+          </p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <CTAButton href={`/booking?vehicle=${vehicle.slug}`}>Book Now</CTAButton>
+            <CTAButton href={`/quote?vehicle=${vehicle.slug}`} variant="outline" tone="light">
+              Get Quote
+            </CTAButton>
+          </div>
+        </div>
+
         {/* About this vehicle */}
-        <div className="max-w-3xl">
+        <div className="mt-20 max-w-3xl">
           <h2 className="font-display text-2xl text-obsidian sm:text-3xl">
             About the {vehicle.name}
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
             {vehicle.longDescription}
           </p>
-        </div>
-
-        {/* Specs */}
-        <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {[
-            { label: "Category", value: vehicle.category },
-            { label: "Passengers", value: `${vehicle.passengers}` },
-            { label: "Luggage", value: `${vehicle.luggage} bags` },
-            { label: "Ideal For", value: vehicle.idealFor },
-          ].map((stat) => (
-            <Card key={stat.label} tone="light" className="p-5">
-              <p className="text-[10px] uppercase tracking-wide text-graphite">
-                {stat.label}
-              </p>
-              <p className="mt-2 font-display text-lg text-gold-deep">{stat.value}</p>
-            </Card>
-          ))}
         </div>
 
         {/* Features */}
@@ -226,14 +335,17 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             align="left"
             tone="light"
           />
-          <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
-            {vehicle.features.map((feature) => (
-              <li key={feature} className="flex items-start gap-2.5 text-sm text-graphite">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-deep" />
-                {feature}
-              </li>
-            ))}
-          </ul>
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {vehicle.features.map((feature) => {
+              const Icon = amenityIcon(feature);
+              return (
+                <Card key={feature} tone="light" className="flex items-start gap-3 p-4">
+                  <Icon className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" strokeWidth={1.5} />
+                  <span className="text-sm text-graphite">{feature}</span>
+                </Card>
+              );
+            })}
+          </div>
         </div>
 
         {/* Why choose this vehicle */}
@@ -244,12 +356,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             align="left"
             tone="light"
           />
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {vehicle.whyChoose.map((reason) => (
-              <div key={reason} className="flex items-start gap-3">
+              <Card key={reason} tone="light" className="flex items-start gap-3 p-5">
                 <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
                 <p className="text-sm leading-relaxed text-graphite">{reason}</p>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
@@ -286,15 +398,15 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Related vehicles */}
+        {/* Similar vehicles */}
         <div className="mt-24">
           <SectionHeading
             eyebrow="Explore More"
-            title="Other Vehicles in the Fleet"
+            title="Explore Similar Vehicles"
             tone="light"
           />
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {otherVehicles.map((related) => (
+            {similarVehicles.map((related) => (
               <VehicleCard key={related.slug} vehicle={related} tone="light" />
             ))}
           </div>
