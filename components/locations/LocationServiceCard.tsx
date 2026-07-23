@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Service } from "@/data/services";
-import { serviceCardImageClass } from "@/lib/serviceCardImage";
 
 interface LocationServiceCardProps {
   service: Service;
@@ -29,7 +28,7 @@ export default function LocationServiceCard({ service, className = "" }: Locatio
         alt={service.image.alt}
         fill
         sizes="(max-width: 640px) 82vw, (max-width: 1024px) 50vw, 33vw"
-        className={`object-cover transition-transform duration-500 ease-out group-hover:scale-110 ${serviceCardImageClass(service.slug)}`}
+        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
       />
 
       <div
