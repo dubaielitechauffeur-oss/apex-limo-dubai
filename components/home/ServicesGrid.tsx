@@ -36,6 +36,7 @@ export default function ServicesGrid() {
                 alt={service.image.alt}
                 fill
                 sizes="(max-width: 640px) 82vw, (max-width: 1024px) 50vw, 33vw"
+                style={{ objectPosition: service.imageObjectPosition }}
                 className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
               />
 

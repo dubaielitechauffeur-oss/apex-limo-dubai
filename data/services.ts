@@ -26,6 +26,8 @@ export interface Service {
   image: ServiceImage;
   /** Short 2-3 word chips shown on the homepage service card (not full sentences). */
   tags: string[];
+  /** Custom object-position for card image on desktop (4:5 aspect ratio). */
+  imageObjectPosition?: string;
 }
 
 export const SERVICES: Service[] = [
@@ -99,6 +101,7 @@ export const SERVICES: Service[] = [
           "No, our pricing is fixed and covers 24/7 availability — an early departure or a midnight arrival costs the same as any other time.",
       },
     ],
+    imageObjectPosition: "center 35%",
   },
   {
     slug: "corporate-chauffeur",
@@ -175,6 +178,7 @@ export const SERVICES: Service[] = [
           "Yes, we regularly plan multi-day itineraries for visiting teams — airport pickup, meetings, dinners, and departure — under one account and one invoice.",
       },
     ],
+    imageObjectPosition: "center 40%",
   },
   {
     slug: "luxury-chauffeur",
