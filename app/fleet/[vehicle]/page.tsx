@@ -31,7 +31,7 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
-import VehicleGallery from "@/components/fleet/VehicleGallery";
+import VehicleHeroGallery from "@/components/fleet/VehicleHeroGallery";
 import VehicleCard from "@/components/fleet/VehicleCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
@@ -205,7 +205,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         </Link>
 
         <div className="mt-8 grid grid-cols-1 items-start gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <VehicleGallery vehicle={vehicle} priority showThumbnails />
+          <VehicleHeroGallery vehicle={vehicle} />
 
           <div>
             <span className="label-eyebrow">{vehicle.category}</span>
