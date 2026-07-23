@@ -1,15 +1,31 @@
+import { Resend } from "resend";
 import type { BookingFormData, QuoteFormData, LeadType } from "./types";
+import { bookingEmailHtml, quoteEmailHtml } from "./email-templates";
+import { SITE } from "./constants";
 
 /**
- * These functions are intentionally simple no-ops today. They give the
- * booking and quote API routes a single, stable place to call into once
- * real providers are connected — swap the body of each function without
+ * These functions give the booking and quote API routes a single, stable
+ * place to call into for each downstream integration. `sendLeadEmail` is
+ * wired to Resend; `notifyWhatsApp` and `pushToCRM` remain intentional
+ * no-ops until those channels are implemented — swap a body without
  * touching the routes or forms that call them.
  */
 
 type LeadPayload =
   | { type: "booking"; data: BookingFormData; reference: string }
   | { type: "quote"; data: QuoteFormData; reference: string };
+
+/** Verified sending domain (apexchauffeurdubai.com) — internal ops notifications only. */
+const FROM_ADDRESS = "Apex Limo & Chauffeur Dubai <bookings@apexchauffeurdubai.com>";
+
+/** Dubai has no DST, so a fixed-offset "en-AE" format is reliable regardless of server timezone. */
+function formatSubmittedAt(): string {
+  return new Intl.DateTimeFormat("en-AE", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Asia/Dubai",
+  }).format(new Date());
+}
 
 /**
  * TODO: Wire up WhatsApp Business Cloud API (or Twilio's WhatsApp API).
@@ -23,15 +39,35 @@ export async function notifyWhatsApp(payload: LeadPayload): Promise<void> {
   });
 }
 
-/**
- * TODO: Wire up a transactional email provider (Resend, SendGrid, Postmark).
- * Send an internal notification to the ops inbox and a confirmation email
- * to the customer using a branded template.
- */
+/** Sends an internal ops notification email via Resend for a new booking or quote lead. */
 export async function sendLeadEmail(payload: LeadPayload): Promise<void> {
-  console.log(`[notifications] Email notification queued (${payload.type})`, {
-    reference: payload.reference,
+  // Constructed per-call rather than at module scope: the Resend SDK throws
+  // immediately if the API key is missing, which would otherwise crash
+  // `next build`'s route analysis and any request through this module
+  // before the key is configured. Deferring it here means a missing key
+  // only fails this one channel, caught and logged by dispatchLead below.
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const timestamp = formatSubmittedAt();
+  const subject =
+    payload.type === "booking"
+      ? `New Booking Request — ${payload.data.vehicle} — ${payload.reference}`
+      : `New Quote Request — ${payload.reference}`;
+  const html =
+    payload.type === "booking"
+      ? bookingEmailHtml(payload.data, payload.reference, timestamp)
+      : quoteEmailHtml(payload.data, payload.reference, timestamp);
+
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
+    to: SITE.email,
+    replyTo: payload.data.email,
+    subject,
+    html,
   });
+
+  if (error) {
+    throw new Error(`Resend error: ${error.message}`);
+  }
 }
 
 /**
