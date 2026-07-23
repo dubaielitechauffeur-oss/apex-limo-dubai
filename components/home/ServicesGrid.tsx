@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { SERVICES } from "@/data/services";
+import { serviceCardImageClass } from "@/lib/serviceCardImage";
 
 /**
  * "What We Offer" — a luxury editorial services showcase: large 4:5
@@ -36,7 +37,7 @@ export default function ServicesGrid() {
                 alt={service.image.alt}
                 fill
                 sizes="(max-width: 640px) 82vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                className={`object-cover transition-transform duration-500 ease-out group-hover:scale-110 ${serviceCardImageClass(service.slug)}`}
               />
 
               {/* Dark gradient overlay for text legibility */}
