@@ -15,7 +15,7 @@ export const SITE = {
   phone: "+971529426152",
   phoneDisplay: "+971 52 942 6152",
   whatsapp: "+971529426152",
-  email: "bookings@apexlimodubai.com",
+  email: "apexchauffeurdubai@gmail.com",
 } as const;
 
 /**
