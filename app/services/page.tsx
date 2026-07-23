@@ -20,6 +20,7 @@ import { buildMetadata, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { SERVICES } from "@/data/services";
 import { SERVICES_FAQS } from "@/data/servicesFaqs";
+import { serviceCardImageClass } from "@/lib/serviceCardImage";
 
 const ICONS: Record<string, LucideIcon> = {
   "airport-transfers": Plane,
@@ -113,7 +114,7 @@ export default function ServicesPage() {
                         alt={service.image.alt}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        className={`object-cover transition-transform duration-300 group-hover:scale-105 ${serviceCardImageClass(service.slug)}`}
                       />
                     </div>
 
