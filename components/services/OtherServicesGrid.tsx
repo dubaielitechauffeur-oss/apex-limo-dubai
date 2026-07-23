@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import type { Service } from "@/data/services";
-import { serviceCardImageClass } from "@/lib/serviceCardImage";
 
 interface OtherServicesGridProps {
   services: Service[];
@@ -40,7 +39,7 @@ export default function OtherServicesGrid({ services }: OtherServicesGridProps) 
                 alt={service.image.alt}
                 fill
                 sizes="(max-width: 640px) 82vw, (max-width: 1024px) 50vw, 33vw"
-                className={`object-cover transition-transform duration-500 ease-out group-hover:scale-110 ${serviceCardImageClass(service.slug)}`}
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
               />
 
               <div
