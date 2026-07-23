@@ -18,7 +18,7 @@ import Card from "@/components/shared/Card";
 import FleetCarousel from "@/components/home/FleetCarousel";
 import BrandsShowcase from "@/components/home/BrandsShowcase";
 import TrustStats from "@/components/home/TrustStats";
-import ServicesGrid from "@/components/home/ServicesGrid";
+import LocationServicesSection from "@/components/locations/LocationServicesSection";
 import LocationsShowcase from "@/components/home/LocationsShowcase";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
@@ -364,8 +364,8 @@ export default async function LocationDetailPage({ params }: PageProps) {
         </Container>
       </section>
 
-      {/* Other Services — identical to the homepage services showcase. */}
-      <ServicesGrid />
+      {/* Our Services — desktop 3-per-view autoplay carousel, mobile/tablet unchanged. */}
+      <LocationServicesSection />
 
       {/* Related locations — identical to the homepage locations showcase,
           scoped to the other areas we serve besides this one. */}
