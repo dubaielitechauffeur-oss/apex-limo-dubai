@@ -59,8 +59,8 @@ export const BLOG_POSTS: BlogPost[] = [
       "A complete guide to luxury chauffeur service in Dubai for business and leisure travelers — what's included, which vehicle suits which trip, and how booking works.",
     publishDate: "2026-06-20",
     featuredImage: {
-      src: "/images/blog/luxury-chauffeur-service-dubai-guide.jpg",
-      alt: "Ultra luxury black Mercedes S-Class with professional chauffeur standing beside vehicle in Downtown Dubai, Burj Khalifa visible in background, golden hour lighting",
+      src: "/images/blog/luxury-chauffeur-service-dubai-guide.webp",
+      alt: "Black Cadillac Escalade from the Apex Limo luxury fleet parked among palm trees in Dubai",
       imagePrompt:
         "Ultra luxury black Mercedes S-Class with professional chauffeur standing beside vehicle in Downtown Dubai, Burj Khalifa visible in background, golden hour lighting, premium lifestyle photography, ultra realistic, luxury travel magazine quality, 16:9",
     },
@@ -232,7 +232,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Chauffeur transfer or taxi for Dubai Airport? A full comparison covering flight tracking, fixed pricing, meet-and-greet, and DXB/DWC-specific advice.",
     publishDate: "2026-06-08",
     featuredImage: {
-      src: "/images/blog/dubai-airport-transfer-vs-taxi.jpg",
+      src: "/images/blog/dubai-airport-transfer-vs-taxi.png",
       alt: "Luxury Mercedes S-Class arriving at Dubai International Airport terminal, chauffeur opening rear passenger door, business traveler with luggage",
       imagePrompt:
         "Luxury Mercedes S-Class arriving at Dubai International Airport terminal, chauffeur opening rear passenger door, business traveler with luggage, cinematic lighting, ultra realistic luxury travel photography",
@@ -417,8 +417,8 @@ export const BLOG_POSTS: BlogPost[] = [
       "An in-depth look at the Mercedes S-Class as Dubai's executive chauffeur standard — cabin features, ideal use cases, and how it compares to the 7 Series and E-Class.",
     publishDate: "2026-05-28",
     featuredImage: {
-      src: "/images/blog/mercedes-s-class-chauffeur-dubai.jpg",
-      alt: "2025 black Mercedes-Benz S-Class luxury interior, ambient lighting, premium leather seats, executive passenger experience",
+      src: "/images/blog/mercedes-s-class-chauffeur-dubai.jpeg",
+      alt: "Chauffeur opening the door of a Mercedes-Maybach S-Class beside a GLS SUV with the Dubai skyline in the background",
       imagePrompt:
         "2025 black Mercedes-Benz S-Class luxury interior, ambient lighting, premium leather seats, executive passenger experience, ultra detailed automotive photography",
     },
@@ -592,7 +592,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "How to choose the best chauffeur service for corporate travel in Dubai — discretion, punctuality, fleet choice, standing accounts, and what visiting executives should expect.",
     publishDate: "2026-05-15",
     featuredImage: {
-      src: "/images/blog/best-chauffeur-service-corporate-travel-dubai.jpg",
+      src: "/images/blog/best-chauffeur-service-corporate-travel-dubai.png",
       alt: "Corporate executive entering luxury chauffeur driven Mercedes sedan outside DIFC financial district Dubai, modern skyscrapers",
       imagePrompt:
         "Corporate executive entering luxury chauffeur driven Mercedes sedan outside DIFC financial district Dubai, modern skyscrapers, professional luxury business atmosphere",
@@ -773,8 +773,8 @@ export const BLOG_POSTS: BlogPost[] = [
       "A guide to touring Dubai with a private chauffeur — building your itinerary, half-day vs full-day options, vehicle choice, and getting the most from your sightseeing day.",
     publishDate: "2026-05-01",
     featuredImage: {
-      src: "/images/blog/dubai-city-tours-private-chauffeur.jpg",
-      alt: "Luxury chauffeur driven Mercedes vehicle near Burj Al Arab and Palm Jumeirah, tourists enjoying premium sightseeing experience, bright Dubai skyline",
+      src: "/images/blog/dubai-city-tours-private-chauffeur.jpeg",
+      alt: "Well-dressed passenger stepping out of a chauffeur-driven Mercedes V-Class outside a stylish Dubai venue",
       imagePrompt:
         "Luxury chauffeur driven Mercedes vehicle near Burj Al Arab and Palm Jumeirah, tourists enjoying premium sightseeing experience, luxury travel photography, bright Dubai skyline",
     },
@@ -954,7 +954,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "A complete guide to wedding chauffeur service in Dubai — the bridal car, coordinating guests and the wedding party, timing, and choosing the right vehicle for your day.",
     publishDate: "2026-04-18",
     featuredImage: {
-      src: "/images/blog/wedding-chauffeur-service-dubai.jpg",
+      src: "/images/blog/wedding-chauffeur-service-dubai.png",
       alt: "Elegant black luxury Mercedes with wedding decoration outside luxury Dubai hotel, bride and groom arriving, premium wedding transportation photography",
       imagePrompt:
         "Elegant black luxury Mercedes with wedding decoration outside luxury Dubai hotel, bride and groom arriving, premium wedding transportation photography, cinematic luxury style",
