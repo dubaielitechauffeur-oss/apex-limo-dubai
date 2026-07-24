@@ -5,11 +5,13 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
+import SectionHeading from "@/components/shared/SectionHeading";
 import RichParagraph from "@/components/services/RichParagraph";
+import BlogCard from "@/components/blog/BlogCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/format";
-import { BLOG_POSTS, getBlogPostBySlug } from "@/data/blog";
+import { BLOG_POSTS, getBlogPostBySlug, getRelatedBlogPosts } from "@/data/blog";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -48,6 +50,8 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) {
     notFound();
   }
+
+  const relatedPosts = getRelatedBlogPosts(post.slug);
 
   return (
     <div>
@@ -119,17 +123,46 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Article body */}
       <Section tone="ivory" separator={false}>
         <Container>
-          <div className="mx-auto max-w-3xl space-y-6">
-            {post.content.map((paragraph, index) => (
-              <RichParagraph
-                key={index}
-                text={paragraph}
-                className="text-sm leading-relaxed text-graphite sm:text-base"
-              />
+          <div className="mx-auto max-w-3xl space-y-10">
+            {post.content.map((section, index) => (
+              <div key={index}>
+                {section.heading ? (
+                  <h2 className="mb-4 font-display text-2xl text-obsidian sm:text-3xl">
+                    {section.heading}
+                  </h2>
+                ) : null}
+                <div className="space-y-4">
+                  {section.paragraphs.map((paragraph, pIndex) => (
+                    <RichParagraph
+                      key={pIndex}
+                      text={paragraph}
+                      className="text-sm leading-relaxed text-graphite sm:text-base"
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </Container>
       </Section>
+
+      {/* More from the blog — internal linking to other posts */}
+      {relatedPosts.length > 0 ? (
+        <Section tone="linen">
+          <Container>
+            <SectionHeading eyebrow="Keep Reading" title="More From the Blog" tone="light" />
+            <div
+              className={`mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 ${
+                relatedPosts.length >= 3 ? "lg:grid-cols-3" : ""
+              }`}
+            >
+              {relatedPosts.map((related) => (
+                <BlogCard key={related.slug} post={related} />
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
       <BookingCTA
         eyebrow="Ready When You Are"

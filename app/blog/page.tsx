@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
+import BlogCard from "@/components/blog/BlogCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
-import { formatDate } from "@/lib/format";
 import { getAllBlogPosts } from "@/data/blog";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -84,38 +82,7 @@ export default function BlogPage() {
 
           <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group flex flex-col bg-ivory transition-colors duration-200 hover:bg-ivory-off"
-              >
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-sm">
-                  <Image
-                    src={post.featuredImage.src}
-                    alt={post.featuredImage.alt}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-
-                <div className="flex flex-1 flex-col p-8">
-                  <time
-                    dateTime={post.publishDate}
-                    className="text-xs uppercase tracking-wide text-graphite"
-                  >
-                    {formatDate(post.publishDate)}
-                  </time>
-                  <h2 className="mt-3 font-display text-xl text-obsidian">{post.title}</h2>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-graphite">
-                    {post.excerpt}
-                  </p>
-                  <span className="mt-6 inline-flex w-fit items-center gap-2 text-xs font-bold uppercase tracking-wide text-gold-deep transition-colors duration-200 group-hover:text-obsidian">
-                    Read More
-                    <span aria-hidden="true">&rarr;</span>
-                  </span>
-                </div>
-              </Link>
+              <BlogCard key={post.slug} post={post} />
             ))}
           </div>
         </Container>
