@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense, FormEvent } from "react";
+import { useState, useRef, Suspense, FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
@@ -97,6 +97,9 @@ function BookingFormFields() {
   const [status, setStatus] = useState<Status>("idle");
   const [serverMessage, setServerMessage] = useState<string>("");
   const [reference, setReference] = useState<string>("");
+  const [customerName, setCustomerName] = useState<string>("");
+  const [preservedMinHeight, setPreservedMinHeight] = useState<number | undefined>(undefined);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const todayISO = new Date().toISOString().split("T")[0];
 
@@ -137,6 +140,15 @@ function BookingFormFields() {
         return;
       }
 
+      // Capture the form's current rendered height before swapping to the
+      // much shorter success view. Without this, the page shrinks out from
+      // under the user's scroll position and the browser clamps scrollY to
+      // the new (shorter) document height, which visually jumps the page
+      // down toward the footer.
+      if (formRef.current) {
+        setPreservedMinHeight(formRef.current.offsetHeight);
+      }
+      setCustomerName(form.fullName.trim());
       setReference(data.reference ?? "");
       setStatus("success");
       setForm(EMPTY_FORM);
@@ -152,14 +164,16 @@ function BookingFormFields() {
     return (
       <div
         role="status"
-        className="flex flex-col items-center rounded-2xl border border-[rgba(201,161,74,0.25)] bg-[#111111] p-10 text-center"
+        style={preservedMinHeight ? { minHeight: preservedMinHeight } : undefined}
+        className="flex flex-col items-center justify-center rounded-2xl border border-[rgba(201,161,74,0.25)] bg-[#111111] p-10 text-center"
       >
         <CheckCircle2 className="h-10 w-10 text-[#C9A14A]" strokeWidth={1.5} />
         <h3 className="mt-5 font-display text-2xl text-white">
-          Booking Request Received
+          {customerName ? `Thank you, ${customerName}!` : "Thank You!"}
         </h3>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-[#B8B8B8]">
-          {serverMessage || "Our team will confirm your chauffeur shortly."}
+          Your booking request has been received successfully. Our team will
+          contact you shortly to confirm your booking details.
           {reference ? (
             <>
               {" "}
@@ -180,7 +194,10 @@ function BookingFormFields() {
             Confirm on WhatsApp
           </CTAButton>
           <button
-            onClick={() => setStatus("idle")}
+            onClick={() => {
+              setPreservedMinHeight(undefined);
+              setStatus("idle");
+            }}
             className="btn-outline"
             type="button"
           >
@@ -192,7 +209,7 @@ function BookingFormFields() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-10">
+    <form ref={formRef} onSubmit={handleSubmit} noValidate className="space-y-10">
       {status === "error" && serverMessage ? (
         <div
           role="alert"
