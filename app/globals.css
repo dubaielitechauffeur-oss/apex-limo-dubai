@@ -121,6 +121,42 @@
     color: #d4af37;
     opacity: 0.7;
   }
+
+  /* Vehicle detail page hero: on mobile, stacks title -> gallery -> details
+     (introduces the vehicle before the image). On desktop (lg+), the
+     gallery spans both rows beside a single stacked title+details column,
+     reproducing the original two-column hero exactly — same content, same
+     spacing (row-gap is zeroed at lg so the title/details boundary keeps
+     relying on the existing mt-* utility on the first details element,
+     matching the pre-existing spacing rather than adding a new gap). */
+  .vehicle-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: "title" "gallery" "details";
+    align-items: start;
+    row-gap: 2rem;
+  }
+
+  .vehicle-hero-grid > .vehicle-hero-title {
+    grid-area: title;
+  }
+
+  .vehicle-hero-grid > .vehicle-hero-gallery {
+    grid-area: gallery;
+  }
+
+  .vehicle-hero-grid > .vehicle-hero-details {
+    grid-area: details;
+  }
+
+  @media (min-width: 1024px) {
+    .vehicle-hero-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-areas: "gallery title" "gallery details";
+      column-gap: 3rem;
+      row-gap: 0;
+    }
+  }
 }
 
 /* -------------------------------------------------------------------- */
