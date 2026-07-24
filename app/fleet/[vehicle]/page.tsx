@@ -204,10 +204,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           Back to Fleet
         </Link>
 
-        <div className="mt-8 grid grid-cols-1 items-start gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <VehicleHeroGallery vehicle={vehicle} />
-
-          <div>
+        <div className="vehicle-hero-grid mt-8">
+          {/* Title block — mobile shows this before the image ("introduce
+              the vehicle before showing the image"); desktop stacks it
+              above the details block in the right-hand column, unchanged
+              from the original layout. */}
+          <div className="vehicle-hero-title">
             <span className="label-eyebrow">{vehicle.category}</span>
             <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
               {vehicle.name}
@@ -215,11 +217,18 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             <p className="mt-2 text-sm italic text-gold/90 sm:text-base">
               {vehicle.tagline}
             </p>
-            <p className="mt-5 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
+          </div>
+
+          <div className="vehicle-hero-gallery">
+            <VehicleHeroGallery vehicle={vehicle} />
+          </div>
+
+          <div className="vehicle-hero-details">
+            <p className="max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
               {vehicle.description}
             </p>
 
-            <div className="mt-6 flex items-center gap-6 border-y border-gold/15 py-4 text-sm text-smoke">
+            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-gold/15 py-4 text-sm text-smoke">
               <span className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-gold" strokeWidth={1.5} />
                 {vehicle.passengers} passengers
@@ -227,6 +236,13 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               <span className="flex items-center gap-2">
                 <Briefcase className="h-4 w-4 text-gold" strokeWidth={1.5} />
                 {vehicle.luggage} bags
+              </span>
+              {/* Best For — mobile only. Desktop already surfaces this via
+                  the Quick Facts cards below the hero, so showing it here
+                  too would duplicate it on desktop. */}
+              <span className="flex items-center gap-2 lg:hidden">
+                <Compass className="h-4 w-4 text-gold" strokeWidth={1.5} />
+                {vehicle.idealFor}
               </span>
             </div>
 
@@ -270,11 +286,16 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      {/* Body zone */}
+      {/* Body zone — a flex column so the sections below can be reordered
+          for mobile only (via the order utility and lg:order-none) without
+          touching the desktop layout, which keeps relying on each
+          section's own lg:mt spacing to reproduce its exact original gap. */}
       <Section tone="ivory">
-      <Container>
-        {/* Quick Facts — compact, immediately below the hero */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <Container className="flex flex-col gap-14 lg:gap-0">
+        {/* Quick Facts — desktop only. On mobile this duplicated the
+            passengers/luggage already shown in the hero meta row (Best For
+            is now shown there too), so it's hidden below lg. */}
+        <div className="hidden lg:order-none lg:grid lg:grid-cols-4 lg:gap-4">
           {quickFacts.map((fact) => (
             <Card key={fact.label} tone="light" className="p-5">
               <fact.icon className="h-5 w-5 text-gold-deep" strokeWidth={1.5} />
@@ -286,10 +307,11 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           ))}
         </div>
 
-        {/* Pricing — surfaced directly after Quick Facts for visibility */}
-        <div className="mt-14">
+        {/* Pricing — moved directly below the hero on mobile; desktop keeps
+            its original position right after Quick Facts. */}
+        <div className="order-1 lg:order-none lg:mt-14">
           <h2 className="font-display text-2xl text-obsidian sm:text-3xl">
-            {vehicle.name} Rates
+            Available Chauffeur Packages
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-graphite sm:text-base">
             Transparent chauffeur rates, fixed once your booking is confirmed.
@@ -315,10 +337,16 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               Get Quote
             </CTAButton>
           </div>
+          <p className="mt-4 text-xs uppercase tracking-wide text-gold-deep/80">
+            Professional chauffeur included &bull; No deposit required &bull; Flexible cancellation policy
+          </p>
         </div>
 
-        {/* About this vehicle */}
-        <div className="mt-20 max-w-3xl">
+        {/* About this vehicle — stays in its original source position so
+            lg:order-none (desktop) falls back to the pre-existing order:
+            About before Features. Mobile reordering is handled purely by
+            the order-3 utility below, independent of source position. */}
+        <div className="order-3 max-w-3xl lg:order-none lg:mt-20">
           <h2 className="font-display text-2xl text-obsidian sm:text-3xl">
             About the {vehicle.name}
           </h2>
@@ -327,8 +355,9 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           </p>
         </div>
 
-        {/* Features */}
-        <div className="mt-20">
+        {/* Features — moved above About on mobile per the requested order;
+            desktop keeps its original position after About (see note above). */}
+        <div className="order-2 lg:order-none lg:mt-20">
           <SectionHeading
             eyebrow="Onboard"
             title="Features & Amenities"
@@ -349,7 +378,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         </div>
 
         {/* Why choose this vehicle */}
-        <div className="mt-20">
+        <div className="order-4 lg:order-none lg:mt-20">
           <SectionHeading
             eyebrow="Why This Vehicle"
             title={`Why Choose the ${vehicle.name}`}
