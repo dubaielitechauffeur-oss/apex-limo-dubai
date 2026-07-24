@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import RichParagraph from "@/components/services/RichParagraph";
 import type { BlogContentBlock } from "@/data/blog";
 
@@ -64,6 +65,11 @@ export default function BlogArticleContent({ blocks }: BlogArticleContentProps) 
               <details key={faq.question} className="group py-5">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
                   {faq.question}
+                  <ChevronDown
+                    className="h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 group-open:rotate-180"
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
                 </summary>
                 <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
                   {faq.answer}

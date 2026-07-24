@@ -42,21 +42,23 @@ export default function BlogSearch({ posts, imageExistsBySlug }: BlogSearchProps
         />
       </div>
 
-      {visiblePosts.length > 0 ? (
-        <div
-          className={`mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 ${
-            visiblePosts.length >= 2 ? "sm:grid-cols-2" : ""
-          } ${visiblePosts.length >= 3 ? "lg:grid-cols-3" : ""}`}
-        >
-          {visiblePosts.map((post) => (
-            <BlogCard key={post.slug} post={post} imageExists={imageExistsBySlug[post.slug] ?? false} />
-          ))}
-        </div>
-      ) : (
-        <p className="mt-16 text-center text-sm text-graphite">
-          No articles match &ldquo;{query}&rdquo;. Try a different search term.
-        </p>
-      )}
+      <div aria-live="polite">
+        {visiblePosts.length > 0 ? (
+          <div
+            className={`mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 ${
+              visiblePosts.length >= 2 ? "sm:grid-cols-2" : ""
+            } ${visiblePosts.length >= 3 ? "lg:grid-cols-3" : ""}`}
+          >
+            {visiblePosts.map((post) => (
+              <BlogCard key={post.slug} post={post} imageExists={imageExistsBySlug[post.slug] ?? false} />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-16 text-center text-sm text-graphite">
+            No articles match &ldquo;{query}&rdquo;. Try a different search term.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

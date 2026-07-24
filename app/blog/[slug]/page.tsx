@@ -27,11 +27,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const post = getBlogPostBySlug(slug);
 
   if (!post) {
-    return buildMetadata({
-      title: "Article Not Found",
-      description: "This article could not be found on the Apex Limo journal.",
-      path: `/blog/${slug}`,
-    });
+    return {
+      ...buildMetadata({
+        title: "Article Not Found",
+        description: "This article could not be found on the Apex Limo journal.",
+        path: `/blog/${slug}`,
+      }),
+      robots: { index: false, follow: false },
+    };
   }
 
   return buildMetadata({
