@@ -3,6 +3,7 @@ import { SITE } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { SERVICES } from "@/data/services";
 import { LOCATIONS } from "@/data/locations";
+import { getAllBlogPosts } from "@/data/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -15,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/services`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE.url}/locations`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE.url}/faqs`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${SITE.url}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE.url}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE.url}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
@@ -42,5 +44,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...fleetRoutes, ...serviceRoutes, ...locationRoutes];
+  const blogRoutes: MetadataRoute.Sitemap = getAllBlogPosts().map((post) => ({
+    url: `${SITE.url}/blog/${post.slug}`,
+    lastModified: new Date(post.publishDate),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...fleetRoutes, ...serviceRoutes, ...locationRoutes, ...blogRoutes];
 }

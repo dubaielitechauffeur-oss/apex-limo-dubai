@@ -74,6 +74,11 @@ interface BuildMetadataOptions {
   description: string;
   path?: string;
   images?: string[];
+  /** OpenGraph object type — "website" (default) for every existing page, or
+   *  "article" for blog posts, which adds the `publishedTime` OG field. */
+  type?: "website" | "article";
+  /** ISO date string — only meaningful (and only emitted) when type is "article". */
+  publishedTime?: string;
 }
 
 /** Helper for generating page-level metadata that inherits site defaults. */
@@ -82,6 +87,8 @@ export function buildMetadata({
   description,
   path = "",
   images,
+  type = "website",
+  publishedTime,
 }: BuildMetadataOptions): Metadata {
   const url = `${SITE.url}${path}`;
   return {
@@ -89,6 +96,7 @@ export function buildMetadata({
     description,
     alternates: { canonical: url },
     openGraph: {
+      type,
       title,
       description,
       url,
@@ -96,6 +104,7 @@ export function buildMetadata({
       images: images
         ? images.map((img) => ({ url: img }))
         : defaultMetadata.openGraph?.images,
+      ...(type === "article" && publishedTime ? { publishedTime } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -151,6 +160,44 @@ export function organizationJsonLd() {
     },
     priceRange: "$$$",
     sameAs: [] as string[],
+  };
+}
+
+interface ArticleJsonLdInput {
+  title: string;
+  description: string;
+  image: string;
+  publishDate: string;
+  path: string;
+}
+
+/** Article JSON-LD for a blog post, reusing the same organization node as publisher. */
+export function articleJsonLd({ title, description, image, publishDate, path }: ArticleJsonLdInput) {
+  const url = `${SITE.url}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    image: image.startsWith("http") ? image : `${SITE.url}${image}`,
+    datePublished: publishDate,
+    dateModified: publishDate,
+    mainEntityOfPage: url,
+    url,
+    author: {
+      "@type": "Organization",
+      "@id": organizationId(),
+      name: SITE.name,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": organizationId(),
+      name: SITE.name,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE.url}/images/brand/apex-logo.webp`,
+      },
+    },
   };
 }
 
