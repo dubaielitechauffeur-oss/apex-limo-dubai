@@ -165,7 +165,7 @@ function BookingFormFields() {
       <div
         role="status"
         style={preservedMinHeight ? { minHeight: preservedMinHeight } : undefined}
-        className="flex flex-col items-center justify-center rounded-2xl border border-[rgba(201,161,74,0.25)] bg-[#111111] p-10 text-center"
+        className="flex flex-col items-center justify-end rounded-2xl border border-[rgba(201,161,74,0.25)] bg-[#111111] p-10 text-center"
       >
         <CheckCircle2 className="h-10 w-10 text-[#C9A14A]" strokeWidth={1.5} />
         <h3 className="mt-5 font-display text-2xl text-white">
