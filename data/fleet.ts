@@ -181,20 +181,6 @@ export const FLEET: FleetVehicle[] = [
           "Yes, the Phantom can be booked hourly for ceremonies and photo sessions, not only full-day hire.",
       },
     ],
-    images: {
-      exterior: {
-        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-exterior.webp",
-        alt: "Black Rolls-Royce Phantom chauffeur car front exterior view with palm trees",
-      },
-      interior: {
-        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-interior.webp",
-        alt: "Rolls-Royce Phantom rear cabin with cognac leather seats and starlight headliner",
-      },
-      detail: {
-        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-detail.webp",
-        alt: "Rolls-Royce Phantom Spirit of Ecstasy hood ornament close-up",
-      },
-    },
   },
   {
     slug: "mercedes-s-class",
@@ -244,20 +230,6 @@ export const FLEET: FleetVehicle[] = [
           "Yes, hourly and full-day hire are both available — select your duration when booking, or mention it in your quote request.",
       },
     ],
-    images: {
-      exterior: {
-        src: "/images/fleet/mercedes-s-class/mercedes-s-class-front-exterior.webp",
-        alt: "Black Mercedes S-Class chauffeur car, front view, Apex Limo & Chauffeur Dubai fleet",
-      },
-      interior: {
-        src: "/images/fleet/mercedes-s-class/mercedes-s-class-rear-seats-interior.webp",
-        alt: "Mercedes S-Class rear passenger seats with premium white leather interior",
-      },
-      detail: {
-        src: "/images/fleet/mercedes-s-class/mercedes-s-class-steering-wheel-detail.webp",
-        alt: "Mercedes S-Class steering wheel and digital dashboard close-up",
-      },
-    },
   },
   {
     slug: "range-rover-autobiography",
@@ -306,20 +278,6 @@ export const FLEET: FleetVehicle[] = [
         answer: "Yes, every booking includes a professionally trained, licensed chauffeur.",
       },
     ],
-    images: {
-      exterior: {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-exterior.webp",
-        alt: "Black Range Rover Autobiography chauffeur SUV front exterior three-quarter view",
-      },
-      interior: {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-interior.webp",
-        alt: "Range Rover Autobiography rear cabin with tan leather seats and rear-seat entertainment screens",
-      },
-      detail: {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-detail.webp",
-        alt: "Range Rover Autobiography steering wheel and digital dashboard close-up",
-      },
-    },
   },
   {
     slug: "cadillac-escalade",
@@ -368,20 +326,6 @@ export const FLEET: FleetVehicle[] = [
           "Yes, child seats are available on request — note it under special requests when booking.",
       },
     ],
-    images: {
-      exterior: {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-exterior.webp",
-        alt: "Black Cadillac Escalade chauffeur SUV front exterior view with illuminated grille",
-      },
-      interior: {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-interior.webp",
-        alt: "Cadillac Escalade rear passenger bench seats in cognac leather",
-      },
-      detail: {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-detail.webp",
-        alt: "Cadillac Escalade leather seat close-up showing stitching detail and craftsmanship",
-      },
-    },
   },
   {
     slug: "mercedes-v-class",
@@ -431,20 +375,6 @@ export const FLEET: FleetVehicle[] = [
           "Absolutely. We regularly deploy multiple V-Class vans for conferences and weddings needing coordinated group transport.",
       },
     ],
-    images: {
-      exterior: {
-        src: "/images/fleet/mercedes-v-class/mercedes-v-class-exterior-dubai-skyline.webp",
-        alt: "Black Mercedes V-Class chauffeur van parked with Dubai skyline and Burj Khalifa in the background",
-      },
-      interior: {
-        src: "/images/fleet/mercedes-v-class/mercedes-v-class-rear-cabin-seats.webp",
-        alt: "Mercedes V-Class rear cabin with individual black leather captain's chairs and bench seating",
-      },
-      detail: {
-        src: "/images/fleet/mercedes-v-class/mercedes-v-class-luggage-capacity.webp",
-        alt: "Mercedes V-Class open trunk fully loaded with multiple suitcases, showing luggage capacity",
-      },
-    },
   },
   {
     slug: "bmw-7-series",
@@ -493,20 +423,6 @@ export const FLEET: FleetVehicle[] = [
         answer: "Yes, onboard Wi-Fi is included so you can stay connected between meetings.",
       },
     ],
-    images: {
-      exterior: {
-        src: "/images/fleet/bmw-7-series/bmw-7-series-exterior.webp",
-        alt: "Black BMW 7 Series chauffeur car front view with illuminated grille and Dubai skyline at dusk",
-      },
-      interior: {
-        src: "/images/fleet/bmw-7-series/bmw-7-series-interior.webp",
-        alt: "BMW 7 Series rear seats in cognac leather with executive lounge seating",
-      },
-      detail: {
-        src: "/images/fleet/bmw-7-series/bmw-7-series-detail.webp",
-        alt: "BMW 7 Series dashboard close-up with dual curved digital displays and steering wheel",
-      },
-    },
   },
   {
     slug: "lexus-es-300h",
