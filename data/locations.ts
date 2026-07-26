@@ -147,7 +147,7 @@ export const LOCATIONS: Location[] = [
     longDescription: [
       "Palm Jumeirah's villas and beachfront resorts sit along a single access road, so a pre-booked chauffeur avoids the uncertainty of a taxi at the gate. Apex drivers know the Palm's fronds, resort entrances, and villa community security well, whether the pickup is deep on a frond or right on the trunk near Atlantis.",
       "Airport transfers run around 35 minutes to DXB, with flight tracking and a realistic buffer built in for the extra trunk-road distance. The Palm is also one of Dubai's leading wedding destinations — Apex regularly coordinates Rolls-Royce Phantom bookings and guest convoys for resorts along the crescent.",
-      "Leisure bookings dominate here: dinner at a destination restaurant, a beach club day, or an evening moving between The Pointe and Palm West Beach. Dubai Marina and JBR are about 15 minutes down the trunk road, easy to combine with a Palm dinner in one hourly booking. Fleet ranges from the Rolls-Royce Ghost or Phantom for occasions to the usual S-Class and Range Rover for everyday transfers.",
+      "Leisure bookings dominate here: dinner at a destination restaurant, a beach club day, or an evening moving between The Pointe and Palm West Beach. Dubai Marina and JBR are about 15 minutes down the trunk road, easy to combine with a Palm dinner in one hourly booking. Fleet ranges from the Rolls-Royce Phantom for occasions to the usual S-Class and Range Rover for everyday transfers.",
     ],
     isAirport: false,
     popularRoutes: [
@@ -506,7 +506,7 @@ export const LOCATIONS: Location[] = [
       "Meet-and-greet airport transfers to and from DXB, covering all three terminals.",
     longDescription: [
       "DXB is one of the busiest airports in the world, and a smooth arrival depends on details most services skip — knowing your terminal, tracking delays automatically, and having a chauffeur already positioned before you land. Apex covers all three DXB terminals with meet-and-greet service and name signage on every arrival.",
-      "Business travel through DXB is a major share of what we handle — executives need a fast, discreet transfer straight to a Downtown or Business Bay hotel, and standing corporate accounts often route all international travel through the same driver pool and billing. Leisure travelers get equal attention, with a Rolls-Royce Ghost or Phantom available to make an arrival part of the occasion.",
+      "Business travel through DXB is a major share of what we handle — executives need a fast, discreet transfer straight to a Downtown or Business Bay hotel, and standing corporate accounts often route all international travel through the same driver pool and billing. Leisure travelers get equal attention, with a Rolls-Royce Phantom available to make an arrival part of the occasion.",
       "Downtown Dubai and Business Bay are both about 20 minutes from DXB, Dubai Marina and JBR around 30, and Palm Jumeirah roughly 35 given the added trunk-road distance. Departures get the same care, timed around your specific terminal and airline's check-in patterns, confirmed with you the evening before — with fixed pricing and 24/7 availability regardless of when your flight lands.",
     ],
     isAirport: true,
@@ -546,7 +546,7 @@ export const LOCATIONS: Location[] = [
       {
         question: "Can you arrange a special vehicle for a honeymoon or celebration arrival?",
         answer:
-          "Yes, a Rolls-Royce Ghost or Phantom can be arranged for arrivals where the vehicle itself is part of the occasion.",
+          "Yes, a Rolls-Royce Phantom can be arranged for arrivals where the vehicle itself is part of the occasion.",
       },
       {
         question: "Can you coordinate pickups for a group arriving on the same or different flights?",

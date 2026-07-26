@@ -45,37 +45,31 @@ export const VEHICLE_CROSS_LINKS: Record<string, VehicleCrossLinks> = {
     serviceSlug: "vip-transportation",
     locationSlug: "dubai-international-airport-dxb",
   },
-  "rolls-royce-ghost": {
-    serviceSlug: "vip-transportation",
-    locationSlug: "downtown-dubai",
-  },
-  "bentley-flying-spur": {
-    serviceSlug: "corporate-chauffeur",
-    locationSlug: "dubai-marina",
-  },
-  "lexus-lm": {
-    serviceSlug: "airport-transfers",
-    locationSlug: "dubai-international-airport-dxb",
-  },
-  "mercedes-e-class": {
-    serviceSlug: "corporate-chauffeur",
-    locationSlug: "business-bay",
-  },
-  "gmc-yukon-denali": {
-    serviceSlug: "vip-transportation",
-    locationSlug: "jbr",
-  },
-  "bmw-5-series": {
-    serviceSlug: "corporate-chauffeur",
-    locationSlug: "downtown-dubai",
-  },
-  "toyota-land-cruiser": {
-    serviceSlug: "airport-transfers",
-    locationSlug: "dubai-international-airport-dxb",
-  },
   "lexus-es-300h": {
     serviceSlug: "corporate-chauffeur",
     locationSlug: "dubai-marina",
+  },
+  "rolls-royce-cullinan-mansory": {
+    serviceSlug: "vip-transportation",
+    locationSlug: "palm-jumeirah",
+  },
+  "tesla-model-y": {
+    serviceSlug: "corporate-chauffeur",
+    locationSlug: "dubai-marina",
+  },
+  // Same pairing the previous Yukon Denali entry held — preserves the JBR
+  // location page's related-vehicle link now that Denali is retired.
+  "gmc-yukon-elevation": {
+    serviceSlug: "vip-transportation",
+    locationSlug: "jbr",
+  },
+  "tesla-model-3": {
+    serviceSlug: "corporate-chauffeur",
+    locationSlug: "business-bay",
+  },
+  "byd-han": {
+    serviceSlug: "luxury-chauffeur",
+    locationSlug: "downtown-dubai",
   },
 };
 
