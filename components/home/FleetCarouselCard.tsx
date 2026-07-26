@@ -17,7 +17,7 @@ const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
  * sample figures — see the VehicleRates doc comment there).
  */
 export default function FleetCarouselCard({ vehicle }: FleetCarouselCardProps) {
-  const cover = vehicle.images?.exterior;
+  const cover = vehicle.images?.[0];
   const rateTiles: { icon: LucideIcon; label: string; amount: number }[] = [
     { icon: Clock, label: "10 Hours", amount: vehicle.rates.tenHours },
     { icon: Clock, label: "5 Hours", amount: vehicle.rates.fiveHours },

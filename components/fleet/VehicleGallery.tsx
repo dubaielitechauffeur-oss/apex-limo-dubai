@@ -2,17 +2,8 @@
 
 import { useId, useState } from "react";
 import Image from "next/image";
-import { Car, Armchair, Sparkles, type LucideIcon } from "lucide-react";
+import { Car } from "lucide-react";
 import type { FleetVehicle } from "@/data/fleet";
-
-type ViewKey = "exterior" | "interior" | "detail";
-
-interface GalleryView {
-  key: ViewKey;
-  label: string;
-  icon: LucideIcon;
-  caption: string;
-}
 
 interface VehicleGalleryProps {
   vehicle: FleetVehicle;
@@ -27,29 +18,20 @@ interface VehicleGalleryProps {
 }
 
 /**
- * Renders a tabbed gallery for a vehicle (Exterior / Interior / Detail).
- * If `vehicle.images` is present (real photography), each tab shows the
- * matching photo via next/image. Otherwise it falls back to the original
- * gradient + icon treatment, unchanged, so vehicles without photos yet
- * still render exactly as before.
+ * Renders a single-photo gallery panel with a numbered tab strip for
+ * vehicles that have more than one photo. Photos are shown in the exact
+ * order provided in `vehicle.images` (index 0 = hero) — since real
+ * photography isn't guaranteed to map to fixed Exterior/Interior/Detail
+ * views, tabs are generic "1", "2", "3" rather than labelled categories.
+ * Falls back to the original gradient + icon treatment when no photos are
+ * available, unchanged, so vehicles without photos still render as before.
  */
 export default function VehicleGallery({ vehicle, priority = false }: VehicleGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const baseId = useId();
 
-  const views: GalleryView[] = [
-    { key: "exterior", label: "Exterior", icon: Car, caption: vehicle.tagline },
-    { key: "interior", label: "Interior", icon: Armchair, caption: vehicle.features[0] },
-    {
-      key: "detail",
-      label: "Detail",
-      icon: Sparkles,
-      caption: vehicle.features[vehicle.features.length - 1],
-    },
-  ];
-
-  const active = views[activeIndex];
-  const activeImage = vehicle.images?.[active.key];
+  const images = vehicle.images ?? [];
+  const activeImage = images[activeIndex];
 
   return (
     <div>
@@ -80,52 +62,53 @@ export default function VehicleGallery({ vehicle, priority = false }: VehicleGal
 
         <div className="relative flex items-start justify-between">
           <span className="label-eyebrow text-[10px]">{vehicle.category}</span>
-          <span className="label-eyebrow text-[10px]">{active.label}</span>
+          {images.length > 1 ? (
+            <span className="label-eyebrow text-[10px]">
+              {activeIndex + 1} / {images.length}
+            </span>
+          ) : null}
         </div>
 
         {!activeImage ? (
           <div className="relative flex flex-1 items-center justify-center">
-            <active.icon
-              className="h-16 w-16 text-gold/70 sm:h-20 sm:w-20"
-              strokeWidth={1}
-              aria-hidden="true"
-            />
+            <Car className="h-16 w-16 text-gold/70 sm:h-20 sm:w-20" strokeWidth={1} aria-hidden="true" />
           </div>
         ) : null}
 
         <div className="relative">
           <div className="route-line-sm mb-3 w-10 opacity-70" />
           <p className="font-display text-lg text-smoke">{vehicle.name}</p>
-          <p className="mt-1 text-xs text-smoke">{active.caption}</p>
+          <p className="mt-1 text-xs text-smoke">{vehicle.tagline}</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div role="tablist" aria-label={`${vehicle.name} views`} className="mt-3 flex gap-2">
-        {views.map((view, index) => {
-          const isActive = index === activeIndex;
-          return (
-            <button
-              key={view.key}
-              id={`${baseId}-tab-${index}`}
-              role="tab"
-              type="button"
-              aria-selected={isActive}
-              aria-controls={`${baseId}-panel-${index}`}
-              tabIndex={isActive ? 0 : -1}
-              onClick={() => setActiveIndex(index)}
-              className={`flex flex-1 items-center justify-center gap-1.5 border py-2 text-[11px] uppercase tracking-wide transition-colors duration-150 ${
-                isActive
-                  ? "border-gold bg-gold/10 text-gold"
-                  : "border-gold/15 text-smoke hover:border-gold/40 hover:text-gold"
-              }`}
-            >
-              <view.icon className="h-3.5 w-3.5" strokeWidth={1.5} />
-              {view.label}
-            </button>
-          );
-        })}
-      </div>
+      {images.length > 1 ? (
+        <div role="tablist" aria-label={`${vehicle.name} photos`} className="mt-3 flex gap-2">
+          {images.map((image, index) => {
+            const isActive = index === activeIndex;
+            return (
+              <button
+                key={image.src}
+                id={`${baseId}-tab-${index}`}
+                role="tab"
+                type="button"
+                aria-selected={isActive}
+                aria-controls={`${baseId}-panel-${index}`}
+                tabIndex={isActive ? 0 : -1}
+                onClick={() => setActiveIndex(index)}
+                className={`flex flex-1 items-center justify-center border py-2 text-[11px] uppercase tracking-wide transition-colors duration-150 ${
+                  isActive
+                    ? "border-gold bg-gold/10 text-gold"
+                    : "border-gold/15 text-smoke hover:border-gold/40 hover:text-gold"
+                }`}
+              >
+                {index + 1}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }

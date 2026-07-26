@@ -8,7 +8,7 @@ interface VehicleSummaryCardProps {
 
 /** Luxury vehicle summary shown above the quote form when arriving via ?vehicle=. */
 export default function VehicleSummaryCard({ vehicle }: VehicleSummaryCardProps) {
-  const cover = vehicle.images?.exterior;
+  const cover = vehicle.images?.[0];
 
   return (
     <div className="mb-8 flex flex-col gap-5 rounded-2xl border border-[rgba(201,161,74,0.2)] bg-[#111111] p-5 sm:flex-row sm:items-center sm:p-6">
