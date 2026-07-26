@@ -253,7 +253,7 @@ const NEW_FAQS: FaqHubEntry[] = [
     category: "fleet",
     question: "What is the full range of vehicles in your fleet?",
     answer:
-      "Our fleet spans the Mercedes S-Class and V-Class, BMW 7 Series, Cadillac Escalade, Range Rover Autobiography, and Rolls-Royce Ghost and Phantom.",
+      "Our fleet spans the Mercedes S-Class and V-Class, BMW 7 Series, Cadillac Escalade, Range Rover Autobiography, and Rolls-Royce Phantom.",
   },
   {
     id: "fleet-2",

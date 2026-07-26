@@ -19,7 +19,6 @@ export const BRANDS: Brand[] = [
   { name: "Range Rover", logo: "/images/brands/range-rover.svg" },
   { name: "Rolls-Royce", logo: "/images/brands/rolls-royce.svg" },
   { name: "BMW", logo: "/images/brands/bmw.svg" },
-  { name: "Bentley", logo: "/images/brands/bentley.svg" },
   { name: "GMC", logo: "/images/brands/gmc.png" },
   { name: "Cadillac", logo: "/images/brands/cadillac.png" },
 ];

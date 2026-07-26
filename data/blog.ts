@@ -123,7 +123,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "[Mercedes S-Class](/fleet/mercedes-s-class) — the executive standard for airport transfers and business travel, quiet and quick to load into.",
           "[Cadillac Escalade](/fleet/cadillac-escalade) or [Mercedes V-Class](/fleet/mercedes-v-class) — for families and groups with luggage, keeping everyone together in one vehicle.",
           "[Range Rover Autobiography](/fleet/range-rover-autobiography) — a versatile choice for city touring that occasionally strays off the main road.",
-          "Rolls-Royce Phantom or Ghost — for weddings, anniversaries, and arrivals meant to be memorable in their own right.",
+          "[Rolls-Royce Phantom](/fleet/rolls-royce-phantom) — for weddings, anniversaries, and arrivals meant to be memorable in their own right.",
         ],
       },
       {
@@ -475,7 +475,7 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "The [BMW 7 Series](/fleet/bmw-7-series) offers a sportier, more dynamic character for clients who want executive comfort with a sharper edge, while the [Mercedes E-Class](/fleet/mercedes-e-class) delivers much of the same chauffeur-grade comfort at a more accessible tier for standing corporate accounts with frequent bookings. The S-Class sits above both as the flagship — the choice when cabin quietness and outright presence matter most.",
+        text: "The [BMW 7 Series](/fleet/bmw-7-series) offers a sportier, more dynamic character for clients who want executive comfort with a sharper edge, while the [Lexus ES 300h](/fleet/lexus-es-300h) delivers much of the same chauffeur-grade comfort at a more accessible tier for standing corporate accounts with frequent bookings. The S-Class sits above both as the flagship — the choice when cabin quietness and outright presence matter most.",
       },
       {
         type: "heading",
@@ -635,7 +635,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "Solo executive, back-to-back meetings: [Mercedes S-Class](/fleet/mercedes-s-class) or [BMW 7 Series](/fleet/bmw-7-series) — quiet enough for calls between stops.",
           "Visiting delegation: [Mercedes V-Class](/fleet/mercedes-v-class), seating up to seven so the group arrives together.",
           "Board member or headline visitor: an upgraded arrival vehicle for a first meeting or signing where presence matters.",
-          "Standing corporate account with frequent bookings: [Mercedes E-Class](/fleet/mercedes-e-class) for a cost-efficient, dependable daily option.",
+          "Standing corporate account with frequent bookings: [Lexus ES 300h](/fleet/lexus-es-300h) for a cost-efficient, dependable daily option.",
         ],
       },
       {
@@ -984,7 +984,7 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "The [Rolls-Royce Phantom](/fleet/rolls-royce-phantom) remains Dubai's most requested bridal car, prized as much for how it photographs — coach doors opening onto a handcrafted interior — as for the ride itself. For couples who want Rolls-Royce presence with a slightly more understated profile, the Ghost is a strong alternative.",
+        text: "The [Rolls-Royce Phantom](/fleet/rolls-royce-phantom) remains Dubai's most requested bridal car, prized as much for how it photographs — coach doors opening onto a handcrafted interior — as for the ride itself. For couples who want a slightly more understated ultra-luxury profile, the [Mercedes-Maybach S-Class](/fleet/mercedes-maybach-s-class) is a strong alternative.",
       },
       {
         type: "heading",

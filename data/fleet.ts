@@ -138,10 +138,10 @@ export const FLEET: FleetVehicle[] = [
     slug: "rolls-royce-phantom",
     badge: "Wedding Favorite",
     brand: "Rolls-Royce",
-    model: "Phantom",
+    model: "Phantom Extended Wheelbase",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 9500, fiveHours: 5500, oneHour: 1500, airport: 2000, extraHour: 1200, additionalCity: 1200 },
-    name: "Rolls-Royce Phantom",
+    name: "Rolls-Royce Phantom Extended Wheelbase",
     category: "Ultra-Luxury",
     tagline: "The pinnacle of arrival",
     description:
@@ -197,62 +197,13 @@ export const FLEET: FleetVehicle[] = [
     },
   },
   {
-    slug: "rolls-royce-ghost",
-    brand: "Rolls-Royce",
-    model: "Ghost",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 8000, fiveHours: 4500, oneHour: 1200, airport: 1600, extraHour: 950, additionalCity: 950 },
-    name: "Rolls-Royce Ghost",
-    category: "Ultra-Luxury",
-    tagline: "Effortless, understated power",
-    description:
-      "A more understated Rolls-Royce for clients who want the marque's effortless refinement without the Phantom's full occasion-level presence.",
-    longDescription:
-      "The Ghost delivers the same handcrafted Rolls-Royce refinement as the Phantom in a more understated package — effortless power, a hushed cabin, and quiet confidence for executive travel that still calls for something exceptional.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Executive arrivals & signature occasions",
-    features: [
-      "Handcrafted leather interior",
-      "Starlight headliner",
-      "Bespoke welcome amenities",
-      "Champagne chilling compartment",
-      "Rear-seat climate control",
-      "Chauffeur in formal attire",
-    ],
-    whyChoose: [
-      "The effortless refinement of Rolls-Royce in a more understated package",
-      "Handcrafted interior with the signature starlight headliner",
-      "A strong alternative to the Phantom for executive-level occasions",
-      "Chauffeur in formal attire as standard",
-    ],
-    faqs: [
-      {
-        question: "How does the Ghost compare to the Phantom?",
-        answer:
-          "Both share the same handcrafted Rolls-Royce quality. The Phantom is the larger, more occasion-focused flagship; the Ghost is slightly more understated and versatile for executive travel.",
-      },
-      {
-        question: "Is the Ghost available for weddings?",
-        answer:
-          "Yes, though many clients choose the Phantom for weddings specifically — the Ghost suits executive and signature-occasion bookings equally well.",
-      },
-      {
-        question: "How far in advance should I book the Ghost?",
-        answer:
-          "We recommend booking at least a few days ahead for this vehicle, particularly during peak season.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
     slug: "mercedes-s-class",
     badge: "Executive Favorite",
     brand: "Mercedes-Benz",
     model: "S-Class",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 500, extraHour: 300, additionalCity: 300 },
-    name: "Mercedes S-Class",
+    name: "Mercedes-Benz S-Class",
     category: "Sedan",
     tagline: "The executive standard",
     description:
@@ -307,54 +258,6 @@ export const FLEET: FleetVehicle[] = [
         alt: "Mercedes S-Class steering wheel and digital dashboard close-up",
       },
     },
-  },
-  {
-    slug: "bentley-flying-spur",
-    brand: "Bentley",
-    model: "Flying Spur",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 7500, fiveHours: 4200, oneHour: 1100, airport: 1500, extraHour: 900, additionalCity: 900 },
-    name: "Bentley Flying Spur",
-    category: "Ultra-Luxury",
-    tagline: "Handcrafted performance",
-    description:
-      "A handcrafted flagship sedan that pairs true performance with Bentley's signature craftsmanship — luxury for clients who want presence with a sportier edge.",
-    longDescription:
-      "The Flying Spur brings genuine performance to flagship chauffeured travel — a handcrafted cabin finished to Bentley's exacting standard, paired with a more dynamic character than a traditional limousine. A distinctive choice for clients who want luxury with real driving pedigree behind it.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Signature executive arrivals",
-    features: [
-      "Handcrafted leather interior",
-      "Diamond-quilted seating",
-      "Naim premium sound system",
-      "Rear-seat climate control",
-      "Privacy glass",
-      "Bespoke welcome amenities",
-    ],
-    whyChoose: [
-      "Handcrafted Bentley craftsmanship with a distinctly sportier character",
-      "A strong alternative to a traditional limousine for clients who want presence with pedigree",
-      "Diamond-quilted leather interior finished to an exacting standard",
-      "Reserved availability — a frequently requested flagship vehicle",
-    ],
-    faqs: [
-      {
-        question: "How is the Flying Spur different from the Phantom?",
-        answer:
-          "The Phantom is the more traditional, occasion-focused flagship. The Flying Spur offers the same handcrafted quality with a sportier, more dynamic driving character.",
-      },
-      {
-        question: "Is the Flying Spur available for weddings?",
-        answer: "Yes, it's available for weddings and signature occasions alongside our other flagship vehicles.",
-      },
-      {
-        question: "How far in advance should I book the Flying Spur?",
-        answer:
-          "As a frequently requested flagship vehicle, we recommend booking at least a few days ahead where possible.",
-      },
-    ],
-    isPlaceholder: true,
   },
   {
     slug: "range-rover-autobiography",
@@ -421,10 +324,10 @@ export const FLEET: FleetVehicle[] = [
   {
     slug: "cadillac-escalade",
     brand: "Cadillac",
-    model: "Escalade",
+    model: "Escalade ESV",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 2800, fiveHours: 1700, oneHour: 450, airport: 600, extraHour: 350, additionalCity: 350 },
-    name: "Cadillac Escalade",
+    name: "Cadillac Escalade ESV",
     category: "SUV",
     tagline: "A bold, commanding presence",
     description:
@@ -606,246 +509,6 @@ export const FLEET: FleetVehicle[] = [
     },
   },
   {
-    slug: "lexus-lm",
-    brand: "Lexus",
-    model: "LM",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 4500, fiveHours: 2700, oneHour: 700, airport: 900, extraHour: 550, additionalCity: 550 },
-    name: "Lexus LM",
-    category: "Van",
-    tagline: "First-class travel, four seats only",
-    description:
-      "The Lexus LM redefines chauffeured travel in Dubai with an ultra-exclusive four-seat executive lounge cabin — reclining ottoman-style seats, ambient lighting, and hushed cabin insulation more akin to a private jet than a minivan. Ideal for VIP airport transfers, high-profile business travel, and clients who want maximum privacy and comfort on every journey.",
-    longDescription:
-      "Step aboard the Lexus LM and experience Dubai's most exclusive people-mover — a four-passenger executive lounge with fully reclining ottoman seating, a curtained-off cabin, and whisper-quiet ride comfort engineered for total privacy. Reserved for clients who want the space and calm of a private cabin on every airport transfer, roadshow, or VIP itinerary across the Emirates.",
-    passengers: 4,
-    luggage: 3,
-    idealFor: "VIP airport transfers & ultra-premium executive travel",
-    features: [
-      "Four-seat executive lounge configuration",
-      "Fully reclining ottoman-style seats",
-      "Curtained privacy partition",
-      "Ambient cabin lighting",
-      "Premium sound insulation",
-      "Onboard Wi-Fi",
-    ],
-    whyChoose: [
-      "The most exclusive people-mover in the fleet — only four seats, maximum privacy",
-      "Reclining executive seats rival first-class air travel",
-      "Curtained cabin keeps VIP passengers fully private in transit",
-      "A natural upgrade from a standard van for high-profile arrivals",
-    ],
-    faqs: [
-      {
-        question: "How many passengers does the Lexus LM seat?",
-        answer:
-          "The LM is configured as an exclusive four-seat executive lounge, prioritizing space and privacy over passenger count.",
-      },
-      {
-        question: "Is the Lexus LM suitable for airport transfers?",
-        answer:
-          "Yes — it's one of our most requested vehicles for VIP airport transfers, with the same live flight tracking as the rest of the fleet.",
-      },
-      {
-        question: "Can the LM be booked for roadshows or multi-stop business travel?",
-        answer:
-          "Yes, hourly hire is available for itineraries with multiple stops, and the cabin is built for comfortable work or rest between meetings.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "mercedes-e-class",
-    brand: "Mercedes-Benz",
-    model: "E-Class",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 1900, fiveHours: 1100, oneHour: 280, airport: 380, extraHour: 220, additionalCity: 220 },
-    name: "Mercedes E-Class",
-    category: "Sedan",
-    tagline: "Accessible executive elegance",
-    description:
-      "The Mercedes E-Class brings the brand's signature comfort and quiet sophistication to everyday chauffeured travel in Dubai — a smooth ride, elegant cabin, and dependable presence for business meetings, airport transfers, and city-to-city journeys. A practical, polished choice for clients who want genuine Mercedes luxury without the flagship S-Class price point.",
-    longDescription:
-      "The E-Class carries forward the same chauffeur-grade comfort as our flagship Mercedes sedans in a right-sized, cost-efficient package — a calm, well-insulated cabin, smooth ride quality, and the same professional chauffeur standard on every booking. A dependable choice for standing corporate accounts and frequent business travel across Dubai.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Business travel & daily corporate transfers",
-    features: [
-      "Leather executive seating",
-      "Rear-seat climate control",
-      "Ambient interior lighting",
-      "Onboard Wi-Fi",
-      "Privacy glass",
-      "Bottled water & amenities",
-    ],
-    whyChoose: [
-      "The same Mercedes chauffeur standard as our flagship sedans, at a more accessible tier",
-      "A smooth, quiet ride well suited to back-to-back meetings",
-      "Dependable same-day and next-day availability",
-      "A practical choice for standing corporate accounts with frequent bookings",
-    ],
-    faqs: [
-      {
-        question: "How does the E-Class compare to the S-Class?",
-        answer:
-          "Both offer the same chauffeur standard and Mercedes comfort — the S-Class is our flagship with a longer wheelbase and extra amenities, while the E-Class is a right-sized, cost-efficient alternative for everyday business travel.",
-      },
-      {
-        question: "Is the E-Class suitable for airport transfers?",
-        answer:
-          "Yes — it includes the same live flight tracking and meet-and-greet service as the rest of our sedan fleet.",
-      },
-      {
-        question: "Can I book the E-Class for a full business day?",
-        answer: "Yes, hourly and full-day hire are both available.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "gmc-yukon-denali",
-    brand: "GMC",
-    model: "Yukon Denali",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 550, extraHour: 300, additionalCity: 300 },
-    name: "GMC Yukon Denali",
-    category: "SUV",
-    tagline: "Confident, spacious, dependable",
-    description:
-      "A dependable full-size SUV that balances a commanding presence with everyday practicality — a versatile choice for VIP transportation and group travel alike.",
-    longDescription:
-      "The Yukon Denali brings a confident, dependable presence to VIP transportation — spacious leather seating, a smooth ride, and enough room for passengers and luggage on longer itineraries or airport runs with a full travel party.",
-    passengers: 6,
-    luggage: 4,
-    idealFor: "VIP transportation & group travel",
-    features: [
-      "Three-row leather seating",
-      "Elevated ride height",
-      "Premium sound system",
-      "Ample luggage space",
-      "Climate-controlled cabin",
-      "Tinted privacy windows",
-    ],
-    whyChoose: [
-      "Dependable availability for both VIP transport and larger group travel",
-      "Confident road presence without sacrificing ride comfort",
-      "Three rows of seating with luggage capacity to match",
-      "A versatile alternative to a full-size van for mid-sized groups",
-    ],
-    faqs: [
-      {
-        question: "Is the Yukon Denali suitable for airport transfers?",
-        answer:
-          "Yes — it comfortably handles a full travel party and their luggage on airport runs, with the same flight-tracking service as our sedans.",
-      },
-      {
-        question: "How does the Yukon Denali compare to the Escalade?",
-        answer:
-          "Both are full-size, three-row luxury SUVs with similar capacity. The Escalade leans slightly more upscale in cabin finish; the Yukon Denali is a dependable, confident alternative.",
-      },
-      {
-        question: "Can the Yukon Denali be booked hourly?",
-        answer: "Yes, hourly and full-day hire are both available.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "bmw-5-series",
-    brand: "BMW",
-    model: "5 Series",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 1600, fiveHours: 950, oneHour: 250, airport: 350, extraHour: 200, additionalCity: 200 },
-    name: "BMW 5 Series",
-    category: "Sedan",
-    tagline: "Business-class comfort, everyday reach",
-    description:
-      "A dependable, business-ready sedan for daily transfers and meetings — the same chauffeur standard as our flagship cars, sized for frequent city travel.",
-    longDescription:
-      "The 5 Series is our everyday business sedan — the same professional chauffeur standard and cabin comfort as our flagship vehicles, right-sized for quick, frequent city transfers. A practical choice for standing corporate accounts with regular bookings across Dubai.",
-    passengers: 3,
-    luggage: 2,
-    idealFor: "Daily corporate transfers",
-    features: [
-      "Leather executive seating",
-      "Rear-seat climate control",
-      "Onboard Wi-Fi",
-      "Privacy glass",
-      "Ambient interior lighting",
-      "Bottled water & amenities",
-    ],
-    whyChoose: [
-      "A cost-efficient option for standing corporate accounts with frequent bookings",
-      "The same professional chauffeur standard as every vehicle in the fleet",
-      "Comfortably sized for quick point-to-point city transfers",
-      "Reliable same-day and next-day availability",
-    ],
-    faqs: [
-      {
-        question: "Is the BMW 5 Series suitable for corporate accounts?",
-        answer:
-          "Yes — it's a popular choice for standing corporate accounts that need dependable, frequent city transfers.",
-      },
-      {
-        question: "How much luggage fits in the 5 Series?",
-        answer: "The 5 Series comfortably holds 2 standard suitcases plus carry-ons.",
-      },
-      {
-        question: "Can I book the 5 Series for a full business day?",
-        answer: "Yes, hourly and full-day hire are both available on request.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
-    slug: "toyota-land-cruiser",
-    brand: "Toyota",
-    model: "Land Cruiser",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2200, fiveHours: 1300, oneHour: 380, airport: 500, extraHour: 280, additionalCity: 280 },
-    name: "Toyota Land Cruiser",
-    category: "SUV",
-    tagline: "Dependable presence, effortless comfort",
-    description:
-      "The Toyota Land Cruiser pairs a commanding, capable presence with a genuinely comfortable cabin — a dependable full-size SUV for family travel, group airport transfers, and city touring across Dubai. Spacious seating and generous luggage capacity make it a versatile, trusted choice for clients who want a premium ride without compromise.",
-    longDescription:
-      "Built for both comfort and capability, the Land Cruiser brings a spacious three-row cabin and a smooth, composed ride to chauffeured travel in Dubai — equally suited to a full family airport transfer or a group outing beyond the city. A dependable, versatile alternative to a traditional luxury SUV.",
-    passengers: 6,
-    luggage: 4,
-    idealFor: "Family travel & group airport transfers",
-    features: [
-      "Three-row leather seating",
-      "Elevated ride height",
-      "Ample luggage space",
-      "Climate-controlled cabin",
-      "Tinted privacy windows",
-      "Child seat available on request",
-    ],
-    whyChoose: [
-      "A dependable, versatile SUV for families and small groups alike",
-      "Spacious three-row cabin with luggage capacity to match",
-      "Composed, comfortable ride on both city roads and longer routes",
-      "A trusted, practical alternative to a full-size luxury SUV",
-    ],
-    faqs: [
-      {
-        question: "How many passengers can the Land Cruiser seat?",
-        answer:
-          "Up to 6 passengers across three rows, with generous luggage space for a full family or small group.",
-      },
-      {
-        question: "Is the Land Cruiser good for airport transfers?",
-        answer:
-          "Yes — it comfortably handles a full travel party and their luggage, with the same flight-tracking service as our other vehicles.",
-      },
-      {
-        question: "Can I request a child seat in the Land Cruiser?",
-        answer: "Yes, child seats are available on request — note it under special requests when booking.",
-      },
-    ],
-    isPlaceholder: true,
-  },
-  {
     slug: "lexus-es-300h",
     brand: "Lexus",
     model: "ES 300h",
@@ -891,6 +554,260 @@ export const FLEET: FleetVehicle[] = [
         answer: "Yes, hourly and full-day hire are both available on request.",
       },
     ],
+    isPlaceholder: true,
+  },
+  {
+    slug: "rolls-royce-cullinan-mansory",
+    brand: "Rolls-Royce",
+    model: "Cullinan Mansory",
+    // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
+    rates: { tenHours: 11000, fiveHours: 6500, oneHour: 1800, airport: 2400, extraHour: 1400, additionalCity: 1400 },
+    name: "Rolls-Royce Cullinan Mansory",
+    category: "Ultra-Luxury",
+    tagline: "Bespoke presence, uncompromising exclusivity",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    description:
+      "A widebody, Mansory-customized Rolls-Royce Cullinan — the most exclusive SUV in the fleet, combining Rolls-Royce craftsmanship with bespoke Mansory design for clients who expect the absolute pinnacle of presence.",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    longDescription:
+      "The Cullinan Mansory pairs Rolls-Royce's handcrafted luxury with Mansory's bespoke widebody styling — a genuinely rare SUV reserved for clients who want the most exclusive arrival possible. Every detail, from the carbon-fibre accents to the reworked stance, sets it apart from anything else on the road.",
+    passengers: 4,
+    luggage: 3,
+    idealFor: "Ultra-exclusive VIP arrivals",
+    // TEMPORARY placeholder specifications — to be replaced with final copy
+    features: [
+      "Handcrafted leather interior",
+      "Bespoke Mansory widebody styling",
+      "Starlight headliner",
+      "Rear-seat climate control",
+      "Premium sound system",
+      "Privacy glass",
+    ],
+    whyChoose: [
+      "The most exclusive SUV in the fleet — genuinely rare on Dubai roads",
+      "Bespoke Mansory styling sets it apart from any standard Cullinan",
+      "Handcrafted Rolls-Royce interior with full VIP amenities",
+      "Reserved for clients who want an unmistakable arrival",
+    ],
+    faqs: [
+      {
+        question: "How is the Cullinan Mansory different from a standard Cullinan?",
+        answer:
+          "The Mansory edition adds a bespoke widebody kit, unique styling details, and additional interior customization on top of the standard Rolls-Royce Cullinan, making it one of the rarest SUVs on the road.",
+      },
+      {
+        question: "How far in advance should I book the Cullinan Mansory?",
+        answer: "As our most exclusive SUV, we recommend booking as early as possible to guarantee availability.",
+      },
+      {
+        question: "Is the Cullinan Mansory available for events and arrivals?",
+        answer:
+          "Yes, it's ideal for high-profile arrivals, VIP events, and clients who want the most exclusive SUV presence available.",
+      },
+    ],
+    // TEMPORARY — real photography to replace the icon/gradient placeholder shown until then
+    isPlaceholder: true,
+  },
+  {
+    slug: "tesla-model-y",
+    brand: "Tesla",
+    model: "Model Y",
+    // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
+    rates: { tenHours: 2000, fiveHours: 1200, oneHour: 320, airport: 420, extraHour: 230, additionalCity: 230 },
+    name: "Tesla Model Y",
+    category: "SUV",
+    tagline: "Modern, sustainable, effortless",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    description:
+      "An all-electric SUV for clients who want a modern, sustainable chauffeured experience — smooth, silent power with a minimalist, tech-forward cabin.",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    longDescription:
+      "The Model Y brings a quieter, more sustainable option to the fleet — fully electric power delivery, a spacious minimalist cabin, and Tesla's signature tech-forward interior. A smart choice for eco-conscious clients and short-to-mid-distance city travel.",
+    passengers: 4,
+    luggage: 3,
+    idealFor: "Eco-conscious city travel & corporate transfers",
+    // TEMPORARY placeholder specifications — to be replaced with final copy
+    features: [
+      "All-electric powertrain",
+      "Panoramic glass roof",
+      "Minimalist tech-forward cabin",
+      "Premium sound system",
+      "Climate-controlled cabin",
+      "Onboard Wi-Fi",
+    ],
+    whyChoose: [
+      "A genuinely silent, all-electric ride",
+      "Sustainable choice without compromising comfort",
+      "Spacious cabin with a clean, modern interior",
+      "Well suited to city transfers and corporate accounts",
+    ],
+    faqs: [
+      {
+        question: "Is the Model Y a fully electric vehicle?",
+        answer: "Yes, the Model Y is 100% electric, offering a smooth, silent ride with zero tailpipe emissions.",
+      },
+      {
+        question: "Is the Model Y suitable for airport transfers?",
+        answer: "Yes, it's a comfortable, efficient choice for airport transfers and city travel alike.",
+      },
+      {
+        question: "How much luggage fits in the Model Y?",
+        answer: "The Model Y comfortably holds up to 3 pieces of luggage thanks to its front and rear storage compartments.",
+      },
+    ],
+    // TEMPORARY — real photography to replace the icon/gradient placeholder shown until then
+    isPlaceholder: true,
+  },
+  {
+    slug: "gmc-yukon-elevation",
+    brand: "GMC",
+    model: "Yukon Elevation",
+    // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
+    rates: { tenHours: 2400, fiveHours: 1450, oneHour: 380, airport: 520, extraHour: 290, additionalCity: 290 },
+    name: "GMC Yukon Elevation",
+    category: "SUV",
+    tagline: "Bold styling, everyday capability",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    description:
+      "A full-size SUV with a sportier, blacked-out Elevation aesthetic — spacious, capable, and ready for group travel or airport runs.",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    longDescription:
+      "The Yukon Elevation brings GMC's bold, sport-inspired styling to full-size chauffeured travel — a spacious three-row cabin, a smooth ride, and enough room for passengers and luggage on longer itineraries or group airport transfers.",
+    passengers: 6,
+    luggage: 4,
+    idealFor: "Group travel & airport transfers",
+    // TEMPORARY placeholder specifications — to be replaced with final copy
+    features: [
+      "Three-row seating",
+      "Elevated ride height",
+      "Premium sound system",
+      "Ample luggage space",
+      "Climate-controlled cabin",
+      "Tinted privacy windows",
+    ],
+    whyChoose: [
+      "Bold, sport-inspired styling with everyday practicality",
+      "Spacious three-row cabin for larger groups",
+      "Dependable capability for longer itineraries",
+      "A versatile alternative for mid-sized group travel",
+    ],
+    faqs: [
+      {
+        question: "How does the Yukon Elevation compare to the Escalade?",
+        answer:
+          "Both are full-size, three-row SUVs. The Escalade leans more upscale in cabin finish, while the Yukon Elevation offers a bolder, sport-inspired look at a more accessible tier.",
+      },
+      {
+        question: "Is the Yukon Elevation good for group airport transfers?",
+        answer: "Yes, its three-row seating and generous luggage space make it well suited to group airport transfers.",
+      },
+      {
+        question: "Can the Yukon Elevation be booked hourly?",
+        answer: "Yes, hourly and full-day hire are both available.",
+      },
+    ],
+    // TEMPORARY — real photography to replace the icon/gradient placeholder shown until then
+    isPlaceholder: true,
+  },
+  {
+    slug: "tesla-model-3",
+    brand: "Tesla",
+    model: "Model 3",
+    // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
+    rates: { tenHours: 1800, fiveHours: 1050, oneHour: 270, airport: 370, extraHour: 210, additionalCity: 210 },
+    name: "Tesla Model 3",
+    category: "Sedan",
+    tagline: "Quiet, efficient, modern",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    description:
+      "A fully electric executive sedan for clients who want a quiet, efficient ride with a clean, modern cabin — ideal for city transfers and corporate travel.",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    longDescription:
+      "The Model 3 brings Tesla's all-electric efficiency to executive sedan travel — a whisper-quiet ride, minimalist interior, and dependable performance for business travel and airport transfers across Dubai.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Business travel & eco-conscious transfers",
+    // TEMPORARY placeholder specifications — to be replaced with final copy
+    features: [
+      "All-electric powertrain",
+      "Minimalist tech-forward cabin",
+      "Premium sound system",
+      "Climate-controlled cabin",
+      "Onboard Wi-Fi",
+      "Privacy glass",
+    ],
+    whyChoose: [
+      "A genuinely silent, all-electric ride",
+      "Efficient and sustainable without sacrificing comfort",
+      "Clean, modern cabin design",
+      "A cost-efficient option for standing corporate accounts",
+    ],
+    faqs: [
+      {
+        question: "Is the Model 3 a fully electric vehicle?",
+        answer: "Yes, the Model 3 is 100% electric, offering a quiet, efficient ride.",
+      },
+      {
+        question: "Is the Model 3 suitable for corporate accounts?",
+        answer:
+          "Yes, it's a cost-efficient, dependable option for standing corporate accounts and daily business travel.",
+      },
+      {
+        question: "How much luggage fits in the Model 3?",
+        answer: "The Model 3 comfortably holds 2 standard suitcases plus carry-ons.",
+      },
+    ],
+    // TEMPORARY — real photography to replace the icon/gradient placeholder shown until then
+    isPlaceholder: true,
+  },
+  {
+    slug: "byd-han",
+    brand: "BYD",
+    model: "Han",
+    // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
+    rates: { tenHours: 2100, fiveHours: 1250, oneHour: 330, airport: 430, extraHour: 240, additionalCity: 240 },
+    name: "BYD Han",
+    category: "Sedan",
+    tagline: "Refined electric performance",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    description:
+      "A flagship all-electric sedan pairing refined comfort with strong performance — a modern alternative for executive travel across Dubai.",
+    // TEMPORARY placeholder description — to be replaced with final copy
+    longDescription:
+      "The BYD Han brings flagship-level comfort and all-electric performance to executive chauffeured travel — a well-appointed cabin, smooth ride quality, and dependable range for business travel and airport transfers.",
+    passengers: 3,
+    luggage: 2,
+    idealFor: "Executive travel & corporate transfers",
+    // TEMPORARY placeholder specifications — to be replaced with final copy
+    features: [
+      "All-electric powertrain",
+      "Leather executive seating",
+      "Rear-seat climate control",
+      "Premium sound system",
+      "Onboard Wi-Fi",
+      "Privacy glass",
+    ],
+    whyChoose: [
+      "Flagship comfort with all-electric efficiency",
+      "Smooth, quiet ride for business travel",
+      "A modern alternative to traditional executive sedans",
+      "Dependable availability for corporate accounts",
+    ],
+    faqs: [
+      {
+        question: "Is the BYD Han a fully electric vehicle?",
+        answer: "Yes, the Han is a flagship all-electric sedan offering a smooth, quiet ride.",
+      },
+      {
+        question: "Is the BYD Han suitable for airport transfers?",
+        answer: "Yes, with the same professional chauffeur standard and live flight tracking as the rest of the fleet.",
+      },
+      {
+        question: "Can I book the BYD Han for a full business day?",
+        answer: "Yes, hourly and full-day hire are both available on request.",
+      },
+    ],
+    // TEMPORARY — real photography to replace the icon/gradient placeholder shown until then
     isPlaceholder: true,
   },
 ];

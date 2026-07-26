@@ -112,7 +112,7 @@ export const SERVICES = [
  * the actual vehicle data array that drives real listings/carousels — so
  * the two can vary independently.
  */
-export const FLEET_SIZE = 20;
+export const FLEET_SIZE = 13;
 
 export const PRIMARY_CTA = {
   book: { label: "Book Now", href: "/booking" },
