@@ -49,7 +49,7 @@ function PriceItem({ label, amount }: PriceItemProps) {
  * either of those.
  */
 export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
-  const cover = vehicle.images?.exterior;
+  const cover = vehicle.images?.[0];
 
   const priceTiers: { label: string; amount: number }[] = [
     { label: "1 Hour", amount: vehicle.rates.oneHour },

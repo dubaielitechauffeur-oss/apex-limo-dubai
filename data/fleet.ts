@@ -11,18 +11,14 @@ export interface VehicleImage {
 }
 
 /**
- * Real photography for a vehicle's gallery. Optional — vehicles without
- * this field fall back to the existing icon/gradient treatment in
- * VehicleGallery.tsx, so adding photos for one vehicle never affects the
- * others. `exterior` doubles as the fleet card cover image and the vehicle
- * detail page hero image, since the gallery opens on the Exterior tab by
- * default in both places.
+ * Real photography for a vehicle, in the exact order the photos should be
+ * shown. Optional — vehicles without this field fall back to the existing
+ * icon/gradient treatment, so adding photos for one vehicle never affects
+ * the others. Index 0 is always the primary/hero image (used for the fleet
+ * card cover and the vehicle detail page hero); any remaining entries are
+ * gallery images shown in the same order they appear in the array.
  */
-export interface VehicleGalleryImages {
-  exterior: VehicleImage;
-  interior: VehicleImage;
-  detail: VehicleImage;
-}
+export type VehicleImages = VehicleImage[];
 
 /**
  * Chauffeur-hire rates in AED shown on the homepage fleet carousel.
@@ -66,7 +62,7 @@ export interface FleetVehicle {
   features: string[];
   whyChoose: string[];
   faqs: VehicleFAQ[];
-  images?: VehicleGalleryImages;
+  images?: VehicleImages;
   /**
    * Tasteful luxury status badge shown on the Fleet listing card — set on a
    * handful of standout vehicles only, not every entry, so it stays a
@@ -91,6 +87,11 @@ export const FLEET: FleetVehicle[] = [
     model: "S-Class",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 5000, fiveHours: 3000, oneHour: 800, airport: 1000, extraHour: 650, additionalCity: 650 },
+    images: [
+      { src: "/images/fleet/mercedes-maybach-s-class/1.png", alt: "Mercedes-Maybach S-Class front three-quarter exterior view parked at a modern villa at sunset" },
+      { src: "/images/fleet/mercedes-maybach-s-class/2.png", alt: "Mercedes-Maybach S-Class rear passenger seating with diamond-quilted leather and privacy curtains" },
+      { src: "/images/fleet/mercedes-maybach-s-class/3.png", alt: "Mercedes-Maybach S-Class rear cabin detail with illuminated Maybach emblem and ambient lighting" },
+    ],
     name: "Mercedes-Maybach S-Class",
     category: "Ultra-Luxury",
     tagline: "Maybach-level hush and presence",
@@ -141,6 +142,11 @@ export const FLEET: FleetVehicle[] = [
     model: "Phantom Extended Wheelbase",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 9500, fiveHours: 5500, oneHour: 1500, airport: 2000, extraHour: 1200, additionalCity: 1200 },
+    images: [
+      { src: "/images/fleet/rolls-royce-phantom/1.png", alt: "Rolls-Royce Phantom Extended Wheelbase front three-quarter exterior view in a marble-floored showroom" },
+      { src: "/images/fleet/rolls-royce-phantom/2.png", alt: "Rolls-Royce Phantom rear cabin with starlight headliner and embroidered Rolls-Royce headrests" },
+      { src: "/images/fleet/rolls-royce-phantom/3.webp", alt: "Rolls-Royce Phantom rear armrest detail with crystal glasses and decanter" },
+    ],
     name: "Rolls-Royce Phantom Extended Wheelbase",
     category: "Ultra-Luxury",
     tagline: "The pinnacle of arrival",
@@ -189,6 +195,12 @@ export const FLEET: FleetVehicle[] = [
     model: "S-Class",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 500, extraHour: 300, additionalCity: 300 },
+    images: [
+      { src: "/images/fleet/mercedes-s-class/1.png", alt: "Mercedes-Benz S-Class front three-quarter exterior view with the Burj Khalifa skyline at dusk" },
+      { src: "/images/fleet/mercedes-s-class/2.jpg", alt: "Mercedes-Benz S-Class rear cabin with panoramic sunroof and beige leather seating" },
+      { src: "/images/fleet/mercedes-s-class/3.jpg", alt: "Mercedes-Benz S-Class rear passenger seating with reclining headrests and privacy shade" },
+      { src: "/images/fleet/mercedes-s-class/4.jpg", alt: "Mercedes-Benz S-Class driver's cockpit with digital instrument cluster and steering wheel controls" },
+    ],
     name: "Mercedes-Benz S-Class",
     category: "Sedan",
     tagline: "The executive standard",
@@ -238,6 +250,12 @@ export const FLEET: FleetVehicle[] = [
     model: "Autobiography",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 3200, fiveHours: 1900, oneHour: 500, airport: 650, extraHour: 400, additionalCity: 400 },
+    images: [
+      { src: "/images/fleet/range-rover-autobiography/1.webp", alt: "Range Rover Autobiography front three-quarter exterior view outside a modern building" },
+      { src: "/images/fleet/range-rover-autobiography/2.webp", alt: "Range Rover Autobiography rear executive seating with reclining seats and rear entertainment screens" },
+      { src: "/images/fleet/range-rover-autobiography/3.png", alt: "Range Rover Autobiography dashboard and steering wheel detail" },
+      { src: "/images/fleet/range-rover-autobiography/4.jpg", alt: "Range Rover Autobiography driver's seat and dashboard view" },
+    ],
     name: "Range Rover Autobiography",
     category: "SUV",
     tagline: "Effortless, elevated comfort",
@@ -285,6 +303,12 @@ export const FLEET: FleetVehicle[] = [
     model: "Escalade ESV",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 2800, fiveHours: 1700, oneHour: 450, airport: 600, extraHour: 350, additionalCity: 350 },
+    images: [
+      { src: "/images/fleet/cadillac-escalade/1.png", alt: "Cadillac Escalade ESV front three-quarter exterior view outside a modern glass building" },
+      { src: "/images/fleet/cadillac-escalade/2.jpg", alt: "Cadillac Escalade ESV side profile exterior view" },
+      { src: "/images/fleet/cadillac-escalade/3.jpg", alt: "Cadillac Escalade ESV third-row seating and rear cabin" },
+      { src: "/images/fleet/cadillac-escalade/4.jpg", alt: "Cadillac Escalade ESV second-row captain's chairs and cabin interior" },
+    ],
     name: "Cadillac Escalade ESV",
     category: "SUV",
     tagline: "A bold, commanding presence",
@@ -334,6 +358,11 @@ export const FLEET: FleetVehicle[] = [
     model: "V-Class",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 2200, fiveHours: 1300, oneHour: 350, airport: 450, extraHour: 250, additionalCity: 250 },
+    images: [
+      { src: "/images/fleet/mercedes-v-class/1.png", alt: "Mercedes V-Class front three-quarter exterior view along Dubai Marina with the Burj Khalifa in the background" },
+      { src: "/images/fleet/mercedes-v-class/2.jpg", alt: "Mercedes V-Class rear passenger cabin with captain's chairs" },
+      { src: "/images/fleet/mercedes-v-class/3.jpg", alt: "Mercedes V-Class rear luggage compartment loaded with suitcases" },
+    ],
     name: "Mercedes V-Class",
     category: "Van",
     tagline: "Space, styled",
@@ -383,6 +412,12 @@ export const FLEET: FleetVehicle[] = [
     model: "7 Series",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 500, extraHour: 300, additionalCity: 300 },
+    images: [
+      { src: "/images/fleet/bmw-7-series/1.jpg", alt: "BMW 7 Series front three-quarter exterior view with illuminated grille against the Dubai skyline at dusk" },
+      { src: "/images/fleet/bmw-7-series/2.png", alt: "BMW 7 Series rear seating with quilted leather upholstery" },
+      { src: "/images/fleet/bmw-7-series/3.jpg", alt: "BMW 7 Series rear seating with tan leather upholstery and wood trim" },
+      { src: "/images/fleet/bmw-7-series/4.jpg", alt: "BMW 7 Series dashboard with dual curved digital displays" },
+    ],
     name: "BMW 7 Series",
     category: "Sedan",
     tagline: "Refined power",
@@ -430,6 +465,11 @@ export const FLEET: FleetVehicle[] = [
     model: "ES 300h",
     // PLACEHOLDER sample rates — replace with confirmed pricing
     rates: { tenHours: 1700, fiveHours: 1000, oneHour: 260, airport: 360, extraHour: 210, additionalCity: 210 },
+    images: [
+      { src: "/images/fleet/lexus-es-300h/1.png", alt: "Lexus ES 300h front three-quarter exterior view with the Dubai skyline and Burj Khalifa in the background" },
+      { src: "/images/fleet/lexus-es-300h/2.jpg", alt: "Lexus ES 300h rear seating with tan leather upholstery" },
+      { src: "/images/fleet/lexus-es-300h/3.jpg", alt: "Lexus ES 300h rear seat detail with center armrest" },
+    ],
     name: "Lexus ES 300h",
     category: "Sedan",
     tagline: "Quiet, efficient executive comfort",
@@ -478,6 +518,11 @@ export const FLEET: FleetVehicle[] = [
     model: "Cullinan Mansory",
     // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
     rates: { tenHours: 11000, fiveHours: 6500, oneHour: 1800, airport: 2400, extraHour: 1400, additionalCity: 1400 },
+    images: [
+      { src: "/images/fleet/rolls-royce-cullinan-mansory/1.png", alt: "Rolls-Royce Cullinan Mansory front three-quarter exterior view in a custom turquoise widebody finish" },
+      { src: "/images/fleet/rolls-royce-cullinan-mansory/2.png", alt: "Rolls-Royce Cullinan Mansory front-on exterior view showing the widebody kit and grille" },
+      { src: "/images/fleet/rolls-royce-cullinan-mansory/3.png", alt: "Rolls-Royce Cullinan Mansory cabin view with matching turquoise leather interior and open doors" },
+    ],
     name: "Rolls-Royce Cullinan Mansory",
     category: "Ultra-Luxury",
     tagline: "Bespoke presence, uncompromising exclusivity",
@@ -530,6 +575,11 @@ export const FLEET: FleetVehicle[] = [
     model: "Model Y",
     // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
     rates: { tenHours: 2000, fiveHours: 1200, oneHour: 320, airport: 420, extraHour: 230, additionalCity: 230 },
+    images: [
+      { src: "/images/fleet/tesla-model-y/1.png", alt: "Tesla Model Y front three-quarter exterior view with the Dubai skyline in the background" },
+      { src: "/images/fleet/tesla-model-y/2.jpg", alt: "Tesla Model Y rear seating with black leather upholstery" },
+      { src: "/images/fleet/tesla-model-y/3.webp", alt: "Tesla Model Y interior cabin detail" },
+    ],
     name: "Tesla Model Y",
     category: "SUV",
     tagline: "Modern, sustainable, effortless",
@@ -580,6 +630,11 @@ export const FLEET: FleetVehicle[] = [
     model: "Yukon Elevation",
     // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
     rates: { tenHours: 2400, fiveHours: 1450, oneHour: 380, airport: 520, extraHour: 290, additionalCity: 290 },
+    images: [
+      { src: "/images/fleet/gmc-yukon-elevation/1.png", alt: "GMC Yukon Elevation front three-quarter exterior view outside a modern illuminated entrance at night" },
+      { src: "/images/fleet/gmc-yukon-elevation/2.jpg", alt: "GMC Yukon Elevation front cabin seating with tan leather upholstery" },
+      { src: "/images/fleet/gmc-yukon-elevation/3.jpg", alt: "GMC Yukon Elevation third-row and rear seating" },
+    ],
     name: "GMC Yukon Elevation",
     category: "SUV",
     tagline: "Bold styling, everyday capability",
@@ -631,6 +686,11 @@ export const FLEET: FleetVehicle[] = [
     model: "Model 3",
     // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
     rates: { tenHours: 1800, fiveHours: 1050, oneHour: 270, airport: 370, extraHour: 210, additionalCity: 210 },
+    images: [
+      { src: "/images/fleet/tesla-model-3/1.jpg", alt: "Tesla Model 3 front three-quarter studio exterior view in white" },
+      { src: "/images/fleet/tesla-model-3/2.webp", alt: "Tesla Model 3 interior cabin detail" },
+      { src: "/images/fleet/tesla-model-3/3.jpg", alt: "Tesla Model 3 rear seating with black leather upholstery" },
+    ],
     name: "Tesla Model 3",
     category: "Sedan",
     tagline: "Quiet, efficient, modern",
@@ -682,6 +742,14 @@ export const FLEET: FleetVehicle[] = [
     model: "Han",
     // TEMPORARY DEMO PRICING — replace with confirmed pricing before launch
     rates: { tenHours: 2100, fiveHours: 1250, oneHour: 330, airport: 430, extraHour: 240, additionalCity: 240 },
+    // NOTE: byd-han/2.jpg and byd-han/3.jpg in the uploaded folder are a
+    // different vehicle's interior (a Rolls-Royce cabin — see the embroidered
+    // "R" headrest logo), not the BYD Han. Only the verified exterior hero is
+    // used here; add real BYD Han interior/detail photos to this folder and
+    // extend this array once available.
+    images: [
+      { src: "/images/fleet/byd-han/1.jpg", alt: "BYD Han front three-quarter exterior view on a palm-lined Dubai street" },
+    ],
     name: "BYD Han",
     category: "Sedan",
     tagline: "Refined electric performance",

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Car } from "lucide-react";
-import type { FleetVehicle, VehicleImage } from "@/data/fleet";
+import type { FleetVehicle } from "@/data/fleet";
 
 interface VehicleHeroGalleryProps {
   vehicle: FleetVehicle;
@@ -17,9 +17,7 @@ interface VehicleHeroGalleryProps {
  * only ever affects the vehicle detail page hero.
  */
 export default function VehicleHeroGallery({ vehicle }: VehicleHeroGalleryProps) {
-  const images: VehicleImage[] = vehicle.images
-    ? [vehicle.images.exterior, vehicle.images.interior, vehicle.images.detail].filter(Boolean)
-    : [];
+  const images = vehicle.images ?? [];
   const [activeIndex, setActiveIndex] = useState(0);
   const activeImage = images[activeIndex];
 
