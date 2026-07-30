@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Users, Briefcase, BadgeCheck, Car } from "lucide-react";
+import Reveal from "@/components/shared/Reveal";
 import type { FleetVehicle } from "@/data/fleet";
 
 interface VehicleSummaryCardProps {
@@ -11,7 +12,7 @@ export default function VehicleSummaryCard({ vehicle }: VehicleSummaryCardProps)
   const cover = vehicle.images?.[0];
 
   return (
-    <div className="mb-8 flex flex-col gap-5 rounded-2xl border border-[rgba(201,161,74,0.2)] bg-[#111111] p-5 sm:flex-row sm:items-center sm:p-6">
+    <Reveal className="mb-8 flex flex-col gap-5 rounded-2xl border border-[rgba(201,161,74,0.2)] bg-[#111111] p-5 sm:flex-row sm:items-center sm:p-6">
       <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 sm:w-48">
         {cover ? (
           <Image
@@ -52,6 +53,6 @@ export default function VehicleSummaryCard({ vehicle }: VehicleSummaryCardProps)
           </span>
         </div>
       </div>
-    </div>
+    </Reveal>
   );
 }

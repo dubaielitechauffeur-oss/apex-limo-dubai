@@ -1,4 +1,5 @@
 import { Star, Car, BadgeCheck, Clock, Zap } from "lucide-react";
+import Reveal from "@/components/shared/Reveal";
 import { RATING, FLEET_SIZE } from "@/lib/constants";
 
 const TRUST_BULLETS = [
@@ -22,7 +23,7 @@ const NEXT_STEPS = [
  */
 export default function ConversionTrustPanel() {
   return (
-    <div className="rounded-2xl border border-[rgba(201,161,74,0.2)] bg-[#111111] p-6 sm:p-8">
+    <Reveal className="rounded-2xl border border-[rgba(201,161,74,0.2)] bg-[#111111] p-6 sm:p-8">
       <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} className="h-4 w-4 fill-[#C9A14A] text-[#C9A14A]" strokeWidth={1.5} />
@@ -56,6 +57,6 @@ export default function ConversionTrustPanel() {
           ))}
         </ol>
       </div>
-    </div>
+    </Reveal>
   );
 }

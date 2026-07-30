@@ -20,6 +20,7 @@ import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
+import Reveal from "@/components/shared/Reveal";
 import BookingCTA from "@/components/home/BookingCTA";
 import FleetCarousel from "@/components/home/FleetCarousel";
 import BrandsShowcase from "@/components/home/BrandsShowcase";
@@ -172,23 +173,23 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         <Container className="relative z-10">
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
+            className="inline-flex animate-fade-in items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
           >
             <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} />
             Back to Services
           </Link>
 
           <div className="mt-8 max-w-3xl">
-            <Icon className="h-9 w-9 text-gold" strokeWidth={1.5} />
-            <span className="mt-5 block label-eyebrow">{service.tagline}</span>
-            <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
+            <Icon className="h-9 w-9 animate-fade-in text-gold [animation-delay:100ms]" strokeWidth={1.5} />
+            <span className="mt-5 block animate-fade-in label-eyebrow [animation-delay:150ms]">{service.tagline}</span>
+            <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:150ms] sm:text-5xl">
               {service.name} in Dubai
             </h1>
-            <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">
+            <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
               {service.heroSubtitle}
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <div className="mt-8 flex animate-fade-in flex-col gap-3 [animation-delay:450ms] sm:flex-row sm:flex-wrap">
               <CTAButton href={`/booking?service=${service.slug}`}>Book Now</CTAButton>
               <CTAButton href={`/quote?service=${service.slug}`} variant="outline">
                 Get Quote
@@ -233,39 +234,43 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <Section tone="ivory">
       <Container>
         {/* Long-form SEO copy, shortened, with natural internal links */}
-        <div className="max-w-3xl space-y-5">
+        <Reveal className="max-w-3xl space-y-5">
           {service.longDescription.map((paragraph, index) => (
             <RichParagraph key={index} text={paragraph} />
           ))}
-        </div>
+        </Reveal>
 
         {/* Benefits */}
         <div className="mt-20">
-          <SectionHeading eyebrow="Benefits" title="What's Included" align="left" tone="light" />
+          <Reveal>
+            <SectionHeading eyebrow="Benefits" title="What's Included" align="left" tone="light" />
+          </Reveal>
           <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
-            {service.benefits.map((benefit) => (
-              <li key={benefit} className="flex items-start gap-2.5 text-sm text-graphite">
+            {service.benefits.map((benefit, index) => (
+              <Reveal key={benefit} as="li" delay={Math.min(index * 50, 300)} className="flex items-start gap-2.5 text-sm text-graphite">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" strokeWidth={2} />
                 {benefit}
-              </li>
+              </Reveal>
             ))}
           </ul>
         </div>
 
         {/* Why Choose Apex */}
         <div className="mt-20">
-          <SectionHeading
-            eyebrow="Why Apex"
-            title={`Why Choose Apex for ${service.name}`}
-            align="left"
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Why Apex"
+              title={`Why Choose Apex for ${service.name}`}
+              align="left"
+              tone="light"
+            />
+          </Reveal>
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {service.whyChoose.map((reason) => (
-              <div key={reason} className="flex items-start gap-3">
+            {service.whyChoose.map((reason, index) => (
+              <Reveal key={reason} delay={Math.min(index * 80, 320)} className="flex items-start gap-3">
                 <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
                 <p className="text-sm leading-relaxed text-graphite">{reason}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

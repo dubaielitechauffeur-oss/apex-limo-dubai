@@ -62,11 +62,11 @@ export default function BlogPage() {
       {/* Hero */}
       <Section tone="obsidian" padding="sm" separator={false}>
         <Container className="text-center">
-          <span className="label-eyebrow">Insights &amp; Journal</span>
-          <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl text-heading sm:text-5xl">
+          <span className="animate-fade-in label-eyebrow">Insights &amp; Journal</span>
+          <h1 className="mx-auto mt-5 max-w-3xl animate-fade-in font-display text-4xl text-heading [animation-delay:150ms] sm:text-5xl">
             Luxury Chauffeur Insights
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-smoke sm:text-base">
+          <p className="mx-auto mt-5 max-w-2xl animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
             Travel tips, chauffeur guides, airport transfer advice, business travel insights and
             luxury transportation updates.
           </p>

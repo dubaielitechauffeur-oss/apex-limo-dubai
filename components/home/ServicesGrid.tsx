@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 import { SERVICES } from "@/data/services";
 
 /**
@@ -17,19 +18,25 @@ export default function ServicesGrid() {
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
-        <SectionHeading
-          eyebrow="What We Offer"
-          title="Chauffeur Services Built Around You"
-          subtitle="From airport transfers to VIP transportation, every journey is planned and delivered to the highest standard."
-          tone="light"
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="What We Offer"
+            title="Chauffeur Services Built Around You"
+            subtitle="From airport transfers to VIP transportation, every journey is planned and delivered to the highest standard."
+            tone="light"
+          />
+        </Reveal>
 
         <div className="mt-16 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
-          {SERVICES.map((service) => (
-            <Link
+          {SERVICES.map((service, index) => (
+            <Reveal
               key={service.slug}
+              delay={Math.min(index * 80, 320)}
+              className="w-[82%] shrink-0 snap-center snap-always sm:w-auto sm:shrink"
+            >
+            <Link
               href={`/services/${service.slug}`}
-              className="group relative aspect-[4/5] w-[82%] shrink-0 snap-center snap-always overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.6)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_60px_-18px_rgba(0,0,0,0.7)] sm:w-auto sm:shrink"
+              className="group relative block aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.6)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_60px_-18px_rgba(0,0,0,0.7)]"
             >
               <Image
                 src={service.image.src}
@@ -66,6 +73,7 @@ export default function ServicesGrid() {
                 </span>
               </div>
             </Link>
+            </Reveal>
           ))}
         </div>
       </Container>

@@ -16,6 +16,7 @@ import {
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import LocationsShowcase from "@/components/home/LocationsShowcase";
 import FleetCarouselCard from "@/components/home/FleetCarouselCard";
@@ -139,6 +140,7 @@ export default function AboutPage() {
 
       {/* Company introduction */}
       <Section tone="ivory" padding="sm">
+        <Reveal>
         <Container className="max-w-3xl">
           <h2 className="font-display text-2xl text-obsidian sm:text-3xl">Our Story</h2>
           <div className="mt-5 space-y-4 text-sm leading-relaxed text-graphite sm:text-base">
@@ -160,18 +162,19 @@ export default function AboutPage() {
             </p>
           </div>
         </Container>
+        </Reveal>
       </Section>
 
       {/* By The Numbers */}
       <Section tone="obsidian" padding="sm">
         <Container>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 sm:gap-6">
-            {BY_THE_NUMBERS.map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center gap-2 text-center">
+            {BY_THE_NUMBERS.map((stat, index) => (
+              <Reveal key={stat.label} delay={index * 80} className="flex flex-col items-center gap-2 text-center">
                 <stat.icon className="h-5 w-5 text-gold" strokeWidth={1.5} aria-hidden="true" />
                 <span className="font-display text-3xl text-heading sm:text-4xl">{stat.value}</span>
                 <span className="text-xs uppercase tracking-wide text-smoke">{stat.label}</span>
-              </div>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -180,16 +183,19 @@ export default function AboutPage() {
       {/* Mission & Values — luxury icon-based redesign */}
       <Section tone="linen">
         <Container>
-          <SectionHeading
-            eyebrow="What Drives Us"
-            title="Our Mission &amp; Values"
-            subtitle="Four principles that shape every booking, from a single airport pickup to a full-scale event fleet."
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="What Drives Us"
+              title="Our Mission &amp; Values"
+              subtitle="Four principles that shape every booking, from a single airport pickup to a full-scale event fleet."
+              tone="light"
+            />
+          </Reveal>
           <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {VALUES.map((value) => (
-              <div
+            {VALUES.map((value, index) => (
+              <Reveal
                 key={value.title}
+                delay={index * 80}
                 className="flex flex-col items-start rounded-2xl border border-gold/15 bg-ivory p-7 shadow-[0_16px_35px_-26px_rgba(10,10,10,0.3)] transition-shadow duration-300 hover:shadow-[0_20px_40px_-20px_rgba(10,10,10,0.35)]"
               >
                 <span className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/25 bg-gold/10">
@@ -199,7 +205,7 @@ export default function AboutPage() {
                 <p className="mt-2 text-sm leading-relaxed text-graphite">
                   {value.description}
                 </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -212,7 +218,7 @@ export default function AboutPage() {
       <Section tone="ivory">
         <Container>
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.4)] lg:order-2">
+            <Reveal className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.4)] lg:order-2">
               <Image
                 src="/images/services/luxury-chauffeur-door-service.webp"
                 alt="Apex Limo chauffeur opening the car door for a client outside an office building"
@@ -220,8 +226,8 @@ export default function AboutPage() {
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
-            </div>
-            <div className="lg:order-1">
+            </Reveal>
+            <Reveal delay={100} className="lg:order-1">
               <SectionHeading
                 eyebrow="Our People"
                 title="Professional Chauffeur Standards"
@@ -240,7 +246,7 @@ export default function AboutPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           </div>
         </Container>
       </Section>
@@ -263,16 +269,22 @@ export default function AboutPage() {
       {/* Featured fleet showcase with vehicle images */}
       <Section tone="linen">
         <Container>
-          <SectionHeading
-            eyebrow="Our Fleet"
-            title="A Vehicle for Every Occasion"
-            subtitle={`${FLEET_SIZE} vehicles, all late-model, detailed before every trip, and matched to the journey.`}
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Our Fleet"
+              title="A Vehicle for Every Occasion"
+              subtitle={`${FLEET_SIZE} vehicles, all late-model, detailed before every trip, and matched to the journey.`}
+              tone="light"
+            />
+          </Reveal>
           <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {FEATURED_FLEET_SLUGS.map((slug) => {
+            {FEATURED_FLEET_SLUGS.map((slug, index) => {
               const vehicle = FLEET.find((v) => v.slug === slug);
-              return vehicle ? <FleetCarouselCard key={vehicle.slug} vehicle={vehicle} /> : null;
+              return vehicle ? (
+                <Reveal key={vehicle.slug} delay={index * 100}>
+                  <FleetCarouselCard vehicle={vehicle} />
+                </Reveal>
+              ) : null;
             })}
           </div>
           <div className="mt-12 text-center">
@@ -286,15 +298,17 @@ export default function AboutPage() {
       {/* Why clients choose Apex — trust section */}
       <Section tone="ivory">
         <Container>
-          <SectionHeading
-            eyebrow="Why Apex"
-            title="Why Clients Choose Apex"
-            subtitle="The trust signals that bring clients back, booking after booking."
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Why Apex"
+              title="Why Clients Choose Apex"
+              subtitle="The trust signals that bring clients back, booking after booking."
+              tone="light"
+            />
+          </Reveal>
           <div className="mt-16 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {WHY_CLIENTS_CHOOSE.map((item) => (
-              <div key={item.title} className="flex gap-4">
+            {WHY_CLIENTS_CHOOSE.map((item, index) => (
+              <Reveal key={item.title} delay={Math.min(index * 80, 320)} className="flex gap-4">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold/25 bg-gold/10">
                   <item.icon className="h-5 w-5 text-gold-deep" strokeWidth={1.5} />
                 </span>
@@ -302,7 +316,7 @@ export default function AboutPage() {
                   <h3 className="font-display text-lg text-obsidian">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite">{item.description}</p>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -311,16 +325,18 @@ export default function AboutPage() {
       {/* Premium testimonials */}
       <Section tone="linen">
         <Container>
-          <SectionHeading
-            eyebrow="Client Words"
-            title="What Our Clients Say"
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Client Words"
+              title="What Our Clients Say"
+              tone="light"
+            />
+          </Reveal>
           <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {ABOUT_TESTIMONIALS.map((testimonial) => (
+            {ABOUT_TESTIMONIALS.map((testimonial, index) => (
+              <Reveal key={testimonial.id} delay={index * 100}>
               <figure
-                key={testimonial.id}
-                className="relative flex flex-col overflow-hidden rounded-2xl border border-gold/20 bg-ivory p-10 shadow-[0_16px_35px_-22px_rgba(10,10,10,0.35)] sm:p-12"
+                className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-gold/20 bg-ivory p-10 shadow-[0_16px_35px_-22px_rgba(10,10,10,0.35)] sm:p-12"
               >
                 <span
                   aria-hidden="true"
@@ -361,6 +377,7 @@ export default function AboutPage() {
                   </div>
                 </div>
               </figure>
+              </Reveal>
             ))}
           </div>
         </Container>

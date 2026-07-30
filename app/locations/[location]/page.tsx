@@ -15,6 +15,7 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
+import Reveal from "@/components/shared/Reveal";
 import FleetCarousel from "@/components/home/FleetCarousel";
 import BrandsShowcase from "@/components/home/BrandsShowcase";
 import TrustStats from "@/components/home/TrustStats";
@@ -182,23 +183,23 @@ export default async function LocationDetailPage({ params }: PageProps) {
         <Container className="relative z-10">
           <Link
             href="/locations"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
+            className="inline-flex animate-fade-in items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
           >
             <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} />
             Back to Locations
           </Link>
 
           <div className="mt-8 max-w-3xl">
-            <Icon className="h-9 w-9 text-gold" strokeWidth={1.5} />
-            <span className="mt-5 block label-eyebrow">{location.tagline}</span>
-            <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
+            <Icon className="h-9 w-9 animate-fade-in text-gold [animation-delay:100ms]" strokeWidth={1.5} />
+            <span className="mt-5 block animate-fade-in label-eyebrow [animation-delay:150ms]">{location.tagline}</span>
+            <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:150ms] sm:text-5xl">
               Chauffeur Service in {location.name}
             </h1>
-            <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">
+            <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
               {location.heroSubtitle}
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <div className="mt-8 flex animate-fade-in flex-col gap-3 [animation-delay:450ms] sm:flex-row sm:flex-wrap">
               <CTAButton href={`/booking?location=${location.slug}`}>Book Now</CTAButton>
               <CTAButton href={`/quote?location=${location.slug}`} variant="outline">
                 Get Quote
@@ -238,7 +239,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
       <Section tone="ivory">
       <Container>
         {/* Condensed SEO copy */}
-        <div className="max-w-3xl space-y-5">
+        <Reveal className="max-w-3xl space-y-5">
           {location.longDescription.map((paragraph, index) => (
             <p key={index} className="text-sm leading-relaxed text-graphite sm:text-base">
               {paragraph}
@@ -260,22 +261,24 @@ export default async function LocationDetailPage({ params }: PageProps) {
               </p>
             </Card>
           ) : null}
-        </div>
+        </Reveal>
 
         {/* Why Choose Apex in this area */}
         <div className="mt-20">
-          <SectionHeading
-            eyebrow="Why Apex"
-            title={`Why Choose Apex in ${location.name}`}
-            align="left"
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Why Apex"
+              title={`Why Choose Apex in ${location.name}`}
+              align="left"
+              tone="light"
+            />
+          </Reveal>
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {location.whyChoose.map((reason) => (
-              <div key={reason} className="flex items-start gap-3">
+            {location.whyChoose.map((reason, index) => (
+              <Reveal key={reason} delay={Math.min(index * 80, 320)} className="flex items-start gap-3">
                 <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
                 <p className="text-sm leading-relaxed text-graphite">{reason}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -286,15 +289,18 @@ export default async function LocationDetailPage({ params }: PageProps) {
           page color system (#0A0A0A / #111111 / #C9A14A). */}
       <section className="border-t border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
         <Container>
-          <span className="label-eyebrow">Popular Routes</span>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl text-white sm:text-4xl">
-            Common Journeys From {location.name}
-          </h2>
+          <Reveal>
+            <span className="label-eyebrow">Popular Routes</span>
+            <h2 className="mt-4 max-w-2xl font-display text-3xl text-white sm:text-4xl">
+              Common Journeys From {location.name}
+            </h2>
+          </Reveal>
 
           <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {location.popularRoutes.map((route) => (
-              <div
+            {location.popularRoutes.map((route, index) => (
+              <Reveal
                 key={`${route.from}-${route.to}`}
+                delay={Math.min(index * 70, 280)}
                 className="flex items-center justify-between gap-4 rounded-xl border border-[rgba(201,161,74,0.15)] bg-[#121212] p-6 transition-colors duration-300 hover:bg-[#171717]"
               >
                 <div className="flex items-center gap-2.5 text-sm text-white sm:text-base">
@@ -305,7 +311,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
                 <span className="shrink-0 rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] px-3 py-1 text-xs uppercase tracking-wide text-[#B8B8B8]">
                   {route.duration}
                 </span>
-              </div>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -333,18 +339,20 @@ export default async function LocationDetailPage({ params }: PageProps) {
 
         <Container className="relative">
           <div className="max-w-3xl">
-            <span className="label-eyebrow">Common Questions</span>
-            <h2 className="mt-4 font-display text-3xl text-white sm:text-4xl">
-              {location.name} FAQs
-            </h2>
+            <Reveal>
+              <span className="label-eyebrow">Common Questions</span>
+              <h2 className="mt-4 font-display text-3xl text-white sm:text-4xl">
+                {location.name} FAQs
+              </h2>
+            </Reveal>
 
             {/* FAQ — native <details>/<summary> keeps this interactive
                 without a client component, so the page stays fully
                 server-rendered. */}
             <div className="mt-10 space-y-3">
-              {location.faqs.map((faq) => (
+              {location.faqs.map((faq, index) => (
+                <Reveal key={faq.question} delay={Math.min(index * 60, 300)}>
                 <details
-                  key={faq.question}
                   className="group rounded-xl border border-[rgba(201,161,74,0.15)] bg-[#121212]/90 px-6 py-5 backdrop-blur-sm transition-colors duration-300 open:bg-[#171717]/90"
                 >
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-base text-white marker:content-none sm:text-lg [&::-webkit-details-marker]:hidden">
@@ -358,6 +366,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
                     {faq.answer}
                   </p>
                 </details>
+                </Reveal>
               ))}
             </div>
           </div>

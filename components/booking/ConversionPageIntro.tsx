@@ -21,15 +21,15 @@ export default function ConversionPageIntro({ heading, description }: Conversion
   return (
     <section className="border-b border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] pb-10 pt-14 sm:pb-12 sm:pt-20">
       <Container className="text-center">
-        <span className="label-eyebrow">Ready When You Are</span>
-        <h1 className="mx-auto mt-4 max-w-2xl font-display text-3xl text-white sm:text-4xl lg:text-[2.75rem]">
+        <span className="animate-fade-in label-eyebrow">Ready When You Are</span>
+        <h1 className="mx-auto mt-4 max-w-2xl animate-slide-in-left font-display text-3xl text-white [animation-delay:100ms] sm:text-4xl lg:text-[2.75rem]">
           {heading}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
+        <p className="mx-auto mt-4 max-w-xl animate-fade-in text-sm leading-relaxed text-[#B8B8B8] [animation-delay:250ms] sm:text-base">
           {description}
         </p>
 
-        <div className="mx-auto mt-7 flex max-w-2xl flex-wrap items-center justify-center gap-x-6 gap-y-3">
+        <div className="mx-auto mt-7 flex max-w-2xl animate-fade-in flex-wrap items-center justify-center gap-x-6 gap-y-3 [animation-delay:400ms]">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#B8B8B8] sm:text-[13px]">
             <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
               {Array.from({ length: 5 }).map((_, i) => (

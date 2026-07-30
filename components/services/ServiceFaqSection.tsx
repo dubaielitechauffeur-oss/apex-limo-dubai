@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Reveal from "@/components/shared/Reveal";
 
 export interface ServiceFaqItem {
   question: string;
@@ -35,22 +36,24 @@ export default function ServiceFaqSection({
   return (
     <section className="border-t border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
       <Container className="max-w-4xl text-center">
-        <span className="label-eyebrow">{eyebrow}</span>
-        <h2 className="mx-auto mt-5 max-w-2xl font-display text-3xl text-white sm:text-4xl">
-          {title}
-        </h2>
-        {subtitle ? (
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
-            {subtitle}
-          </p>
-        ) : null}
+        <Reveal>
+          <span className="label-eyebrow">{eyebrow}</span>
+          <h2 className="mx-auto mt-5 max-w-2xl font-display text-3xl text-white sm:text-4xl">
+            {title}
+          </h2>
+          {subtitle ? (
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
+              {subtitle}
+            </p>
+          ) : null}
+        </Reveal>
 
         <div className="mt-14 space-y-3 text-left">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
+              <Reveal key={faq.question} delay={Math.min(index * 60, 300)}>
               <div
-                key={faq.question}
                 className={`rounded-xl border border-[rgba(201,161,74,0.15)] transition-all duration-300 ${
                   isOpen ? "bg-[#171717]" : "bg-[#121212]"
                 }`}
@@ -82,6 +85,7 @@ export default function ServiceFaqSection({
                   </p>
                 </div>
               </div>
+              </Reveal>
             );
           })}
         </div>

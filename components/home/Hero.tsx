@@ -45,24 +45,24 @@ export default function Hero() {
 
       <Container className="relative z-10 py-24 sm:py-28">
         <div className="max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
+          <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
             Dubai&apos;s Premier Chauffeur Service
           </span>
 
-          <h1 className="mt-6 font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 animate-slide-in-left font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
             <span className="block">Elevate Every Journey</span>
             <span className="block text-heading">
               with <span className="text-gold">Apex Limo</span>
             </span>
           </h1>
 
-          <p className="mt-7 max-w-lg text-base leading-relaxed text-smoke sm:text-lg">
+          <p className="mt-7 max-w-lg animate-fade-in text-base leading-relaxed text-smoke [animation-delay:200ms] sm:text-lg">
             Experience discreet, professional and luxurious chauffeur-driven
             travel across Dubai and the UAE. Airport transfers, corporate
             travel and private chauffeur services tailored to perfection.
           </p>
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <div className="mt-10 flex animate-fade-in flex-col gap-4 [animation-delay:350ms] sm:flex-row">
             <Link
               href={PRIMARY_CTA.book.href}
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
@@ -80,7 +80,7 @@ export default function Hero() {
           </div>
 
           {/* Trust indicators */}
-          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-4 sm:gap-x-8">
+          <div className="mt-12 flex animate-fade-in flex-wrap items-center gap-x-6 gap-y-4 [animation-delay:500ms] sm:gap-x-8">
             {TRUST_INDICATORS.map((item, i) => (
               <div key={item.label} className="flex items-center gap-6 sm:gap-8">
                 <div className="flex items-center gap-2.5">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 import { LOCATIONS, type Location } from "@/data/locations";
 
 export interface FeaturedCard {
@@ -62,14 +63,20 @@ export default function LocationsShowcase({
   return (
     <section className={`border-t border-gold/10 py-24 ${tone === "dark" ? "bg-obsidian" : "bg-ivory"}`}>
       <Container>
-        <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} tone={tone} />
+        <Reveal>
+          <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} tone={tone} />
+        </Reveal>
 
         <div className="mt-16 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
-          {resolvedCards.map(({ location, displayName }) => (
-            <Link
+          {resolvedCards.map(({ location, displayName }, index) => (
+            <Reveal
               key={location.slug}
+              delay={Math.min(index * 80, 320)}
+              className="w-[82%] shrink-0 snap-center snap-always sm:w-auto sm:shrink"
+            >
+            <Link
               href={`/locations/${location.slug}`}
-              className="group relative aspect-[4/5] w-[82%] shrink-0 snap-center snap-always overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.6)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_60px_-18px_rgba(0,0,0,0.7)] sm:w-auto sm:shrink"
+              className="group relative block aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.6)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_60px_-18px_rgba(0,0,0,0.7)]"
             >
               <Image
                 src={location.image.src}
@@ -108,6 +115,7 @@ export default function LocationsShowcase({
                 </span>
               </div>
             </Link>
+            </Reveal>
           ))}
         </div>
       </Container>

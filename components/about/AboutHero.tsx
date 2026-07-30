@@ -33,11 +33,11 @@ export default function AboutHero() {
       />
 
       <Container className="relative z-10 max-w-3xl">
-        <span className="label-eyebrow">About Apex</span>
-        <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
+        <span className="animate-fade-in label-eyebrow">About Apex</span>
+        <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:100ms] sm:text-5xl">
           Dubai&apos;s Trusted Name in Chauffeur-Driven Luxury
         </h1>
-        <p className="mt-5 text-sm leading-relaxed text-smoke sm:text-base">
+        <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:250ms] sm:text-base">
           {SITE.name} was built on a simple premise: luxury transportation
           should be as dependable as it is comfortable. From a single
           airport transfer to a full wedding convoy, we bring the same

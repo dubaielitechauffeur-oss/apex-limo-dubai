@@ -60,10 +60,25 @@ const config: Config = {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "fade-in-up": {
+          "0%": { opacity: "0", transform: "translateY(18px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-in-left": {
+          "0%": { opacity: "0", transform: "translateX(-28px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
       },
       animation: {
         "pulse-slow": "pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "brand-marquee": "marquee 36s linear infinite",
+        "fade-in": "fade-in 0.8s ease-out both",
+        "fade-in-up": "fade-in-up 0.8s ease-out both",
+        "slide-in-left": "slide-in-left 0.8s ease-out both",
       },
       maxWidth: {
         "8xl": "90rem",

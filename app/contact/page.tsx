@@ -16,6 +16,7 @@ import {
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
+import Reveal from "@/components/shared/Reveal";
 import LocationsShowcase from "@/components/home/LocationsShowcase";
 import BookingCTA from "@/components/home/BookingCTA";
 import ContactFaqAccordion from "@/components/contact/ContactFaqAccordion";
@@ -147,16 +148,16 @@ export default function ContactPage() {
       {/* SECTION 1 — Luxury Contact Hero */}
       <section className="border-b border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
         <Container className="text-center">
-          <span className="label-eyebrow">Contact Apex Limo</span>
-          <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl text-white sm:text-5xl">
+          <span className="animate-fade-in label-eyebrow">Contact Apex Limo</span>
+          <h1 className="mx-auto mt-5 max-w-3xl animate-slide-in-left font-display text-4xl text-white [animation-delay:100ms] sm:text-5xl">
             Let&apos;s Plan Your Next Journey
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
+          <p className="mx-auto mt-5 max-w-2xl animate-fade-in text-sm leading-relaxed text-[#B8B8B8] [animation-delay:250ms] sm:text-base">
             Whether you need airport transfers, corporate travel, VIP transportation or a luxury
             chauffeur for a special occasion, our team is available 24/7.
           </p>
 
-          <div className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-3 sm:gap-4">
+          <div className="mx-auto mt-10 flex max-w-3xl animate-fade-in flex-wrap items-center justify-center gap-3 [animation-delay:400ms] sm:gap-4">
             {TRUST_BADGES.map((badge) => (
               <div
                 key={badge.label}
@@ -175,12 +176,14 @@ export default function ContactPage() {
       {/* SECTION 2 — Quick Contact Options */}
       <section className="bg-[#161616] py-20 sm:py-24">
         <Container>
-          <SectionHeading eyebrow="Get In Touch" title="Quick Contact Options" tone="dark" />
+          <Reveal>
+            <SectionHeading eyebrow="Get In Touch" title="Quick Contact Options" tone="dark" />
+          </Reveal>
 
           <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {QUICK_CONTACT_CARDS.map((card) => (
+            {QUICK_CONTACT_CARDS.map((card, index) => (
+              <Reveal key={card.label} delay={index * 100}>
               <a
-                key={card.label}
                 href={card.href}
                 target={card.external ? "_blank" : undefined}
                 rel={card.external ? "noopener noreferrer" : undefined}
@@ -197,6 +200,7 @@ export default function ContactPage() {
                   <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
                 </span>
               </a>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -205,11 +209,13 @@ export default function ContactPage() {
       {/* SECTION 3 — Contact Form + Details */}
       <section className="bg-[#111111] py-20 sm:py-28">
         <Container>
-          <SectionHeading eyebrow="Send a Message" title="Tell Us About Your Journey" tone="dark" />
+          <Reveal>
+            <SectionHeading eyebrow="Send a Message" title="Tell Us About Your Journey" tone="dark" />
+          </Reveal>
 
           <div className="mt-14 grid grid-cols-1 gap-10 lg:grid-cols-[1.6fr_1fr] lg:gap-14">
             {/* Form */}
-            <div className="rounded-2xl border border-[rgba(201,161,74,0.15)] bg-[#151515] p-6 sm:p-10 lg:p-12">
+            <Reveal className="rounded-2xl border border-[rgba(201,161,74,0.15)] bg-[#151515] p-6 sm:p-10 lg:p-12">
               <h3 className="font-display text-2xl text-white">Send a Message</h3>
               <p className="mt-3 text-sm text-[#B8B8B8]">
                 This form isn&apos;t connected to email yet — for an immediate response, please
@@ -309,10 +315,10 @@ export default function ContactPage() {
                   phone.
                 </p>
               </form>
-            </div>
+            </Reveal>
 
             {/* Sidebar */}
-            <aside className="space-y-6">
+            <Reveal as="aside" delay={150} className="space-y-6">
               {/* Response stats */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-[rgba(201,161,74,0.15)] bg-[#151515] p-5 text-center">
@@ -411,7 +417,7 @@ export default function ContactPage() {
                   Need a chauffeur right now? WhatsApp us.
                 </a>
               </div>
-            </aside>
+            </Reveal>
           </div>
         </Container>
       </section>
@@ -427,17 +433,23 @@ export default function ContactPage() {
       {/* SECTION 5 — Why Clients Contact Apex */}
       <section className="bg-[#161616] py-20 sm:py-24">
         <Container>
-          <SectionHeading eyebrow="Why Apex" title="Why Clients Contact Apex" tone="dark" />
+          <Reveal>
+            <SectionHeading eyebrow="Why Apex" title="Why Clients Contact Apex" tone="dark" />
+          </Reveal>
 
           <div className="mt-14 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {WHY_CONTACT_APEX.map((reason) => (
-              <div key={reason.title} className="flex flex-col items-center text-center sm:items-start sm:text-left">
+            {WHY_CONTACT_APEX.map((reason, index) => (
+              <Reveal
+                key={reason.title}
+                delay={Math.min(index * 80, 320)}
+                className="flex flex-col items-center text-center sm:items-start sm:text-left"
+              >
                 <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[rgba(201,161,74,0.25)] bg-[#121212]">
                   <reason.icon className="h-5 w-5 text-[#C9A14A]" strokeWidth={1.5} aria-hidden="true" />
                 </span>
                 <h3 className="mt-5 font-display text-lg text-white">{reason.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-[#B8B8B8]">{reason.description}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -446,7 +458,9 @@ export default function ContactPage() {
       {/* SECTION 6 — Contact FAQs */}
       <section className="bg-[#111111] py-20 sm:py-24">
         <Container className="max-w-3xl">
-          <SectionHeading eyebrow="Common Questions" title="Contact FAQs" align="left" tone="dark" />
+          <Reveal>
+            <SectionHeading eyebrow="Common Questions" title="Contact FAQs" align="left" tone="dark" />
+          </Reveal>
           <div className="mt-10">
             <ContactFaqAccordion faqs={CONTACT_FAQS} />
           </div>

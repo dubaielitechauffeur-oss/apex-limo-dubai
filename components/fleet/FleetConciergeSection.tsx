@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Phone } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Reveal from "@/components/shared/Reveal";
 import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 
 const RECOMMENDATIONS = [
@@ -35,27 +36,30 @@ export default function FleetConciergeSection() {
   return (
     <section className="border-t border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
       <Container className="max-w-5xl text-center">
-        <span className="label-eyebrow">Personal Concierge</span>
-        <h2 className="mx-auto mt-5 max-w-2xl font-display text-3xl text-white sm:text-4xl">
-          Need Help Choosing the Right Vehicle?
-        </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
-          A quick guide to get you started — or speak to our concierge team for a
-          personal recommendation.
-        </p>
+        <Reveal>
+          <span className="label-eyebrow">Personal Concierge</span>
+          <h2 className="mx-auto mt-5 max-w-2xl font-display text-3xl text-white sm:text-4xl">
+            Need Help Choosing the Right Vehicle?
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
+            A quick guide to get you started — or speak to our concierge team for a
+            personal recommendation.
+          </p>
+        </Reveal>
 
         <div className="mt-14 grid grid-cols-1 gap-4 text-left sm:grid-cols-2 lg:grid-cols-4">
-          {RECOMMENDATIONS.map((item) => (
-            <Link
-              key={item.name}
-              href={`/fleet/${item.slug}`}
-              className="group rounded-xl border border-[rgba(201,161,74,0.15)] bg-[#121212] p-6 transition-colors duration-200 hover:border-[#C9A14A]/50 hover:bg-[#171717]"
-            >
-              <h3 className="font-display text-lg text-white transition-colors duration-200 group-hover:text-[#C9A14A]">
-                {item.name}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#B8B8B8]">{item.blurb}</p>
-            </Link>
+          {RECOMMENDATIONS.map((item, index) => (
+            <Reveal key={item.name} delay={index * 80}>
+              <Link
+                href={`/fleet/${item.slug}`}
+                className="group block rounded-xl border border-[rgba(201,161,74,0.15)] bg-[#121212] p-6 transition-colors duration-200 hover:border-[#C9A14A]/50 hover:bg-[#171717]"
+              >
+                <h3 className="font-display text-lg text-white transition-colors duration-200 group-hover:text-[#C9A14A]">
+                  {item.name}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#B8B8B8]">{item.blurb}</p>
+              </Link>
+            </Reveal>
           ))}
         </div>
 

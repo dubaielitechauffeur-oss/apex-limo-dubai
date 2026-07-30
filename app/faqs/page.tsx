@@ -31,11 +31,11 @@ export default function FaqsPage() {
       {/* Hero */}
       <section className="border-b border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
         <Container className="text-center">
-          <span className="label-eyebrow">Support Center</span>
-          <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl text-white sm:text-5xl">
+          <span className="animate-fade-in label-eyebrow">Support Center</span>
+          <h1 className="mx-auto mt-5 max-w-3xl animate-slide-in-left font-display text-4xl text-white [animation-delay:100ms] sm:text-5xl">
             Frequently Asked Questions
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
+          <p className="mx-auto mt-5 max-w-2xl animate-fade-in text-sm leading-relaxed text-[#B8B8B8] [animation-delay:250ms] sm:text-base">
             Find answers about chauffeur services, airport transfers, pricing, bookings, fleet
             options and luxury transportation across Dubai and the UAE.
           </p>

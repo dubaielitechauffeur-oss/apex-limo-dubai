@@ -34,18 +34,18 @@ export default function ServicesHero() {
 
       <Container className="relative z-10 text-center">
         <div className="mx-auto max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
+          <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
             Our Services
           </span>
-          <h1 className="mt-5 font-display text-4xl leading-[1.1] text-heading sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 animate-slide-in-left font-display text-4xl leading-[1.1] text-heading sm:text-5xl lg:text-6xl">
             Chauffeur Services in Dubai
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-smoke sm:text-lg">
+          <p className="mx-auto mt-6 max-w-xl animate-fade-in text-base leading-relaxed text-smoke [animation-delay:200ms] sm:text-lg">
             From a single airport pickup to a fully coordinated wedding
             convoy — every Apex service is built around punctuality,
             discretion, and a fleet that matches the occasion.
           </p>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex animate-fade-in justify-center [animation-delay:350ms]">
             <Link
               href={PRIMARY_CTA.book.href}
               className="inline-flex items-center justify-center rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"

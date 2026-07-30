@@ -32,6 +32,7 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
+import Reveal from "@/components/shared/Reveal";
 import VehicleHeroGallery, { VehicleGalleryCarousel } from "@/components/fleet/VehicleHeroGallery";
 import VehicleHeroQuoteForm from "@/components/fleet/VehicleHeroQuoteForm";
 import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
@@ -229,7 +230,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       <Section tone="obsidian" padding="sm" separator={false} className="!pt-6 !pb-8 lg:!pb-16">
       <Container>
         <div className="mx-auto max-w-3xl lg:max-w-none">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-xs uppercase text-smoke">
+          <nav aria-label="Breadcrumb" className="flex animate-fade-in items-center gap-1 text-xs uppercase text-smoke">
             <Link href="/" className="transition-colors hover:text-gold">
               Home
             </Link>
@@ -244,16 +245,16 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           {/* Mobile-only info block — shows title/category/passengers before
               the gallery. */}
           <div className="mt-6 lg:hidden">
-            <h1 className="font-display text-3xl text-heading">
+            <h1 className="animate-slide-in-left font-display text-3xl text-heading [animation-delay:100ms]">
               {vehicle.name} <span className="text-smoke">with Chauffeur in Dubai</span>
             </h1>
-            <p className="mt-2 text-base italic text-gold/90">{vehicle.tagline}</p>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-smoke">
+            <p className="mt-2 animate-fade-in text-base italic text-gold/90 [animation-delay:250ms]">{vehicle.tagline}</p>
+            <div className="mt-3 flex animate-fade-in flex-wrap items-center gap-2 text-sm text-smoke [animation-delay:350ms]">
               <span>{vehicle.category}</span>
               <span className="text-gold">&bull;</span>
               <span>Up to {vehicle.passengers} Passengers</span>
             </div>
-            <div className="mt-3 flex items-center gap-2">
+            <div className="mt-3 flex animate-fade-in items-center gap-2 [animation-delay:400ms]">
               <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
@@ -267,7 +268,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="mt-6 sm:mt-8 lg:hidden">
+          <div className="mt-6 animate-fade-in sm:mt-8 lg:hidden [animation-delay:200ms]">
             <VehicleHeroGallery vehicle={vehicle} />
           </div>
 
@@ -339,13 +340,13 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           {/* Desktop-only hero — title/rating/tags, then a two-column row:
               image carousel beside an embedded quote form. */}
           <div className="hidden lg:block">
-            <span className="label-eyebrow">{vehicle.category}</span>
-            <h1 className="mt-4 font-display text-5xl text-heading xl:text-6xl">
+            <span className="label-eyebrow animate-fade-in">{vehicle.category}</span>
+            <h1 className="mt-4 animate-slide-in-left font-display text-5xl text-heading [animation-delay:100ms] xl:text-6xl">
               {vehicle.name}
             </h1>
-            <p className="mt-3 text-lg italic text-gold/90">{vehicle.tagline}</p>
+            <p className="mt-3 animate-fade-in text-lg italic text-gold/90 [animation-delay:250ms]">{vehicle.tagline}</p>
 
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-smoke">
+            <div className="mt-4 flex animate-fade-in flex-wrap items-center gap-3 text-sm text-smoke [animation-delay:350ms]">
               <div className="flex items-center gap-2">
                 <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -366,7 +367,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               <span>{vehicle.luggage} Luggage</span>
             </div>
 
-            <div className="mt-8 grid grid-cols-[3fr_2fr] items-start gap-10 xl:gap-14">
+            <div className="mt-8 grid animate-fade-in grid-cols-[3fr_2fr] items-start gap-10 [animation-delay:450ms] xl:gap-14">
               <div>
                 <VehicleGalleryCarousel vehicle={vehicle} sizes="(min-width: 1280px) 640px, 55vw" />
                 <p className="mt-6 text-base leading-relaxed text-smoke">
@@ -416,9 +417,9 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             duplicating the passengers/luggage/Best For already shown in
             the hero meta row on mobile). */}
         <div className="hidden lg:grid lg:grid-cols-4 lg:gap-5">
-          {quickFacts.map((fact) => (
+          {quickFacts.map((fact, index) => (
+            <Reveal key={fact.label} delay={index * 80}>
             <Card
-              key={fact.label}
               tone="dark"
               interactive
               className="p-6 transition-all duration-200 hover:-translate-y-0.5"
@@ -429,11 +430,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               </p>
               <p className="mt-1 font-display text-lg text-heading">{fact.value}</p>
             </Card>
+            </Reveal>
           ))}
         </div>
 
         {/* Pricing */}
-        <div>
+        <Reveal>
           <h2 className="font-display text-2xl text-heading sm:text-3xl">
             Available Chauffeur Packages
           </h2>
@@ -475,7 +477,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <p className="mt-4 text-xs uppercase tracking-wide text-white lg:text-gold/80">
             Professional chauffeur included &bull; No deposit required &bull; Flexible cancellation policy
           </p>
-        </div>
+        </Reveal>
       </Container>
       </Section>
 
@@ -491,18 +493,20 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       <Container className="flex flex-col gap-16 sm:gap-20">
         {/* Features & Amenities */}
         <div>
-          <SectionHeading
-            eyebrow="Onboard"
-            title="Features & Amenities"
-            align="left"
-            tone="dark"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Onboard"
+              title="Features & Amenities"
+              align="left"
+              tone="dark"
+            />
+          </Reveal>
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {vehicle.features.map((feature) => {
+            {vehicle.features.map((feature, index) => {
               const Icon = amenityIcon(feature);
               return (
+                <Reveal key={feature} delay={Math.min(index * 70, 350)}>
                 <Card
-                  key={feature}
                   tone="dark"
                   interactive
                   className="flex h-full items-center gap-3 rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.4)] sm:p-6"
@@ -512,6 +516,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                   </span>
                   <span className="text-sm text-smoke">{feature}</span>
                 </Card>
+                </Reveal>
               );
             })}
           </div>
@@ -519,16 +524,18 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
         {/* Why choose this vehicle */}
         <div>
-          <SectionHeading
-            eyebrow="Why This Vehicle"
-            title={`Why Choose the ${vehicle.name}`}
-            align="left"
-            tone="dark"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Why This Vehicle"
+              title={`Why Choose the ${vehicle.name}`}
+              align="left"
+              tone="dark"
+            />
+          </Reveal>
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {vehicle.whyChoose.map((reason) => (
+            {vehicle.whyChoose.map((reason, index) => (
+              <Reveal key={reason} delay={Math.min(index * 80, 320)}>
               <Card
-                key={reason}
                 tone="dark"
                 interactive
                 className="flex h-full items-start gap-3 rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5 sm:p-6"
@@ -536,6 +543,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
                 <p className="text-sm leading-relaxed text-smoke">{reason}</p>
               </Card>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -543,16 +551,18 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         {/* How It Works — desktop only, structural addition; explains the
             booking flow in three steps. Content is vehicle-agnostic. */}
         <div className="hidden lg:block">
-          <SectionHeading
-            eyebrow="Simple & Seamless"
-            title="How It Works"
-            align="left"
-            tone="dark"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Simple & Seamless"
+              title="How It Works"
+              align="left"
+              tone="dark"
+            />
+          </Reveal>
           <div className="mt-10 grid grid-cols-3 gap-6">
             {HOW_IT_WORKS.map((step, index) => (
+              <Reveal key={step.title} delay={index * 100}>
               <Card
-                key={step.title}
                 tone="dark"
                 interactive
                 className="rounded-xl p-8 text-center transition-all duration-200 hover:-translate-y-0.5"
@@ -564,6 +574,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 <h3 className="mt-4 font-display text-xl text-heading">{step.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-smoke">{step.description}</p>
               </Card>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -574,7 +585,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           dark specs/features block above for a premium change of pace. */}
       <Section tone="ivory">
       <Container>
-        <div className="max-w-3xl">
+        <Reveal className="max-w-3xl">
           <SectionHeading
             eyebrow="The Vehicle"
             title={`About the ${vehicle.name}`}
@@ -584,7 +595,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <p className="mt-6 text-base leading-relaxed text-graphite sm:text-lg">
             {vehicle.longDescription}
           </p>
-        </div>
+        </Reveal>
       </Container>
       </Section>
 
@@ -592,14 +603,18 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           with its WhatsApp-enquiry variant enabled. */}
       <Section tone="obsidian">
       <Container>
-        <SectionHeading
-          eyebrow="Explore More"
-          title="Explore Similar Vehicles"
-          tone="dark"
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="Explore More"
+            title="Explore Similar Vehicles"
+            tone="dark"
+          />
+        </Reveal>
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {similarVehicles.map((related) => (
-            <FleetCarouselCard key={related.slug} vehicle={related} whatsapp tone="dark" />
+          {similarVehicles.map((related, index) => (
+            <Reveal key={related.slug} delay={index * 100}>
+              <FleetCarouselCard vehicle={related} whatsapp tone="dark" />
+            </Reveal>
           ))}
         </div>
       </Container>
