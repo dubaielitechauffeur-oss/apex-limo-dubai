@@ -195,7 +195,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
       {/* Hero zone — single premium column: breadcrumb, gallery, title,
           then the existing description/meta/CTA content, unchanged. */}
-      <Section tone="obsidian" padding="sm" separator={false}>
+      <Section tone="obsidian" padding="sm" separator={false} className="!pt-6">
       <Container>
         <div className="mx-auto max-w-3xl">
           <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-xs uppercase text-smoke">
