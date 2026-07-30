@@ -71,11 +71,11 @@
   }
 
   .btn-gold {
-    @apply inline-flex h-14 items-center justify-center gap-2 rounded-none bg-champagne px-6 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-colors duration-200 hover:bg-champagne-bright;
+    @apply inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-champagne px-6 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-colors duration-200 hover:bg-champagne-bright;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 border border-gold/60 bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-ivory transition-colors duration-200 hover:border-gold hover:bg-gold/10;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-gold/60 bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-ivory transition-colors duration-200 hover:border-gold hover:bg-gold/10;
   }
 
   /* Solid black CTA — for secondary actions on a light section that
