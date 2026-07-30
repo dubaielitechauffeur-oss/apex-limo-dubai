@@ -13,7 +13,7 @@ Defined in `tailwind.config.ts`.
 |---|---|---|
 | `obsidian` | `#0A0A0A` | Primary dark background — Header, Hero, Footer, dark page heroes |
 | `obsidian-light` | `#141414` | Rarely used lighter dark variant |
-| `charcoal` | `#18181B` | Dark surface/card background (dropdowns, VehicleCard default) |
+| `charcoal` | `#18181B` | Dark surface/card background (dropdowns, vehicle detail page pricing panel) |
 | `ink` | `#111111` | Booking CTA panel background |
 | `ivory` | `#FFFFFF` | Light section background *and* primary text color on dark backgrounds (same token, two roles) |
 | `ivory-off` | `#F6F4EF` | Hover state for light cards |
@@ -114,14 +114,6 @@ Eyebrow + heading + subtitle pattern used to open most sections.
   whose text color otherwise defaults to `ivory` and is invisible on a
   light section
 - `external`: renders a plain `<a target="_blank">` instead of a Next `Link`
-
-### `VehicleCard` (`components/fleet/VehicleCard.tsx`)
-
-- `tone`: `dark` (default, `bg-charcoal`) | `light` (`bg-ivory`)
-- The embedded `VehicleGallery` photo panel always stays dark — it's a
-  self-contained "framed photograph" regardless of the card's tone,
-  the same way the testimonial avatar-initial badge stays dark on any
-  background.
 
 ### Global utility classes (`app/globals.css`, `@layer components`)
 
