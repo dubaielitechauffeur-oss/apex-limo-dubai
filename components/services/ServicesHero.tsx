@@ -48,7 +48,7 @@ export default function ServicesHero() {
           <div className="mt-8 flex justify-center">
             <Link
               href={PRIMARY_CTA.book.href}
-              className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+              className="inline-flex items-center justify-center rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
             >
               Book Chauffeur
             </Link>

@@ -173,7 +173,7 @@ export default function FleetCarousel() {
         <div className="mt-12 text-center">
           <Link
             href="/fleet"
-            className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+            className="inline-flex items-center justify-center rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
           >
             View Our Full Fleet
           </Link>

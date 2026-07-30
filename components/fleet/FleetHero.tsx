@@ -93,13 +93,13 @@ export default function FleetHero() {
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <a
               href="#fleet-listings"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"
             >
               View Fleet
             </a>
             <Link
               href={PRIMARY_CTA.quote.href}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-[#C9A14A] hover:text-[#C9A14A]"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-[#C9A14A] hover:text-[#C9A14A]"
             >
               {PRIMARY_CTA.quote.label}
             </Link>

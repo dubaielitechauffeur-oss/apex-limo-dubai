@@ -132,7 +132,7 @@ export default function ServicesPage() {
                   <div className="flex items-center gap-3 p-8 pt-8">
                     <Link
                       href={`/services/${service.slug}`}
-                      className="inline-flex flex-1 items-center justify-center rounded-full bg-gold px-5 py-3 text-xs font-bold uppercase tracking-wide text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+                      className="inline-flex flex-1 items-center justify-center rounded-lg bg-gold px-5 py-3 text-xs font-bold uppercase tracking-wide text-obsidian transition-colors duration-200 hover:bg-gold-deep"
                     >
                       Learn More
                     </Link>

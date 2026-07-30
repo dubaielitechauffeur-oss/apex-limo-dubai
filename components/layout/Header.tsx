@@ -122,7 +122,7 @@ export default function Header() {
             </a>
             <Link
               href={PRIMARY_CTA.book.href}
-              className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#C8A35F] px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-colors duration-200 hover:bg-[#B8935A] xl:px-6 xl:py-3 xl:tracking-[0.12em]"
+              className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#C8A35F] px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-colors duration-200 hover:bg-[#B8935A] xl:px-6 xl:py-3 xl:tracking-[0.12em]"
             >
               <Calendar className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
               Book Now
