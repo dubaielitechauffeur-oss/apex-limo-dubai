@@ -367,7 +367,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             </div>
 
             <div className="mt-8 grid grid-cols-[3fr_2fr] items-start gap-10 xl:gap-14">
-              <VehicleGalleryCarousel vehicle={vehicle} sizes="(min-width: 1280px) 640px, 55vw" />
+              <div>
+                <VehicleGalleryCarousel vehicle={vehicle} sizes="(min-width: 1280px) 640px, 55vw" />
+                <p className="mt-6 text-base leading-relaxed text-smoke">
+                  {vehicle.description}
+                </p>
+              </div>
               <VehicleHeroQuoteForm vehicle={vehicle} />
             </div>
 
