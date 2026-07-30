@@ -5,6 +5,8 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloatButton from "@/components/layout/WhatsAppFloatButton";
+import CallFloatButton from "@/components/layout/CallFloatButton";
+import ScrollToTopButton from "@/components/layout/ScrollToTopButton";
 import { LanguageProvider } from "@/components/layout/LanguageContext";
 import { defaultMetadata, organizationJsonLd } from "@/lib/seo";
 
@@ -59,6 +61,8 @@ export default function RootLayout({
           <main className="flex-1 pt-[117px]">{children}</main>
           <Footer />
           <WhatsAppFloatButton />
+          <CallFloatButton />
+          <ScrollToTopButton />
         </LanguageProvider>
       </body>
       <GoogleAnalytics gaId="G-B37R3PW9NG" />
