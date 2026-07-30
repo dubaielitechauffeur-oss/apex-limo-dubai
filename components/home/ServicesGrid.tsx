@@ -29,7 +29,7 @@ export default function ServicesGrid() {
             <Link
               key={service.slug}
               href={`/services/${service.slug}`}
-              className="group relative aspect-[4/5] w-[82%] shrink-0 snap-center overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.6)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_60px_-18px_rgba(0,0,0,0.7)] sm:w-auto sm:shrink"
+              className="group relative aspect-[4/5] w-[82%] shrink-0 snap-center snap-always overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.6)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_60px_-18px_rgba(0,0,0,0.7)] sm:w-auto sm:shrink"
             >
               <Image
                 src={service.image.src}

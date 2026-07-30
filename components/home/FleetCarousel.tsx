@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -31,6 +31,7 @@ function useSlidesPerView() {
 
 const AUTOPLAY_DELAY_MS = 1000;
 const AUTOPLAY_INTERVAL_MS = 4000;
+const SWIPE_THRESHOLD_PX = 40;
 
 /**
  * "Explore Our Fleet" — the primary homepage fleet section: an infinite,
@@ -61,6 +62,40 @@ export default function FleetCarousel() {
     return [...startClones, ...FLEET, ...endClones];
   }, [slidesPerView]);
 
+  // Touch/mouse swipe support: a drag ending past the threshold advances
+  // one card, same as tapping an arrow. Tracked via refs (not state) since
+  // only the release matters — no per-frame re-render is needed while
+  // dragging. A swipe that ends on a card's link suppresses the resulting
+  // click so a drag doesn't also navigate.
+  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
+  const didSwipeRef = useRef(false);
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    dragStartRef.current = { x: event.clientX, y: event.clientY };
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = dragStartRef.current;
+    dragStartRef.current = null;
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) >= SWIPE_THRESHOLD_PX && Math.abs(dx) > Math.abs(dy)) {
+      didSwipeRef.current = true;
+      if (dx > 0) goPrev();
+      else goNext();
+    }
+  };
+
+  const handleClickCapture = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (didSwipeRef.current) {
+      didSwipeRef.current = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
+
   return (
     <section
       ref={sectionRef as React.RefObject<HTMLElement>}
@@ -76,7 +111,17 @@ export default function FleetCarousel() {
 
         <div className="relative mt-16">
           {/* Track */}
-          <div className="overflow-hidden" role="region" aria-label="Fleet vehicles carousel">
+          <div
+            className="touch-pan-y overflow-hidden"
+            role="region"
+            aria-label="Fleet vehicles carousel"
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={() => {
+              dragStartRef.current = null;
+            }}
+            onClickCapture={handleClickCapture}
+          >
             <div
               className={`flex ${instant ? "" : "transition-transform duration-500 ease-out"}`}
               style={{ transform: `translateX(-${(index * 100) / slidesPerView}%)` }}
