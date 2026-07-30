@@ -196,7 +196,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
       {/* Hero zone — single premium column: breadcrumb, gallery, title,
           then the existing description/meta/CTA content, unchanged. */}
-      <Section tone="obsidian" padding="sm" separator={false} className="!pt-6">
+      <Section tone="obsidian" padding="sm" separator={false} className="!pt-6 !pb-8 lg:!pb-16">
       <Container>
         <div className="mx-auto max-w-3xl">
           <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-xs uppercase text-smoke">
@@ -328,7 +328,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       {/* Specs zone — deep black, refined bordered cards; Quick Facts,
           pricing, features and "why choose" all share this dark premium
           treatment, with generous rhythm between each block. */}
-      <Section tone="obsidian">
+      <Section tone="obsidian" className="!pt-8 lg:!pt-24">
       <Container className="flex flex-col gap-16 sm:gap-20">
         {/* Quick Facts — desktop only, unchanged from before (avoids
             duplicating the passengers/luggage/Best For already shown in
