@@ -65,14 +65,14 @@ export default function Hero() {
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Link
               href={PRIMARY_CTA.book.href}
-              className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
             >
               <Calendar className="h-4 w-4" strokeWidth={2} />
               Book Now
             </Link>
             <Link
               href="/services"
-              className="inline-flex items-center justify-center gap-2 rounded-sm border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10"
             >
               Our Services
               <ArrowRight className="h-4 w-4" strokeWidth={2} />

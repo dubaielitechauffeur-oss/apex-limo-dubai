@@ -62,7 +62,7 @@ export default function FleetConciergeSection() {
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
             href={getPhoneLink()}
-            className="inline-flex items-center justify-center gap-2 rounded-sm bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"
           >
             <Phone className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
             Call {SITE.phoneDisplay}
@@ -71,7 +71,7 @@ export default function FleetConciergeSection() {
             href={getWhatsAppLink("Hi, I'd like help choosing the right vehicle.")}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-sm border border-[rgba(201,161,74,0.4)] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-[#C9A14A] hover:text-[#C9A14A]"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(201,161,74,0.4)] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-[#C9A14A] hover:text-[#C9A14A]"
           >
             WhatsApp Us
           </a>

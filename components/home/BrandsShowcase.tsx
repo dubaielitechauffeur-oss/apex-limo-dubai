@@ -31,19 +31,19 @@ export default function BrandsShowcase() {
         <div className="mx-auto mt-12 flex max-w-2xl flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
           <Link
             href="/fleet"
-            className="w-full rounded-sm bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
+            className="w-full rounded-full bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
             View Our Fleet
           </Link>
           <Link
             href="/booking"
-            className="w-full rounded-sm bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
+            className="w-full rounded-full bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
             Book a Car
           </Link>
           <Link
             href="/contact"
-            className="w-full rounded-sm bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
+            className="w-full rounded-full bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
             Request Details
           </Link>
