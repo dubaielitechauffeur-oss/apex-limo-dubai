@@ -418,12 +418,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
       {/* Related vehicles — reuses the homepage "Our Fleet" card exactly,
           with its WhatsApp-enquiry variant enabled. */}
-      <Section tone="linen">
+      <Section tone="obsidian">
       <Container>
         <SectionHeading
           eyebrow="Explore More"
           title="Explore Similar Vehicles"
-          tone="light"
+          tone="dark"
         />
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {similarVehicles.map((related) => (
