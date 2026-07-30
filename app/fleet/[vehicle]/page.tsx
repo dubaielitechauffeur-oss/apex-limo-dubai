@@ -5,7 +5,6 @@ import {
   Users,
   Briefcase,
   Star,
-  ArrowLeft,
   Crown,
   Compass,
   Wifi,
@@ -193,38 +192,39 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         }}
       />
 
-      {/* Hero zone */}
+      {/* Hero zone — single premium column: breadcrumb, gallery, title,
+          then the existing description/meta/CTA content, unchanged. */}
       <Section tone="obsidian" padding="sm" separator={false}>
       <Container>
-        <Link
-          href="/fleet"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} />
-          Back to Fleet
-        </Link>
+        <div className="mx-auto max-w-3xl">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs uppercase tracking-wide text-smoke">
+            <Link href="/" className="transition-colors hover:text-gold">
+              Home
+            </Link>
+            <span className="text-smoke/40">/</span>
+            <Link href="/fleet" className="transition-colors hover:text-gold">
+              Fleet
+            </Link>
+            <span className="text-smoke/40">/</span>
+            <span className="text-gold">{vehicle.name}</span>
+          </nav>
 
-        <div className="vehicle-hero-grid mt-8">
-          {/* Title block — mobile shows this before the image ("introduce
-              the vehicle before showing the image"); desktop stacks it
-              above the details block in the right-hand column, unchanged
-              from the original layout. */}
-          <div className="vehicle-hero-title">
+          <div className="mt-6 sm:mt-8">
+            <VehicleHeroGallery vehicle={vehicle} />
+          </div>
+
+          <div className="mt-8 sm:mt-10">
             <span className="label-eyebrow">{vehicle.category}</span>
-            <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
+            <h1 className="mt-4 font-display text-4xl text-heading sm:text-5xl lg:text-6xl">
               {vehicle.name}
             </h1>
-            <p className="mt-2 text-sm italic text-gold/90 sm:text-base">
+            <p className="mt-3 text-base italic text-gold/90 sm:text-lg">
               {vehicle.tagline}
             </p>
           </div>
 
-          <div className="vehicle-hero-gallery">
-            <VehicleHeroGallery vehicle={vehicle} />
-          </div>
-
-          <div className="vehicle-hero-details">
-            <p className="max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
+          <div className="mt-8">
+            <p className="text-sm leading-relaxed text-smoke sm:text-base">
               {vehicle.description}
             </p>
 
@@ -427,7 +427,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         />
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {similarVehicles.map((related) => (
-            <FleetCarouselCard key={related.slug} vehicle={related} whatsapp />
+            <FleetCarouselCard key={related.slug} vehicle={related} whatsapp tone="dark" />
           ))}
         </div>
       </Container>
