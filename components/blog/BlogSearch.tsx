@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import type { BlogPost } from "@/data/blog";
+import Reveal from "@/components/shared/Reveal";
 import BlogCard from "./BlogCard";
 
 interface BlogSearchProps {
@@ -49,8 +50,10 @@ export default function BlogSearch({ posts, imageExistsBySlug }: BlogSearchProps
               visiblePosts.length >= 2 ? "sm:grid-cols-2" : ""
             } ${visiblePosts.length >= 3 ? "lg:grid-cols-3" : ""}`}
           >
-            {visiblePosts.map((post) => (
-              <BlogCard key={post.slug} post={post} imageExists={imageExistsBySlug[post.slug] ?? false} />
+            {visiblePosts.map((post, index) => (
+              <Reveal key={post.slug} delay={Math.min(index * 70, 350)}>
+                <BlogCard post={post} imageExists={imageExistsBySlug[post.slug] ?? false} />
+              </Reveal>
             ))}
           </div>
         ) : (

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import Reveal from "@/components/shared/Reveal";
 
 interface ContactFaqAccordionProps {
   faqs: { question: string; answer: string }[];
@@ -21,8 +22,8 @@ export default function ContactFaqAccordion({ faqs }: ContactFaqAccordionProps) 
       {faqs.map((faq, index) => {
         const isOpen = openIndex === index;
         return (
+          <Reveal key={faq.question} delay={Math.min(index * 50, 300)}>
           <div
-            key={faq.question}
             className={`rounded-xl border border-[rgba(201,161,74,0.15)] transition-colors duration-300 ${
               isOpen ? "bg-[#171717]" : "bg-[#121212]"
             }`}
@@ -52,6 +53,7 @@ export default function ContactFaqAccordion({ faqs }: ContactFaqAccordionProps) 
               </p>
             </div>
           </div>
+          </Reveal>
         );
       })}
     </div>

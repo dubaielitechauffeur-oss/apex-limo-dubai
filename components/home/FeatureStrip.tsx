@@ -1,5 +1,6 @@
 import { Clock, User, ShieldCheck, Gem, type LucideIcon } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Reveal from "@/components/shared/Reveal";
 
 interface Feature {
   icon: LucideIcon;
@@ -40,14 +41,14 @@ export default function FeatureStrip() {
     <section className="border-t border-gold/10 bg-obsidian py-24">
       <Container>
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-4">
-          {FEATURES.map((feature) => (
-            <div key={feature.title} className="flex flex-col items-center text-center">
+          {FEATURES.map((feature, index) => (
+            <Reveal key={feature.title} delay={index * 80} className="flex flex-col items-center text-center">
               <feature.icon className="h-8 w-8 text-gold" strokeWidth={1.25} aria-hidden="true" />
               <h3 className="mt-4 font-display text-lg text-ivory">{feature.title}</h3>
               <p className="mt-2 max-w-[220px] text-sm leading-relaxed text-smoke">
                 {feature.description}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </Container>

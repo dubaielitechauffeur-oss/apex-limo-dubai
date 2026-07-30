@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 import FleetCarouselCard from "./FleetCarouselCard";
 import { FLEET } from "@/data/fleet";
 import { FLEET_SIZE } from "@/lib/constants";
@@ -102,12 +103,14 @@ export default function FleetCarousel() {
       className="border-t border-gold/10 bg-linen py-24"
     >
       <Container>
-        <SectionHeading
-          eyebrow="The Fleet"
-          title="Explore Our Fleet"
-          subtitle={`${FLEET_SIZE} late-model vehicles, one uncompromising standard — every journey with a professional chauffeur included.`}
-          tone="light"
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="The Fleet"
+            title="Explore Our Fleet"
+            subtitle={`${FLEET_SIZE} late-model vehicles, one uncompromising standard — every journey with a professional chauffeur included.`}
+            tone="light"
+          />
+        </Reveal>
 
         <div className="relative mt-16">
           {/* Track */}

@@ -51,21 +51,21 @@ export default function FleetHero() {
 
       <Container className="relative z-10">
         <div className="max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#C9A14A] sm:text-sm">
+          <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-[#C9A14A] sm:text-sm">
             Luxury Chauffeur Fleet
           </span>
 
-          <h1 className="mt-6 font-display text-4xl leading-[1.05] text-white sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 animate-slide-in-left font-display text-4xl leading-[1.05] text-white sm:text-6xl lg:text-7xl">
             {FLEET_SIZE} Luxury Vehicles for Every Occasion
           </h1>
 
-          <p className="mt-7 max-w-lg text-base leading-relaxed text-[#B8B8B8] sm:text-lg">
+          <p className="mt-7 max-w-lg animate-fade-in text-base leading-relaxed text-[#B8B8B8] [animation-delay:200ms] sm:text-lg">
             Choose from executive sedans, VIP SUVs, luxury vans, and
             chauffeur-driven vehicles available across Dubai and the UAE.
           </p>
 
           {/* Trust indicators */}
-          <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div className="mt-9 flex animate-fade-in flex-wrap items-center gap-x-6 gap-y-3 [animation-delay:350ms]">
             <div className="flex items-center gap-2">
               <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -90,7 +90,7 @@ export default function FleetHero() {
             ))}
           </div>
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <div className="mt-10 flex animate-fade-in flex-col gap-4 [animation-delay:500ms] sm:flex-row">
             <a
               href="#fleet-listings"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"

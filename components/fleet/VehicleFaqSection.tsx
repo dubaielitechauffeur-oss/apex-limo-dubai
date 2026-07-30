@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 
 interface VehicleFaqSectionProps {
   vehicleName: string;
@@ -55,20 +56,22 @@ export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProp
     <section className="border-t border-gold/10 bg-ivory py-20 sm:py-24">
       <Container>
         <div className="max-w-3xl">
-          <SectionHeading
-            eyebrow="Common Questions"
-            title={`${vehicleName} FAQs`}
-            subtitle={`Everything you need to know about hiring the ${vehicleName} in Dubai.`}
-            align="left"
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Common Questions"
+              title={`${vehicleName} FAQs`}
+              subtitle={`Everything you need to know about hiring the ${vehicleName} in Dubai.`}
+              align="left"
+              tone="light"
+            />
+          </Reveal>
 
           <div className="mt-10 space-y-3">
             {faqs.map((faq, index) => {
               const isOpen = openIndex === index;
               return (
+                <Reveal key={faq.question} delay={Math.min(index * 60, 300)}>
                 <div
-                  key={faq.question}
                   className={`rounded-xl border transition-colors duration-200 ${
                     isOpen ? "border-gold/40 bg-linen/70" : "border-obsidian/10 bg-white"
                   }`}
@@ -100,6 +103,7 @@ export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProp
                     </p>
                   </div>
                 </div>
+                </Reveal>
               );
             })}
           </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 
 export interface FAQItem {
   question: string;
@@ -48,14 +49,16 @@ export default function FAQAccordion({
       <div aria-hidden="true" className="absolute inset-0 bg-obsidian/80" />
 
       <Container className="relative z-10 max-w-4xl">
-        <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} tone="dark" />
+        <Reveal>
+          <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} tone="dark" />
+        </Reveal>
 
         <div className="mt-14 divide-y divide-white/10 border-y border-white/10 bg-charcoal/40 backdrop-blur-sm">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
+              <Reveal key={faq.question} delay={Math.min(index * 60, 300)}>
               <div
-                key={faq.question}
                 className={`border-l-2 transition-colors duration-200 ${
                   isOpen ? "border-gold" : "border-transparent"
                 }`}
@@ -88,6 +91,7 @@ export default function FAQAccordion({
                   </p>
                 </div>
               </div>
+              </Reveal>
             );
           })}
         </div>

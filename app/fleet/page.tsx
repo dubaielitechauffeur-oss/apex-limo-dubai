@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
+import Reveal from "@/components/shared/Reveal";
 import FleetHero from "@/components/fleet/FleetHero";
 import FleetListingCard from "@/components/fleet/FleetListingCard";
 import FleetTrustSection from "@/components/fleet/FleetTrustSection";
@@ -72,8 +73,10 @@ export default function FleetPage() {
       <Section id="fleet-listings" tone="ivory">
         <Container>
           <div className="flex flex-col gap-8">
-            {FLEET.map((vehicle) => (
-              <FleetListingCard key={vehicle.slug} vehicle={vehicle} />
+            {FLEET.map((vehicle, index) => (
+              <Reveal key={vehicle.slug} delay={Math.min(index * 60, 300)}>
+                <FleetListingCard vehicle={vehicle} />
+              </Reveal>
             ))}
           </div>
         </Container>

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, ChevronDown } from "lucide-react";
+import Reveal from "@/components/shared/Reveal";
 import { ALL_FAQS, FAQ_CATEGORIES, type FaqHubEntry } from "@/data/faqHub";
 
 const CHIPS = [
@@ -81,7 +82,8 @@ export default function FaqHubClient() {
   return (
     <>
       {/* Search bar */}
-      <div ref={searchWrapRef} className="relative mx-auto max-w-2xl">
+      <Reveal>
+        <div ref={searchWrapRef} className="relative mx-auto max-w-2xl">
         <div className="relative">
           <Search
             className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#999999]"
@@ -129,10 +131,11 @@ export default function FaqHubClient() {
             )}
           </div>
         ) : null}
-      </div>
+        </div>
+      </Reveal>
 
       {/* Category filter chips */}
-      <div className="mt-8 flex flex-wrap justify-center gap-3">
+      <Reveal delay={100} className="mt-8 flex flex-wrap justify-center gap-3">
         {CHIPS.map((chip) => {
           const isActive = activeCategory === chip.key;
           return (
@@ -150,12 +153,15 @@ export default function FaqHubClient() {
             </button>
           );
         })}
-      </div>
+      </Reveal>
 
-      {/* FAQ list, grouped by category */}
+      {/* FAQ list, grouped by category. Reveal wraps each category group
+          (not each individual FAQ item) — search's scroll-to-and-highlight
+          jump needs the target item already visible, which per-item reveal
+          would fight with. */}
       <div className="mt-16 space-y-16">
-        {FAQ_CATEGORIES.filter((cat) => groupedFaqs.has(cat.key)).map((cat) => (
-          <div key={cat.key}>
+        {FAQ_CATEGORIES.filter((cat) => groupedFaqs.has(cat.key)).map((cat, index) => (
+          <Reveal key={cat.key} delay={Math.min(index * 60, 240)} as="div">
             {activeCategory === "all" ? (
               <h2 className="font-display text-2xl text-white sm:text-3xl">{cat.label}</h2>
             ) : null}
@@ -199,7 +205,7 @@ export default function FaqHubClient() {
                 );
               })}
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </>

@@ -14,6 +14,7 @@ import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import FAQAccordion from "@/components/shared/FAQAccordion";
+import Reveal from "@/components/shared/Reveal";
 import ServicesHero from "@/components/services/ServicesHero";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd } from "@/lib/seo";
@@ -88,22 +89,25 @@ export default function ServicesPage() {
 
       <Section tone="ivory" separator={false}>
         <Container>
-          <SectionHeading
-            eyebrow="What We Offer"
-            title="Chauffeur Services in Dubai"
-            subtitle="From a single airport pickup to a fully coordinated wedding convoy, every Apex service is built around punctuality, discretion, and a fleet that matches the occasion."
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="What We Offer"
+              title="Chauffeur Services in Dubai"
+              subtitle="From a single airport pickup to a fully coordinated wedding convoy, every Apex service is built around punctuality, discretion, and a fleet that matches the occasion."
+              tone="light"
+            />
+          </Reveal>
 
           <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service) => {
+            {SERVICES.map((service, index) => {
               const Icon = ICONS[service.slug] ?? Crown;
               const whatsappHref = getWhatsAppLink(
                 `Hi, I'm interested in ${service.name}.`
               );
               return (
-                <div
+                <Reveal
                   key={service.slug}
+                  delay={Math.min(index * 80, 320)}
                   className="group flex flex-col bg-ivory transition-colors duration-200 hover:bg-ivory-off"
                 >
                   <Link href={`/services/${service.slug}`} className="flex flex-1 flex-col">
@@ -148,7 +152,7 @@ export default function ServicesPage() {
                       </svg>
                     </a>
                   </div>
-                </div>
+                </Reveal>
               );
             })}
           </div>

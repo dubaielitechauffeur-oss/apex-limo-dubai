@@ -1,6 +1,7 @@
 import { Star, BadgeCheck } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 import { TESTIMONIALS } from "@/data/testimonials";
 import { SITE, RATING } from "@/lib/constants";
 import { organizationId } from "@/lib/seo";
@@ -84,14 +85,16 @@ export default function Testimonials() {
       />
 
       <Container>
-        <SectionHeading
-          eyebrow="Client Words"
-          title="What Riding With Apex Feels Like"
-          tone="light"
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="Client Words"
+            title="What Riding With Apex Feels Like"
+            tone="light"
+          />
+        </Reveal>
 
         {/* Google-style aggregate rating */}
-        <div className="mx-auto mt-10 flex flex-col items-center gap-3 text-center">
+        <Reveal delay={100} className="mx-auto mt-10 flex flex-col items-center gap-3 text-center">
           <div className="flex items-center gap-3">
             <StarRow rating={Math.round(parseFloat(RATING))} size="h-6 w-6" />
             <span className="font-display text-3xl text-obsidian">{RATING}</span>
@@ -107,14 +110,14 @@ export default function Testimonials() {
           >
             Find us on Google Maps
           </a>
-        </div>
+        </Reveal>
 
         {/* Featured testimonials */}
         <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((testimonial) => (
+          {featured.map((testimonial, index) => (
+            <Reveal key={testimonial.id} delay={index * 100}>
             <figure
-              key={testimonial.id}
-              className="relative flex flex-col overflow-hidden rounded-2xl border border-gold/20 bg-ivory p-10 shadow-[0_16px_35px_-22px_rgba(10,10,10,0.35)] sm:p-12"
+              className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-gold/20 bg-ivory p-10 shadow-[0_16px_35px_-22px_rgba(10,10,10,0.35)] sm:p-12"
             >
               <span
                 aria-hidden="true"
@@ -143,6 +146,7 @@ export default function Testimonials() {
                 </div>
               </div>
             </figure>
+            </Reveal>
           ))}
         </div>
       </Container>

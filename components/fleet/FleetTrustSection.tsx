@@ -1,5 +1,6 @@
 import { Star, Car, UserCheck, MapPin } from "lucide-react";
 import Container from "@/components/shared/Container";
+import Reveal from "@/components/shared/Reveal";
 import { RATING, FLEET_SIZE } from "@/lib/constants";
 
 const METRICS = [
@@ -21,7 +22,7 @@ export default function FleetTrustSection() {
     <section className="border-t border-gold/10 bg-ivory py-16">
       <Container>
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-          <div className="flex flex-col items-center gap-2 text-center">
+          <Reveal className="flex flex-col items-center gap-2 text-center">
             <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
@@ -35,14 +36,14 @@ export default function FleetTrustSection() {
             </div>
             <span className="font-display text-2xl text-obsidian sm:text-3xl">{RATING}</span>
             <span className="text-xs uppercase tracking-wide text-graphite">Rating</span>
-          </div>
+          </Reveal>
 
-          {METRICS.map((metric) => (
-            <div key={metric.label} className="flex flex-col items-center gap-2 text-center">
+          {METRICS.map((metric, index) => (
+            <Reveal key={metric.label} delay={(index + 1) * 80} className="flex flex-col items-center gap-2 text-center">
               <metric.icon className="h-5 w-5 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
               <span className="font-display text-2xl text-obsidian sm:text-3xl">{metric.value}</span>
               <span className="text-xs uppercase tracking-wide text-graphite">{metric.label}</span>
-            </div>
+            </Reveal>
           ))}
         </div>
       </Container>

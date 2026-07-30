@@ -31,13 +31,13 @@ export default function LocationsHero() {
 
       <Container className="relative z-10 text-center">
         <div className="mx-auto max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
+          <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
             Where We Drive
           </span>
-          <h1 className="mt-5 font-display text-4xl leading-[1.1] text-heading sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 animate-slide-in-left font-display text-4xl leading-[1.1] text-heading sm:text-5xl lg:text-6xl">
             Our Service Locations
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-smoke sm:text-lg">
+          <p className="mx-auto mt-6 max-w-xl animate-fade-in text-base leading-relaxed text-smoke [animation-delay:200ms] sm:text-lg">
             From beachfront residences to the business district, Apex
             chauffeurs know Dubai&apos;s neighborhoods, pickup points, and
             traffic patterns in detail.

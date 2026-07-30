@@ -5,6 +5,7 @@ import { MapPin, Plane } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 import BookingCTA from "@/components/home/BookingCTA";
 import LocationsHero from "@/components/locations/LocationsHero";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
@@ -59,19 +60,21 @@ export default function LocationsPage() {
 
       <Section tone="ivory" separator={false}>
         <Container>
-          <SectionHeading
-            eyebrow="Where We Drive"
-            title="Areas We Serve Across Dubai"
-            subtitle="From beachfront residences to the business district, Apex chauffeurs know Dubai's neighborhoods, pickup points, and traffic patterns in detail."
-            tone="light"
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Where We Drive"
+              title="Areas We Serve Across Dubai"
+              subtitle="From beachfront residences to the business district, Apex chauffeurs know Dubai's neighborhoods, pickup points, and traffic patterns in detail."
+              tone="light"
+            />
+          </Reveal>
 
           <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
-            {LOCATIONS.map((location) => {
+            {LOCATIONS.map((location, index) => {
               const Icon = location.isAirport ? Plane : MapPin;
               return (
+                <Reveal key={location.slug} delay={Math.min(index * 60, 300)}>
                 <Link
-                  key={location.slug}
                   href={`/locations/${location.slug}`}
                   className="group flex flex-col bg-ivory transition-colors duration-200 hover:bg-ivory-off"
                 >
@@ -99,6 +102,7 @@ export default function LocationsPage() {
                     <span className="btn-gold mt-8 w-fit">Explore Area</span>
                   </div>
                 </Link>
+                </Reveal>
               );
             })}
           </div>

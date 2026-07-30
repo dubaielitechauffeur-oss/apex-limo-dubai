@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 import BrandBadge from "./BrandBadge";
 import { BRANDS } from "@/data/brands";
 
@@ -16,7 +17,9 @@ export default function BrandsShowcase() {
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
-        <SectionHeading eyebrow="Our Partners" title="Our Brands" tone="light" />
+        <Reveal>
+          <SectionHeading eyebrow="Our Partners" title="Our Brands" tone="light" />
+        </Reveal>
 
         <div className="relative mx-auto mt-16 max-w-5xl overflow-hidden">
           <div className="flex w-max animate-brand-marquee">

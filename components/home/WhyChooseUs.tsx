@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 
 interface Reason {
   icon: LucideIcon;
@@ -59,16 +60,18 @@ export default function WhyChooseUs() {
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
-        <SectionHeading
-          eyebrow="Why Apex"
-          title="Consistency Is the Luxury"
-          subtitle="Anyone can drive a nice car. What clients come back for is knowing exactly what to expect, every single time."
-          tone="light"
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="Why Apex"
+            title="Consistency Is the Luxury"
+            subtitle="Anyone can drive a nice car. What clients come back for is knowing exactly what to expect, every single time."
+            tone="light"
+          />
+        </Reveal>
 
         <div className="mt-16 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {REASONS.map((reason) => (
-            <div key={reason.title} className="flex gap-4">
+          {REASONS.map((reason, index) => (
+            <Reveal key={reason.title} delay={Math.min(index * 80, 320)} className="flex gap-4">
               <reason.icon
                 className="mt-1 h-6 w-6 shrink-0 text-gold-deep"
                 strokeWidth={1.5}
@@ -81,7 +84,7 @@ export default function WhyChooseUs() {
                   {reason.description}
                 </p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </Container>

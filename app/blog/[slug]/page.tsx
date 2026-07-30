@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
+import Reveal from "@/components/shared/Reveal";
 import BlogImageFrame from "@/components/blog/BlogImageFrame";
 import BlogArticleContent from "@/components/blog/BlogArticleContent";
 import BlogCard from "@/components/blog/BlogCard";
@@ -101,13 +102,13 @@ export default async function BlogPostPage({ params }: PageProps) {
         <Container>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
+            className="inline-flex animate-fade-in items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
           >
             <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} />
             Back to Journal
           </Link>
 
-          <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-sm border border-gold/20">
+          <div className="relative mt-8 aspect-[16/9] w-full animate-fade-in overflow-hidden rounded-sm border border-gold/20 [animation-delay:150ms]">
             <BlogImageFrame
               image={post.featuredImage}
               exists={featuredImageExists}
@@ -121,7 +122,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Article header */}
       <Section tone="ivory" separator={false} padding="sm">
         <Container>
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-3xl animate-fade-in [animation-delay:250ms]">
             <time dateTime={post.publishDate} className="text-xs uppercase tracking-wide text-graphite">
               {formatDate(post.publishDate)}
             </time>
@@ -134,9 +135,9 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Article content */}
       <Section tone="ivory" separator={false}>
         <Container>
-          <div className="mx-auto max-w-3xl">
+          <Reveal className="mx-auto max-w-3xl">
             <BlogArticleContent blocks={post.content} />
-          </div>
+          </Reveal>
         </Container>
       </Section>
 
@@ -144,18 +145,21 @@ export default async function BlogPostPage({ params }: PageProps) {
       {relatedPosts.length > 0 ? (
         <Section tone="linen">
           <Container>
-            <SectionHeading eyebrow="Keep Reading" title="More From the Journal" tone="light" />
+            <Reveal>
+              <SectionHeading eyebrow="Keep Reading" title="More From the Journal" tone="light" />
+            </Reveal>
             <div
               className={`mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 ${
                 relatedPosts.length >= 3 ? "lg:grid-cols-3" : ""
               }`}
             >
-              {relatedPosts.map((related) => (
-                <BlogCard
-                  key={related.slug}
-                  post={related}
-                  imageExists={blogImageExists(related.featuredImage.src)}
-                />
+              {relatedPosts.map((related, index) => (
+                <Reveal key={related.slug} delay={index * 80}>
+                  <BlogCard
+                    post={related}
+                    imageExists={blogImageExists(related.featuredImage.src)}
+                  />
+                </Reveal>
               ))}
             </div>
           </Container>
