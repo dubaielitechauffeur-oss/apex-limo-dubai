@@ -12,6 +12,10 @@ interface FleetCarouselCardProps {
    *  (default false) on the homepage carousel, which keeps its existing
    *  Contact Us behavior unchanged. */
   whatsapp?: boolean;
+  /** "light" (default) — the original ivory card, used on the homepage
+   *  carousel. "dark" — a luxury-black variant for the vehicle detail
+   *  page's related-vehicles grid. Same structure/content either way. */
+  tone?: "light" | "dark";
 }
 
 const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
@@ -23,7 +27,8 @@ const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
  * Rates come from vehicle.rates in data/fleet.ts (currently placeholder
  * sample figures — see the VehicleRates doc comment there).
  */
-export default function FleetCarouselCard({ vehicle, whatsapp = false }: FleetCarouselCardProps) {
+export default function FleetCarouselCard({ vehicle, whatsapp = false, tone = "light" }: FleetCarouselCardProps) {
+  const isDark = tone === "dark";
   const cover = vehicle.images?.[0];
   const rateTiles: { icon: LucideIcon; label: string; amount: number }[] = [
     { icon: Clock, label: "10 Hours", amount: vehicle.rates.tenHours },
@@ -33,7 +38,11 @@ export default function FleetCarouselCard({ vehicle, whatsapp = false }: FleetCa
   ];
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-gold/15 bg-ivory shadow-[0_16px_35px_-22px_rgba(10,10,10,0.35)] transition-shadow duration-300 hover:shadow-[0_22px_45px_-18px_rgba(10,10,10,0.4)]">
+    <article
+      className={`flex h-full flex-col overflow-hidden rounded-2xl border border-gold/15 shadow-[0_16px_35px_-22px_rgba(10,10,10,0.35)] transition-shadow duration-300 hover:shadow-[0_22px_45px_-18px_rgba(10,10,10,0.4)] ${
+        isDark ? "bg-charcoal" : "bg-ivory"
+      }`}
+    >
       {/* Image with brand badge */}
       <div className="relative aspect-[4/3] bg-gradient-to-br from-charcoal via-obsidian to-charcoal">
         {cover ? (
@@ -72,10 +81,14 @@ export default function FleetCarouselCard({ vehicle, whatsapp = false }: FleetCa
         {rateTiles.map(({ icon: Icon, label, amount }) => (
           <div key={label} className="flex flex-col items-center gap-1 text-center">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/15">
-              <Icon className="h-4 w-4 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
+              <Icon className={`h-4 w-4 ${isDark ? "text-gold" : "text-gold-deep"}`} strokeWidth={1.5} aria-hidden="true" />
             </span>
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-obsidian/75">{label}</span>
-            <span className="text-xs font-bold text-obsidian">{formatAed(amount)}</span>
+            <span className={`text-[10px] font-semibold uppercase tracking-wide ${isDark ? "text-smoke" : "text-obsidian/75"}`}>
+              {label}
+            </span>
+            <span className={`text-xs font-bold ${isDark ? "text-heading" : "text-obsidian"}`}>
+              {formatAed(amount)}
+            </span>
           </div>
         ))}
       </div>
@@ -105,7 +118,11 @@ export default function FleetCarouselCard({ vehicle, whatsapp = false }: FleetCa
         ) : (
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-sm border border-obsidian/30 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:border-obsidian hover:bg-obsidian hover:text-ivory"
+            className={
+              isDark
+                ? "inline-flex items-center justify-center rounded-sm border border-ivory/30 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory hover:text-obsidian"
+                : "inline-flex items-center justify-center rounded-sm border border-obsidian/30 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-obsidian transition-colors duration-200 hover:border-obsidian hover:bg-obsidian hover:text-ivory"
+            }
           >
             Contact Us
           </Link>
