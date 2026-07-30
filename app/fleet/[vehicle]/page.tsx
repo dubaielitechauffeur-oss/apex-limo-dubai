@@ -214,7 +214,9 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               the gallery. Desktop keeps gallery-then-title (unchanged) via
               the hidden lg:block title block further down. */}
           <div className="mt-6 lg:hidden">
-            <h1 className="font-display text-3xl text-heading">{vehicle.name}</h1>
+            <h1 className="font-display text-3xl text-heading">
+              {vehicle.name} <span className="text-smoke">with Chauffeur in Dubai</span>
+            </h1>
             <p className="mt-2 text-base italic text-gold/90">{vehicle.tagline}</p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-smoke">
               <span>{vehicle.category}</span>
