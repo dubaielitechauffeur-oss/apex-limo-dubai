@@ -30,7 +30,8 @@ interface UseInfiniteCarouselOptions {
 
 /**
  * Drives an infinite, one-item-at-a-time carousel shared by the homepage
- * Fleet and Brands carousels only.
+ * Fleet and Brands carousels, and the vehicle detail page's mobile hero
+ * gallery.
  *
  * Callers render `slidesPerView` cloned items from the end of the list
  * before the real items, and `slidesPerView` cloned items from the start
