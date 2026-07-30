@@ -9,7 +9,7 @@ interface VehicleFaqSectionProps {
   vehicleName: string;
 }
 
-/** Three starter FAQs generated from the vehicle name — chauffeur-hire
+/** Six starter FAQs generated from the vehicle name — chauffeur-hire
  *  focused (this is a chauffeur-driven service, not self-drive rental). */
 function buildFaqs(vehicleName: string) {
   return [
@@ -22,8 +22,20 @@ function buildFaqs(vehicleName: string) {
       answer: `Yes — every ${vehicleName} booking includes a professional, uniformed chauffeur. This is a chauffeur-driven service; self-drive is not available.`,
     },
     {
-      question: `Can I book ${vehicleName} for airport transfers and hourly hire?`,
-      answer: `Yes. The ${vehicleName} is available for DXB and DWC airport transfers as well as hourly, half-day and full-day chauffeur hire — see the packages above or contact us to arrange a custom itinerary.`,
+      question: `Can I book ${vehicleName} for airport transfers?`,
+      answer: `Yes. The ${vehicleName} is available for DXB and DWC airport transfers with flight tracking and a meet-and-greet as standard, so your chauffeur adjusts pickup time to your actual landing.`,
+    },
+    {
+      question: `Is hourly hire available for ${vehicleName}?`,
+      answer: `Yes — the ${vehicleName} can be booked hourly, by the half-day or full-day, in addition to point-to-point transfers. Pricing for each duration is shown in the packages above.`,
+    },
+    {
+      question: `Can I book ${vehicleName} for business meetings?`,
+      answer: `Yes. The ${vehicleName} is a popular choice for corporate travel — client pickups, roadshows, and back-to-back meetings — with a chauffeur who can wait on standby between stops.`,
+    },
+    {
+      question: `How far in advance should I book ${vehicleName}?`,
+      answer: `Same-day and next-day bookings are often possible, but we recommend booking at least 24–48 hours ahead where you can, and further in advance for weddings, events, or peak dates.`,
     },
   ];
 }

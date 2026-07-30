@@ -98,7 +98,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "The most exclusive sedan in the fleet — extended rear legroom, reclining executive seats, and a cabin engineered for complete calm on longer journeys.",
     longDescription:
-      "The Maybach S-Class takes everything that makes the S-Class the executive standard and elevates it further — an extended wheelbase, fully reclining rear executive seats, and cabin insulation tuned for near-total silence. Reserved for clients who want the very top of the fleet.",
+      "The Maybach S-Class takes everything that makes the S-Class the executive standard and elevates it further — an extended wheelbase, fully reclining rear executive seats, and cabin insulation tuned for near-total silence. Every journey is chauffeur-driven, so you step in and the outside world simply falls away: adjust your individual climate zone, draw the privacy curtains, and let the Burmester sound system fill the cabin at whatever volume suits the moment. It's reserved for clients who want the very top of the fleet — the vehicle of choice for signature executive arrivals, high-profile guests, and journeys where nothing about the ride should compete for attention. Bespoke welcome amenities and a dedicated professional chauffeur are included as standard, not an upgrade.",
     passengers: 3,
     luggage: 2,
     idealFor: "Signature executive arrivals",
@@ -153,7 +153,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "The most prestigious way to arrive in Dubai — reserved for weddings, milestone occasions, and clients who expect nothing less than the finest.",
     longDescription:
-      "There's a reason the Phantom remains shorthand for arriving in style. Handcrafted, deliberate, and unmistakable, it's reserved for moments where the vehicle itself becomes part of the occasion — a wedding, an anniversary, a milestone worth marking properly.",
+      "There's a reason the Phantom remains shorthand for arriving in style. Handcrafted, deliberate, and unmistakable, it's reserved for moments where the vehicle itself becomes part of the occasion — a wedding, an anniversary, a milestone worth marking properly. Settle into the rear cabin and look up at the signature starlight headliner, or reach for a chilled glass from the onboard champagne compartment as your chauffeur, dressed in formal attire, handles every detail of the drive. Red carpet service is available on request for ceremonies and arrivals where presentation matters as much as comfort. Because the Phantom is our most requested vehicle for weddings and milestone dates, availability is genuinely limited — we recommend securing your date well ahead of time.",
     passengers: 3,
     luggage: 2,
     idealFor: "Weddings & signature occasions",
@@ -207,7 +207,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "The definitive choice for airport transfers and business travel — a hushed cabin, exceptional ride comfort, and a presence that reads confidence without excess.",
     longDescription:
-      "Step into the S-Class and the outside world simply goes quiet. It remains the reference point for chauffeured business travel in Dubai — engineered ride comfort, whisper-quiet cabin insulation, and enough legroom to take a call or finish a deck before you arrive.",
+      "Step into the S-Class and the outside world simply goes quiet. It remains the reference point for chauffeured business travel in Dubai — engineered ride comfort, whisper-quiet cabin insulation, and enough legroom to take a call or finish a deck before you arrive. Massaging leather seats and rear-seat climate control take the edge off a long day between meetings, while onboard Wi-Fi and privacy glass mean you can work uninterrupted from the moment you get in. It's a neutral, professional presence that suits client-facing arrivals without ever feeling showy, and one of our most consistently available vehicles for same-day airport transfers and last-minute corporate bookings. Bottled water and amenities are provided as standard on every trip.",
     passengers: 3,
     luggage: 2,
     idealFor: "Airport transfers & corporate travel",
@@ -262,7 +262,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "Effortless comfort with genuine capability — a versatile choice for VIP transportation across the city or beyond it.",
     longDescription:
-      "The Autobiography combines the comfort of a luxury saloon with the versatility of a true SUV — equally at home on a smooth airport run or an itinerary that strays from the main road.",
+      "The Autobiography combines the comfort of a luxury saloon with the versatility of a true SUV — equally at home on a smooth airport run or an itinerary that strays from the main road. Adjustable air suspension irons out uneven surfaces before they ever reach the cabin, while the panoramic roof and premium Meridian sound system add a sense of space and occasion to longer journeys. Executive rear seating, individual climate control, and onboard Wi-Fi mean it holds its own against any sedan for comfort, with the added flexibility to handle multi-stop itineraries a lower vehicle can't. It's become a favourite for VIP transportation precisely because it offers the presence of an SUV without losing any of the refinement clients expect from Apex Limo.",
     passengers: 4,
     luggage: 3,
     idealFor: "VIP transportation",
@@ -315,7 +315,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "A full-size luxury SUV built for VIP and family travel — commanding road presence with generous room for passengers and luggage alike.",
     longDescription:
-      "The Escalade brings genuine road presence to VIP transportation — a full-size SUV with three rows of leather seating, ideal when the arrival itself needs to make an impression.",
+      "The Escalade brings genuine road presence to VIP transportation — a full-size SUV with three rows of leather seating, ideal when the arrival itself needs to make an impression. Its elevated ride height and commanding proportions make it a frequent choice for security-conscious transport and dignitary movements, where size and visibility matter as much as comfort. Three rows of seating comfortably accommodate larger groups or families travelling with luggage, backed by a premium sound system and tinted privacy windows for the rear cabin. A child seat is available on request for family bookings. Whether it's a VIP arrival, an airport run for the whole family, or a group that simply doesn't fit in a sedan, the Escalade delivers without compromise.",
     passengers: 5,
     luggage: 4,
     idealFor: "VIP & family travel",
@@ -369,7 +369,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "A spacious, beautifully finished van for group transfers and events — seating for up to six without sacrificing the comfort of a luxury sedan.",
     longDescription:
-      "Built for groups who still expect a luxury experience, the V-Class pairs generous cabin space with the fit and finish of a Mercedes flagship. Captain's chairs, individual climate zones, and room for six make it the natural choice for events and family travel alike.",
+      "Built for groups who still expect a luxury experience, the V-Class pairs generous cabin space with the fit and finish of a Mercedes flagship. Configurable captain's chairs, individual climate zones, and room for six make it the natural choice for events and family travel alike, without anyone feeling cramped for a longer ride. Sliding doors make loading and unloading effortless at hotel entrances or venue drop-offs, and the dedicated luggage area comfortably holds bags for the whole party — no roof box, no second car. A rear entertainment screen and onboard Wi-Fi help longer transfers pass quickly, while individual reading lights keep things comfortable after dark. For groups landing together or travelling as one party to a wedding or conference, it means one coordinated chauffeured vehicle instead of juggling several sedans.",
     passengers: 6,
     luggage: 6,
     idealFor: "Group transfers & events",
@@ -424,7 +424,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "A dynamic, driver-focused luxury sedan for executives who want business-ready comfort with a sharper edge on the road.",
     longDescription:
-      "The 7 Series brings a sharper, more dynamic character to executive travel — the same business-ready comfort as our other sedans, with noticeably more presence on the road. A strong choice for clients who want luxury with an edge.",
+      "The 7 Series brings a sharper, more dynamic character to executive travel — the same business-ready comfort as our other sedans, with noticeably more presence on the road. Executive lounge seating and the panoramic sky lounge roof give the cabin an open, spacious feel on longer routes, while rear-seat entertainment and onboard Wi-Fi keep you productive or simply unwound between stops. Privacy glass and a premium sound system round out a cabin that's every bit as quiet and comfortable as our other executive sedans, just with a bolder design language and a firmer, more dynamic ride. It's a strong choice for client pickups where visual presence matters, and for executives who want S-Class-level comfort with a distinct, more assertive character.",
     passengers: 3,
     luggage: 2,
     idealFor: "Business travel & meetings",
@@ -476,7 +476,7 @@ export const FLEET: FleetVehicle[] = [
     description:
       "The Lexus ES 300h combines a whisper-quiet hybrid powertrain with a refined, comfortable cabin — an efficient, dependable executive sedan for business travel and airport transfers across Dubai. Its smooth ride and understated elegance suit clients who want genuine comfort and a lower environmental footprint on every chauffeured journey.",
     longDescription:
-      "The ES 300h pairs Lexus's renowned reliability with a quiet hybrid drivetrain and a calm, well-appointed cabin — a dependable executive sedan for business travel, airport transfers, and daily corporate accounts. A smooth, efficient choice for clients who value understated comfort over overt display.",
+      "The ES 300h pairs Lexus's renowned reliability with a quiet hybrid drivetrain and a calm, well-appointed cabin — a dependable executive sedan for business travel, airport transfers, and daily corporate accounts. Hybrid-tuned cabin insulation keeps road and engine noise to a minimum, while leather executive seating and rear-seat climate control make even a full day of back-to-back meetings comfortable. Onboard Wi-Fi and privacy glass support clients who prefer to work quietly in transit rather than be seen arriving in something more overt. It's consistently available at short notice, which makes it a practical, cost-efficient choice for standing corporate accounts that need reliable transport day after day — a smooth, efficient option for clients who value genuine comfort over display.",
     passengers: 3,
     luggage: 2,
     idealFor: "Business travel & eco-conscious executive transfers",
@@ -531,7 +531,7 @@ export const FLEET: FleetVehicle[] = [
       "A widebody, Mansory-customized Rolls-Royce Cullinan — the most exclusive SUV in the fleet, combining Rolls-Royce craftsmanship with bespoke Mansory design for clients who expect the absolute pinnacle of presence.",
     // TEMPORARY placeholder description — to be replaced with final copy
     longDescription:
-      "The Cullinan Mansory pairs Rolls-Royce's handcrafted luxury with Mansory's bespoke widebody styling — a genuinely rare SUV reserved for clients who want the most exclusive arrival possible. Every detail, from the carbon-fibre accents to the reworked stance, sets it apart from anything else on the road.",
+      "The Cullinan Mansory pairs Rolls-Royce's handcrafted luxury with Mansory's bespoke widebody styling — a genuinely rare SUV reserved for clients who want the most exclusive arrival possible. Every detail, from the carbon-fibre accents to the reworked stance, sets it apart from anything else on the road, and from any standard Cullinan you'll see elsewhere in the city. Inside, the signature starlight headliner and handcrafted leather cabin bring full Rolls-Royce VIP amenities together with rear-seat climate control and a premium sound system tuned for a genuinely silent ride. Privacy glass keeps the cabin discreet for high-profile passengers. This is one of the rarest SUVs on Dubai roads, reserved for clients who want an arrival that is unmistakably, deliberately different — book well ahead, as availability is limited.",
     passengers: 4,
     luggage: 3,
     idealFor: "Ultra-exclusive VIP arrivals",
@@ -588,7 +588,7 @@ export const FLEET: FleetVehicle[] = [
       "An all-electric SUV for clients who want a modern, sustainable chauffeured experience — smooth, silent power with a minimalist, tech-forward cabin.",
     // TEMPORARY placeholder description — to be replaced with final copy
     longDescription:
-      "The Model Y brings a quieter, more sustainable option to the fleet — fully electric power delivery, a spacious minimalist cabin, and Tesla's signature tech-forward interior. A smart choice for eco-conscious clients and short-to-mid-distance city travel.",
+      "The Model Y brings a quieter, more sustainable option to the fleet — fully electric power delivery, a spacious minimalist cabin, and Tesla's signature tech-forward interior. There's no engine noise at any speed, just a smooth, silent ride from the moment you pull away, under a panoramic glass roof that keeps the cabin feeling open on shorter city routes. A premium sound system and climate-controlled cabin bring the same everyday comfort as the rest of the fleet, without the environmental footprint of a traditional chauffeur car. It's become a smart choice for eco-conscious clients, corporate accounts with sustainability commitments, and short-to-mid-distance city travel where a quieter, cleaner ride is genuinely part of the appeal rather than an afterthought.",
     passengers: 4,
     luggage: 3,
     idealFor: "Eco-conscious city travel & corporate transfers",
@@ -643,7 +643,7 @@ export const FLEET: FleetVehicle[] = [
       "A full-size SUV with a sportier, blacked-out Elevation aesthetic — spacious, capable, and ready for group travel or airport runs.",
     // TEMPORARY placeholder description — to be replaced with final copy
     longDescription:
-      "The Yukon Elevation brings GMC's bold, sport-inspired styling to full-size chauffeured travel — a spacious three-row cabin, a smooth ride, and enough room for passengers and luggage on longer itineraries or group airport transfers.",
+      "The Yukon Elevation brings GMC's bold, sport-inspired styling to full-size chauffeured travel — a spacious three-row cabin, a smooth ride, and enough room for passengers and luggage on longer itineraries or group airport transfers. Its blacked-out Elevation trim gives it a sportier, more assertive look than a traditional full-size SUV, without sacrificing any of the practicality larger groups need. Three rows of seating, a climate-controlled cabin, and tinted privacy windows keep everyone comfortable over longer routes, while the elevated ride height and ample luggage space handle multi-stop itineraries with ease. It's a versatile, dependable option for group travel and airport transfers when you want genuine road presence at a slightly more accessible tier than our top-tier SUVs.",
     passengers: 6,
     luggage: 4,
     idealFor: "Group travel & airport transfers",
@@ -699,7 +699,7 @@ export const FLEET: FleetVehicle[] = [
       "A fully electric executive sedan for clients who want a quiet, efficient ride with a clean, modern cabin — ideal for city transfers and corporate travel.",
     // TEMPORARY placeholder description — to be replaced with final copy
     longDescription:
-      "The Model 3 brings Tesla's all-electric efficiency to executive sedan travel — a whisper-quiet ride, minimalist interior, and dependable performance for business travel and airport transfers across Dubai.",
+      "The Model 3 brings Tesla's all-electric efficiency to executive sedan travel — a whisper-quiet ride, minimalist interior, and dependable performance for business travel and airport transfers across Dubai. With no engine to idle or rumble at a standstill, the cabin stays genuinely silent from pickup to drop-off, complemented by a clean, tech-forward interior, a premium sound system, and full climate control front and rear. Onboard Wi-Fi and privacy glass make it a practical choice for working during the ride, while its efficiency makes it one of our most cost-effective options for standing corporate accounts that book frequently. A dependable, modern alternative to a traditional executive sedan for clients who want quiet, efficient travel without any compromise on comfort.",
     passengers: 3,
     luggage: 2,
     idealFor: "Business travel & eco-conscious transfers",
@@ -758,7 +758,7 @@ export const FLEET: FleetVehicle[] = [
       "A flagship all-electric sedan pairing refined comfort with strong performance — a modern alternative for executive travel across Dubai.",
     // TEMPORARY placeholder description — to be replaced with final copy
     longDescription:
-      "The BYD Han brings flagship-level comfort and all-electric performance to executive chauffeured travel — a well-appointed cabin, smooth ride quality, and dependable range for business travel and airport transfers.",
+      "The BYD Han brings flagship-level comfort and all-electric performance to executive chauffeured travel — a well-appointed cabin, smooth ride quality, and dependable range for business travel and airport transfers. Leather executive seating and rear-seat climate control deliver the same standard of comfort as our traditional executive sedans, while the all-electric drivetrain keeps the cabin remarkably quiet at any speed. A premium sound system, onboard Wi-Fi, and privacy glass round out a cabin built for productive, comfortable travel between meetings. As a modern, dependable alternative to traditional combustion-engine executive sedans, it's well suited to corporate accounts and clients who want flagship comfort with a smaller environmental footprint on every trip.",
     passengers: 3,
     luggage: 2,
     idealFor: "Executive travel & corporate transfers",
