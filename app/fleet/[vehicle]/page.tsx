@@ -34,7 +34,7 @@ import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
 import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
-import { SITE, getWhatsAppLink } from "@/lib/constants";
+import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { SERVICES } from "@/data/services";
 import { LOCATIONS } from "@/data/locations";
@@ -142,6 +142,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   const similarVehicles = [...sameCategory, ...otherCategory].slice(0, 3);
 
   const whatsappMessage = `Hello Apex Limo, I'd like to book the ${vehicle.name}.`;
+  const filledStars = Math.round(parseFloat(RATING));
 
   const crossLinks = VEHICLE_CROSS_LINKS[vehicle.slug];
   const relatedService = crossLinks
@@ -209,11 +210,38 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             <span className="text-gold">{vehicle.name}</span>
           </nav>
 
+          {/* Mobile-only info block — shows title/category/passengers before
+              the gallery. Desktop keeps gallery-then-title (unchanged) via
+              the hidden lg:block title block further down. */}
+          <div className="mt-6 lg:hidden">
+            <h1 className="font-display text-3xl text-heading">{vehicle.name}</h1>
+            <p className="mt-2 text-base italic text-gold/90">{vehicle.tagline}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-smoke">
+              <span>{vehicle.category}</span>
+              <span className="text-gold">&bull;</span>
+              <span>Up to {vehicle.passengers} Passengers</span>
+            </div>
+            <div className="mt-3 flex items-center gap-2">
+              <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-3.5 w-3.5 ${i < filledStars ? "fill-gold text-gold" : "fill-transparent text-gold/30"}`}
+                    strokeWidth={1.5}
+                  />
+                ))}
+              </div>
+              <span className="text-sm text-smoke">{RATING} Rating</span>
+            </div>
+          </div>
+
           <div className="mt-6 sm:mt-8">
             <VehicleHeroGallery vehicle={vehicle} />
           </div>
 
-          <div className="mt-8 sm:mt-10">
+          {/* Desktop-only title block — hidden on mobile since the block
+              above already covers title/category/passengers there. */}
+          <div className="mt-8 sm:mt-10 hidden lg:block">
             <span className="label-eyebrow">{vehicle.category}</span>
             <h1 className="mt-4 font-display text-4xl text-heading sm:text-5xl lg:text-6xl">
               {vehicle.name}
