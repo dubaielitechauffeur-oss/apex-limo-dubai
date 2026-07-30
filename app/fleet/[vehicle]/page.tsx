@@ -5,7 +5,6 @@ import {
   Users,
   Briefcase,
   Star,
-  ChevronDown,
   ArrowLeft,
   Crown,
   Compass,
@@ -32,7 +31,8 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
 import VehicleHeroGallery from "@/components/fleet/VehicleHeroGallery";
-import VehicleCard from "@/components/fleet/VehicleCard";
+import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
+import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
@@ -286,91 +286,87 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      {/* Body zone — a flex column so the sections below can be reordered
-          for mobile only (via the order utility and lg:order-none) without
-          touching the desktop layout, which keeps relying on each
-          section's own lg:mt spacing to reproduce its exact original gap. */}
-      <Section tone="ivory">
-      <Container className="flex flex-col gap-14 lg:gap-0">
-        {/* Quick Facts — desktop only. On mobile this duplicated the
-            passengers/luggage already shown in the hero meta row (Best For
-            is now shown there too), so it's hidden below lg. */}
-        <div className="hidden lg:order-none lg:grid lg:grid-cols-4 lg:gap-4">
+      {/* Specs zone — deep black, refined bordered cards; Quick Facts,
+          pricing, features and "why choose" all share this dark premium
+          treatment, with generous rhythm between each block. */}
+      <Section tone="obsidian">
+      <Container className="flex flex-col gap-16 sm:gap-20">
+        {/* Quick Facts — desktop only, unchanged from before (avoids
+            duplicating the passengers/luggage/Best For already shown in
+            the hero meta row on mobile). */}
+        <div className="hidden lg:grid lg:grid-cols-4 lg:gap-5">
           {quickFacts.map((fact) => (
-            <Card key={fact.label} tone="light" className="p-5">
-              <fact.icon className="h-5 w-5 text-gold-deep" strokeWidth={1.5} />
-              <p className="mt-3 text-[10px] uppercase tracking-wide text-graphite">
+            <Card
+              key={fact.label}
+              tone="dark"
+              interactive
+              className="p-6 transition-all duration-200 hover:-translate-y-0.5"
+            >
+              <fact.icon className="h-5 w-5 text-gold" strokeWidth={1.5} />
+              <p className="mt-3 text-[10px] uppercase tracking-wide text-smoke">
                 {fact.label}
               </p>
-              <p className="mt-1 font-display text-lg text-obsidian">{fact.value}</p>
+              <p className="mt-1 font-display text-lg text-heading">{fact.value}</p>
             </Card>
           ))}
         </div>
 
-        {/* Pricing — moved directly below the hero on mobile; desktop keeps
-            its original position right after Quick Facts. */}
-        <div className="order-1 lg:order-none lg:mt-14">
-          <h2 className="font-display text-2xl text-obsidian sm:text-3xl">
+        {/* Pricing */}
+        <div>
+          <h2 className="font-display text-2xl text-heading sm:text-3xl">
             Available Chauffeur Packages
           </h2>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-graphite sm:text-base">
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
             Transparent chauffeur rates, fixed once your booking is confirmed.
           </p>
-          <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 rounded-xl border border-gold/15 bg-linen/60 px-6 py-6 sm:grid-cols-3">
+          <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3">
             {priceTiers.map((tier) => (
               <div key={tier.label} className="flex flex-col gap-1">
-                <span className="text-[10px] font-medium uppercase tracking-wide text-graphite">
+                <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
                   {tier.label}
                 </span>
-                <span className="font-display text-lg font-bold text-gold-deep">
+                <span className="font-display text-lg font-bold text-gold">
                   {formatAed(tier.amount)}
                 </span>
               </div>
             ))}
           </div>
-          <p className="mt-3 text-xs italic text-graphite">
+          <p className="mt-3 text-xs italic text-smoke">
             Includes professional chauffeur, fuel, tolls (Salik) &amp; VIP valet parking — excludes 5% VAT.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <CTAButton href={`/booking?vehicle=${vehicle.slug}`}>Book Now</CTAButton>
-            <CTAButton href={`/quote?vehicle=${vehicle.slug}`} variant="outline" tone="light">
+            <CTAButton href={`/quote?vehicle=${vehicle.slug}`} variant="outline">
               Get Quote
             </CTAButton>
           </div>
-          <p className="mt-4 text-xs uppercase tracking-wide text-gold-deep/80">
+          <p className="mt-4 text-xs uppercase tracking-wide text-gold/80">
             Professional chauffeur included &bull; No deposit required &bull; Flexible cancellation policy
           </p>
         </div>
 
-        {/* About this vehicle — stays in its original source position so
-            lg:order-none (desktop) falls back to the pre-existing order:
-            About before Features. Mobile reordering is handled purely by
-            the order-3 utility below, independent of source position. */}
-        <div className="order-3 max-w-3xl lg:order-none lg:mt-20">
-          <h2 className="font-display text-2xl text-obsidian sm:text-3xl">
-            About the {vehicle.name}
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
-            {vehicle.longDescription}
-          </p>
-        </div>
-
-        {/* Features — moved above About on mobile per the requested order;
-            desktop keeps its original position after About (see note above). */}
-        <div className="order-2 lg:order-none lg:mt-20">
+        {/* Features & Amenities */}
+        <div>
           <SectionHeading
             eyebrow="Onboard"
             title="Features & Amenities"
             align="left"
-            tone="light"
+            tone="dark"
           />
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {vehicle.features.map((feature) => {
               const Icon = amenityIcon(feature);
               return (
-                <Card key={feature} tone="light" className="flex items-start gap-3 p-4">
-                  <Icon className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" strokeWidth={1.5} />
-                  <span className="text-sm text-graphite">{feature}</span>
+                <Card
+                  key={feature}
+                  tone="dark"
+                  interactive
+                  className="flex h-full items-center gap-3 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.4)] sm:p-5"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold/10">
+                    <Icon className="h-4 w-4 text-gold" strokeWidth={1.5} />
+                  </span>
+                  <span className="text-sm text-smoke">{feature}</span>
                 </Card>
               );
             })}
@@ -378,18 +374,23 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         </div>
 
         {/* Why choose this vehicle */}
-        <div className="order-4 lg:order-none lg:mt-20">
+        <div>
           <SectionHeading
             eyebrow="Why This Vehicle"
             title={`Why Choose the ${vehicle.name}`}
             align="left"
-            tone="light"
+            tone="dark"
           />
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {vehicle.whyChoose.map((reason) => (
-              <Card key={reason} tone="light" className="flex items-start gap-3 p-5">
-                <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
-                <p className="text-sm leading-relaxed text-graphite">{reason}</p>
+              <Card
+                key={reason}
+                tone="dark"
+                interactive
+                className="flex items-start gap-3 p-5 transition-all duration-200 hover:-translate-y-0.5"
+              >
+                <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
+                <p className="text-sm leading-relaxed text-smoke">{reason}</p>
               </Card>
             ))}
           </div>
@@ -397,51 +398,43 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      {/* FAQ + related vehicles zone */}
-      <Section tone="linen">
+      {/* About — light, editorial section; deliberately breaks from the
+          dark specs/features block above for a premium change of pace. */}
+      <Section tone="ivory">
       <Container>
-        {/* FAQ — native <details>/<summary> keeps this interactive without
-            requiring a client component, so the page stays fully server-rendered. */}
         <div className="max-w-3xl">
           <SectionHeading
-            eyebrow="Common Questions"
-            title={`${vehicle.name} FAQs`}
+            eyebrow="The Vehicle"
+            title={`About the ${vehicle.name}`}
             align="left"
             tone="light"
           />
-          <div className="mt-8 divide-y divide-obsidian/10 border-y border-obsidian/10">
-            {vehicle.faqs.map((faq) => (
-              <details key={faq.question} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
-                  {faq.question}
-                  <ChevronDown
-                    className="h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 group-open:rotate-180"
-                    strokeWidth={1.5}
-                  />
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-graphite sm:text-base">
-                  {faq.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
-
-        {/* Similar vehicles */}
-        <div className="mt-24">
-          <SectionHeading
-            eyebrow="Explore More"
-            title="Explore Similar Vehicles"
-            tone="light"
-          />
-          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {similarVehicles.map((related) => (
-              <VehicleCard key={related.slug} vehicle={related} tone="light" />
-            ))}
-          </div>
+          <p className="mt-6 text-base leading-relaxed text-graphite sm:text-lg">
+            {vehicle.longDescription}
+          </p>
         </div>
       </Container>
       </Section>
+
+      {/* Related vehicles — reuses the homepage "Our Fleet" card exactly,
+          with its WhatsApp-enquiry variant enabled. */}
+      <Section tone="linen">
+      <Container>
+        <SectionHeading
+          eyebrow="Explore More"
+          title="Explore Similar Vehicles"
+          tone="light"
+        />
+        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {similarVehicles.map((related) => (
+            <FleetCarouselCard key={related.slug} vehicle={related} whatsapp />
+          ))}
+        </div>
+      </Container>
+      </Section>
+
+      {/* FAQ — dedicated accordion section, light background matching About. */}
+      <VehicleFaqSection vehicleName={vehicle.name} />
 
       <BookingCTA />
     </div>

@@ -44,10 +44,9 @@ function PriceItem({ label, amount }: PriceItemProps) {
  * lean, brochure-style info column: brand/model, a one-line benefit
  * description, a compact spec row (capacity + standard amenities), a
  * refined chauffeur-rate panel, and a two-tier View Details / Enquire on
- * WhatsApp action row. Deliberately a separate component from VehicleCard (used
- * on the vehicle detail page's "related vehicles" grid) and
- * FleetCarouselCard (homepage carousel), so this redesign never touches
- * either of those.
+ * WhatsApp action row. Deliberately a separate component from
+ * FleetCarouselCard (homepage carousel and the vehicle detail page's
+ * "related vehicles" grid), so this redesign never touches that one.
  */
 export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
   const cover = vehicle.images?.[0];

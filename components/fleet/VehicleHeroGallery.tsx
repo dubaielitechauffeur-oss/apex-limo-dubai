@@ -12,9 +12,8 @@ interface VehicleHeroGalleryProps {
 /**
  * Vehicle detail page hero gallery: one large photo with a clean thumbnail
  * strip below it — no badges, no title overlay, no Exterior/Interior/Detail
- * tabs. Deliberately a separate component from the shared VehicleGallery
- * (still used, unchanged, on fleet/related-vehicle cards), so this redesign
- * only ever affects the vehicle detail page hero.
+ * tabs. Deliberately its own component (not shared with fleet/related-vehicle
+ * cards), so it only ever affects the vehicle detail page hero.
  */
 export default function VehicleHeroGallery({ vehicle }: VehicleHeroGalleryProps) {
   const images = vehicle.images ?? [];
