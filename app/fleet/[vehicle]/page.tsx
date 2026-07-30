@@ -198,7 +198,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       <Section tone="obsidian" padding="sm" separator={false}>
       <Container>
         <div className="mx-auto max-w-3xl">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-smoke">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-xs uppercase text-smoke">
             <Link href="/" className="transition-colors hover:text-gold">
               Home
             </Link>
