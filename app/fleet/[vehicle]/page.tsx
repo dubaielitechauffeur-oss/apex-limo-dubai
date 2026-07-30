@@ -22,6 +22,9 @@ import {
   Shirt,
   Sparkles,
   CheckCircle2,
+  MessageCircle,
+  ClipboardCheck,
+  Car,
   type LucideIcon,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -31,6 +34,7 @@ import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
 import VehicleHeroGallery from "@/components/fleet/VehicleHeroGallery";
 import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
+import FleetTrustSection from "@/components/fleet/FleetTrustSection";
 import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
@@ -91,6 +95,29 @@ function vehicleJsonLd(vehicle: (typeof FLEET)[number]) {
 }
 
 const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
+
+/** Desktop-only "How It Works" steps — vehicle-agnostic, so the same three
+ *  steps apply regardless of which vehicle page they render on. */
+const HOW_IT_WORKS = [
+  {
+    icon: MessageCircle,
+    title: "Tell Us Your Plans",
+    description:
+      "Message us on WhatsApp, call, or send a quote request with your pickup time, location, and trip details.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "We Confirm the Details",
+    description:
+      "Your chauffeur, exact rate, and pickup window are confirmed in writing, with flight tracking added automatically for airport runs.",
+  },
+  {
+    icon: Car,
+    title: "Arrive in Style",
+    description:
+      "Your chauffeur arrives on time, door open, ready to go, for a smooth, unhurried ride to your destination.",
+  },
+];
 
 /** Best-effort keyword match from a plain-text feature/amenity string to a
  *  representative icon, purely presentational — the underlying
@@ -339,6 +366,13 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
+      {/* Trust stats band — desktop only, reuses the Fleet page's stats
+          component as-is; gives the hero a confidence beat before the
+          specs/pricing zone, without touching the mobile layout. */}
+      <div className="hidden lg:block">
+        <FleetTrustSection />
+      </div>
+
       {/* Specs zone — deep black, refined bordered cards; Quick Facts,
           pricing, features and "why choose" all share this dark premium
           treatment, with generous rhythm between each block. */}
@@ -372,9 +406,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
             Transparent chauffeur rates, fixed once your booking is confirmed.
           </p>
-          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:mt-6">
+          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:mt-6 lg:gap-4 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
             {priceTiers.map((tier) => (
-              <div key={tier.label} className="flex flex-col gap-1">
+              <div
+                key={tier.label}
+                className="flex flex-col gap-1 lg:gap-2 lg:rounded-xl lg:border lg:border-gold/15 lg:bg-charcoal lg:p-5 lg:transition-all lg:duration-200 lg:hover:-translate-y-0.5 lg:hover:border-gold/35 lg:hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]"
+              >
                 <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
                   {tier.label}
                 </span>
@@ -452,6 +489,34 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               >
                 <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
                 <p className="text-sm leading-relaxed text-smoke">{reason}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* How It Works — desktop only, structural addition; explains the
+            booking flow in three steps. Content is vehicle-agnostic. */}
+        <div className="hidden lg:block">
+          <SectionHeading
+            eyebrow="Simple & Seamless"
+            title="How It Works"
+            align="left"
+            tone="dark"
+          />
+          <div className="mt-10 grid grid-cols-3 gap-6">
+            {HOW_IT_WORKS.map((step, index) => (
+              <Card
+                key={step.title}
+                tone="dark"
+                interactive
+                className="rounded-xl p-8 text-center transition-all duration-200 hover:-translate-y-0.5"
+              >
+                <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-gold/30 font-display text-base text-gold">
+                  {index + 1}
+                </span>
+                <step.icon className="mx-auto mt-5 h-6 w-6 text-gold" strokeWidth={1.5} />
+                <h3 className="mt-4 font-display text-xl text-heading">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-smoke">{step.description}</p>
               </Card>
             ))}
           </div>
