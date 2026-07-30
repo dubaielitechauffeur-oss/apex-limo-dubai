@@ -22,6 +22,9 @@ import {
   Shirt,
   Sparkles,
   CheckCircle2,
+  MessageCircle,
+  ClipboardCheck,
+  Car,
   type LucideIcon,
 } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -29,8 +32,10 @@ import Section from "@/components/shared/Section";
 import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
-import VehicleHeroGallery from "@/components/fleet/VehicleHeroGallery";
+import VehicleHeroGallery, { VehicleGalleryCarousel } from "@/components/fleet/VehicleHeroGallery";
+import VehicleHeroQuoteForm from "@/components/fleet/VehicleHeroQuoteForm";
 import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
+import FleetTrustSection from "@/components/fleet/FleetTrustSection";
 import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd } from "@/lib/seo";
@@ -91,6 +96,29 @@ function vehicleJsonLd(vehicle: (typeof FLEET)[number]) {
 }
 
 const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
+
+/** Desktop-only "How It Works" steps — vehicle-agnostic, so the same three
+ *  steps apply regardless of which vehicle page they render on. */
+const HOW_IT_WORKS = [
+  {
+    icon: MessageCircle,
+    title: "Tell Us Your Plans",
+    description:
+      "Message us on WhatsApp, call, or send a quote request with your pickup time, location, and trip details.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "We Confirm the Details",
+    description:
+      "Your chauffeur, exact rate, and pickup window are confirmed in writing, with flight tracking added automatically for airport runs.",
+  },
+  {
+    icon: Car,
+    title: "Arrive in Style",
+    description:
+      "Your chauffeur arrives on time, door open, ready to go, for a smooth, unhurried ride to your destination.",
+  },
+];
 
 /** Best-effort keyword match from a plain-text feature/amenity string to a
  *  representative icon, purely presentational — the underlying
@@ -193,11 +221,14 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         }}
       />
 
-      {/* Hero zone — single premium column: breadcrumb, gallery, title,
-          then the existing description/meta/CTA content, unchanged. */}
+      {/* Hero zone. Mobile (unchanged): single column — breadcrumb, title
+          block, gallery, description/meta/CTA. Desktop (new): breadcrumb,
+          a title block with rating + tags, then a two-column row —
+          image carousel beside an embedded quote form — replacing the old
+          gallery-then-CTA-buttons stack. */}
       <Section tone="obsidian" padding="sm" separator={false} className="!pt-6 !pb-8 lg:!pb-16">
       <Container>
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-3xl lg:max-w-none">
           <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-xs uppercase text-smoke">
             <Link href="/" className="transition-colors hover:text-gold">
               Home
@@ -211,8 +242,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           </nav>
 
           {/* Mobile-only info block — shows title/category/passengers before
-              the gallery. Desktop keeps gallery-then-title (unchanged) via
-              the hidden lg:block title block further down. */}
+              the gallery. */}
           <div className="mt-6 lg:hidden">
             <h1 className="font-display text-3xl text-heading">
               {vehicle.name} <span className="text-smoke">with Chauffeur in Dubai</span>
@@ -237,23 +267,14 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="mt-6 sm:mt-8">
+          <div className="mt-6 sm:mt-8 lg:hidden">
             <VehicleHeroGallery vehicle={vehicle} />
           </div>
 
-          {/* Desktop-only title block — hidden on mobile since the block
-              above already covers title/category/passengers there. */}
-          <div className="mt-8 sm:mt-10 hidden lg:block">
-            <span className="label-eyebrow">{vehicle.category}</span>
-            <h1 className="mt-4 font-display text-4xl text-heading sm:text-5xl lg:text-6xl">
-              {vehicle.name}
-            </h1>
-            <p className="mt-3 text-base italic text-gold/90 sm:text-lg">
-              {vehicle.tagline}
-            </p>
-          </div>
-
-          <div className="mt-8">
+          {/* Mobile-only — description, meta row, CTA buttons, related
+              cross-link. Desktop's equivalent content now lives in the
+              two-column block below instead. */}
+          <div className="mt-8 lg:hidden">
             <p className="text-sm leading-relaxed text-smoke sm:text-base">
               {vehicle.description}
             </p>
@@ -267,10 +288,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 <Briefcase className="h-4 w-4 text-gold" strokeWidth={1.5} />
                 {vehicle.luggage} bags
               </span>
-              {/* Best For — mobile only. Desktop already surfaces this via
-                  the Quick Facts cards below the hero, so showing it here
-                  too would duplicate it on desktop. */}
-              <span className="flex items-center gap-2 lg:hidden">
+              <span className="flex items-center gap-2">
                 <Compass className="h-4 w-4 text-gold" strokeWidth={1.5} />
                 {vehicle.idealFor}
               </span>
@@ -278,35 +296,84 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <CTAButton href={`/booking?vehicle=${vehicle.slug}`}>Book Now</CTAButton>
-              <CTAButton
-                href={`/quote?vehicle=${vehicle.slug}`}
-                variant="outline"
-                className="hidden lg:inline-flex"
-              >
-                Get Quote
-              </CTAButton>
               <a
                 href={getWhatsAppLink(whatsappMessage)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:hidden"
+                className="inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A]"
               >
                 <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 shrink-0 fill-white">
                   <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.902 6.47L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.457-1.507l-.392-.232-4.58 1.107 1.128-4.462-.256-.406A9.77 9.77 0 0 1 5.182 15c0-5.964 4.855-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818zm5.965-8.14c-.327-.164-1.936-.955-2.237-1.064-.3-.109-.518-.164-.737.164-.218.327-.845 1.064-1.036 1.282-.19.218-.382.246-.709.082-.327-.164-1.38-.508-2.629-1.62-.972-.867-1.628-1.937-1.819-2.264-.19-.327-.02-.504.144-.667.148-.147.327-.382.49-.573.164-.19.218-.327.327-.545.109-.218.055-.41-.027-.573-.082-.164-.737-1.777-1.01-2.434-.266-.64-.537-.553-.737-.563l-.628-.011c-.218 0-.573.082-.873.41-.3.327-1.145 1.12-1.145 2.73 0 1.61 1.172 3.165 1.336 3.383.164.218 2.308 3.524 5.593 4.942.782.338 1.392.54 1.868.69.785.25 1.5.215 2.065.13.63-.094 1.936-.79 2.21-1.554.273-.764.273-1.418.19-1.555-.081-.136-.3-.218-.627-.382z" />
                 </svg>
                 Enquire on WhatsApp
               </a>
-              <a
-                href={getWhatsAppLink(whatsappMessage)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:inline-flex"
-              >
-                <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 shrink-0 fill-white">
-                  <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.902 6.47L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.457-1.507l-.392-.232-4.58 1.107 1.128-4.462-.256-.406A9.77 9.77 0 0 1 5.182 15c0-5.964 4.855-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818zm5.965-8.14c-.327-.164-1.936-.955-2.237-1.064-.3-.109-.518-.164-.737.164-.218.327-.845 1.064-1.036 1.282-.19.218-.382.246-.709.082-.327-.164-1.38-.508-2.629-1.62-.972-.867-1.628-1.937-1.819-2.264-.19-.327-.02-.504.144-.667.148-.147.327-.382.49-.573.164-.19.218-.327.327-.545.109-.218.055-.41-.027-.573-.082-.164-.737-1.777-1.01-2.434-.266-.64-.537-.553-.737-.563l-.628-.011c-.218 0-.573.082-.873.41-.3.327-1.145 1.12-1.145 2.73 0 1.61 1.172 3.165 1.336 3.383.164.218 2.308 3.524 5.593 4.942.782.338 1.392.54 1.868.69.785.25 1.5.215 2.065.13.63-.094 1.936-.79 2.21-1.554.273-.764.273-1.418.19-1.555-.081-.136-.3-.218-.627-.382z" />
-                </svg>
-                WhatsApp Us
-              </a>
+            </div>
+
+            {relatedService || relatedLocation ? (
+              <p className="mt-6 text-sm text-smoke">
+                {relatedService ? (
+                  <>
+                    Popular for{" "}
+                    <Link
+                      href={`/services/${relatedService.slug}`}
+                      className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
+                    >
+                      {relatedService.name}
+                    </Link>
+                  </>
+                ) : null}
+                {relatedService && relatedLocation ? " in " : null}
+                {relatedLocation ? (
+                  <Link
+                    href={`/locations/${relatedLocation.slug}`}
+                    className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
+                  >
+                    {relatedLocation.name}
+                  </Link>
+                ) : null}
+                .
+              </p>
+            ) : null}
+          </div>
+
+          {/* Desktop-only hero — title/rating/tags, then a two-column row:
+              image carousel beside an embedded quote form. */}
+          <div className="hidden lg:block">
+            <span className="label-eyebrow">{vehicle.category}</span>
+            <h1 className="mt-4 font-display text-5xl text-heading xl:text-6xl">
+              {vehicle.name}
+            </h1>
+            <p className="mt-3 text-lg italic text-gold/90">{vehicle.tagline}</p>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-smoke">
+              <div className="flex items-center gap-2">
+                <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-4 w-4 ${i < filledStars ? "fill-gold text-gold" : "fill-transparent text-gold/30"}`}
+                      strokeWidth={1.5}
+                    />
+                  ))}
+                </div>
+                <span>{RATING} Rating</span>
+              </div>
+              <span className="text-gold">&bull;</span>
+              <span>{vehicle.category}</span>
+              <span className="text-gold">&bull;</span>
+              <span>Up to {vehicle.passengers} Passengers</span>
+              <span className="text-gold">&bull;</span>
+              <span>{vehicle.luggage} Luggage</span>
+            </div>
+
+            <div className="mt-8 grid grid-cols-[3fr_2fr] items-start gap-10 xl:gap-14">
+              <div>
+                <VehicleGalleryCarousel vehicle={vehicle} sizes="(min-width: 1280px) 640px, 55vw" />
+                <p className="mt-6 text-base leading-relaxed text-smoke">
+                  {vehicle.description}
+                </p>
+              </div>
+              <VehicleHeroQuoteForm vehicle={vehicle} />
             </div>
 
             {relatedService || relatedLocation ? (
@@ -339,9 +406,10 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      {/* Specs zone — deep black, refined bordered cards; Quick Facts,
-          pricing, features and "why choose" all share this dark premium
-          treatment, with generous rhythm between each block. */}
+      {/* Specs zone, part 1 — Quick Facts + Pricing. Split into two Sections
+          around the trust stats band below (desktop only) so its order
+          matches "At a Glance -> Packages -> trust stats -> Features" flow;
+          mobile never sees the stats band regardless of this split. */}
       <Section tone="obsidian" className="!pt-8 lg:!pt-24">
       <Container className="flex flex-col gap-16 sm:gap-20">
         {/* Quick Facts — desktop only, unchanged from before (avoids
@@ -372,9 +440,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
             Transparent chauffeur rates, fixed once your booking is confirmed.
           </p>
-          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:mt-6">
+          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:mt-6 lg:gap-4 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
             {priceTiers.map((tier) => (
-              <div key={tier.label} className="flex flex-col gap-1">
+              <div
+                key={tier.label}
+                className="flex flex-col gap-1 lg:gap-2 lg:rounded-xl lg:border lg:border-gold/15 lg:bg-charcoal lg:p-5 lg:transition-all lg:duration-200 lg:hover:-translate-y-0.5 lg:hover:border-gold/35 lg:hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]"
+              >
                 <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
                   {tier.label}
                 </span>
@@ -405,7 +476,19 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             Professional chauffeur included &bull; No deposit required &bull; Flexible cancellation policy
           </p>
         </div>
+      </Container>
+      </Section>
 
+      {/* Trust stats band — desktop only, reuses the Fleet page's stats
+          component as-is; sits between Packages and Features so the flow
+          matches "At a Glance -> Packages -> trust stats -> Features". */}
+      <div className="hidden lg:block">
+        <FleetTrustSection />
+      </div>
+
+      {/* Specs zone, part 2 — Features, Why Choose, How It Works. */}
+      <Section tone="obsidian">
+      <Container className="flex flex-col gap-16 sm:gap-20">
         {/* Features & Amenities */}
         <div>
           <SectionHeading
@@ -452,6 +535,34 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               >
                 <Star className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.5} />
                 <p className="text-sm leading-relaxed text-smoke">{reason}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* How It Works — desktop only, structural addition; explains the
+            booking flow in three steps. Content is vehicle-agnostic. */}
+        <div className="hidden lg:block">
+          <SectionHeading
+            eyebrow="Simple & Seamless"
+            title="How It Works"
+            align="left"
+            tone="dark"
+          />
+          <div className="mt-10 grid grid-cols-3 gap-6">
+            {HOW_IT_WORKS.map((step, index) => (
+              <Card
+                key={step.title}
+                tone="dark"
+                interactive
+                className="rounded-xl p-8 text-center transition-all duration-200 hover:-translate-y-0.5"
+              >
+                <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-gold/30 font-display text-base text-gold">
+                  {index + 1}
+                </span>
+                <step.icon className="mx-auto mt-5 h-6 w-6 text-gold" strokeWidth={1.5} />
+                <h3 className="mt-4 font-display text-xl text-heading">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-smoke">{step.description}</p>
               </Card>
             ))}
           </div>

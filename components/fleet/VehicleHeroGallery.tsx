@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { Car, ChevronLeft, ChevronRight } from "lucide-react";
 import type { FleetVehicle } from "@/data/fleet";
@@ -10,98 +10,35 @@ interface VehicleHeroGalleryProps {
   vehicle: FleetVehicle;
 }
 
-const MOBILE_AUTOPLAY_DELAY_MS = 1000;
-const MOBILE_AUTOPLAY_INTERVAL_MS = 1000;
+const AUTOPLAY_DELAY_MS = 1000;
+const AUTOPLAY_INTERVAL_MS = 1000;
 const SWIPE_THRESHOLD_PX = 40;
 
 /**
- * Vehicle detail page hero gallery. Renders two entirely independent
- * implementations, toggled by CSS breakpoint rather than shared state:
- * desktop (lg+) keeps the original single-photo + thumbnail-strip design
- * unchanged, while mobile gets its own swipeable, autoplaying, infinite-loop
- * carousel with arrows and dots instead of thumbnails. Kept as two separate
- * components (rather than one with responsive markup) so the desktop
- * behavior is provably untouched by the mobile redesign.
+ * Mobile-only (lg:hidden) wrapper around the shared carousel gallery. The
+ * desktop hero renders VehicleGalleryCarousel directly in its own two-column
+ * layout — see app/fleet/[vehicle]/page.tsx.
  */
 export default function VehicleHeroGallery({ vehicle }: VehicleHeroGalleryProps) {
   return (
-    <div>
-      <div className="hidden lg:block">
-        <DesktopGallery vehicle={vehicle} />
-      </div>
-      <div className="lg:hidden">
-        <MobileGallery vehicle={vehicle} />
-      </div>
-    </div>
-  );
-}
-
-/** Unchanged from before the mobile redesign — desktop only. */
-function DesktopGallery({ vehicle }: VehicleHeroGalleryProps) {
-  const images = vehicle.images ?? [];
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeImage = images[activeIndex];
-
-  return (
-    <div>
-      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-gold/20 bg-gradient-to-br from-charcoal via-obsidian to-charcoal shadow-[0_30px_60px_-25px_rgba(0,0,0,0.85)]">
-        {activeImage ? (
-          <Image
-            src={activeImage.src}
-            alt={activeImage.alt}
-            fill
-            priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <Car className="h-16 w-16 text-gold/70 sm:h-20 sm:w-20" strokeWidth={1} aria-hidden="true" />
-          </div>
-        )}
-
-        <span className="absolute left-4 top-4 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm sm:left-5 sm:top-5">
-          {vehicle.category}
-        </span>
-
-        {images.length > 1 ? (
-          <span className="absolute right-4 top-4 inline-flex items-center rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-[11px] font-semibold tracking-wide text-ivory backdrop-blur-sm sm:right-5 sm:top-5">
-            {activeIndex + 1} / {images.length}
-          </span>
-        ) : null}
-      </div>
-
-      {images.length > 1 ? (
-        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1">
-          {images.map((image, index) => {
-            const isActive = index === activeIndex;
-            return (
-              <button
-                key={image.src}
-                type="button"
-                onClick={() => setActiveIndex(index)}
-                aria-label={`Show image ${index + 1} of ${images.length}`}
-                aria-current={isActive}
-                className={`relative aspect-square w-16 shrink-0 snap-start overflow-hidden rounded-lg border transition-all duration-150 sm:w-20 ${
-                  isActive ? "border-2 border-gold" : "border-gold/15 opacity-70 hover:border-gold/40 hover:opacity-100"
-                }`}
-              >
-                <Image src={image.src} alt="" fill sizes="80px" className="object-cover" />
-              </button>
-            );
-          })}
-        </div>
-      ) : null}
+    <div className="lg:hidden">
+      <VehicleGalleryCarousel vehicle={vehicle} sizes="100vw" />
     </div>
   );
 }
 
 /**
- * Mobile only — swipe/arrow/dot carousel with autoplay, driven by the same
- * infinite-loop hook as the homepage Fleet/Brands carousels. Autoplay stops
- * for good the moment the user swipes, taps an arrow, or taps a dot.
+ * Swipeable, autoplaying, infinite-loop carousel with arrows and dots —
+ * originally built for the mobile hero gallery, now also used for the
+ * desktop hero's image column (replacing the old static-image +
+ * thumbnail-strip treatment). Driven by the same infinite-loop hook as the
+ * homepage Fleet/Brands carousels. Autoplay stops for good the moment the
+ * user swipes, taps an arrow, or taps a dot.
  */
-function MobileGallery({ vehicle }: VehicleHeroGalleryProps) {
+export function VehicleGalleryCarousel({
+  vehicle,
+  sizes = "100vw",
+}: VehicleHeroGalleryProps & { sizes?: string }) {
   const images = vehicle.images ?? [];
   const hasMultiple = images.length > 1;
 
@@ -109,8 +46,8 @@ function MobileGallery({ vehicle }: VehicleHeroGalleryProps) {
     useInfiniteCarousel({
       itemCount: Math.max(images.length, 1),
       slidesPerView: 1,
-      autoplayDelayMs: MOBILE_AUTOPLAY_DELAY_MS,
-      autoplayIntervalMs: MOBILE_AUTOPLAY_INTERVAL_MS,
+      autoplayDelayMs: AUTOPLAY_DELAY_MS,
+      autoplayIntervalMs: AUTOPLAY_INTERVAL_MS,
       stopOnInteraction: true,
       pauseWhenOffscreen: false,
     });
@@ -144,7 +81,7 @@ function MobileGallery({ vehicle }: VehicleHeroGalleryProps) {
         className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-gold/20 bg-gradient-to-br from-charcoal via-obsidian to-charcoal shadow-[0_30px_60px_-25px_rgba(0,0,0,0.85)]"
       >
         {activeImage ? (
-          <Image src={activeImage.src} alt={activeImage.alt} fill priority sizes="100vw" className="object-cover" />
+          <Image src={activeImage.src} alt={activeImage.alt} fill priority sizes={sizes} className="object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <Car className="h-16 w-16 text-gold/70" strokeWidth={1} aria-hidden="true" />
@@ -184,7 +121,7 @@ function MobileGallery({ vehicle }: VehicleHeroGalleryProps) {
                 fill
                 draggable={false}
                 priority={position === 1}
-                sizes="100vw"
+                sizes={sizes}
                 className="object-cover"
               />
             </div>
