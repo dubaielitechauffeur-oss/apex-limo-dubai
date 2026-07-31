@@ -1,0 +1,87 @@
+{
+  "hero": {
+    "eyebrow": "Contactez Apex Limo",
+    "title": "Planifions votre prochain voyage",
+    "subtitle": "Que vous ayez besoin de transferts aéroport, de voyages d'affaires, de transport VIP ou d'un chauffeur de luxe pour une occasion spéciale, notre équipe est disponible 24h/24 et 7j/7."
+  },
+  "trustBadges": ["Disponibilité 24h/24", "Chauffeurs professionnels", "Flotte de luxe", "Support WhatsApp instantané"],
+  "quickContact": {
+    "eyebrow": "Entrer en contact",
+    "title": "Options de contact rapide",
+    "cards": [
+      { "label": "Appelez-nous", "description": "Parlez directement à notre équipe, 24 heures sur 24, tous les jours de l'année.", "cta": "Appeler maintenant" },
+      { "label": "WhatsApp", "detail": "Réponse instantanée", "description": "Le moyen le plus rapide de nous joindre — la plupart des messages reçoivent une réponse en quelques minutes.", "cta": "Nous écrire" },
+      { "label": "Envoyez-nous un e-mail", "description": "Pour des demandes détaillées, des comptes entreprise ou des demandes de documents.", "cta": "Envoyer un e-mail" }
+    ]
+  },
+  "form": {
+    "eyebrow": "Envoyer un message",
+    "title": "Parlez-nous de votre voyage",
+    "panelTitle": "Envoyer un message",
+    "intro": "Ce formulaire n'est pas encore relié à une messagerie — pour une réponse immédiate, veuillez utiliser WhatsApp ou nous appeler avec les coordonnées ci-contre.",
+    "fullName": "Nom complet",
+    "fullNamePlaceholder": "ex. James Carter",
+    "phoneNumber": "Numéro de téléphone",
+    "email": "E-mail",
+    "emailPlaceholder": "you@company.com",
+    "subject": "Objet",
+    "subjectPlaceholder": "ex. demande de compte entreprise",
+    "message": "Message",
+    "messagePlaceholder": "Comment pouvons-nous vous aider?",
+    "submit": "Envoyer le message",
+    "disclaimer": "Ce formulaire n'envoie pas encore de messages — pour l'instant, veuillez nous contacter via WhatsApp ou par téléphone."
+  },
+  "sidebar": {
+    "responseTime": "Moins de 15 min",
+    "responseTimeLabel": "Temps de réponse moyen",
+    "emergencyLabel": "Assistance d'urgence",
+    "reachUsDirectly": "Contactez-nous directement",
+    "whatsappUs": "Écrivez-nous sur WhatsApp",
+    "address": "Dubaï, Émirats arabes unis",
+    "callCta": "Appeler",
+    "operatingHours": "Horaires d'ouverture",
+    "chauffeurService": "Service chauffeur et réservation",
+    "supportOffice": "Bureau d'assistance client",
+    "supportHours": "8h00 – 22h00 (heure du Golfe)",
+    "hoursDisclaimer": "Les réservations et demandes urgentes sont traitées 24h/24, tous les jours de l'année, y compris les jours fériés.",
+    "urgentWhatsapp": "Besoin d'un chauffeur immédiatement? Écrivez-nous sur WhatsApp."
+  },
+  "serviceAreas": {
+    "eyebrow": "Zones de service",
+    "title": "Zones que nous desservons",
+    "subtitle": "Service de chauffeur disponible dans les destinations d'affaires, de loisirs et résidentielles les plus importantes de Dubaï."
+  },
+  "whyContact": {
+    "eyebrow": "Pourquoi Apex",
+    "title": "Pourquoi les clients contactent Apex",
+    "items": [
+      { "title": "Plus de 10 ans d'expérience", "description": "Une décennie de service de chauffeur à travers Dubaï et les Émirats." },
+      { "title": "Disponibilité 24h/24", "description": "Réservations, questions et demandes urgentes traitées à toute heure." },
+      { "title": "Chauffeurs professionnels", "description": "Agréés, avec vérification des antécédents, formés à l'étiquette et à la discrétion." },
+      { "title": "Flotte de luxe", "description": "Des berlines de direction à la Rolls-Royce Phantom, entretenues selon les normes les plus strictes." },
+      { "title": "Temps de réponse rapides", "description": "Les messages WhatsApp reçoivent généralement une réponse en quelques minutes, pas en heures." },
+      { "title": "Assistance client premium", "description": "Une équipe dédiée qui traite chaque demande comme une requête VIP." }
+    ]
+  },
+  "faqSection": {
+    "eyebrow": "Questions courantes",
+    "title": "FAQ Contact"
+  },
+  "faqs": [
+    { "question": "À quelle vitesse aurai-je une réponse?", "answer": "Les messages WhatsApp reçoivent généralement une réponse en quelques minutes. Les appels téléphoniques sont pris en direct 24h/24. Les demandes via le formulaire de contact reçoivent une réponse sous quelques heures." },
+    { "question": "Puis-je réserver un chauffeur immédiatement?", "answer": "Oui — pour les demandes urgentes dans l'heure, contactez-nous directement sur WhatsApp ou par téléphone plutôt que d'utiliser le formulaire en ligne. Nous confirmerons la disponibilité immédiatement." },
+    { "question": "Comment ouvrir un compte entreprise?", "answer": "Contactez-nous sur WhatsApp ou par téléphone avec les informations de votre entreprise et vos besoins de déplacement habituels, et notre équipe mettra en place un compte permanent avec facturation." },
+    { "question": "Puis-je modifier ou annuler une réservation via cette page?", "answer": "Pour modifier une réservation existante, contactez-nous directement sur WhatsApp ou par téléphone avec votre numéro de référence — c'est le moyen le plus rapide de mettre à jour une réservation active." },
+    { "question": "Quelles informations dois-je inclure en vous contactant sur WhatsApp?", "answer": "Vos lieux de prise en charge et de dépose, la date et l'heure, le nombre de passagers et votre véhicule préféré — plus vous fournissez de détails à l'avance, plus vite nous pourrons confirmer." },
+    { "question": "Puis-je demander un véhicule spécifique en vous contactant?", "answer": "Oui, indiquez votre véhicule préféré lorsque vous nous contactez et nous confirmerons sa disponibilité avec votre réservation." },
+    { "question": "Répondez-vous aux demandes venant de l'extérieur des Émirats?", "answer": "Oui, nous répondons aux demandes de partout — beaucoup de nos réservations sont effectuées par des voyageurs avant même leur atterrissage à Dubaï." },
+    { "question": "Le support est-il disponible dans d'autres langues que l'anglais?", "answer": "Oui, plusieurs membres de notre équipe et chauffeurs sont multilingues — indiquez-nous votre langue préférée lorsque vous nous contactez." },
+    { "question": "Puis-je demander un rappel plutôt que d'envoyer un message d'abord?", "answer": "Oui, laissez votre numéro via WhatsApp ou le formulaire de contact et notre équipe vous rappellera directement." },
+    { "question": "Facturez-vous un devis ou une consultation?", "answer": "Non, les devis et consultations sont entièrement gratuits — vous ne payez qu'une fois la réservation confirmée." }
+  ],
+  "finalCta": {
+    "eyebrow": "Nous sommes là pour vous aider",
+    "heading": "Besoin d'un chauffeur aujourd'hui?",
+    "subtitle": "Réservez en ligne, obtenez un devis instantané ou écrivez-nous sur WhatsApp — notre équipe est prête à toute heure."
+  }
+}

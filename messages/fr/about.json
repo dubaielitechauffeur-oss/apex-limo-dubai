@@ -1,0 +1,71 @@
+{
+  "hero": {
+    "eyebrow": "À propos d'Apex",
+    "title": "Le nom de confiance de Dubaï pour le transport de luxe avec chauffeur",
+    "paragraph": "{siteName} a été fondée sur un principe simple: le transport de luxe doit être aussi fiable que confortable. D'un simple transfert aéroport à un cortège de mariage complet, nous apportons le même niveau de professionnalisme à chaque réservation à Dubaï et dans les Émirats."
+  },
+  "ourStory": {
+    "heading": "Notre histoire",
+    "paragraph1": "Les routes de Dubaï bougent vite, tout comme les emplois du temps de ceux qui comptent sur nous — cadres entre deux réunions, familles arrivant après un long vol, couples au jour le plus important de leur vie. Apex Limo & Chauffeur Dubai a été fondée autour d'un objectif simple: offrir à chacun d'eux un véhicule et un chauffeur auxquels ils n'ont pas à réfléchir à deux fois.",
+    "paragraph2": "Cela signifie une tarification transparente et fixe convenue avant votre départ. Cela signifie des chauffeurs qui suivent votre vol plutôt que simplement votre heure de réservation. Et cela signifie une flotte inspectée et entretenue avant chaque trajet, pas seulement quand elle semble usée. Nous préférons être le choix discrètement fiable plutôt que le plus tape-à-l'œil — même si notre flotte a tendance à réunir les deux."
+  },
+  "byTheNumbers": {
+    "yearsExperience": "Années d'expérience",
+    "luxuryVehicles": "Véhicules de luxe",
+    "happyClients": "Clients satisfaits",
+    "averageRating": "Note moyenne"
+  },
+  "values": {
+    "eyebrow": "Ce qui nous anime",
+    "title": "Notre mission et nos valeurs",
+    "subtitle": "Quatre principes qui façonnent chaque réservation, d'une simple prise en charge à l'aéroport à une flotte complète pour un événement.",
+    "items": [
+      { "title": "Ponctualité", "description": "Chaque réservation est planifiée avec une marge réaliste, pas optimiste. À l'heure signifie à l'heure." },
+      { "title": "Discrétion et confiance", "description": "Nos chauffeurs opèrent discrètement pendant les appels professionnels, les conversations privées et les trajets confidentiels." },
+      { "title": "Sécurité et conformité", "description": "Chauffeurs agréés, véhicules assurés et calendriers d'entretien jamais laissés au hasard." },
+      { "title": "Hospitalité authentique", "description": "Un accueil chaleureux et professionnel à chaque trajet — pas une simple transaction, mais un niveau de service sur lequel vous pouvez compter." }
+    ]
+  },
+  "standards": {
+    "eyebrow": "Notre équipe",
+    "title": "Normes professionnelles des chauffeurs",
+    "intro": "Chaque chauffeur qui conduit pour Apex répond aux mêmes exigences de base avant de se voir confier une première réservation:",
+    "items": [
+      "Permis de conduire commercial des Émirats arabes unis valide, vérifié avant l'intégration",
+      "Vérification des antécédents avant de rejoindre l'équipe de chauffeurs Apex",
+      "Formé à l'étiquette professionnelle, à la discrétion et à la communication avec les clients",
+      "En uniforme et présentable pour chaque réservation, des transferts aux mariages",
+      "Évalué régulièrement sur la ponctualité, les normes de conduite et les retours clients"
+    ]
+  },
+  "locations": {
+    "eyebrow": "Où nous circulons",
+    "title": "Zones de service à travers Dubaï et les Émirats",
+    "subtitle": "Nos chauffeurs connaissent ces quartiers en détail — points de prise en charge, conditions de circulation et itinéraires les plus rapides entre eux.",
+    "viewAll": "Voir les {count} emplacements"
+  },
+  "fleet": {
+    "eyebrow": "Notre flotte",
+    "title": "Un véhicule pour chaque occasion",
+    "subtitle": "{count} véhicules, tous de modèle récent, entretenus avant chaque trajet et adaptés à votre voyage.",
+    "exploreFull": "Découvrir toute la flotte"
+  },
+  "whyChoose": {
+    "eyebrow": "Pourquoi Apex",
+    "title": "Pourquoi les clients choisissent Apex",
+    "subtitle": "Les signaux de confiance qui font revenir nos clients, réservation après réservation.",
+    "items": [
+      { "title": "Une décennie de service de confiance", "description": "Plus de 10 ans au service des résidents, visiteurs et entreprises de Dubaï." },
+      { "title": "Plus de 1000 réservations réussies", "description": "Des simples transferts aéroport aux cortèges de mariage complets, assurés avec fiabilité." },
+      { "title": "Avis clients de 4,9 étoiles", "description": "Constamment noté 4,9 par des clients vérifiés sur tous nos services." },
+      { "title": "Partenariats avec entreprises et hôtels", "description": "Relations durables avec des entreprises et partenaires hôteliers dans toute la ville." },
+      { "title": "Équipe de chauffeurs multilingue", "description": "Des chauffeurs parlant plusieurs langues pour une expérience véritablement personnalisée." },
+      { "title": "Transparence totale, sans surprise", "description": "Le prix annoncé est exactement celui que vous payez, à chaque fois." }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Paroles de clients",
+    "title": "Ce que disent nos clients",
+    "verifiedClient": "Client vérifié"
+  }
+}

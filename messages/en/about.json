@@ -1,0 +1,71 @@
+{
+  "hero": {
+    "eyebrow": "About Apex",
+    "title": "Dubai's Trusted Name in Chauffeur-Driven Luxury",
+    "paragraph": "{siteName} was built on a simple premise: luxury transportation should be as dependable as it is comfortable. From a single airport transfer to a full wedding convoy, we bring the same standard of professionalism to every booking across Dubai and the UAE."
+  },
+  "ourStory": {
+    "heading": "Our Story",
+    "paragraph1": "Dubai's roads move fast, and so do the schedules of the people who rely on us — executives between meetings, families landing after a long flight, couples on the most important day of their lives. Apex Limo & Chauffeur Dubai was formed around a straightforward goal: give every one of them a vehicle and driver they don't have to think twice about.",
+    "paragraph2": "That means transparent, fixed pricing agreed before you travel. It means chauffeurs who track your flight rather than just your booking time. And it means a fleet that's inspected and detailed before every single trip, not just when it looks worn. We'd rather be the quietly reliable choice than the flashiest one — though our fleet tends to cover both."
+  },
+  "byTheNumbers": {
+    "yearsExperience": "Years of Experience",
+    "luxuryVehicles": "Luxury Vehicles",
+    "happyClients": "Happy Clients",
+    "averageRating": "Average Rating"
+  },
+  "values": {
+    "eyebrow": "What Drives Us",
+    "title": "Our Mission & Values",
+    "subtitle": "Four principles that shape every booking, from a single airport pickup to a full-scale event fleet.",
+    "items": [
+      { "title": "Punctuality", "description": "Every booking is planned with a realistic buffer, not an optimistic one. On time means on time." },
+      { "title": "Discretion & Trust", "description": "Our chauffeurs work quietly around business calls, private conversations, and confidential travel." },
+      { "title": "Safety & Compliance", "description": "Licensed drivers, insured vehicles, and maintenance schedules that are never left to chance." },
+      { "title": "Genuine Hospitality", "description": "A warm, professional welcome on every trip — not a transaction, a level of service you can rely on." }
+    ]
+  },
+  "standards": {
+    "eyebrow": "Our People",
+    "title": "Professional Chauffeur Standards",
+    "intro": "Every chauffeur who drives for Apex meets the same baseline before they're assigned a single booking:",
+    "items": [
+      "Valid UAE commercial driving licenses, verified before onboarding",
+      "Background-checked prior to joining the Apex chauffeur team",
+      "Trained in professional etiquette, discretion, and client communication",
+      "Uniformed and presentable for every booking, from transfers to weddings",
+      "Assessed regularly on punctuality, driving standards, and client feedback"
+    ]
+  },
+  "locations": {
+    "eyebrow": "Where We Drive",
+    "title": "Service Areas Across Dubai & the UAE",
+    "subtitle": "Our chauffeurs know these neighborhoods in detail — pickup points, traffic patterns, and the quickest routes between them.",
+    "viewAll": "View All {count} Locations"
+  },
+  "fleet": {
+    "eyebrow": "Our Fleet",
+    "title": "A Vehicle for Every Occasion",
+    "subtitle": "{count} vehicles, all late-model, detailed before every trip, and matched to the journey.",
+    "exploreFull": "Explore the Full Fleet"
+  },
+  "whyChoose": {
+    "eyebrow": "Why Apex",
+    "title": "Why Clients Choose Apex",
+    "subtitle": "The trust signals that bring clients back, booking after booking.",
+    "items": [
+      { "title": "A Decade of Trusted Service", "description": "Over 10 years serving Dubai's residents, visitors, and businesses." },
+      { "title": "1000+ Successful Bookings", "description": "From single airport transfers to full wedding convoys, delivered reliably." },
+      { "title": "4.9-Star Client Reviews", "description": "Consistently rated 4.9 by verified clients across every service we offer." },
+      { "title": "Corporate & Hotel Partnerships", "description": "Standing relationships with businesses and hospitality partners citywide." },
+      { "title": "Multilingual Chauffeur Team", "description": "Drivers who speak multiple languages for a genuinely personal experience." },
+      { "title": "Full Transparency, No Surprises", "description": "The price you're quoted is exactly what you pay, every single time." }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Client Words",
+    "title": "What Our Clients Say",
+    "verifiedClient": "Verified Client"
+  }
+}

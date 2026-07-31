@@ -1,0 +1,15 @@
+{
+  "allChip": "全部",
+  "categories": {
+    "booking": { "label": "预订", "chipLabel": "预订" },
+    "airport-transfers": { "label": "机场接送", "chipLabel": "机场接送" },
+    "pricing": { "label": "价格", "chipLabel": "价格" },
+    "fleet": { "label": "车队", "chipLabel": "车队" },
+    "corporate-travel": { "label": "商务出行", "chipLabel": "企业" },
+    "wedding-chauffeurs": { "label": "婚礼司机服务", "chipLabel": "婚礼" },
+    "vip-transportation": { "label": "VIP专车服务", "chipLabel": "VIP" },
+    "locations": { "label": "服务区域", "chipLabel": "服务区域" },
+    "safety": { "label": "安全保障" },
+    "general-questions": { "label": "常见问题" }
+  }
+}

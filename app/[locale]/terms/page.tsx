@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
@@ -13,11 +13,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.terms" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Terms & Conditions",
-    description:
-      "Terms and conditions for Apex Limo & Chauffeur Dubai, covering bookings, cancellations, refunds, payments, chauffeur services, client responsibilities, liability, and service availability across Dubai and the UAE.",
+    title: t("title"),
+    description: t("description"),
     path: "/terms",
   });
 }

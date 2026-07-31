@@ -27,7 +27,7 @@ import {
   Car,
   type LucideIcon,
 } from "lucide-react";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
@@ -59,20 +59,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, vehicle: slug } = await params;
   const vehicle = FLEET.find((v) => v.slug === slug);
+  const t = await getTranslations({ locale, namespace: "metadata.fleetVehicle" });
 
   if (!vehicle) {
     return buildMetadata({
       locale: locale as Locale,
-      title: "Vehicle Not Found",
-      description: "This vehicle could not be found in the Apex Limo fleet.",
+      title: t("notFoundTitle"),
+      description: t("notFoundDescription"),
       path: `/fleet/${slug}`,
     });
   }
 
   return buildMetadata({
     locale: locale as Locale,
-    title: `${vehicle.name} | Chauffeur-Driven ${vehicle.category} in Dubai`,
-    description: `Book the ${vehicle.name} with a professional chauffeur in Dubai. ${vehicle.description}`,
+    title: t("titleTemplate", { name: vehicle.name, category: vehicle.category }),
+    description: t("descriptionTemplate", { name: vehicle.name, description: vehicle.description }),
     path: `/fleet/${vehicle.slug}`,
   });
 }

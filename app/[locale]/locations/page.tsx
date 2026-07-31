@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { MapPin, Plane } from "lucide-react";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
@@ -20,11 +20,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.locations" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Areas We Serve in Dubai",
-    description:
-      "Chauffeur service across Dubai Marina, Palm Jumeirah, Downtown Dubai, Business Bay, JBR, and Dubai International Airport (DXB).",
+    title: t("title"),
+    description: t("description"),
     path: "/locations",
   });
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import BookingCTA from "@/components/home/BookingCTA";
@@ -13,11 +13,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.faqs" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Frequently Asked Questions",
-    description:
-      "Find answers about chauffeur services, airport transfers, pricing, bookings, fleet options and luxury transportation across Dubai and the UAE.",
+    title: t("title"),
+    description: t("description"),
     path: "/faqs",
   });
 }

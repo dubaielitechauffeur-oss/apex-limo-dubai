@@ -1,0 +1,15 @@
+{
+  "allChip": "Все",
+  "categories": {
+    "booking": { "label": "Бронирование", "chipLabel": "Бронирование" },
+    "airport-transfers": { "label": "Трансферы из аэропорта", "chipLabel": "Трансферы из аэропорта" },
+    "pricing": { "label": "Цены", "chipLabel": "Цены" },
+    "fleet": { "label": "Автопарк", "chipLabel": "Автопарк" },
+    "corporate-travel": { "label": "Деловые поездки", "chipLabel": "Корпоративный" },
+    "wedding-chauffeurs": { "label": "Свадебные шофёры", "chipLabel": "Свадьбы" },
+    "vip-transportation": { "label": "VIP-транспорт", "chipLabel": "VIP" },
+    "locations": { "label": "Локации", "chipLabel": "Локации" },
+    "safety": { "label": "Безопасность" },
+    "general-questions": { "label": "Общие вопросы" }
+  }
+}

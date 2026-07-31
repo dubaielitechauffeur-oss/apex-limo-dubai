@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
@@ -20,11 +20,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.fleet" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Luxury Fleet | Mercedes, BMW, Range Rover & Rolls-Royce Phantom",
-    description:
-      "Explore the Apex Limo Dubai fleet: Mercedes S-Class, Mercedes V-Class, BMW 7 Series, Cadillac Escalade, Range Rover Autobiography, and Rolls-Royce Phantom. Book online or get an instant quote.",
+    title: t("title"),
+    description: t("description"),
     path: "/fleet",
   });
 }

@@ -10,7 +10,7 @@ import {
   Heart,
   type LucideIcon,
 } from "lucide-react";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
@@ -22,7 +22,7 @@ import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { SERVICES } from "@/data/services";
-import { SERVICES_FAQS } from "@/data/servicesFaqs";
+import { getServicesFaqs } from "@/data/servicesFaqs";
 
 const ICONS: Record<string, LucideIcon> = {
   "airport-transfers": Plane,
@@ -39,11 +39,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.services" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Chauffeur Services in Dubai",
-    description:
-      "Airport transfers, corporate chauffeur, luxury chauffeur, VIP transportation, event transportation, and wedding chauffeur service across Dubai and the UAE.",
+    title: t("title"),
+    description: t("description"),
     path: "/services",
   });
 }
@@ -80,6 +80,8 @@ function servicesJsonLd(locale: Locale) {
 export default async function ServicesPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const t = await getTranslations("services.faq");
+  const servicesFaqs = getServicesFaqs(locale as Locale);
   return (
     <div>
       <script
@@ -172,10 +174,10 @@ export default async function ServicesPage({ params }: PageProps) {
       </Section>
 
       <FAQAccordion
-        faqs={SERVICES_FAQS}
-        eyebrow="Good to Know"
-        title="Frequently Asked Questions"
-        subtitle="Everything you need to know about booking, pricing, and what to expect from an Apex chauffeur service."
+        faqs={servicesFaqs}
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        subtitle={t("subtitle")}
       />
 
       <BookingCTA backgroundImage={false} />

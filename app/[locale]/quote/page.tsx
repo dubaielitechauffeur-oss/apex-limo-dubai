@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import QuoteForm from "@/components/booking/QuoteForm";
@@ -17,11 +17,11 @@ interface QuotePageProps {
 
 export async function generateMetadata({ params }: QuotePageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.quote" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Get an Instant Quote",
-    description:
-      "Get a fast, no-obligation quote for chauffeur, airport transfer, or VIP transportation services in Dubai. Tell us your trip details and we'll respond shortly.",
+    title: t("title"),
+    description: t("description"),
     path: "/quote",
   });
 }

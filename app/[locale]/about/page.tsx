@@ -13,7 +13,7 @@ import {
   Globe,
   Wallet,
 } from "lucide-react";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
@@ -37,55 +37,24 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.about" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "About Us",
-    description:
-      "Learn about Apex Limo & Chauffeur Dubai — our mission, values, professional chauffeur standards, luxury fleet, and the areas we serve across Dubai and the UAE.",
+    title: t("title"),
+    description: t("description"),
     path: "/about",
   });
 }
 
-const VALUES = [
-  {
-    icon: Clock,
-    title: "Punctuality",
-    description:
-      "Every booking is planned with a realistic buffer, not an optimistic one. On time means on time.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Discretion & Trust",
-    description:
-      "Our chauffeurs work quietly around business calls, private conversations, and confidential travel.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Safety & Compliance",
-    description:
-      "Licensed drivers, insured vehicles, and maintenance schedules that are never left to chance.",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Genuine Hospitality",
-    description:
-      "A warm, professional welcome on every trip — not a transaction, a level of service you can rely on.",
-  },
-];
+/** Icon order matches values.items in messages/{locale}/about.json. */
+const VALUE_ICONS = [Clock, ShieldCheck, BadgeCheck, HeartHandshake];
 
-const STANDARDS = [
-  "Valid UAE commercial driving licenses, verified before onboarding",
-  "Background-checked prior to joining the Apex chauffeur team",
-  "Trained in professional etiquette, discretion, and client communication",
-  "Uniformed and presentable for every booking, from transfers to weddings",
-  "Assessed regularly on punctuality, driving standards, and client feedback",
-];
-
+/** Value/icon order matches byTheNumbers keys in messages/{locale}/about.json. */
 const BY_THE_NUMBERS = [
-  { icon: Award, value: "10+", label: "Years of Experience" },
-  { icon: Car, value: `${FLEET_SIZE}`, label: "Luxury Vehicles" },
-  { icon: Users, value: "1000+", label: "Happy Clients" },
-  { icon: Star, value: RATING, label: "Average Rating" },
+  { icon: Award, value: "10+", labelKey: "yearsExperience" },
+  { icon: Car, value: `${FLEET_SIZE}`, labelKey: "luxuryVehicles" },
+  { icon: Users, value: "1000+", labelKey: "happyClients" },
+  { icon: Star, value: RATING, labelKey: "averageRating" },
 ];
 
 const FEATURED_FLEET_SLUGS = [
@@ -95,46 +64,19 @@ const FEATURED_FLEET_SLUGS = [
   "mercedes-v-class",
 ];
 
-const WHY_CLIENTS_CHOOSE = [
-  {
-    icon: Award,
-    title: "A Decade of Trusted Service",
-    description: "Over 10 years serving Dubai's residents, visitors, and businesses.",
-  },
-  {
-    icon: Users,
-    title: "1000+ Successful Bookings",
-    description: "From single airport transfers to full wedding convoys, delivered reliably.",
-  },
-  {
-    icon: Star,
-    title: "4.9-Star Client Reviews",
-    description: "Consistently rated 4.9 by verified clients across every service we offer.",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Corporate & Hotel Partnerships",
-    description: "Standing relationships with businesses and hospitality partners citywide.",
-  },
-  {
-    icon: Globe,
-    title: "Multilingual Chauffeur Team",
-    description: "Drivers who speak multiple languages for a genuinely personal experience.",
-  },
-  {
-    icon: Wallet,
-    title: "Full Transparency, No Surprises",
-    description: "The price you're quoted is exactly what you pay, every single time.",
-  },
-];
+/** Icon order matches whyChoose.items in messages/{locale}/about.json. */
+const WHY_CLIENTS_CHOOSE_ICONS = [Award, Users, Star, HeartHandshake, Globe, Wallet];
 
-const ABOUT_TESTIMONIALS = TESTIMONIALS.filter((t) =>
-  ["review-002", "review-004", "review-005"].includes(t.id)
-);
+const ABOUT_TESTIMONIAL_IDS = ["review-002", "review-004", "review-005"];
+const ABOUT_TESTIMONIALS = TESTIMONIALS.filter((t) => ABOUT_TESTIMONIAL_IDS.includes(t.id));
 
 export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const t = await getTranslations("about");
+  const valueItems = t.raw("values.items") as { title: string; description: string }[];
+  const whyChooseItems = t.raw("whyChoose.items") as { title: string; description: string }[];
+  const standardsItems = t.raw("standards.items") as string[];
   return (
     <div>
       <script
@@ -154,24 +96,10 @@ export default async function AboutPage({ params }: PageProps) {
       <Section tone="ivory" padding="sm">
         <Reveal>
         <Container className="max-w-3xl">
-          <h2 className="font-display text-2xl text-obsidian sm:text-3xl">Our Story</h2>
+          <h2 className="font-display text-2xl text-obsidian sm:text-3xl">{t("ourStory.heading")}</h2>
           <div className="mt-5 space-y-4 text-sm leading-relaxed text-graphite sm:text-base">
-            <p>
-              Dubai&apos;s roads move fast, and so do the schedules of the people
-              who rely on us — executives between meetings, families landing
-              after a long flight, couples on the most important day of their
-              lives. Apex Limo & Chauffeur Dubai was formed around a
-              straightforward goal: give every one of them a vehicle and
-              driver they don&apos;t have to think twice about.
-            </p>
-            <p>
-              That means transparent, fixed pricing agreed before you travel.
-              It means chauffeurs who track your flight rather than just your
-              booking time. And it means a fleet that&apos;s inspected and detailed
-              before every single trip, not just when it looks worn. We&apos;d
-              rather be the quietly reliable choice than the flashiest one —
-              though our fleet tends to cover both.
-            </p>
+            <p>{t("ourStory.paragraph1")}</p>
+            <p>{t("ourStory.paragraph2")}</p>
           </div>
         </Container>
         </Reveal>
@@ -182,10 +110,12 @@ export default async function AboutPage({ params }: PageProps) {
         <Container>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 sm:gap-6">
             {BY_THE_NUMBERS.map((stat, index) => (
-              <Reveal key={stat.label} delay={index * 80} className="flex flex-col items-center gap-2 text-center">
+              <Reveal key={stat.labelKey} delay={index * 80} className="flex flex-col items-center gap-2 text-center">
                 <stat.icon className="h-5 w-5 text-gold" strokeWidth={1.5} aria-hidden="true" />
                 <span className="font-display text-3xl text-heading sm:text-4xl">{stat.value}</span>
-                <span className="text-xs uppercase tracking-wide text-smoke">{stat.label}</span>
+                <span className="text-xs uppercase tracking-wide text-smoke">
+                  {t(`byTheNumbers.${stat.labelKey}`)}
+                </span>
               </Reveal>
             ))}
           </div>
@@ -197,28 +127,31 @@ export default async function AboutPage({ params }: PageProps) {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="What Drives Us"
-              title="Our Mission &amp; Values"
-              subtitle="Four principles that shape every booking, from a single airport pickup to a full-scale event fleet."
+              eyebrow={t("values.eyebrow")}
+              title={t("values.title")}
+              subtitle={t("values.subtitle")}
               tone="light"
             />
           </Reveal>
           <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {VALUES.map((value, index) => (
-              <Reveal
-                key={value.title}
-                delay={index * 80}
-                className="flex flex-col items-start rounded-2xl border border-gold/15 bg-ivory p-7 shadow-[0_16px_35px_-26px_rgba(10,10,10,0.3)] transition-shadow duration-300 hover:shadow-[0_20px_40px_-20px_rgba(10,10,10,0.35)]"
-              >
-                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/25 bg-gold/10">
-                  <value.icon className="h-6 w-6 text-gold-deep" strokeWidth={1.5} />
-                </span>
-                <h3 className="mt-5 font-display text-lg text-obsidian">{value.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-graphite">
-                  {value.description}
-                </p>
-              </Reveal>
-            ))}
+            {valueItems.map((value, index) => {
+              const Icon = VALUE_ICONS[index];
+              return (
+                <Reveal
+                  key={value.title}
+                  delay={index * 80}
+                  className="flex flex-col items-start rounded-2xl border border-gold/15 bg-ivory p-7 shadow-[0_16px_35px_-26px_rgba(10,10,10,0.3)] transition-shadow duration-300 hover:shadow-[0_20px_40px_-20px_rgba(10,10,10,0.35)]"
+                >
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/25 bg-gold/10">
+                    <Icon className="h-6 w-6 text-gold-deep" strokeWidth={1.5} />
+                  </span>
+                  <h3 className="mt-5 font-display text-lg text-obsidian">{value.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-graphite">
+                    {value.description}
+                  </p>
+                </Reveal>
+              );
+            })}
           </div>
         </Container>
       </Section>
@@ -241,17 +174,16 @@ export default async function AboutPage({ params }: PageProps) {
             </Reveal>
             <Reveal delay={100} className="lg:order-1">
               <SectionHeading
-                eyebrow="Our People"
-                title="Professional Chauffeur Standards"
+                eyebrow={t("standards.eyebrow")}
+                title={t("standards.title")}
                 align="left"
                 tone="light"
               />
               <p className="mt-6 text-sm leading-relaxed text-graphite sm:text-base">
-                Every chauffeur who drives for Apex meets the same baseline
-                before they&apos;re assigned a single booking:
+                {t("standards.intro")}
               </p>
               <ul className="mt-6 space-y-3">
-                {STANDARDS.map((item) => (
+                {standardsItems.map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-graphite sm:text-base">
                     <Award className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" strokeWidth={1.5} />
                     {item}
@@ -265,15 +197,15 @@ export default async function AboutPage({ params }: PageProps) {
 
       {/* Service areas — image cards */}
       <LocationsShowcase
-        eyebrow="Where We Drive"
-        title="Service Areas Across Dubai &amp; the UAE"
-        subtitle="Our chauffeurs know these neighborhoods in detail — pickup points, traffic patterns, and the quickest routes between them."
+        eyebrow={t("locations.eyebrow")}
+        title={t("locations.title")}
+        subtitle={t("locations.subtitle")}
         tone="light"
       />
       <Section tone="pearl" padding="sm" separator={false}>
         <Container className="text-center">
           <Link href="/locations" className="btn-black">
-            View All {LOCATIONS.length} Locations
+            {t("locations.viewAll", { count: LOCATIONS.length })}
           </Link>
         </Container>
       </Section>
@@ -283,9 +215,9 @@ export default async function AboutPage({ params }: PageProps) {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Our Fleet"
-              title="A Vehicle for Every Occasion"
-              subtitle={`${FLEET_SIZE} vehicles, all late-model, detailed before every trip, and matched to the journey.`}
+              eyebrow={t("fleet.eyebrow")}
+              title={t("fleet.title")}
+              subtitle={t("fleet.subtitle", { count: FLEET_SIZE })}
               tone="light"
             />
           </Reveal>
@@ -301,7 +233,7 @@ export default async function AboutPage({ params }: PageProps) {
           </div>
           <div className="mt-12 text-center">
             <Link href="/fleet" className="btn-black">
-              Explore the Full Fleet
+              {t("fleet.exploreFull")}
             </Link>
           </div>
         </Container>
@@ -312,24 +244,27 @@ export default async function AboutPage({ params }: PageProps) {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Why Apex"
-              title="Why Clients Choose Apex"
-              subtitle="The trust signals that bring clients back, booking after booking."
+              eyebrow={t("whyChoose.eyebrow")}
+              title={t("whyChoose.title")}
+              subtitle={t("whyChoose.subtitle")}
               tone="light"
             />
           </Reveal>
           <div className="mt-16 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {WHY_CLIENTS_CHOOSE.map((item, index) => (
-              <Reveal key={item.title} delay={Math.min(index * 80, 320)} className="flex gap-4">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold/25 bg-gold/10">
-                  <item.icon className="h-5 w-5 text-gold-deep" strokeWidth={1.5} />
-                </span>
-                <div>
-                  <h3 className="font-display text-lg text-obsidian">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-graphite">{item.description}</p>
-                </div>
-              </Reveal>
-            ))}
+            {whyChooseItems.map((item, index) => {
+              const Icon = WHY_CLIENTS_CHOOSE_ICONS[index];
+              return (
+                <Reveal key={item.title} delay={Math.min(index * 80, 320)} className="flex gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold/25 bg-gold/10">
+                    <Icon className="h-5 w-5 text-gold-deep" strokeWidth={1.5} />
+                  </span>
+                  <div>
+                    <h3 className="font-display text-lg text-obsidian">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-graphite">{item.description}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </Container>
       </Section>
@@ -339,8 +274,8 @@ export default async function AboutPage({ params }: PageProps) {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Client Words"
-              title="What Our Clients Say"
+              eyebrow={t("testimonials.eyebrow")}
+              title={t("testimonials.title")}
               tone="light"
             />
           </Reveal>
@@ -384,7 +319,7 @@ export default async function AboutPage({ params }: PageProps) {
                     </figcaption>
                     <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wide text-graphite">
                       <ShieldCheck className="h-3.5 w-3.5 text-gold-deep" strokeWidth={1.5} />
-                      Verified Client
+                      {t("testimonials.verifiedClient")}
                     </span>
                   </div>
                 </div>

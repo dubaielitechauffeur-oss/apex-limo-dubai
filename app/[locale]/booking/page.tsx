@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import BookingForm from "@/components/booking/BookingForm";
@@ -14,11 +14,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.booking" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Book a Chauffeur in Dubai",
-    description:
-      "Book a professional chauffeur in Dubai in minutes. Choose your vehicle, set your pickup and drop-off, and our team will confirm your reservation shortly.",
+    title: t("title"),
+    description: t("description"),
     path: "/booking",
   });
 }

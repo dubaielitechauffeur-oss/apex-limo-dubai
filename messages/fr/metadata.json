@@ -1,0 +1,72 @@
+{
+  "home": {
+    "title": "Service de chauffeur privé et limousine haut de gamme à Dubaï",
+    "description": "Transferts aéroport de luxe, services de chauffeur d'entreprise, transport VIP et déplacements pour cadres à travers Dubaï et les Émirats. Réservez un chauffeur professionnel en quelques minutes."
+  },
+  "fleet": {
+    "title": "Flotte de luxe | Mercedes, BMW, Range Rover et Rolls-Royce Phantom",
+    "description": "Découvrez la flotte Apex Limo à Dubaï : Mercedes Classe S, Mercedes Classe V, BMW Série 7, Cadillac Escalade, Range Rover Autobiography et Rolls-Royce Phantom. Réservez en ligne ou obtenez un devis instantané."
+  },
+  "fleetVehicle": {
+    "titleTemplate": "{name} | {category} avec chauffeur à Dubaï",
+    "descriptionTemplate": "Réservez la {name} avec un chauffeur professionnel à Dubaï. {description}",
+    "notFoundTitle": "Véhicule introuvable",
+    "notFoundDescription": "Ce véhicule est introuvable dans la flotte Apex Limo."
+  },
+  "services": {
+    "title": "Services de chauffeur à Dubaï",
+    "description": "Transferts aéroport, chauffeur d'entreprise, chauffeur de luxe, transport VIP, transport événementiel et chauffeur de mariage à travers Dubaï et les Émirats."
+  },
+  "service": {
+    "titleTemplate": "{name} à Dubaï",
+    "descriptionTemplate": "{shortDescription} Réservez en ligne ou obtenez un devis instantané auprès d'Apex Limo & Chauffeur Dubai.",
+    "notFoundTitle": "Service introuvable",
+    "notFoundDescription": "Ce service est introuvable."
+  },
+  "locations": {
+    "title": "Zones desservies à Dubaï",
+    "description": "Service de chauffeur disponible à Dubai Marina, Palm Jumeirah, Downtown Dubai, Business Bay, JBR et à l'aéroport international de Dubaï (DXB)."
+  },
+  "location": {
+    "titleTemplate": "Service de chauffeur à {name} | Dubaï",
+    "descriptionTemplate": "{shortDescription} Réservez en ligne ou obtenez un devis instantané auprès d'Apex Limo & Chauffeur Dubai.",
+    "notFoundTitle": "Zone introuvable",
+    "notFoundDescription": "Cette zone de service est introuvable."
+  },
+  "blog": {
+    "title": "Journal",
+    "description": "Conseils de voyage, guides sur les services de chauffeur, conseils pour les transferts aéroport, informations sur les voyages d'affaires et actualités sur le transport de luxe par Apex Limo & Chauffeur Dubai."
+  },
+  "blogPost": {
+    "notFoundTitle": "Article introuvable",
+    "notFoundDescription": "Cet article est introuvable dans le journal Apex Limo."
+  },
+  "about": {
+    "title": "À propos de nous",
+    "description": "Découvrez Apex Limo & Chauffeur Dubai — notre mission, nos valeurs, les normes de nos chauffeurs professionnels, notre flotte de luxe et les zones que nous desservons à travers Dubaï et les Émirats."
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "description": "Contactez Apex Limo & Chauffeur Dubai par téléphone, WhatsApp ou notre formulaire de contact. Disponibles 24h/24 et 7j/7 pour les réservations, comptes entreprise et demandes urgentes."
+  },
+  "faqs": {
+    "title": "Questions fréquentes",
+    "description": "Trouvez des réponses sur les services de chauffeur, les transferts aéroport, les tarifs, les réservations, les options de flotte et le transport de luxe à travers Dubaï et les Émirats."
+  },
+  "booking": {
+    "title": "Réserver un chauffeur à Dubaï",
+    "description": "Réservez un chauffeur professionnel à Dubaï en quelques minutes. Choisissez votre véhicule, indiquez votre lieu de prise en charge et de dépose, et notre équipe confirmera votre réservation sous peu."
+  },
+  "quote": {
+    "title": "Obtenir un devis instantané",
+    "description": "Obtenez un devis rapide et sans engagement pour des services de chauffeur, transfert aéroport ou transport VIP à Dubaï. Indiquez-nous les détails de votre trajet et nous vous répondrons rapidement."
+  },
+  "privacyPolicy": {
+    "title": "Politique de confidentialité",
+    "description": "Comment Apex Limo & Chauffeur Dubai collecte, utilise et protège les données personnelles des clients réservant des services de chauffeur, transferts aéroport, voyages d'affaires et transport événementiel à Dubaï et dans les Émirats."
+  },
+  "terms": {
+    "title": "Conditions générales",
+    "description": "Conditions générales d'Apex Limo & Chauffeur Dubai, couvrant les réservations, annulations, remboursements, paiements, services de chauffeur, responsabilités du client, responsabilité et disponibilité des services à Dubaï et dans les Émirats."
+  }
+}

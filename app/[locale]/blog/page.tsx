@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
@@ -16,11 +16,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.blog" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Journal",
-    description:
-      "Travel tips, chauffeur guides, airport transfer advice, business travel insights and luxury transportation updates from Apex Limo & Chauffeur Dubai.",
+    title: t("title"),
+    description: t("description"),
     path: "/blog",
   });
 }

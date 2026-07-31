@@ -4,9 +4,11 @@ import { LOCATIONS } from "./locations";
 
 export interface FaqCategory {
   key: string;
-  label: string;
-  /** Shown on a filter chip. Omit to keep a category out of the chip row (still visible under "All"). */
-  chipLabel?: string;
+  /** Whether this category shows a filter chip — its label and chip label
+   *  live in messages/{locale}/faqs.json, keyed by `key`. false keeps a
+   *  category out of the chip row while it's still visible/searchable
+   *  under "All". */
+  showChip: boolean;
 }
 
 export interface FaqHubEntry {
@@ -17,16 +19,16 @@ export interface FaqHubEntry {
 }
 
 export const FAQ_CATEGORIES: FaqCategory[] = [
-  { key: "booking", label: "Booking", chipLabel: "Booking" },
-  { key: "airport-transfers", label: "Airport Transfers", chipLabel: "Airport Transfers" },
-  { key: "pricing", label: "Pricing", chipLabel: "Pricing" },
-  { key: "fleet", label: "Fleet", chipLabel: "Fleet" },
-  { key: "corporate-travel", label: "Corporate Travel", chipLabel: "Corporate" },
-  { key: "wedding-chauffeurs", label: "Wedding Chauffeurs", chipLabel: "Wedding" },
-  { key: "vip-transportation", label: "VIP Transportation", chipLabel: "VIP" },
-  { key: "locations", label: "Locations", chipLabel: "Locations" },
-  { key: "safety", label: "Safety" },
-  { key: "general-questions", label: "General Questions" },
+  { key: "booking", showChip: true },
+  { key: "airport-transfers", showChip: true },
+  { key: "pricing", showChip: true },
+  { key: "fleet", showChip: true },
+  { key: "corporate-travel", showChip: true },
+  { key: "wedding-chauffeurs", showChip: true },
+  { key: "vip-transportation", showChip: true },
+  { key: "locations", showChip: true },
+  { key: "safety", showChip: false },
+  { key: "general-questions", showChip: false },
 ];
 
 /**

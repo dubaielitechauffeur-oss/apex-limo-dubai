@@ -1,0 +1,15 @@
+{
+  "allChip": "Alle",
+  "categories": {
+    "booking": { "label": "Buchung", "chipLabel": "Buchung" },
+    "airport-transfers": { "label": "Flughafentransfers", "chipLabel": "Flughafentransfers" },
+    "pricing": { "label": "Preise", "chipLabel": "Preise" },
+    "fleet": { "label": "Flotte", "chipLabel": "Flotte" },
+    "corporate-travel": { "label": "Geschäftsreisen", "chipLabel": "Firmen" },
+    "wedding-chauffeurs": { "label": "Hochzeits-Chauffeure", "chipLabel": "Hochzeit" },
+    "vip-transportation": { "label": "VIP-Transport", "chipLabel": "VIP" },
+    "locations": { "label": "Standorte", "chipLabel": "Standorte" },
+    "safety": { "label": "Sicherheit" },
+    "general-questions": { "label": "Allgemeine Fragen" }
+  }
+}

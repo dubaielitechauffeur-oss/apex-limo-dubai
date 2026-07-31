@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
@@ -13,11 +13,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.privacyPolicy" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Privacy Policy",
-    description:
-      "How Apex Limo & Chauffeur Dubai collects, uses, and protects the personal data of clients booking chauffeur, airport transfer, corporate travel, and event transportation services in Dubai and the UAE.",
+    title: t("title"),
+    description: t("description"),
     path: "/privacy-policy",
   });
 }

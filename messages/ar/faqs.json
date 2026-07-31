@@ -1,0 +1,15 @@
+{
+  "allChip": "الكل",
+  "categories": {
+    "booking": { "label": "الحجز", "chipLabel": "الحجز" },
+    "airport-transfers": { "label": "الاستقبال من المطار", "chipLabel": "الاستقبال من المطار" },
+    "pricing": { "label": "الأسعار", "chipLabel": "الأسعار" },
+    "fleet": { "label": "الأسطول", "chipLabel": "الأسطول" },
+    "corporate-travel": { "label": "السفر التجاري", "chipLabel": "الشركات" },
+    "wedding-chauffeurs": { "label": "سائقو حفلات الزفاف", "chipLabel": "الزفاف" },
+    "vip-transportation": { "label": "نقل كبار الشخصيات", "chipLabel": "كبار الشخصيات" },
+    "locations": { "label": "المواقع", "chipLabel": "المواقع" },
+    "safety": { "label": "السلامة" },
+    "general-questions": { "label": "أسئلة عامة" }
+  }
+}

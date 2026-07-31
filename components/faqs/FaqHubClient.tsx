@@ -1,19 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Search, ChevronDown } from "lucide-react";
 import Reveal from "@/components/shared/Reveal";
 import { ALL_FAQS, FAQ_CATEGORIES, type FaqHubEntry } from "@/data/faqHub";
 
-const CHIPS = [
-  { key: "all", chipLabel: "All" },
-  ...FAQ_CATEGORIES.filter((c) => c.chipLabel).map((c) => ({ key: c.key, chipLabel: c.chipLabel! })),
-];
+const CHIP_KEYS = ["all", ...FAQ_CATEGORIES.filter((c) => c.showChip).map((c) => c.key)];
 
 const SUGGESTION_LIMIT = 8;
 const HIGHLIGHT_DURATION_MS = 1800;
 
 export default function FaqHubClient() {
+  const t = useTranslations("faqs");
   const [query, setQuery] = useState("");
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -136,20 +135,20 @@ export default function FaqHubClient() {
 
       {/* Category filter chips */}
       <Reveal delay={100} className="mt-8 flex flex-wrap justify-center gap-3">
-        {CHIPS.map((chip) => {
-          const isActive = activeCategory === chip.key;
+        {CHIP_KEYS.map((key) => {
+          const isActive = activeCategory === key;
           return (
             <button
-              key={chip.key}
+              key={key}
               type="button"
-              onClick={() => setActiveCategory(chip.key)}
+              onClick={() => setActiveCategory(key)}
               className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wide transition-colors duration-200 ${
                 isActive
                   ? "bg-[#C9A14A] text-black"
                   : "border border-[rgba(201,161,74,0.2)] bg-[#111111] text-[#B8B8B8] hover:bg-[rgba(201,161,74,0.08)]"
               }`}
             >
-              {chip.chipLabel}
+              {key === "all" ? t("allChip") : t(`categories.${key}.chipLabel`)}
             </button>
           );
         })}
@@ -163,7 +162,9 @@ export default function FaqHubClient() {
         {FAQ_CATEGORIES.filter((cat) => groupedFaqs.has(cat.key)).map((cat, index) => (
           <Reveal key={cat.key} delay={Math.min(index * 60, 240)} as="div">
             {activeCategory === "all" ? (
-              <h2 className="font-display text-2xl text-white sm:text-3xl">{cat.label}</h2>
+              <h2 className="font-display text-2xl text-white sm:text-3xl">
+                {t(`categories.${cat.key}.label`)}
+              </h2>
             ) : null}
             <div className={activeCategory === "all" ? "mt-6 space-y-3" : "space-y-3"}>
               {(groupedFaqs.get(cat.key) ?? []).map((entry) => {

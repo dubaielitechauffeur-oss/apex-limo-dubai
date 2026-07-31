@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Hero from "@/components/home/Hero";
 import FeatureStrip from "@/components/home/FeatureStrip";
@@ -21,11 +21,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.home" });
   return buildMetadata({
     locale: locale as Locale,
-    title: "Premium Chauffeur & Limousine Service in Dubai",
-    description:
-      "Luxury airport transfers, corporate chauffeur services, VIP transportation and executive travel across Dubai and the UAE. Book a professional chauffeur in minutes.",
+    title: t("title"),
+    description: t("description"),
     path: "/",
   });
 }

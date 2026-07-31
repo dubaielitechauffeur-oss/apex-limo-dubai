@@ -1,0 +1,87 @@
+{
+  "hero": {
+    "eyebrow": "Contact Apex Limo",
+    "title": "Let's Plan Your Next Journey",
+    "subtitle": "Whether you need airport transfers, corporate travel, VIP transportation or a luxury chauffeur for a special occasion, our team is available 24/7."
+  },
+  "trustBadges": ["24/7 Availability", "Professional Chauffeurs", "Luxury Fleet", "Instant WhatsApp Support"],
+  "quickContact": {
+    "eyebrow": "Get In Touch",
+    "title": "Quick Contact Options",
+    "cards": [
+      { "label": "Call Us", "description": "Speak with our team directly, 24 hours a day, every day of the year.", "cta": "Call Now" },
+      { "label": "WhatsApp", "detail": "Instant response", "description": "The fastest way to reach us — most messages are answered within minutes.", "cta": "Message Us" },
+      { "label": "Email Us", "description": "For detailed enquiries, corporate accounts, or documentation requests.", "cta": "Send Email" }
+    ]
+  },
+  "form": {
+    "eyebrow": "Send a Message",
+    "title": "Tell Us About Your Journey",
+    "panelTitle": "Send a Message",
+    "intro": "This form isn't connected to email yet — for an immediate response, please use WhatsApp or call us using the details alongside.",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "e.g. James Carter",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "emailPlaceholder": "you@company.com",
+    "subject": "Subject",
+    "subjectPlaceholder": "e.g. Corporate account enquiry",
+    "message": "Message",
+    "messagePlaceholder": "How can we help?",
+    "submit": "Send Message",
+    "disclaimer": "This form doesn't send yet — for now, please reach us via WhatsApp or phone."
+  },
+  "sidebar": {
+    "responseTime": "Under 15 Min",
+    "responseTimeLabel": "Average Response Time",
+    "emergencyLabel": "Emergency Support",
+    "reachUsDirectly": "Reach Us Directly",
+    "whatsappUs": "WhatsApp Us",
+    "address": "Dubai, United Arab Emirates",
+    "callCta": "Call",
+    "operatingHours": "Operating Hours",
+    "chauffeurService": "Chauffeur & Booking Service",
+    "supportOffice": "Customer Support Office",
+    "supportHours": "8:00 AM – 10:00 PM (GST)",
+    "hoursDisclaimer": "Bookings and urgent requests are handled around the clock, every day of the year, including public holidays.",
+    "urgentWhatsapp": "Need a chauffeur right now? WhatsApp us."
+  },
+  "serviceAreas": {
+    "eyebrow": "Service Areas",
+    "title": "Areas We Serve",
+    "subtitle": "Chauffeur service available across Dubai's most important business, leisure and residential destinations."
+  },
+  "whyContact": {
+    "eyebrow": "Why Apex",
+    "title": "Why Clients Contact Apex",
+    "items": [
+      { "title": "10+ Years Experience", "description": "A decade of chauffeur-driven service across Dubai and the UAE." },
+      { "title": "24/7 Availability", "description": "Bookings, questions, and urgent requests handled around the clock." },
+      { "title": "Professional Chauffeurs", "description": "Licensed, background-checked, and trained in etiquette and discretion." },
+      { "title": "Luxury Fleet", "description": "From executive sedans to the Rolls-Royce Phantom, maintained to the highest standard." },
+      { "title": "Fast Response Times", "description": "WhatsApp messages are typically answered within minutes, not hours." },
+      { "title": "Premium Customer Support", "description": "A dedicated team that treats every enquiry like a VIP request." }
+    ]
+  },
+  "faqSection": {
+    "eyebrow": "Common Questions",
+    "title": "Contact FAQs"
+  },
+  "faqs": [
+    { "question": "How quickly will I get a response?", "answer": "WhatsApp messages are typically answered within minutes. Phone calls are answered live 24/7. Contact form enquiries are answered within a few hours." },
+    { "question": "Can I book a chauffeur for right now?", "answer": "Yes — for urgent, same-hour requests, WhatsApp or call us directly rather than using the online form. We'll confirm availability immediately." },
+    { "question": "How do I set up a corporate account?", "answer": "WhatsApp or call us with your company details and typical travel needs, and our team will set up a standing account with invoicing." },
+    { "question": "Can I change or cancel a booking through this page?", "answer": "For changes to an existing booking, WhatsApp or call us directly with your reference number — it's the fastest way to update a live booking." },
+    { "question": "What information should I include when I message you on WhatsApp?", "answer": "Your pickup and drop-off locations, date and time, number of passengers, and your preferred vehicle — the more detail you share upfront, the faster we can confirm." },
+    { "question": "Can I request a specific vehicle when contacting you?", "answer": "Yes, mention your preferred vehicle when you contact us and we'll confirm availability along with your booking." },
+    { "question": "Do you respond to enquiries from outside the UAE?", "answer": "Yes, we respond to enquiries from anywhere — many of our bookings are made by travelers before they even land in Dubai." },
+    { "question": "Is support available in languages other than English?", "answer": "Yes, several of our team members and chauffeurs are multilingual — let us know your preferred language when you reach out." },
+    { "question": "Can I request a callback instead of messaging first?", "answer": "Yes, leave your number via WhatsApp or the contact form and our team will call you back directly." },
+    { "question": "Do you charge for a quote or consultation?", "answer": "No, quotes and consultations are completely free — you only pay once a booking is confirmed." }
+  ],
+  "finalCta": {
+    "eyebrow": "We're Here to Help",
+    "heading": "Need a Chauffeur Today?",
+    "subtitle": "Book online, get an instant quote, or message us on WhatsApp — our team is ready around the clock."
+  }
+}

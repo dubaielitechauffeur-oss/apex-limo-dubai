@@ -11,7 +11,7 @@ import BlogImageFrame from "@/components/blog/BlogImageFrame";
 import BlogArticleContent from "@/components/blog/BlogArticleContent";
 import BlogCard from "@/components/blog/BlogCard";
 import BookingCTA from "@/components/home/BookingCTA";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, articleJsonLd, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/format";
@@ -31,11 +31,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const post = getBlogPostBySlug(slug);
 
   if (!post) {
+    const t = await getTranslations({ locale: locale as Locale, namespace: "metadata.blogPost" });
     return {
       ...buildMetadata({
         locale: locale as Locale,
-        title: "Article Not Found",
-        description: "This article could not be found on the Apex Limo journal.",
+        title: t("notFoundTitle"),
+        description: t("notFoundDescription"),
         path: `/blog/${slug}`,
       }),
       robots: { index: false, follow: false },

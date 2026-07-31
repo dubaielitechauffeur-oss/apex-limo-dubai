@@ -30,7 +30,7 @@ import OtherServicesGrid from "@/components/services/OtherServicesGrid";
 import CoverageBlock from "@/components/shared/CoverageBlock";
 import ServiceFaqSection from "@/components/services/ServiceFaqSection";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
@@ -68,20 +68,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, service: slug } = await params;
   const service = SERVICES.find((s) => s.slug === slug);
+  const t = await getTranslations({ locale, namespace: "metadata.service" });
 
   if (!service) {
     return buildMetadata({
       locale: locale as Locale,
-      title: "Service Not Found",
-      description: "This service could not be found.",
+      title: t("notFoundTitle"),
+      description: t("notFoundDescription"),
       path: `/services/${slug}`,
     });
   }
 
   return buildMetadata({
     locale: locale as Locale,
-    title: `${service.name} in Dubai`,
-    description: `${service.shortDescription} Book online or get an instant quote from Apex Limo & Chauffeur Dubai.`,
+    title: t("titleTemplate", { name: service.name }),
+    description: t("descriptionTemplate", { shortDescription: service.shortDescription }),
     path: `/services/${service.slug}`,
   });
 }

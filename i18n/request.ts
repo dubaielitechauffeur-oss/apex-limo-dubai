@@ -3,9 +3,9 @@ import { routing } from "./routing";
 
 /**
  * Per-request message loading. Namespaces are added here as later phases
- * introduce them (fleet/services/locations/blog/forms/metadata) — "common"
- * (nav/footer/CTA/misc chrome) shipped in Phase A, "home" is the first
- * Phase B addition.
+ * introduce them (fleet/locations/blog/forms) — "common" (nav/footer/CTA/
+ * misc chrome) shipped in Phase A; "home", "services", "about", "contact",
+ * "faqs", "metadata" are Phase B additions.
  */
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale;
@@ -13,9 +13,14 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
-  const [common, home] = await Promise.all([
+  const [common, home, services, about, contact, faqs, metadata] = await Promise.all([
     import(`../messages/${locale}/common.json`).then((m) => m.default),
     import(`../messages/${locale}/home.json`).then((m) => m.default),
+    import(`../messages/${locale}/services.json`).then((m) => m.default),
+    import(`../messages/${locale}/about.json`).then((m) => m.default),
+    import(`../messages/${locale}/contact.json`).then((m) => m.default),
+    import(`../messages/${locale}/faqs.json`).then((m) => m.default),
+    import(`../messages/${locale}/metadata.json`).then((m) => m.default),
   ]);
 
   return {
@@ -23,6 +28,11 @@ export default getRequestConfig(async ({ requestLocale }) => {
     messages: {
       common,
       home,
+      services,
+      about,
+      contact,
+      faqs,
+      metadata,
     },
   };
 });

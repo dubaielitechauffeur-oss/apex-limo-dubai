@@ -1,0 +1,87 @@
+{
+  "hero": {
+    "eyebrow": "联系Apex Limo",
+    "title": "让我们规划您的下一次出行",
+    "subtitle": "无论您需要机场接送、商务出行、VIP专车服务,还是为特殊场合安排的豪华专属司机,我们的团队全天候为您服务。"
+  },
+  "trustBadges": ["全天候服务", "专业司机", "豪华车队", "即时WhatsApp支持"],
+  "quickContact": {
+    "eyebrow": "联系我们",
+    "title": "快捷联系方式",
+    "cards": [
+      { "label": "致电我们", "description": "全天24小时、全年无休,直接与我们的团队沟通。", "cta": "立即致电" },
+      { "label": "WhatsApp", "detail": "即时回复", "description": "联系我们最快捷的方式——大多数消息会在几分钟内得到回复。", "cta": "发送消息" },
+      { "label": "发送邮件联系我们", "description": "用于详细咨询、企业账户或文件申请事宜。", "cta": "发送邮件" }
+    ]
+  },
+  "form": {
+    "eyebrow": "发送消息",
+    "title": "告诉我们您的行程需求",
+    "panelTitle": "发送消息",
+    "intro": "此表单目前尚未连接电子邮件——如需立即回复,请通过WhatsApp或使用旁边的联系方式致电我们。",
+    "fullName": "姓名",
+    "fullNamePlaceholder": "例如:James Carter",
+    "phoneNumber": "电话号码",
+    "email": "电子邮箱",
+    "emailPlaceholder": "you@company.com",
+    "subject": "主题",
+    "subjectPlaceholder": "例如:企业账户咨询",
+    "message": "留言内容",
+    "messagePlaceholder": "我们能为您提供什么帮助?",
+    "submit": "发送消息",
+    "disclaimer": "此表单目前尚无法发送——请暂时通过WhatsApp或电话与我们联系。"
+  },
+  "sidebar": {
+    "responseTime": "15分钟以内",
+    "responseTimeLabel": "平均响应时间",
+    "emergencyLabel": "紧急支援",
+    "reachUsDirectly": "直接联系我们",
+    "whatsappUs": "通过WhatsApp联系我们",
+    "address": "迪拜,阿拉伯联合酋长国",
+    "callCta": "致电",
+    "operatingHours": "营业时间",
+    "chauffeurService": "司机与预订服务",
+    "supportOffice": "客户支持办公室",
+    "supportHours": "上午8:00至晚上10:00(海湾标准时间)",
+    "hoursDisclaimer": "预订及紧急需求全天候处理,全年无休,包括公共假期。",
+    "urgentWhatsapp": "现在就需要用车?通过WhatsApp联系我们。"
+  },
+  "serviceAreas": {
+    "eyebrow": "服务区域",
+    "title": "我们的服务范围",
+    "subtitle": "专属司机服务覆盖迪拜最重要的商务、休闲及住宅目的地。"
+  },
+  "whyContact": {
+    "eyebrow": "为何选择Apex",
+    "title": "客户为何联系Apex",
+    "items": [
+      { "title": "十年以上从业经验", "description": "十余年来在迪拜及阿联酋提供专属司机服务。" },
+      { "title": "全天候服务", "description": "预订、咨询及紧急需求均可全天候处理。" },
+      { "title": "专业司机", "description": "持证上岗、经过背景审查,并接受礼仪与保密培训。" },
+      { "title": "豪华车队", "description": "从行政轿车到劳斯莱斯幻影,均按最高标准维护保养。" },
+      { "title": "快速响应", "description": "WhatsApp消息通常在几分钟内(而非几小时)得到回复。" },
+      { "title": "尊享客户支持", "description": "专属团队以对待VIP需求的态度处理每一次咨询。" }
+    ]
+  },
+  "faqSection": {
+    "eyebrow": "常见问题",
+    "title": "联系相关常见问题"
+  },
+  "faqs": [
+    { "question": "多久能收到回复?", "answer": "WhatsApp消息通常在几分钟内得到回复。电话咨询全天候实时接听。联系表单咨询将在几小时内得到回复。" },
+    { "question": "我现在可以预订司机吗?", "answer": "可以——如需紧急的当时段预订,请直接通过WhatsApp或电话联系我们,而非使用在线表单。我们会立即确认车辆情况。" },
+    { "question": "如何开设企业账户?", "answer": "请通过WhatsApp或电话告知我们贵公司信息及日常出行需求,我们的团队将为您开设长期账户并提供发票服务。" },
+    { "question": "我可以通过此页面更改或取消预订吗?", "answer": "如需更改现有预订,请直接通过WhatsApp或电话联系我们并提供预订编号——这是更新现有预订最快捷的方式。" },
+    { "question": "通过WhatsApp联系时应提供哪些信息?", "answer": "接送地点、日期及时间、乘客人数以及偏好车型——提前提供的信息越详细,我们确认得就越快。" },
+    { "question": "联系时可以指定车型吗?", "answer": "可以,联系我们时请告知您偏好的车型,我们将在确认预订的同时确认车辆可用性。" },
+    { "question": "贵公司是否回复来自阿联酋境外的咨询?", "answer": "是的,我们接受来自世界各地的咨询——许多客户在抵达迪拜之前就已完成预订。" },
+    { "question": "是否提供英语以外的语言支持?", "answer": "是的,我们的多位团队成员及司机会说多种语言——联系时请告知您偏好的语言。" },
+    { "question": "我可以请求回电而非先发消息吗?", "answer": "可以,请通过WhatsApp或联系表单留下您的号码,我们的团队会直接回电给您。" },
+    { "question": "报价或咨询是否收费?", "answer": "不收费,报价与咨询完全免费——只有在预订确认后才需付款。" }
+  ],
+  "finalCta": {
+    "eyebrow": "我们随时为您提供帮助",
+    "heading": "今天就需要用车?",
+    "subtitle": "立即在线预订、获取即时报价,或通过WhatsApp联系我们——我们的团队全天候待命。"
+  }
+}

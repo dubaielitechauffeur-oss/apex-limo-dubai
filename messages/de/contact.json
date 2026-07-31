@@ -1,0 +1,87 @@
+{
+  "hero": {
+    "eyebrow": "Kontaktieren Sie Apex Limo",
+    "title": "Planen wir Ihre nächste Reise",
+    "subtitle": "Ob Flughafentransfer, Geschäftsreise, VIP-Transport oder ein Luxus-Chauffeur für einen besonderen Anlass — unser Team ist rund um die Uhr für Sie da."
+  },
+  "trustBadges": ["Rund um die Uhr verfügbar", "Professionelle Chauffeure", "Luxusflotte", "Sofortiger WhatsApp-Support"],
+  "quickContact": {
+    "eyebrow": "Kontakt aufnehmen",
+    "title": "Schnelle Kontaktmöglichkeiten",
+    "cards": [
+      { "label": "Rufen Sie uns an", "description": "Sprechen Sie direkt mit unserem Team, 24 Stunden am Tag, jeden Tag im Jahr.", "cta": "Jetzt anrufen" },
+      { "label": "WhatsApp", "detail": "Sofortige Antwort", "description": "Der schnellste Weg, uns zu erreichen — die meisten Nachrichten werden innerhalb weniger Minuten beantwortet.", "cta": "Nachricht senden" },
+      { "label": "Schreiben Sie uns eine E-Mail", "description": "Für detaillierte Anfragen, Firmenkonten oder Dokumentanfragen.", "cta": "E-Mail senden" }
+    ]
+  },
+  "form": {
+    "eyebrow": "Nachricht senden",
+    "title": "Erzählen Sie uns von Ihrer Reise",
+    "panelTitle": "Nachricht senden",
+    "intro": "Dieses Formular ist noch nicht mit einer E-Mail verbunden — für eine sofortige Antwort nutzen Sie bitte WhatsApp oder rufen Sie uns über die nebenstehenden Kontaktdaten an.",
+    "fullName": "Vollständiger Name",
+    "fullNamePlaceholder": "z. B. James Carter",
+    "phoneNumber": "Telefonnummer",
+    "email": "E-Mail",
+    "emailPlaceholder": "you@company.com",
+    "subject": "Betreff",
+    "subjectPlaceholder": "z. B. Anfrage zu Firmenkonto",
+    "message": "Nachricht",
+    "messagePlaceholder": "Wie können wir Ihnen helfen?",
+    "submit": "Nachricht senden",
+    "disclaimer": "Dieses Formular versendet noch keine Nachrichten — bitte kontaktieren Sie uns vorerst über WhatsApp oder Telefon."
+  },
+  "sidebar": {
+    "responseTime": "Unter 15 Min.",
+    "responseTimeLabel": "Durchschnittliche Antwortzeit",
+    "emergencyLabel": "Notfall-Support",
+    "reachUsDirectly": "Direkt erreichbar",
+    "whatsappUs": "Auf WhatsApp schreiben",
+    "address": "Dubai, Vereinigte Arabische Emirate",
+    "callCta": "Anrufen",
+    "operatingHours": "Geschäftszeiten",
+    "chauffeurService": "Chauffeur- & Buchungsservice",
+    "supportOffice": "Kundensupport-Büro",
+    "supportHours": "8:00 – 22:00 Uhr (Golfzeit)",
+    "hoursDisclaimer": "Buchungen und dringende Anfragen werden rund um die Uhr bearbeitet, an jedem Tag des Jahres, auch an Feiertagen.",
+    "urgentWhatsapp": "Brauchen Sie sofort einen Chauffeur? Schreiben Sie uns auf WhatsApp."
+  },
+  "serviceAreas": {
+    "eyebrow": "Einsatzgebiete",
+    "title": "Gebiete, die wir bedienen",
+    "subtitle": "Chauffeurservice verfügbar in den wichtigsten Geschäfts-, Freizeit- und Wohngebieten Dubais."
+  },
+  "whyContact": {
+    "eyebrow": "Warum Apex",
+    "title": "Warum Kunden Apex kontaktieren",
+    "items": [
+      { "title": "Über 10 Jahre Erfahrung", "description": "Ein Jahrzehnt Chauffeurservice in ganz Dubai und den VAE." },
+      { "title": "Rund um die Uhr verfügbar", "description": "Buchungen, Fragen und dringende Anfragen werden jederzeit bearbeitet." },
+      { "title": "Professionelle Chauffeure", "description": "Lizenziert, hintergrundgeprüft und geschult in Etikette und Diskretion." },
+      { "title": "Luxusflotte", "description": "Von Business-Limousinen bis zum Rolls-Royce Phantom, nach höchsten Standards gepflegt." },
+      { "title": "Schnelle Reaktionszeiten", "description": "WhatsApp-Nachrichten werden meist innerhalb von Minuten beantwortet, nicht Stunden." },
+      { "title": "Erstklassiger Kundensupport", "description": "Ein engagiertes Team, das jede Anfrage wie eine VIP-Anfrage behandelt." }
+    ]
+  },
+  "faqSection": {
+    "eyebrow": "Häufige Fragen",
+    "title": "Kontakt-FAQs"
+  },
+  "faqs": [
+    { "question": "Wie schnell erhalte ich eine Antwort?", "answer": "WhatsApp-Nachrichten werden in der Regel innerhalb weniger Minuten beantwortet. Telefonanrufe werden rund um die Uhr live entgegengenommen. Anfragen über das Kontaktformular werden innerhalb weniger Stunden beantwortet." },
+    { "question": "Kann ich sofort einen Chauffeur buchen?", "answer": "Ja — für dringende Anfragen innerhalb der Stunde kontaktieren Sie uns direkt per WhatsApp oder Telefon, anstatt das Online-Formular zu nutzen. Wir bestätigen die Verfügbarkeit umgehend." },
+    { "question": "Wie richte ich ein Firmenkonto ein?", "answer": "Kontaktieren Sie uns per WhatsApp oder Telefon mit Ihren Firmendaten und typischen Reisebedürfnissen, und unser Team richtet ein dauerhaftes Konto mit Rechnungsstellung ein." },
+    { "question": "Kann ich eine Buchung über diese Seite ändern oder stornieren?", "answer": "Für Änderungen an einer bestehenden Buchung kontaktieren Sie uns direkt per WhatsApp oder Telefon mit Ihrer Referenznummer — das ist der schnellste Weg, eine laufende Buchung zu aktualisieren." },
+    { "question": "Welche Informationen sollte ich bei einer WhatsApp-Nachricht angeben?", "answer": "Ihre Abhol- und Zielorte, Datum und Uhrzeit, Anzahl der Passagiere und Ihr bevorzugtes Fahrzeug — je mehr Details Sie im Voraus angeben, desto schneller können wir bestätigen." },
+    { "question": "Kann ich bei der Kontaktaufnahme ein bestimmtes Fahrzeug anfragen?", "answer": "Ja, teilen Sie uns Ihr bevorzugtes Fahrzeug bei der Kontaktaufnahme mit, und wir bestätigen die Verfügbarkeit zusammen mit Ihrer Buchung." },
+    { "question": "Beantworten Sie Anfragen von außerhalb der VAE?", "answer": "Ja, wir beantworten Anfragen von überall — viele unserer Buchungen werden von Reisenden getätigt, noch bevor sie in Dubai landen." },
+    { "question": "Ist Support in anderen Sprachen als Englisch verfügbar?", "answer": "Ja, mehrere unserer Teammitglieder und Chauffeure sind mehrsprachig — teilen Sie uns bei der Kontaktaufnahme Ihre bevorzugte Sprache mit." },
+    { "question": "Kann ich einen Rückruf anfragen, anstatt zuerst zu schreiben?", "answer": "Ja, hinterlassen Sie Ihre Nummer über WhatsApp oder das Kontaktformular, und unser Team ruft Sie direkt zurück." },
+    { "question": "Berechnen Sie Gebühren für ein Angebot oder eine Beratung?", "answer": "Nein, Angebote und Beratungen sind völlig kostenlos — Sie zahlen erst, wenn eine Buchung bestätigt ist." }
+  ],
+  "finalCta": {
+    "eyebrow": "Wir sind für Sie da",
+    "heading": "Brauchen Sie heute einen Chauffeur?",
+    "subtitle": "Buchen Sie online, holen Sie ein Sofortangebot ein oder schreiben Sie uns auf WhatsApp — unser Team ist rund um die Uhr bereit."
+  }
+}
