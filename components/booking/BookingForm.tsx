@@ -9,7 +9,8 @@ import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { FLEET } from "@/data/fleet";
 import { LOCATIONS } from "@/data/locations";
-import { SERVICES, getWhatsAppLink } from "@/lib/constants";
+import { SERVICES } from "@/data/services";
+import { getWhatsAppLink } from "@/lib/constants";
 import type { BookingFormData } from "@/lib/types";
 import { validateBookingForm, hasErrors, type FormErrors } from "@/lib/validation";
 

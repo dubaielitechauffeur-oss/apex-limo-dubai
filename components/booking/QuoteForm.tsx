@@ -7,9 +7,10 @@ import FormField from "@/components/shared/FormField";
 import FormSectionHeading from "@/components/shared/FormSectionHeading";
 import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
-import { SERVICES, getWhatsAppLink } from "@/lib/constants";
+import { getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { LOCATIONS } from "@/data/locations";
+import { SERVICES } from "@/data/services";
 import type { QuoteFormData } from "@/lib/types";
 import { validateQuoteForm, hasErrors, type FormErrors } from "@/lib/validation";
 

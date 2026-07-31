@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { SITE } from "./constants";
 import { routing, type Locale } from "@/i18n/routing";
-import type { FAQ } from "@/data/faqs";
 
 /** Open Graph locale tags per site locale (BCP-47-ish, underscore form OG expects). */
 const OG_LOCALE_MAP: Record<Locale, string> = {
@@ -235,8 +234,19 @@ export function articleJsonLd({ locale, title, description, image, publishDate, 
   };
 }
 
-/** FAQPage JSON-LD, built from the site's FAQ data for rich-result eligibility. */
-export function faqJsonLd(faqs: FAQ[]) {
+interface PlainFaqEntry {
+  question: string;
+  answer: string;
+}
+
+/**
+ * FAQPage JSON-LD, built from the site's FAQ data for rich-result
+ * eligibility. Takes already-locale-resolved plain strings — callers
+ * pull from whichever data source (fleet/services/locations/faqHub/etc.)
+ * and resolve to the current locale before passing them in here, so this
+ * function stays decoupled from any one data file's schema.
+ */
+export function faqJsonLd(faqs: PlainFaqEntry[]) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",

@@ -73,45 +73,6 @@ export const NAV_LINKS = [
   { key: "contact", href: "/contact" },
 ] as const;
 
-export const SERVICES = [
-  {
-    slug: "airport-transfers",
-    name: "Airport Transfers",
-    description:
-      "Meet-and-greet arrivals and punctual departures at DXB and DWC, with flight tracking built in.",
-  },
-  {
-    slug: "corporate-chauffeur",
-    name: "Corporate Chauffeur Service",
-    description:
-      "Reliable, discreet transport for executives and business travel across the UAE.",
-  },
-  {
-    slug: "luxury-chauffeur",
-    name: "Luxury Chauffeur Service",
-    description:
-      "A premium fleet and professionally trained drivers for everyday luxury travel.",
-  },
-  {
-    slug: "vip-transportation",
-    name: "VIP Transportation",
-    description:
-      "Private, secure transport for high-profile guests, delegations, and dignitaries.",
-  },
-  {
-    slug: "event-transportation",
-    name: "Event Transportation",
-    description:
-      "Coordinated fleets for conferences, galas, and large-scale corporate events.",
-  },
-  {
-    slug: "wedding-chauffeur",
-    name: "Wedding Chauffeur Service",
-    description:
-      "Elegant bridal cars and coordinated convoys for a flawless wedding day.",
-  },
-] as const;
-
 /**
  * Marketing-facing fleet size used in copy across the site (hero, fleet
  * page, about page, homepage carousel). Kept distinct from FLEET.length —

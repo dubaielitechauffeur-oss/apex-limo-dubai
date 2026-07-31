@@ -13,7 +13,7 @@ import Testimonials from "@/components/home/Testimonials";
 import FAQSection from "@/components/home/FAQSection";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd } from "@/lib/seo";
-import { FAQS } from "@/data/faqs";
+import { getFaqs } from "@/data/faqs";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -38,7 +38,7 @@ export default async function Home({ params }: PageProps) {
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(FAQS)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(getFaqs(locale as Locale))) }}
       />
       <Hero />
       <FeatureStrip />

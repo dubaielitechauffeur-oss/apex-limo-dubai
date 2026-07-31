@@ -5,11 +5,11 @@ import ApexLogo from "./ApexLogo";
 import Ltr from "@/components/shared/Ltr";
 import {
   NAV_LINKS,
-  SERVICES,
   SITE,
   getPhoneLink,
   getWhatsAppLink,
 } from "@/lib/constants";
+import { SERVICES } from "@/data/services";
 
 /** Curated footer order, mirroring the homepage LocationsShowcase pattern —
  *  "Jumeirah" links to the existing JBR page. `key` resolves its label from

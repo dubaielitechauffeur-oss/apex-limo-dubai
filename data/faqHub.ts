@@ -1,4 +1,4 @@
-import { FAQS as HOME_FAQS } from "./faqs";
+import { getFaqs } from "./faqs";
 import { SERVICES } from "./services";
 import { LOCATIONS } from "./locations";
 
@@ -750,7 +750,9 @@ const locationFaqs: FaqHubEntry[] = LOCATIONS.flatMap((location) =>
   }))
 );
 
-const homeFaqs: FaqHubEntry[] = HOME_FAQS.map((faq, index) => ({
+// English only for now — this whole hub isn't locale-aware yet (a later
+// Phase B step), so it matches every other not-yet-migrated data source.
+const homeFaqs: FaqHubEntry[] = getFaqs("en").map((faq, index) => ({
   id: `home-${index}`,
   category: HOME_CATEGORY_ORDER[index] ?? "general-questions",
   question: faq.question,
