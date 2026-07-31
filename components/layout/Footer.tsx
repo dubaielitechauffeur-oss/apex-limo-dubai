@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Container from "@/components/shared/Container";
 import ApexLogo from "./ApexLogo";
 import Ltr from "@/components/shared/Ltr";
@@ -9,7 +9,8 @@ import {
   getPhoneLink,
   getWhatsAppLink,
 } from "@/lib/constants";
-import { SERVICES } from "@/data/services";
+import { getAllServices } from "@/data/services";
+import type { Locale } from "@/i18n/routing";
 
 /** Curated footer order, mirroring the homepage LocationsShowcase pattern —
  *  "Jumeirah" links to the existing JBR page. `key` resolves its label from
@@ -24,7 +25,9 @@ const FOOTER_LOCATIONS = [
 ];
 
 export default async function Footer() {
+  const locale = (await getLocale()) as Locale;
   const t = await getTranslations("common");
+  const services = getAllServices(locale);
   const year = new Date().getFullYear();
 
   return (
@@ -60,7 +63,7 @@ export default async function Footer() {
           <div>
             <h3 className="label-eyebrow mb-5">{t("footer.services")}</h3>
             <ul className="flex flex-col gap-3">
-              {SERVICES.map((service) => (
+              {services.map((service) => (
                 <li key={service.slug}>
                   <Link
                     href={`/services/${service.slug}`}

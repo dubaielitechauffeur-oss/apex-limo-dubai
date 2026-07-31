@@ -10,7 +10,6 @@ import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { LOCATIONS } from "@/data/locations";
-import { SERVICES } from "@/data/services";
 import type { QuoteFormData } from "@/lib/types";
 import { validateQuoteForm, hasErrors, type FormErrors } from "@/lib/validation";
 
@@ -27,6 +26,15 @@ const EMPTY_FORM: QuoteFormData = {
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+/** Trimmed, locale-resolved service data — just enough for the dropdown and
+ *  ?service= prefill, so the client bundle doesn't ship every locale's full
+ *  service content (descriptions, FAQs, etc.) that a Server Component parent
+ *  already localized via getAllServices(). */
+export interface ServiceOption {
+  slug: string;
+  name: string;
+}
+
 /** Turns a URL slug like "airport-transfers" into "Airport Transfers" as a readable fallback. */
 function prettifySlug(slug: string): string {
   return slug
@@ -41,7 +49,8 @@ function prettifySlug(slug: string): string {
  * possible so select fields land on a valid option rather than a blank one.
  */
 function buildInitialQuoteForm(
-  searchParams: ReturnType<typeof useSearchParams>
+  searchParams: ReturnType<typeof useSearchParams>,
+  services: ServiceOption[]
 ): QuoteFormData {
   const form: QuoteFormData = { ...EMPTY_FORM };
 
@@ -53,7 +62,7 @@ function buildInitialQuoteForm(
 
   const serviceSlug = searchParams.get("service");
   if (serviceSlug) {
-    const service = SERVICES.find((s) => s.slug === serviceSlug);
+    const service = services.find((s) => s.slug === serviceSlug);
     if (service) form.serviceType = service.name;
   }
 
@@ -76,10 +85,10 @@ function QuoteFormSkeleton() {
   );
 }
 
-function QuoteFormFields() {
+function QuoteFormFields({ services }: { services: ServiceOption[] }) {
   const searchParams = useSearchParams();
   const [form, setForm] = useState<QuoteFormData>(() =>
-    buildInitialQuoteForm(searchParams)
+    buildInitialQuoteForm(searchParams, services)
   );
   const [errors, setErrors] = useState<FormErrors<QuoteFormData>>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -273,7 +282,7 @@ function QuoteFormFields() {
             className={`field-input ${errors.serviceType ? "field-input-error" : ""}`}
           >
             <option value="">Select a service</option>
-            {SERVICES.map((service) => (
+            {services.map((service) => (
               <option key={service.slug} value={service.name}>
                 {service.name}
               </option>
@@ -381,10 +390,10 @@ function QuoteFormFields() {
  * during static rendering — keeping the boundary inside this file means
  * app/quote/page.tsx doesn't need to know about it.
  */
-export default function QuoteForm() {
+export default function QuoteForm({ services }: { services: ServiceOption[] }) {
   return (
     <Suspense fallback={<QuoteFormSkeleton />}>
-      <QuoteFormFields />
+      <QuoteFormFields services={services} />
     </Suspense>
   );
 }

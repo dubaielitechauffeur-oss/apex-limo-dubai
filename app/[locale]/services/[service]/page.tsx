@@ -34,7 +34,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
-import { SERVICES } from "@/data/services";
+import { SERVICES, getAllServices, getServiceBySlug, type PlainService } from "@/data/services";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForService } from "@/lib/cross-links";
 
@@ -52,13 +52,15 @@ const ICONS: Record<string, LucideIcon> = {
 };
 
 /** Icon shown next to each service's contextual rating metric — keyed by
- *  the metric's label so data/services.ts can stay plain data. */
+ *  slug (not the translatable label) so the lookup stays correct once
+ *  ratingMetric.label is localized. */
 const METRIC_ICONS: Record<string, LucideIcon> = {
-  "Happy Clients": Users,
-  "Airport Transfers": Plane,
-  "Corporate Clients": Briefcase,
-  "VIP Transfers": ShieldCheck,
-  "Executive Journeys": TrendingUp,
+  "airport-transfers": Plane,
+  "corporate-chauffeur": Briefcase,
+  "luxury-chauffeur": Users,
+  "vip-transportation": ShieldCheck,
+  "event-transportation": TrendingUp,
+  "wedding-chauffeur": Users,
 };
 
 export async function generateStaticParams() {
@@ -67,7 +69,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, service: slug } = await params;
-  const service = SERVICES.find((s) => s.slug === slug);
+  const service = getServiceBySlug(slug, locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata.service" });
 
   if (!service) {
@@ -88,7 +90,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /** Service + FAQPage JSON-LD for this specific service. */
-function serviceJsonLd(service: (typeof SERVICES)[number], locale: Locale) {
+function serviceJsonLd(service: PlainService, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -114,16 +116,19 @@ function serviceJsonLd(service: (typeof SERVICES)[number], locale: Locale) {
 export default async function ServiceDetailPage({ params }: PageProps) {
   const { locale, service: slug } = await params;
   setRequestLocale(locale as Locale);
-  const service = SERVICES.find((s) => s.slug === slug);
+  const service = getServiceBySlug(slug, locale as Locale);
 
   if (!service) {
     notFound();
   }
 
+  const t = await getTranslations("services");
   const Icon = ICONS[service.slug] ?? Crown;
-  const MetricIcon = METRIC_ICONS[service.ratingMetric.label] ?? Users;
-  const otherServices = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3);
-  const whatsappMessage = `Hello Apex Limo, I'd like to enquire about ${service.name}.`;
+  const MetricIcon = METRIC_ICONS[service.slug] ?? Users;
+  const otherServices = getAllServices(locale as Locale)
+    .filter((s) => s.slug !== service.slug)
+    .slice(0, 3);
+  const whatsappMessage = t("detail.whatsappMessage", { name: service.name });
 
   const relatedVehicleSlug = vehiclesForService(service.slug)[0];
   const relatedVehicle = relatedVehicleSlug
@@ -186,32 +191,32 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             className="inline-flex animate-fade-in items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
           >
             <DirectionalIcon icon={ArrowLeft} className="h-3.5 w-3.5" strokeWidth={2} />
-            Back to Services
+            {t("detail.backToServices")}
           </Link>
 
           <div className="mt-8 max-w-3xl">
             <Icon className="h-9 w-9 animate-fade-in text-gold [animation-delay:100ms]" strokeWidth={1.5} />
             <span className="mt-5 block animate-fade-in label-eyebrow [animation-delay:150ms]">{service.tagline}</span>
             <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:150ms] sm:text-5xl">
-              {service.name} in Dubai
+              {t("detail.titleSuffix", { name: service.name })}
             </h1>
             <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
               {service.heroSubtitle}
             </p>
 
             <div className="mt-8 flex animate-fade-in flex-col gap-3 [animation-delay:450ms] sm:flex-row sm:flex-wrap">
-              <CTAButton href={`/booking?service=${service.slug}`}>Book Now</CTAButton>
+              <CTAButton href={`/booking?service=${service.slug}`}>{t("detail.bookNow")}</CTAButton>
               <CTAButton href={`/quote?service=${service.slug}`} variant="outline">
-                Get Quote
+                {t("detail.getQuote")}
               </CTAButton>
               <CTAButton href={getWhatsAppLink(whatsappMessage)} variant="outline" external>
-                WhatsApp Us
+                {t("detail.whatsappUs")}
               </CTAButton>
             </div>
 
             {relatedVehicle ? (
               <p className="mt-6 text-sm text-smoke">
-                Popular choice for this service:{" "}
+                {t("detail.popularChoicePrefix")}{" "}
                 <Link
                   href={`/fleet/${relatedVehicle.slug}`}
                   className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
@@ -234,10 +239,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       {/* Happy Clients / Rating — homepage rating style, with a metric
           contextual to this service */}
       <ServiceRatingSection
-        title={`Why ${service.name} Clients Choose Apex`}
+        eyebrow={t("detail.ratingEyebrow")}
+        title={t("detail.ratingTitleTemplate", { name: service.name })}
         metricIcon={MetricIcon}
         metricValue={service.ratingMetric.value}
         metricLabel={service.ratingMetric.label}
+        reviewsCaption={t("detail.reviewsCaption")}
+        outOf5Label={t("detail.outOf5")}
       />
 
       {/* Service content zone */}
@@ -253,7 +261,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         {/* Benefits */}
         <div className="mt-20">
           <Reveal>
-            <SectionHeading eyebrow="Benefits" title="What's Included" align="left" tone="light" />
+            <SectionHeading eyebrow={t("detail.benefitsEyebrow")} title={t("detail.benefitsTitle")} align="left" tone="light" />
           </Reveal>
           <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
             {service.benefits.map((benefit, index) => (
@@ -269,8 +277,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         <div className="mt-20">
           <Reveal>
             <SectionHeading
-              eyebrow="Why Apex"
-              title={`Why Choose Apex for ${service.name}`}
+              eyebrow={t("detail.whyApexEyebrow")}
+              title={t("detail.whyChooseTitleTemplate", { name: service.name })}
               align="left"
               tone="light"
             />
@@ -288,7 +296,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       </Section>
 
       {/* Other Services — homepage-style cards, desktop 3-up / mobile swipe */}
-      <OtherServicesGrid services={otherServices} />
+      <OtherServicesGrid
+        services={otherServices}
+        eyebrow={t("otherServices.eyebrow")}
+        title={t("otherServices.title")}
+        subtitle={t("otherServices.subtitle")}
+        learnMoreLabel={t("learnMore")}
+      />
 
       {/* Compact service-area coverage strip, before the FAQ */}
       <CoverageBlock />
@@ -296,11 +310,18 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       {/* FAQ — redesigned to match the FAQ Hub's premium dark presentation */}
       <ServiceFaqSection
         faqs={service.faqs}
-        title={`${service.name} FAQs`}
-        subtitle="Answers to the questions we hear most about this service."
+        eyebrow={t("detail.faqEyebrow")}
+        title={t("detail.faqTitleTemplate", { name: service.name })}
+        subtitle={t("detail.faqSubtitle")}
+        viewAllLabel={t("detail.viewAllFaqs")}
       />
 
-      <BookingCTA backgroundImage={false} />
+      <BookingCTA
+        backgroundImage={false}
+        eyebrow={t("finalCta.eyebrow")}
+        heading={t("finalCta.heading")}
+        subtitle={t("finalCta.subtitle")}
+      />
     </div>
   );
 }

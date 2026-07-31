@@ -3,5 +3,56 @@
     "eyebrow": "Gut zu wissen",
     "title": "Häufig gestellte Fragen",
     "subtitle": "Alles, was Sie über Buchung, Preise und den Ablauf eines Apex-Chauffeurservice wissen müssen."
+  },
+  "learnMore": "Mehr erfahren",
+  "hero": {
+    "eyebrow": "Unsere Services",
+    "title": "Chauffeurservice in Dubai",
+    "subtitle": "Von einer einzelnen Flughafenabholung bis zu einer vollständig koordinierten Hochzeitskolonne — jeder Apex-Service basiert auf Pünktlichkeit, Diskretion und einer zum Anlass passenden Flotte.",
+    "cta": "Chauffeur buchen",
+    "imageAlt": "Apex Limo Chauffeur in weißen Handschuhen öffnet die Tür einer schwarzen Mercedes S-Klasse vor der Skyline Dubais und dem Burj Khalifa"
+  },
+  "listing": {
+    "eyebrow": "Unser Angebot",
+    "title": "Chauffeurservice in Dubai",
+    "subtitle": "Von einer einzelnen Flughafenabholung bis zu einer vollständig koordinierten Hochzeitskolonne basiert jeder Apex-Service auf Pünktlichkeit, Diskretion und einer zum Anlass passenden Flotte.",
+    "whatsappAriaLabel": "Auf WhatsApp zu {name} schreiben",
+    "whatsappMessage": "Hallo, ich interessiere mich für {name}."
+  },
+  "grid": {
+    "eyebrow": "Unser Angebot",
+    "title": "Chauffeurservice ganz nach Ihren Bedürfnissen",
+    "subtitle": "Von Flughafentransfers bis VIP-Transport — jede Fahrt wird nach höchstem Standard geplant und durchgeführt."
+  },
+  "otherServices": {
+    "eyebrow": "Mehr entdecken",
+    "title": "Weitere Services",
+    "subtitle": "Jeder Apex-Service teilt dieselbe Flotte, dieselben Chauffeure und denselben Anspruch an Sorgfalt."
+  },
+  "detail": {
+    "backToServices": "Zurück zu den Services",
+    "titleSuffix": "{name} in Dubai",
+    "bookNow": "Jetzt buchen",
+    "getQuote": "Angebot erhalten",
+    "whatsappUs": "Auf WhatsApp schreiben",
+    "whatsappMessage": "Hallo Apex Limo, ich möchte mich zu {name} erkundigen.",
+    "popularChoicePrefix": "Beliebte Wahl für diesen Service:",
+    "ratingEyebrow": "Vertrauen in Dubai",
+    "ratingTitleTemplate": "Warum sich Kunden von {name} für Apex entscheiden",
+    "reviewsCaption": "Basierend auf verifizierten Kundenbewertungen",
+    "outOf5": "/ 5 Bewertung",
+    "benefitsEyebrow": "Vorteile",
+    "benefitsTitle": "Das ist inbegriffen",
+    "whyApexEyebrow": "Warum Apex",
+    "whyChooseTitleTemplate": "Warum Apex für {name} wählen",
+    "faqEyebrow": "Häufige Fragen",
+    "faqTitleTemplate": "Häufige Fragen zu {name}",
+    "faqSubtitle": "Antworten auf die Fragen, die wir zu diesem Service am häufigsten hören.",
+    "viewAllFaqs": "Alle FAQs ansehen"
+  },
+  "finalCta": {
+    "eyebrow": "Wir sind bereit, wenn Sie es sind",
+    "heading": "Buchen Sie noch heute Ihren Chauffeur in Dubai",
+    "subtitle": "Teilen Sie uns Ihr Ziel mit, und wir vermitteln Ihnen das passende Fahrzeug und den passenden Fahrer — meist innerhalb weniger Minuten bestätigt."
   }
 }

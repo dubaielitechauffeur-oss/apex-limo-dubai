@@ -44,7 +44,7 @@ import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
-import { SERVICES } from "@/data/services";
+import { getServiceBySlug } from "@/data/services";
 import { LOCATIONS } from "@/data/locations";
 import { VEHICLE_CROSS_LINKS } from "@/lib/cross-links";
 
@@ -181,7 +181,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
   const crossLinks = VEHICLE_CROSS_LINKS[vehicle.slug];
   const relatedService = crossLinks
-    ? SERVICES.find((s) => s.slug === crossLinks.serviceSlug)
+    ? getServiceBySlug(crossLinks.serviceSlug, locale as Locale)
     : undefined;
   const relatedLocation = crossLinks
     ? LOCATIONS.find((l) => l.slug === crossLinks.locationSlug)

@@ -5,22 +5,25 @@ import { useLocale } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import LocationServiceCard from "./LocationServiceCard";
-import { SERVICES, type Service } from "@/data/services";
+import type { PlainService } from "@/data/services";
 import { isRtlLocale } from "@/i18n/locale-metadata";
 
 const CARDS_PER_VIEW = 3;
 const AUTOPLAY_INTERVAL_MS = 5000;
 const DRAG_THRESHOLD_PX = 40;
 
-function chunk(items: Service[], size: number): Service[][] {
-  const pages: Service[][] = [];
+interface LocationServicesCarouselProps {
+  services: PlainService[];
+  learnMoreLabel: string;
+}
+
+function chunk(items: PlainService[], size: number): PlainService[][] {
+  const pages: PlainService[][] = [];
   for (let i = 0; i < items.length; i += size) {
     pages.push(items.slice(i, i + size));
   }
   return pages;
 }
-
-const PAGES = chunk(SERVICES, CARDS_PER_VIEW);
 
 /**
  * Desktop-only "Our Services" carousel for location pages — pages through
@@ -28,15 +31,23 @@ const PAGES = chunk(SERVICES, CARDS_PER_VIEW);
  * grid) with a slow autoplay. Any manual interaction — arrows, dots, or a
  * pointer drag — permanently stops autoplay for the rest of the page's
  * lifetime, so the carousel never fights the visitor. Mobile/tablet never
- * render this component (see LocationServicesSection).
+ * render this component (see LocationServicesSection). Receives its
+ * already-localized `services` as a prop from a Server Component parent
+ * rather than importing the data module by value, so the client bundle
+ * only ships the current locale's trimmed card data, not all 6 locales'
+ * full service content (descriptions, FAQs, etc.).
  */
-export default function LocationServicesCarousel() {
+export default function LocationServicesCarousel({
+  services,
+  learnMoreLabel,
+}: LocationServicesCarouselProps) {
   const rtl = isRtlLocale(useLocale());
   const [page, setPage] = useState(0);
   const [autoplayActive, setAutoplayActive] = useState(true);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const dragStartX = useRef<number | null>(null);
+  const PAGES = chunk(services, CARDS_PER_VIEW);
   const pageCount = PAGES.length;
 
   const stopAutoplay = useCallback(() => setAutoplayActive(false), []);
@@ -102,7 +113,7 @@ export default function LocationServicesCarousel() {
           {PAGES.map((pageServices, i) => (
             <div key={i} className="grid w-full shrink-0 grid-cols-3 gap-6">
               {pageServices.map((service) => (
-                <LocationServiceCard key={service.slug} service={service} />
+                <LocationServiceCard key={service.slug} service={service} learnMoreLabel={learnMoreLabel} />
               ))}
             </div>
           ))}

@@ -21,11 +21,13 @@ function StarRow() {
 }
 
 interface ServiceRatingSectionProps {
-  eyebrow?: string;
-  title?: string;
+  eyebrow: string;
+  title: string;
   metricIcon: LucideIcon;
   metricValue: string;
   metricLabel: string;
+  reviewsCaption: string;
+  outOf5Label: string;
 }
 
 /**
@@ -34,11 +36,13 @@ interface ServiceRatingSectionProps {
  * section), paired with one metric that varies by service context.
  */
 export default function ServiceRatingSection({
-  eyebrow = "Trusted in Dubai",
-  title = "Rated by Our Clients",
+  eyebrow,
+  title,
   metricIcon: MetricIcon,
   metricValue,
   metricLabel,
+  reviewsCaption,
+  outOf5Label,
 }: ServiceRatingSectionProps) {
   return (
     <section className="border-t border-gold/10 bg-pearl py-24">
@@ -52,10 +56,10 @@ export default function ServiceRatingSection({
             <StarRow />
             <div className="flex items-baseline gap-2">
               <span className="font-display text-4xl text-obsidian">{RATING}</span>
-              <span className="text-xs uppercase tracking-wide text-graphite">/ 5 Rating</span>
+              <span className="text-xs uppercase tracking-wide text-graphite">{outOf5Label}</span>
             </div>
             <p className="text-xs uppercase tracking-[0.2em] text-graphite">
-              Based on verified client reviews
+              {reviewsCaption}
             </p>
           </Reveal>
 

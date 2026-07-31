@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
+import { getLocale, getTranslations } from "next-intl/server";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import Reveal from "@/components/shared/Reveal";
-import { SERVICES } from "@/data/services";
+import { getAllServices } from "@/data/services";
+import type { Locale } from "@/i18n/routing";
 
 /**
  * "What We Offer" — a luxury editorial services showcase: large 4:5
@@ -15,21 +17,25 @@ import { SERVICES } from "@/data/services";
  * per row, tablet 2, and mobile falls back to a native horizontal
  * scroll-snap swipe row — all from the same markup, no JS carousel needed.
  */
-export default function ServicesGrid() {
+export default async function ServicesGrid() {
+  const locale = (await getLocale()) as Locale;
+  const t = await getTranslations("services");
+  const services = getAllServices(locale);
+
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
         <Reveal>
           <SectionHeading
-            eyebrow="What We Offer"
-            title="Chauffeur Services Built Around You"
-            subtitle="From airport transfers to VIP transportation, every journey is planned and delivered to the highest standard."
+            eyebrow={t("grid.eyebrow")}
+            title={t("grid.title")}
+            subtitle={t("grid.subtitle")}
             tone="light"
           />
         </Reveal>
 
         <div className="mt-16 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
-          {SERVICES.map((service, index) => (
+          {services.map((service, index) => (
             <Reveal
               key={service.slug}
               delay={Math.min(index * 80, 320)}
@@ -69,7 +75,7 @@ export default function ServicesGrid() {
                 </div>
 
                 <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
-                  Learn More
+                  {t("learnMore")}
                   <DirectionalIcon
                     icon={ArrowRight}
                     className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"

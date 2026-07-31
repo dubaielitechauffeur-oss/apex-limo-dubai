@@ -18,6 +18,7 @@ interface FAQAccordionProps {
   eyebrow?: string;
   title?: string;
   subtitle?: string;
+  viewAllLabel?: string;
 }
 
 /**
@@ -33,6 +34,7 @@ export default function FAQAccordion({
   eyebrow = "Good to Know",
   title = "Frequently Asked Questions",
   subtitle,
+  viewAllLabel = "View All FAQs",
 }: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -102,7 +104,7 @@ export default function FAQAccordion({
             href="/faqs"
             className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 hover:text-gold-deep"
           >
-            View All FAQs
+            {viewAllLabel}
             <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
           </Link>
         </div>

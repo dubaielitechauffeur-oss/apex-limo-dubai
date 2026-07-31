@@ -4,15 +4,30 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Search, ChevronDown } from "lucide-react";
 import Reveal from "@/components/shared/Reveal";
-import { ALL_FAQS, FAQ_CATEGORIES, type FaqHubEntry } from "@/data/faqHub";
-
-const CHIP_KEYS = ["all", ...FAQ_CATEGORIES.filter((c) => c.showChip).map((c) => c.key)];
+import type { FaqCategory, FaqHubEntry } from "@/data/faqHub";
 
 const SUGGESTION_LIMIT = 8;
 const HIGHLIGHT_DURATION_MS = 1800;
 
-export default function FaqHubClient() {
+interface FaqHubClientProps {
+  faqs: FaqHubEntry[];
+  categories: FaqCategory[];
+}
+
+/**
+ * Receives its FAQ data as props from the Server Component page rather than
+ * importing data/faqHub.ts's ALL_FAQS/FAQ_CATEGORIES by value — ALL_FAQS is
+ * computed from getAllServices(), which references every locale's full
+ * service content, so importing it directly here would ship all of that
+ * (descriptions, benefits, etc., not just FAQ text) to the client bundle
+ * even though this component only ever renders question/answer pairs.
+ */
+export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIES }: FaqHubClientProps) {
   const t = useTranslations("faqs");
+  const CHIP_KEYS = useMemo(
+    () => ["all", ...FAQ_CATEGORIES.filter((c) => c.showChip).map((c) => c.key)],
+    [FAQ_CATEGORIES]
+  );
   const [query, setQuery] = useState("");
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -34,12 +49,12 @@ export default function FaqHubClient() {
     const trimmed = query.trim().toLowerCase();
     if (!trimmed) return [];
     return ALL_FAQS.filter((faq) => faq.question.toLowerCase().includes(trimmed)).slice(0, SUGGESTION_LIMIT);
-  }, [query]);
+  }, [query, ALL_FAQS]);
 
   const visibleFaqs = useMemo(() => {
     if (activeCategory === "all") return ALL_FAQS;
     return ALL_FAQS.filter((faq) => faq.category === activeCategory);
-  }, [activeCategory]);
+  }, [activeCategory, ALL_FAQS]);
 
   const groupedFaqs = useMemo(() => {
     const groups = new Map<string, FaqHubEntry[]>();

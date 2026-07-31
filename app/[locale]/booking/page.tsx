@@ -6,6 +6,7 @@ import BookingForm from "@/components/booking/BookingForm";
 import ConversionPageIntro from "@/components/booking/ConversionPageIntro";
 import ConversionSeoIntro from "@/components/booking/ConversionSeoIntro";
 import ConversionTrustPanel from "@/components/booking/ConversionTrustPanel";
+import { getAllServices } from "@/data/services";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 interface PageProps {
@@ -26,6 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function BookingPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   return (
     <>
       <script
@@ -59,7 +61,7 @@ export default async function BookingPage({ params }: PageProps) {
         <Container>
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.7fr_1fr] lg:gap-10">
             <div className="rounded-2xl border border-[rgba(201,161,74,0.15)] bg-[#111111] p-6 sm:p-8 lg:p-10">
-              <BookingForm />
+              <BookingForm services={services} />
             </div>
 
             <aside>

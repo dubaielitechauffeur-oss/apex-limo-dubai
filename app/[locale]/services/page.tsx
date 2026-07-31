@@ -21,7 +21,7 @@ import ServicesHero from "@/components/services/ServicesHero";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
-import { SERVICES } from "@/data/services";
+import { getAllServices, type PlainService } from "@/data/services";
 import { getServicesFaqs } from "@/data/servicesFaqs";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -49,13 +49,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /** ItemList of Service entities for the listing page. */
-function servicesJsonLd(locale: Locale) {
+function servicesJsonLd(locale: Locale, services: PlainService[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: `${SITE.name} Services`,
     url: `${SITE.url}${localizedPath(locale, "/services")}`,
-    itemListElement: SERVICES.map((service, index) => ({
+    itemListElement: services.map((service, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
@@ -80,14 +80,17 @@ function servicesJsonLd(locale: Locale) {
 export default async function ServicesPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
-  const t = await getTranslations("services.faq");
+  const t = await getTranslations("services");
   const servicesFaqs = getServicesFaqs(locale as Locale);
+  const services = getAllServices(locale as Locale);
   return (
     <div>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd(locale as Locale)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(servicesJsonLd(locale as Locale, services)),
+        }}
       />
       <script
         type="application/ld+json"
@@ -105,18 +108,18 @@ export default async function ServicesPage({ params }: PageProps) {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="What We Offer"
-              title="Chauffeur Services in Dubai"
-              subtitle="From a single airport pickup to a fully coordinated wedding convoy, every Apex service is built around punctuality, discretion, and a fleet that matches the occasion."
+              eyebrow={t("listing.eyebrow")}
+              title={t("listing.title")}
+              subtitle={t("listing.subtitle")}
               tone="light"
             />
           </Reveal>
 
           <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service, index) => {
+            {services.map((service, index) => {
               const Icon = ICONS[service.slug] ?? Crown;
               const whatsappHref = getWhatsAppLink(
-                `Hi, I'm interested in ${service.name}.`
+                t("listing.whatsappMessage", { name: service.name })
               );
               return (
                 <Reveal
@@ -152,13 +155,13 @@ export default async function ServicesPage({ params }: PageProps) {
                       href={`/services/${service.slug}`}
                       className="inline-flex flex-1 items-center justify-center rounded-lg bg-gold px-5 py-3 text-xs font-bold uppercase tracking-wide text-obsidian transition-colors duration-200 hover:bg-gold-deep"
                     >
-                      Learn More
+                      {t("learnMore")}
                     </Link>
                     <a
                       href={whatsappHref}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`WhatsApp us about ${service.name}`}
+                      aria-label={t("listing.whatsappAriaLabel", { name: service.name })}
                       className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#25D366] transition-transform duration-200 hover:scale-105"
                     >
                       <svg viewBox="0 0 32 32" aria-hidden="true" className="h-5 w-5 fill-white">
@@ -175,12 +178,18 @@ export default async function ServicesPage({ params }: PageProps) {
 
       <FAQAccordion
         faqs={servicesFaqs}
-        eyebrow={t("eyebrow")}
-        title={t("title")}
-        subtitle={t("subtitle")}
+        eyebrow={t("faq.eyebrow")}
+        title={t("faq.title")}
+        subtitle={t("faq.subtitle")}
+        viewAllLabel={t("detail.viewAllFaqs")}
       />
 
-      <BookingCTA backgroundImage={false} />
+      <BookingCTA
+        backgroundImage={false}
+        eyebrow={t("finalCta.eyebrow")}
+        heading={t("finalCta.heading")}
+        subtitle={t("finalCta.subtitle")}
+      />
     </div>
   );
 }

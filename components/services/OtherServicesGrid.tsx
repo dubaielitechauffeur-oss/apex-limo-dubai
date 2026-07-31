@@ -5,10 +5,14 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import Reveal from "@/components/shared/Reveal";
-import type { Service } from "@/data/services";
+import type { PlainService } from "@/data/services";
 
 interface OtherServicesGridProps {
-  services: Service[];
+  services: PlainService[];
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  learnMoreLabel: string;
 }
 
 /**
@@ -18,17 +22,18 @@ interface OtherServicesGridProps {
  * service detail page's related-services rail. Shows each service's short
  * description in place of the homepage version's tag chips.
  */
-export default function OtherServicesGrid({ services }: OtherServicesGridProps) {
+export default function OtherServicesGrid({
+  services,
+  eyebrow,
+  title,
+  subtitle,
+  learnMoreLabel,
+}: OtherServicesGridProps) {
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
         <Reveal>
-          <SectionHeading
-            eyebrow="Explore More"
-            title="Other Services"
-            subtitle="Every Apex service shares the same fleet, chauffeurs, and standard of care."
-            tone="light"
-          />
+          <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} tone="light" />
         </Reveal>
 
         <div className="mt-16 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
@@ -62,7 +67,7 @@ export default function OtherServicesGrid({ services }: OtherServicesGridProps) 
                 </p>
 
                 <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
-                  Learn More
+                  {learnMoreLabel}
                   <DirectionalIcon
                     icon={ArrowRight}
                     className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"

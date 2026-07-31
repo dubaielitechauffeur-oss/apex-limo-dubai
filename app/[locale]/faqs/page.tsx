@@ -5,7 +5,7 @@ import Container from "@/components/shared/Container";
 import BookingCTA from "@/components/home/BookingCTA";
 import FaqHubClient from "@/components/faqs/FaqHubClient";
 import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
-import { ALL_FAQS } from "@/data/faqHub";
+import { ALL_FAQS, FAQ_CATEGORIES } from "@/data/faqHub";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -59,7 +59,7 @@ export default async function FaqsPage({ params }: PageProps) {
       {/* Search + category filters + FAQ accordions */}
       <section className="bg-[#161616] py-20 sm:py-24">
         <Container>
-          <FaqHubClient />
+          <FaqHubClient faqs={ALL_FAQS} categories={FAQ_CATEGORIES} />
         </Container>
       </section>
 

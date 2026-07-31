@@ -1,5 +1,5 @@
 import { getFaqs } from "./faqs";
-import { SERVICES } from "./services";
+import { getAllServices } from "./services";
 import { LOCATIONS } from "./locations";
 
 export interface FaqCategory {
@@ -734,7 +734,9 @@ const HOME_CATEGORY_ORDER = [
   "general-questions",
 ];
 
-const serviceFaqs: FaqHubEntry[] = SERVICES.flatMap((service) =>
+// English only for now — this whole hub isn't locale-aware yet (a later
+// Phase B step), so it matches every other not-yet-migrated data source.
+const serviceFaqs: FaqHubEntry[] = getAllServices("en").flatMap((service) =>
   service.faqs.map((faq, index) => ({
     id: `service-${service.slug}-${index}`,
     category: SERVICE_CATEGORY_MAP[service.slug] ?? "general-questions",

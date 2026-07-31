@@ -14,9 +14,10 @@ export interface ServiceFaqItem {
 
 interface ServiceFaqSectionProps {
   faqs: ServiceFaqItem[];
-  eyebrow?: string;
-  title?: string;
+  eyebrow: string;
+  title: string;
   subtitle?: string;
+  viewAllLabel: string;
 }
 
 /**
@@ -28,9 +29,10 @@ interface ServiceFaqSectionProps {
  */
 export default function ServiceFaqSection({
   faqs,
-  eyebrow = "Common Questions",
-  title = "Frequently Asked Questions",
+  eyebrow,
+  title,
   subtitle,
+  viewAllLabel,
 }: ServiceFaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -96,7 +98,7 @@ export default function ServiceFaqSection({
             href="/faqs"
             className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 hover:text-[#e0bd6b]"
           >
-            View All FAQs
+            {viewAllLabel}
             <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
           </Link>
         </div>

@@ -3,5 +3,56 @@
     "eyebrow": "Bon à savoir",
     "title": "Questions fréquentes",
     "subtitle": "Tout ce que vous devez savoir sur la réservation, les tarifs et ce à quoi vous attendre avec un service de chauffeur Apex."
+  },
+  "learnMore": "En savoir plus",
+  "hero": {
+    "eyebrow": "Nos services",
+    "title": "Services de chauffeur à Dubaï",
+    "subtitle": "D'une simple prise en charge à l'aéroport à un cortège de mariage entièrement coordonné — chaque service Apex est construit autour de la ponctualité, de la discrétion et d'une flotte adaptée à l'occasion.",
+    "cta": "Réserver un chauffeur",
+    "imageAlt": "Chauffeur Apex Limo en gants blancs ouvrant la portière d'une Mercedes Classe S noire, avec la skyline de Dubaï et le Burj Khalifa en arrière-plan"
+  },
+  "listing": {
+    "eyebrow": "Ce que nous proposons",
+    "title": "Services de chauffeur à Dubaï",
+    "subtitle": "D'une simple prise en charge à l'aéroport à un cortège de mariage entièrement coordonné, chaque service Apex est construit autour de la ponctualité, de la discrétion et d'une flotte adaptée à l'occasion.",
+    "whatsappAriaLabel": "Écrivez-nous sur WhatsApp au sujet de {name}",
+    "whatsappMessage": "Bonjour, je suis intéressé(e) par {name}."
+  },
+  "grid": {
+    "eyebrow": "Ce que nous proposons",
+    "title": "Des services de chauffeur pensés pour vous",
+    "subtitle": "Des transferts aéroport au transport VIP, chaque trajet est planifié et assuré selon les plus hauts standards."
+  },
+  "otherServices": {
+    "eyebrow": "Découvrir plus",
+    "title": "Autres services",
+    "subtitle": "Chaque service Apex partage la même flotte, les mêmes chauffeurs et le même niveau d'attention."
+  },
+  "detail": {
+    "backToServices": "Retour aux services",
+    "titleSuffix": "{name} à Dubaï",
+    "bookNow": "Réserver",
+    "getQuote": "Obtenir un devis",
+    "whatsappUs": "Écrivez-nous sur WhatsApp",
+    "whatsappMessage": "Bonjour Apex Limo, je souhaiterais me renseigner sur {name}.",
+    "popularChoicePrefix": "Choix populaire pour ce service :",
+    "ratingEyebrow": "La confiance à Dubaï",
+    "ratingTitleTemplate": "Pourquoi les clients {name} choisissent Apex",
+    "reviewsCaption": "Basé sur des avis clients vérifiés",
+    "outOf5": "/ 5 note",
+    "benefitsEyebrow": "Avantages",
+    "benefitsTitle": "Ce qui est inclus",
+    "whyApexEyebrow": "Pourquoi Apex",
+    "whyChooseTitleTemplate": "Pourquoi choisir Apex pour {name}",
+    "faqEyebrow": "Questions courantes",
+    "faqTitleTemplate": "FAQ {name}",
+    "faqSubtitle": "Réponses aux questions les plus fréquentes sur ce service.",
+    "viewAllFaqs": "Voir toutes les FAQ"
+  },
+  "finalCta": {
+    "eyebrow": "Prêts quand vous l'êtes",
+    "heading": "Réservez votre chauffeur à Dubaï dès aujourd'hui",
+    "subtitle": "Indiquez-nous votre destination et nous vous associerons au véhicule et au chauffeur adaptés — confirmation généralement sous quelques minutes."
   }
 }

@@ -9,7 +9,7 @@ import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { FLEET } from "@/data/fleet";
 import { LOCATIONS } from "@/data/locations";
-import { SERVICES } from "@/data/services";
+import type { ServiceOption } from "./QuoteForm";
 import { getWhatsAppLink } from "@/lib/constants";
 import type { BookingFormData } from "@/lib/types";
 import { validateBookingForm, hasErrors, type FormErrors } from "@/lib/validation";
@@ -53,7 +53,8 @@ function prettifySlug(slug: string): string {
  * possible so select fields land on a valid option rather than a blank one.
  */
 function buildInitialBookingForm(
-  searchParams: ReturnType<typeof useSearchParams>
+  searchParams: ReturnType<typeof useSearchParams>,
+  services: ServiceOption[]
 ): BookingFormData {
   const form: BookingFormData = { ...EMPTY_FORM };
 
@@ -71,7 +72,7 @@ function buildInitialBookingForm(
 
   const serviceSlug = searchParams.get("service");
   if (serviceSlug) {
-    const service = SERVICES.find((s) => s.slug === serviceSlug);
+    const service = services.find((s) => s.slug === serviceSlug);
     const serviceName = service ? service.name : prettifySlug(serviceSlug);
     form.specialRequests = `Service requested: ${serviceName}`;
   }
@@ -89,10 +90,10 @@ function BookingFormSkeleton() {
   );
 }
 
-function BookingFormFields() {
+function BookingFormFields({ services }: { services: ServiceOption[] }) {
   const searchParams = useSearchParams();
   const [form, setForm] = useState<BookingFormData>(() =>
-    buildInitialBookingForm(searchParams)
+    buildInitialBookingForm(searchParams, services)
   );
   const [errors, setErrors] = useState<FormErrors<BookingFormData>>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -450,10 +451,10 @@ function BookingFormFields() {
  * during static rendering — keeping the boundary inside this file means
  * app/booking/page.tsx doesn't need to know about it.
  */
-export default function BookingForm() {
+export default function BookingForm({ services }: { services: ServiceOption[] }) {
   return (
     <Suspense fallback={<BookingFormSkeleton />}>
-      <BookingFormFields />
+      <BookingFormFields services={services} />
     </Suspense>
   );
 }
