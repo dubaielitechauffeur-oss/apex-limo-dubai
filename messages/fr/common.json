@@ -30,6 +30,11 @@
     "whatsappUs": "Écrivez-nous sur WhatsApp",
     "getInstantQuote": "Devis instantané"
   },
+  "bookingCta": {
+    "eyebrow": "Prêts quand vous l'êtes",
+    "heading": "Réservez votre chauffeur à Dubaï dès aujourd'hui",
+    "subtitle": "Indiquez-nous votre destination et nous vous associerons au véhicule et au chauffeur adaptés — confirmation généralement sous quelques minutes."
+  },
   "footer": {
     "tagline": "Des chauffeurs professionnels, une flotte haut de gamme et un service fiable dans tout Dubaï.",
     "explore": "Explorer",

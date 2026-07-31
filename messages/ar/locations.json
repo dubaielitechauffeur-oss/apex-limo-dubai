@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "eyebrow": "أين نقود",
+    "title": "مواقع خدمتنا",
+    "subtitle": "من المساكن الشاطئية إلى الحي التجاري، يعرف سائقو Apex أحياء دبي ونقاط الاستقبال وأنماط حركة المرور بالتفصيل."
+  },
+  "listing": {
+    "eyebrow": "أين نقود",
+    "title": "المناطق التي نخدمها في جميع أنحاء دبي",
+    "subtitle": "من المساكن الشاطئية إلى الحي التجاري، يعرف سائقو Apex أحياء دبي ونقاط الاستقبال وأنماط حركة المرور بالتفصيل.",
+    "exploreArea": "استكشفوا المنطقة"
+  },
+  "detail": {
+    "backToLocations": "العودة إلى المناطق",
+    "titleTemplate": "خدمة السائق الخاص في {name}",
+    "bookNow": "احجزوا الآن",
+    "getQuote": "احصلوا على عرض سعر",
+    "whatsappUs": "راسلونا عبر واتساب",
+    "whatsappMessage": "مرحبًا Apex Limo، أرغب في حجز سائق في {name}.",
+    "popularChoicePrefix": "خيار شائع في {name}:",
+    "airportNote": "هل تسافرون من أو إلى المطار؟ [اطّلعوا على خدمة الاستقبال من المطار](/services/airport-transfers) لمعرفة تفاصيل تتبع الرحلات والاستقبال الشخصي.",
+    "whyApexEyebrow": "لماذا Apex",
+    "whyChooseTitleTemplate": "لماذا تختارون Apex في {name}",
+    "popularRoutesEyebrow": "الطرق الشائعة",
+    "commonJourneysTitleTemplate": "الرحلات الشائعة من {name}",
+    "commonQuestionsEyebrow": "أسئلة شائعة",
+    "faqTitleTemplate": "الأسئلة الشائعة حول {name}",
+    "exploreMoreEyebrow": "اكتشفوا المزيد",
+    "otherAreasTitle": "مناطق أخرى نخدمها",
+    "otherAreasSubtitleTemplate": "تتوفر خدمة السائق الخاص أيضًا في وجهات {siteName} القريبة التالية."
+  },
+  "showcase": {
+    "eyebrow": "أين نعمل",
+    "title": "خدمة سائق خاص متميزة في جميع أنحاء دبي والإمارات",
+    "subtitle": "خدمات سائق خاص فاخرة متوفرة في أهم وجهات دبي التجارية والترفيهية والسكنية.",
+    "exploreLocation": "استكشفوا الموقع"
+  },
+  "coverage": {
+    "title": "نخدم دبي والإمارات بأكملها"
+  }
+}

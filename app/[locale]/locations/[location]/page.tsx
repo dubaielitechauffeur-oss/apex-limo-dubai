@@ -23,11 +23,12 @@ import LocationServicesSection from "@/components/locations/LocationServicesSect
 import LocationsShowcase from "@/components/home/LocationsShowcase";
 import BookingCTA from "@/components/home/BookingCTA";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
+import RichParagraph from "@/components/services/RichParagraph";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
-import { LOCATIONS } from "@/data/locations";
+import { LOCATIONS, getAllLocations, getLocationBySlug, type PlainLocation } from "@/data/locations";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForLocation } from "@/lib/cross-links";
 
@@ -41,7 +42,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, location: slug } = await params;
-  const location = LOCATIONS.find((l) => l.slug === slug);
+  const location = getLocationBySlug(slug, locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata.location" });
 
   if (!location) {
@@ -72,7 +73,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  * with these conflicting redeclarations). `parentOrganization` links back
  * to the root business (see lib/seo.ts) without conflating the two nodes.
  */
-function locationJsonLd(location: (typeof LOCATIONS)[number], locale: Locale) {
+function locationJsonLd(location: PlainLocation, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -103,15 +104,18 @@ function locationJsonLd(location: (typeof LOCATIONS)[number], locale: Locale) {
 export default async function LocationDetailPage({ params }: PageProps) {
   const { locale, location: slug } = await params;
   setRequestLocale(locale as Locale);
-  const location = LOCATIONS.find((l) => l.slug === slug);
+  const location = getLocationBySlug(slug, locale as Locale);
 
   if (!location) {
     notFound();
   }
 
+  const t = await getTranslations("locations");
   const Icon = location.isAirport ? Plane : MapPin;
-  const otherLocations = LOCATIONS.filter((l) => l.slug !== location.slug).slice(0, 3);
-  const whatsappMessage = `Hello Apex Limo, I'd like to book a chauffeur in ${location.name}.`;
+  const otherLocations = getAllLocations(locale as Locale)
+    .filter((l) => l.slug !== location.slug)
+    .slice(0, 3);
+  const whatsappMessage = t("detail.whatsappMessage", { name: location.name });
 
   const relatedVehicleSlug = vehiclesForLocation(location.slug)[0];
   const relatedVehicle = relatedVehicleSlug
@@ -196,32 +200,32 @@ export default async function LocationDetailPage({ params }: PageProps) {
             className="inline-flex animate-fade-in items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
           >
             <DirectionalIcon icon={ArrowLeft} className="h-3.5 w-3.5" strokeWidth={2} />
-            Back to Locations
+            {t("detail.backToLocations")}
           </Link>
 
           <div className="mt-8 max-w-3xl">
             <Icon className="h-9 w-9 animate-fade-in text-gold [animation-delay:100ms]" strokeWidth={1.5} />
             <span className="mt-5 block animate-fade-in label-eyebrow [animation-delay:150ms]">{location.tagline}</span>
             <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:150ms] sm:text-5xl">
-              Chauffeur Service in {location.name}
+              {t("detail.titleTemplate", { name: location.name })}
             </h1>
             <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
               {location.heroSubtitle}
             </p>
 
             <div className="mt-8 flex animate-fade-in flex-col gap-3 [animation-delay:450ms] sm:flex-row sm:flex-wrap">
-              <CTAButton href={`/booking?location=${location.slug}`}>Book Now</CTAButton>
+              <CTAButton href={`/booking?location=${location.slug}`}>{t("detail.bookNow")}</CTAButton>
               <CTAButton href={`/quote?location=${location.slug}`} variant="outline">
-                Get Quote
+                {t("detail.getQuote")}
               </CTAButton>
               <CTAButton href={getWhatsAppLink(whatsappMessage)} variant="outline" external>
-                WhatsApp Us
+                {t("detail.whatsappUs")}
               </CTAButton>
             </div>
 
             {relatedVehicle ? (
               <p className="mt-6 text-sm text-smoke">
-                A popular choice in {location.name}:{" "}
+                {t("detail.popularChoicePrefix", { name: location.name })}{" "}
                 <Link
                   href={`/fleet/${relatedVehicle.slug}`}
                   className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
@@ -259,16 +263,10 @@ export default async function LocationDetailPage({ params }: PageProps) {
           {!location.isAirport ? (
             <Card tone="light" className="flex items-start gap-3 p-5">
               <Plane className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
-              <p className="text-sm leading-relaxed text-graphite">
-                Traveling to or from the airport?{" "}
-                <Link
-                  href="/services/airport-transfers"
-                  className="text-obsidian underline underline-offset-4 transition-colors hover:text-gold-deep"
-                >
-                  See our Airport Transfer service
-                </Link>{" "}
-                for flight tracking and meet-and-greet details.
-              </p>
+              <RichParagraph
+                text={t("detail.airportNote")}
+                className="text-sm leading-relaxed text-graphite [&_a]:text-obsidian [&_a]:hover:text-gold-deep"
+              />
             </Card>
           ) : null}
         </Reveal>
@@ -277,8 +275,8 @@ export default async function LocationDetailPage({ params }: PageProps) {
         <div className="mt-20">
           <Reveal>
             <SectionHeading
-              eyebrow="Why Apex"
-              title={`Why Choose Apex in ${location.name}`}
+              eyebrow={t("detail.whyApexEyebrow")}
+              title={t("detail.whyChooseTitleTemplate", { name: location.name })}
               align="left"
               tone="light"
             />
@@ -300,9 +298,9 @@ export default async function LocationDetailPage({ params }: PageProps) {
       <section className="border-t border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
         <Container>
           <Reveal>
-            <span className="label-eyebrow">Popular Routes</span>
+            <span className="label-eyebrow">{t("detail.popularRoutesEyebrow")}</span>
             <h2 className="mt-4 max-w-2xl font-display text-3xl text-white sm:text-4xl">
-              Common Journeys From {location.name}
+              {t("detail.commonJourneysTitleTemplate", { name: location.name })}
             </h2>
           </Reveal>
 
@@ -354,9 +352,9 @@ export default async function LocationDetailPage({ params }: PageProps) {
         <Container className="relative">
           <div className="max-w-3xl">
             <Reveal>
-              <span className="label-eyebrow">Common Questions</span>
+              <span className="label-eyebrow">{t("detail.commonQuestionsEyebrow")}</span>
               <h2 className="mt-4 font-display text-3xl text-white sm:text-4xl">
-                {location.name} FAQs
+                {t("detail.faqTitleTemplate", { name: location.name })}
               </h2>
             </Reveal>
 
@@ -393,9 +391,9 @@ export default async function LocationDetailPage({ params }: PageProps) {
       {/* Related locations — identical to the homepage locations showcase,
           scoped to the other areas we serve besides this one. */}
       <LocationsShowcase
-        eyebrow="Explore More"
-        title="Other Areas We Serve"
-        subtitle={`Chauffeur service is also available across these nearby ${SITE.name} destinations.`}
+        eyebrow={t("detail.exploreMoreEyebrow")}
+        title={t("detail.otherAreasTitle")}
+        subtitle={t("detail.otherAreasSubtitleTemplate", { siteName: SITE.name })}
         cards={otherLocations.map((related) => ({ location: related }))}
       />
 

@@ -1,4 +1,19 @@
 {
+  "hero": {
+    "eyebrow": "Support Center",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers about chauffeur services, airport transfers, pricing, bookings, fleet options and luxury transportation across Dubai and the UAE."
+  },
+  "search": {
+    "placeholder": "What would you like to know?",
+    "ariaLabel": "Search frequently asked questions",
+    "noResults": "No matching questions found."
+  },
+  "finalCta": {
+    "eyebrow": "We're Here to Help",
+    "heading": "Still Need Assistance?",
+    "subtitle": "Our concierge team is on hand 24/7 to help with bookings, quotes, or anything not covered above."
+  },
   "allChip": "All",
   "categories": {
     "booking": { "label": "Booking", "chipLabel": "Booking" },

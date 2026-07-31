@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "eyebrow": "Wo wir fahren",
+    "title": "Unsere Einsatzgebiete",
+    "subtitle": "Von Wohnanlagen direkt am Wasser bis zum Geschäftsviertel — Apex-Chauffeure kennen Dubais Stadtteile, Abholpunkte und Verkehrsmuster im Detail."
+  },
+  "listing": {
+    "eyebrow": "Wo wir fahren",
+    "title": "Gebiete, die wir in ganz Dubai bedienen",
+    "subtitle": "Von Wohnanlagen direkt am Wasser bis zum Geschäftsviertel — Apex-Chauffeure kennen Dubais Stadtteile, Abholpunkte und Verkehrsmuster im Detail.",
+    "exploreArea": "Gebiet entdecken"
+  },
+  "detail": {
+    "backToLocations": "Zurück zu den Standorten",
+    "titleTemplate": "Chauffeurservice in {name}",
+    "bookNow": "Jetzt buchen",
+    "getQuote": "Angebot erhalten",
+    "whatsappUs": "Auf WhatsApp schreiben",
+    "whatsappMessage": "Hallo Apex Limo, ich möchte einen Chauffeur in {name} buchen.",
+    "popularChoicePrefix": "Eine beliebte Wahl in {name}:",
+    "airportNote": "Unterwegs zum oder vom Flughafen? [Erfahren Sie mehr über unseren Flughafentransfer-Service](/services/airport-transfers) für Flugverfolgung und Meet-and-Greet-Details.",
+    "whyApexEyebrow": "Warum Apex",
+    "whyChooseTitleTemplate": "Warum Apex in {name} wählen",
+    "popularRoutesEyebrow": "Beliebte Strecken",
+    "commonJourneysTitleTemplate": "Häufige Fahrten ab {name}",
+    "commonQuestionsEyebrow": "Häufige Fragen",
+    "faqTitleTemplate": "Häufige Fragen zu {name}",
+    "exploreMoreEyebrow": "Mehr entdecken",
+    "otherAreasTitle": "Weitere Gebiete, die wir bedienen",
+    "otherAreasSubtitleTemplate": "Der Chauffeurservice ist auch in diesen nahegelegenen {siteName}-Zielen verfügbar."
+  },
+  "showcase": {
+    "eyebrow": "Wo wir tätig sind",
+    "title": "Premium-Chauffeurservice in ganz Dubai und den VAE",
+    "subtitle": "Luxuriöser Chauffeurservice verfügbar an Dubais wichtigsten Geschäfts-, Freizeit- und Wohnzielen.",
+    "exploreLocation": "Standort entdecken"
+  },
+  "coverage": {
+    "title": "Im Einsatz in ganz Dubai und den VAE"
+  }
+}

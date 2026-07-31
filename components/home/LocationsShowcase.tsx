@@ -1,14 +1,16 @@
 import Image from "next/image";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import Reveal from "@/components/shared/Reveal";
-import { LOCATIONS, type Location } from "@/data/locations";
+import { getAllLocations, type PlainLocation } from "@/data/locations";
+import type { Locale } from "@/i18n/routing";
 
 export interface FeaturedCard {
-  location: Location;
+  location: PlainLocation;
   displayName?: string;
 }
 
@@ -46,26 +48,35 @@ interface LocationsShowcaseProps {
  * scoped gold accent (#C9A14A). Desktop shows 3 per row, tablet 2, and
  * mobile falls back to a native horizontal scroll-snap swipe row.
  */
-export default function LocationsShowcase({
-  eyebrow = "Where We Operate",
-  title = "Premium Chauffeur Service Across Dubai & UAE",
-  subtitle = "Luxury chauffeur services available across Dubai's most important business, leisure and residential destinations.",
+export default async function LocationsShowcase({
+  eyebrow,
+  title,
+  subtitle,
   tone = "light",
   cards,
 }: LocationsShowcaseProps) {
+  const locale = await getLocale();
+  const t = await getTranslations("locations.showcase");
+  const resolvedEyebrow = eyebrow ?? t("eyebrow");
+  const resolvedTitle = title ?? t("title");
+  const resolvedSubtitle = subtitle ?? t("subtitle");
+
   const resolvedCards =
     cards ??
-    FEATURED_LOCATIONS.reduce<FeaturedCard[]>((acc, { slug, displayName }) => {
-      const location = LOCATIONS.find((l) => l.slug === slug);
-      if (location) acc.push({ location, displayName });
-      return acc;
-    }, []);
+    (() => {
+      const locations = getAllLocations(locale as Locale);
+      return FEATURED_LOCATIONS.reduce<FeaturedCard[]>((acc, { slug, displayName }) => {
+        const location = locations.find((l) => l.slug === slug);
+        if (location) acc.push({ location, displayName });
+        return acc;
+      }, []);
+    })();
 
   return (
     <section className={`border-t border-gold/10 py-24 ${tone === "dark" ? "bg-obsidian" : "bg-ivory"}`}>
       <Container>
         <Reveal>
-          <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} tone={tone} />
+          <SectionHeading eyebrow={resolvedEyebrow} title={resolvedTitle} subtitle={resolvedSubtitle} tone={tone} />
         </Reveal>
 
         <div className="mt-16 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
@@ -111,7 +122,7 @@ export default function LocationsShowcase({
                 </div>
 
                 <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
-                  Explore Location
+                  {t("exploreLocation")}
                   <DirectionalIcon
                     icon={ArrowRight}
                     className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"

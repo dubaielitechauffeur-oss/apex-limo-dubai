@@ -12,7 +12,7 @@ import BookingCTA from "@/components/home/BookingCTA";
 import LocationsHero from "@/components/locations/LocationsHero";
 import { buildMetadata, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
-import { LOCATIONS } from "@/data/locations";
+import { getAllLocations, type PlainLocation } from "@/data/locations";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -30,13 +30,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /** ItemList of Place entities for the locations listing page. */
-function locationsJsonLd(locale: Locale) {
+function locationsJsonLd(locale: Locale, locations: PlainLocation[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: `${SITE.name} Service Areas`,
     url: `${SITE.url}${localizedPath(locale, "/locations")}`,
-    itemListElement: LOCATIONS.map((location, index) => ({
+    itemListElement: locations.map((location, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
@@ -51,12 +51,14 @@ function locationsJsonLd(locale: Locale) {
 export default async function LocationsPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const t = await getTranslations("locations");
+  const locations = getAllLocations(locale as Locale);
   return (
     <div>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationsJsonLd(locale as Locale)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationsJsonLd(locale as Locale, locations)) }}
       />
       <script
         type="application/ld+json"
@@ -74,15 +76,15 @@ export default async function LocationsPage({ params }: PageProps) {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Where We Drive"
-              title="Areas We Serve Across Dubai"
-              subtitle="From beachfront residences to the business district, Apex chauffeurs know Dubai's neighborhoods, pickup points, and traffic patterns in detail."
+              eyebrow={t("listing.eyebrow")}
+              title={t("listing.title")}
+              subtitle={t("listing.subtitle")}
               tone="light"
             />
           </Reveal>
 
           <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 lg:grid-cols-3">
-            {LOCATIONS.map((location, index) => {
+            {locations.map((location, index) => {
               const Icon = location.isAirport ? Plane : MapPin;
               return (
                 <Reveal key={location.slug} delay={Math.min(index * 60, 300)}>
@@ -111,7 +113,7 @@ export default async function LocationsPage({ params }: PageProps) {
                         {location.shortDescription}
                       </p>
                     </div>
-                    <span className="btn-gold mt-8 w-fit">Explore Area</span>
+                    <span className="btn-gold mt-8 w-fit">{t("listing.exploreArea")}</span>
                   </div>
                 </Link>
                 </Reveal>

@@ -30,6 +30,11 @@
     "whatsappUs": "通过WhatsApp咨询",
     "getInstantQuote": "获取即时报价"
   },
+  "bookingCta": {
+    "eyebrow": "随时恭候您的预订",
+    "heading": "今天就在迪拜预订您的专属司机",
+    "subtitle": "告诉我们您的目的地,我们将为您匹配合适的车型与司机——通常几分钟内即可确认。"
+  },
   "footer": {
     "tagline": "专业司机、豪华车队,以及遍布迪拜的可靠服务。",
     "explore": "探索",

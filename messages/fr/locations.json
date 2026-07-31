@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "eyebrow": "Là où nous conduisons",
+    "title": "Nos zones de service",
+    "subtitle": "Des résidences en bord de mer au quartier des affaires, les chauffeurs Apex connaissent en détail les quartiers de Dubaï, les points de prise en charge et les habitudes de circulation."
+  },
+  "listing": {
+    "eyebrow": "Là où nous conduisons",
+    "title": "Les zones que nous desservons à Dubaï",
+    "subtitle": "Des résidences en bord de mer au quartier des affaires, les chauffeurs Apex connaissent en détail les quartiers de Dubaï, les points de prise en charge et les habitudes de circulation.",
+    "exploreArea": "Découvrir la zone"
+  },
+  "detail": {
+    "backToLocations": "Retour aux zones",
+    "titleTemplate": "Service de chauffeur à {name}",
+    "bookNow": "Réserver",
+    "getQuote": "Obtenir un devis",
+    "whatsappUs": "Écrivez-nous sur WhatsApp",
+    "whatsappMessage": "Bonjour Apex Limo, je souhaiterais réserver un chauffeur à {name}.",
+    "popularChoicePrefix": "Un choix populaire à {name} :",
+    "airportNote": "Vous voyagez vers ou depuis l'aéroport ? [Découvrez notre service de transfert aéroport](/services/airport-transfers) pour le suivi de vol et les détails de l'accueil personnalisé.",
+    "whyApexEyebrow": "Pourquoi Apex",
+    "whyChooseTitleTemplate": "Pourquoi choisir Apex à {name}",
+    "popularRoutesEyebrow": "Trajets populaires",
+    "commonJourneysTitleTemplate": "Trajets courants depuis {name}",
+    "commonQuestionsEyebrow": "Questions courantes",
+    "faqTitleTemplate": "FAQ {name}",
+    "exploreMoreEyebrow": "Découvrir plus",
+    "otherAreasTitle": "Autres zones que nous desservons",
+    "otherAreasSubtitleTemplate": "Le service de chauffeur est également disponible dans ces destinations {siteName} à proximité."
+  },
+  "showcase": {
+    "eyebrow": "Là où nous opérons",
+    "title": "Service de chauffeur haut de gamme dans tout Dubaï et les Émirats",
+    "subtitle": "Des services de chauffeur de luxe disponibles dans les destinations d'affaires, de loisirs et résidentielles les plus importantes de Dubaï.",
+    "exploreLocation": "Découvrir le lieu"
+  },
+  "coverage": {
+    "title": "Présents dans tout Dubaï et les Émirats"
+  }
+}

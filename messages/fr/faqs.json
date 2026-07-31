@@ -1,4 +1,19 @@
 {
+  "hero": {
+    "eyebrow": "Centre d'assistance",
+    "title": "Questions fréquentes",
+    "subtitle": "Trouvez des réponses sur les services de chauffeur, les transferts aéroport, les tarifs, les réservations, les options de flotte et le transport de luxe dans tout Dubaï et les Émirats."
+  },
+  "search": {
+    "placeholder": "Que souhaitez-vous savoir ?",
+    "ariaLabel": "Rechercher dans les questions fréquentes",
+    "noResults": "Aucune question correspondante trouvée."
+  },
+  "finalCta": {
+    "eyebrow": "Nous sommes là pour vous aider",
+    "heading": "Besoin d'aide supplémentaire ?",
+    "subtitle": "Notre équipe de conciergerie est disponible 24h/24 et 7j/7 pour vous aider avec les réservations, devis, ou toute question non couverte ci-dessus."
+  },
   "allChip": "Tout",
   "categories": {
     "booking": { "label": "Réservation", "chipLabel": "Réservation" },

@@ -9,7 +9,6 @@ import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
-import { LOCATIONS } from "@/data/locations";
 import type { QuoteFormData } from "@/lib/types";
 import { validateQuoteForm, hasErrors, type FormErrors } from "@/lib/validation";
 
@@ -35,6 +34,13 @@ export interface ServiceOption {
   name: string;
 }
 
+/** Trimmed, locale-resolved location data — just enough for the ?location=
+ *  prefill, mirroring ServiceOption's client-bundle-bloat fix above. */
+export interface LocationOption {
+  slug: string;
+  name: string;
+}
+
 /** Turns a URL slug like "airport-transfers" into "Airport Transfers" as a readable fallback. */
 function prettifySlug(slug: string): string {
   return slug
@@ -50,7 +56,8 @@ function prettifySlug(slug: string): string {
  */
 function buildInitialQuoteForm(
   searchParams: ReturnType<typeof useSearchParams>,
-  services: ServiceOption[]
+  services: ServiceOption[],
+  locations: LocationOption[]
 ): QuoteFormData {
   const form: QuoteFormData = { ...EMPTY_FORM };
 
@@ -68,7 +75,7 @@ function buildInitialQuoteForm(
 
   const locationSlug = searchParams.get("location");
   if (locationSlug) {
-    const location = LOCATIONS.find((l) => l.slug === locationSlug);
+    const location = locations.find((l) => l.slug === locationSlug);
     form.pickupLocation = location ? location.name : prettifySlug(locationSlug);
   }
 
@@ -85,10 +92,16 @@ function QuoteFormSkeleton() {
   );
 }
 
-function QuoteFormFields({ services }: { services: ServiceOption[] }) {
+function QuoteFormFields({
+  services,
+  locations,
+}: {
+  services: ServiceOption[];
+  locations: LocationOption[];
+}) {
   const searchParams = useSearchParams();
   const [form, setForm] = useState<QuoteFormData>(() =>
-    buildInitialQuoteForm(searchParams, services)
+    buildInitialQuoteForm(searchParams, services, locations)
   );
   const [errors, setErrors] = useState<FormErrors<QuoteFormData>>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -390,10 +403,16 @@ function QuoteFormFields({ services }: { services: ServiceOption[] }) {
  * during static rendering — keeping the boundary inside this file means
  * app/quote/page.tsx doesn't need to know about it.
  */
-export default function QuoteForm({ services }: { services: ServiceOption[] }) {
+export default function QuoteForm({
+  services,
+  locations,
+}: {
+  services: ServiceOption[];
+  locations: LocationOption[];
+}) {
   return (
     <Suspense fallback={<QuoteFormSkeleton />}>
-      <QuoteFormFields services={services} />
+      <QuoteFormFields services={services} locations={locations} />
     </Suspense>
   );
 }

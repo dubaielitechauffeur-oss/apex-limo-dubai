@@ -121,8 +121,8 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
                 goToFaq(suggestions[0]);
               }
             }}
-            placeholder="What would you like to know?"
-            aria-label="Search frequently asked questions"
+            placeholder={t("search.placeholder")}
+            aria-label={t("search.ariaLabel")}
             className="w-full rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] py-5 ps-14 pe-6 text-base text-white placeholder:text-[#999999] outline-none transition-shadow duration-200 focus:border-[#C9A14A] focus:shadow-[0_0_0_4px_rgba(201,161,74,0.18)]"
           />
         </div>
@@ -141,7 +141,7 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
                 </button>
               ))
             ) : (
-              <p className="px-6 py-4 text-sm text-[#999999]">No matching questions found.</p>
+              <p className="px-6 py-4 text-sm text-[#999999]">{t("search.noResults")}</p>
             )}
           </div>
         ) : null}

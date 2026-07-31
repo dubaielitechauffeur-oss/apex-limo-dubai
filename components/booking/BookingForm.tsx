@@ -8,8 +8,7 @@ import FormSectionHeading from "@/components/shared/FormSectionHeading";
 import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { FLEET } from "@/data/fleet";
-import { LOCATIONS } from "@/data/locations";
-import type { ServiceOption } from "./QuoteForm";
+import type { ServiceOption, LocationOption } from "./QuoteForm";
 import { getWhatsAppLink } from "@/lib/constants";
 import type { BookingFormData } from "@/lib/types";
 import { validateBookingForm, hasErrors, type FormErrors } from "@/lib/validation";
@@ -54,7 +53,8 @@ function prettifySlug(slug: string): string {
  */
 function buildInitialBookingForm(
   searchParams: ReturnType<typeof useSearchParams>,
-  services: ServiceOption[]
+  services: ServiceOption[],
+  locations: LocationOption[]
 ): BookingFormData {
   const form: BookingFormData = { ...EMPTY_FORM };
 
@@ -66,7 +66,7 @@ function buildInitialBookingForm(
 
   const locationSlug = searchParams.get("location");
   if (locationSlug) {
-    const location = LOCATIONS.find((l) => l.slug === locationSlug);
+    const location = locations.find((l) => l.slug === locationSlug);
     form.pickupLocation = location ? location.name : prettifySlug(locationSlug);
   }
 
@@ -90,10 +90,16 @@ function BookingFormSkeleton() {
   );
 }
 
-function BookingFormFields({ services }: { services: ServiceOption[] }) {
+function BookingFormFields({
+  services,
+  locations,
+}: {
+  services: ServiceOption[];
+  locations: LocationOption[];
+}) {
   const searchParams = useSearchParams();
   const [form, setForm] = useState<BookingFormData>(() =>
-    buildInitialBookingForm(searchParams, services)
+    buildInitialBookingForm(searchParams, services, locations)
   );
   const [errors, setErrors] = useState<FormErrors<BookingFormData>>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -451,10 +457,16 @@ function BookingFormFields({ services }: { services: ServiceOption[] }) {
  * during static rendering — keeping the boundary inside this file means
  * app/booking/page.tsx doesn't need to know about it.
  */
-export default function BookingForm({ services }: { services: ServiceOption[] }) {
+export default function BookingForm({
+  services,
+  locations,
+}: {
+  services: ServiceOption[];
+  locations: LocationOption[];
+}) {
   return (
     <Suspense fallback={<BookingFormSkeleton />}>
-      <BookingFormFields services={services} />
+      <BookingFormFields services={services} locations={locations} />
     </Suspense>
   );
 }

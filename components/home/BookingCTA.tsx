@@ -18,12 +18,16 @@ interface BookingCTAProps {
 }
 
 export default async function BookingCTA({
-  eyebrow = "Ready When You Are",
-  heading = "Reserve Your Chauffeur in Dubai Today",
-  subtitle = "Tell us where you're headed and we'll match you with the right vehicle and driver — usually confirmed within minutes.",
+  eyebrow,
+  heading,
+  subtitle,
   backgroundImage = true,
 }: BookingCTAProps) {
   const t = await getTranslations("common.cta");
+  const td = await getTranslations("common.bookingCta");
+  const resolvedEyebrow = eyebrow ?? td("eyebrow");
+  const resolvedHeading = heading ?? td("heading");
+  const resolvedSubtitle = subtitle ?? td("subtitle");
   return (
     <section
       className={`relative overflow-hidden border-t border-gold/10 bg-ink py-24 ${
@@ -78,7 +82,7 @@ export default async function BookingCTA({
       />
       <Container className="relative text-center">
         <Reveal>
-          <SectionHeading eyebrow={eyebrow} title={heading} subtitle={subtitle} tone="dark" />
+          <SectionHeading eyebrow={resolvedEyebrow} title={resolvedHeading} subtitle={resolvedSubtitle} tone="dark" />
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <CTAButton href={PRIMARY_CTA.book.href}>

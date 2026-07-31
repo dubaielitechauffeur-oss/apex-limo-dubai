@@ -9,6 +9,7 @@ import ConversionTrustPanel from "@/components/booking/ConversionTrustPanel";
 import VehicleSummaryCard from "@/components/booking/VehicleSummaryCard";
 import { FLEET } from "@/data/fleet";
 import { getAllServices } from "@/data/services";
+import { getAllLocations } from "@/data/locations";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 interface QuotePageProps {
@@ -33,6 +34,7 @@ export default async function QuotePage({ params, searchParams }: QuotePageProps
   const { vehicle: vehicleSlug } = await searchParams;
   const vehicle = vehicleSlug ? FLEET.find((v) => v.slug === vehicleSlug) : undefined;
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
+  const locations = getAllLocations(locale as Locale).map(({ slug, name }) => ({ slug, name }));
 
   return (
     <>
@@ -67,7 +69,7 @@ export default async function QuotePage({ params, searchParams }: QuotePageProps
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.7fr_1fr] lg:gap-10">
             <div className="rounded-2xl border border-[rgba(201,161,74,0.15)] bg-[#111111] p-6 sm:p-8 lg:p-10">
               {vehicle ? <VehicleSummaryCard vehicle={vehicle} /> : null}
-              <QuoteForm services={services} />
+              <QuoteForm services={services} locations={locations} />
             </div>
 
             <aside>

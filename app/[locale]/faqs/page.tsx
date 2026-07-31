@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function FaqsPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const t = await getTranslations("faqs");
   return (
     <div>
       <script
@@ -45,13 +46,12 @@ export default async function FaqsPage({ params }: PageProps) {
       {/* Hero */}
       <section className="border-b border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
         <Container className="text-center">
-          <span className="animate-fade-in label-eyebrow">Support Center</span>
+          <span className="animate-fade-in label-eyebrow">{t("hero.eyebrow")}</span>
           <h1 className="mx-auto mt-5 max-w-3xl animate-slide-in-left font-display text-4xl text-white [animation-delay:100ms] sm:text-5xl">
-            Frequently Asked Questions
+            {t("hero.title")}
           </h1>
           <p className="mx-auto mt-5 max-w-2xl animate-fade-in text-sm leading-relaxed text-[#B8B8B8] [animation-delay:250ms] sm:text-base">
-            Find answers about chauffeur services, airport transfers, pricing, bookings, fleet
-            options and luxury transportation across Dubai and the UAE.
+            {t("hero.subtitle")}
           </p>
         </Container>
       </section>
@@ -64,9 +64,9 @@ export default async function FaqsPage({ params }: PageProps) {
       </section>
 
       <BookingCTA
-        eyebrow="We're Here to Help"
-        heading="Still Need Assistance?"
-        subtitle="Our concierge team is on hand 24/7 to help with bookings, quotes, or anything not covered above."
+        eyebrow={t("finalCta.eyebrow")}
+        heading={t("finalCta.heading")}
+        subtitle={t("finalCta.subtitle")}
       />
     </div>
   );

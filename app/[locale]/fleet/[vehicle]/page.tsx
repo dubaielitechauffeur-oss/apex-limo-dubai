@@ -45,7 +45,7 @@ import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPa
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
 import { FLEET } from "@/data/fleet";
 import { getServiceBySlug } from "@/data/services";
-import { LOCATIONS } from "@/data/locations";
+import { getLocationBySlug } from "@/data/locations";
 import { VEHICLE_CROSS_LINKS } from "@/lib/cross-links";
 
 interface PageProps {
@@ -184,7 +184,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     ? getServiceBySlug(crossLinks.serviceSlug, locale as Locale)
     : undefined;
   const relatedLocation = crossLinks
-    ? LOCATIONS.find((l) => l.slug === crossLinks.locationSlug)
+    ? getLocationBySlug(crossLinks.locationSlug, locale as Locale)
     : undefined;
 
   const quickFacts = [

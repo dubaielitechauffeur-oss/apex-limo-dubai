@@ -1,4 +1,19 @@
 {
+  "hero": {
+    "eyebrow": "Support-Center",
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Finden Sie Antworten rund um Chauffeurservice, Flughafentransfers, Preise, Buchungen, Flottenoptionen und Luxustransport in ganz Dubai und den VAE."
+  },
+  "search": {
+    "placeholder": "Was möchten Sie wissen?",
+    "ariaLabel": "Häufig gestellte Fragen durchsuchen",
+    "noResults": "Keine passenden Fragen gefunden."
+  },
+  "finalCta": {
+    "eyebrow": "Wir sind für Sie da",
+    "heading": "Benötigen Sie noch Hilfe?",
+    "subtitle": "Unser Concierge-Team ist rund um die Uhr für Sie da, um bei Buchungen, Angeboten oder allem, was oben nicht behandelt wurde, zu helfen."
+  },
   "allChip": "Alle",
   "categories": {
     "booking": { "label": "Buchung", "chipLabel": "Buchung" },

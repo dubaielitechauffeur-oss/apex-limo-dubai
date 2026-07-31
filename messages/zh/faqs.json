@@ -1,4 +1,19 @@
 {
+  "hero": {
+    "eyebrow": "支持中心",
+    "title": "常见问题",
+    "subtitle": "在此查找有关专属司机服务、机场接送、价格、预订、车队选择及迪拜与阿联酋豪华出行的各类解答。"
+  },
+  "search": {
+    "placeholder": "您想了解什么?",
+    "ariaLabel": "搜索常见问题",
+    "noResults": "未找到匹配的问题。"
+  },
+  "finalCta": {
+    "eyebrow": "我们随时为您提供帮助",
+    "heading": "仍需协助?",
+    "subtitle": "我们的礼宾团队全天24小时待命,协助处理预订、报价或以上未涵盖的其他任何问题。"
+  },
   "allChip": "全部",
   "categories": {
     "booking": { "label": "预订", "chipLabel": "预订" },
