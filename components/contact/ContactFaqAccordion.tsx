@@ -32,7 +32,7 @@ export default function ContactFaqAccordion({ faqs }: ContactFaqAccordionProps) 
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : index)}
               aria-expanded={isOpen}
-              className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+              className="flex w-full items-center justify-between gap-6 px-6 py-5 text-start"
             >
               <span className="font-display text-base text-white sm:text-lg">{faq.question}</span>
               <ChevronDown

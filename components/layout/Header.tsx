@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Calendar } from "lucide-react";
 import MobileNav from "./MobileNav";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ApexLogo from "./ApexLogo";
+import Ltr from "@/components/shared/Ltr";
 import {
   NAV_LINKS,
   PRIMARY_CTA,
@@ -16,12 +17,13 @@ import {
 
 /** Desktop nav order for the luxury header redesign — pulled from the
  *  shared NAV_LINKS source of truth so hrefs/children stay in sync. */
-const HEADER_NAV_ORDER = ["Home", "Fleet", "Services", "Locations", "About", "FAQs", "Blog", "Contact"];
-const headerNavLinks = HEADER_NAV_ORDER.map((label) =>
-  NAV_LINKS.find((link) => link.label === label)
+const HEADER_NAV_ORDER = ["home", "fleet", "services", "locations", "about", "faqs", "blog", "contact"];
+const headerNavLinks = HEADER_NAV_ORDER.map((key) =>
+  NAV_LINKS.find((link) => link.key === key)
 ).filter((link): link is (typeof NAV_LINKS)[number] => Boolean(link));
 
 export default function Header() {
+  const t = useTranslations("common");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -50,7 +52,7 @@ export default function Header() {
       {/* Promotional bar */}
       <div className="flex h-9 items-center justify-center border-b border-[#1F1F1F] bg-black px-4">
         <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-white sm:text-[11px] sm:tracking-[0.25em]">
-          Premium Chauffeur Service Across Dubai &amp; UAE
+          {t("header.promoBar")}
         </p>
       </div>
 
@@ -79,10 +81,10 @@ export default function Header() {
                       isActive ? "text-[#C8A35F]" : "text-white"
                     }`}
                   >
-                    {link.label}
+                    {t(`nav.${link.key}`)}
                   </Link>
                   <span
-                    className={`absolute -bottom-1.5 left-0 h-px w-full bg-[#C8A35F] transition-opacity duration-200 ${
+                    className={`absolute -bottom-1.5 start-0 h-px w-full bg-[#C8A35F] transition-opacity duration-200 ${
                       isActive ? "opacity-100" : "opacity-0"
                     }`}
                     aria-hidden="true"
@@ -98,7 +100,7 @@ export default function Header() {
                                 href={child.href}
                                 className="block text-sm text-[#BDBDBD] transition-colors hover:text-[#C8A35F]"
                               >
-                                {child.label}
+                                {t(`nav.${link.key}Children.${child.key}`)}
                               </Link>
                             </li>
                           ))}
@@ -118,14 +120,14 @@ export default function Header() {
               href={getPhoneLink()}
               className="shrink-0 whitespace-nowrap text-[13px] text-[#BDBDBD] transition-colors duration-200 hover:text-[#C8A35F]"
             >
-              {SITE.phoneDisplay}
+              <Ltr>{SITE.phoneDisplay}</Ltr>
             </a>
             <Link
               href={PRIMARY_CTA.book.href}
               className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#C8A35F] px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-colors duration-200 hover:bg-[#B8935A] xl:px-6 xl:py-3 xl:tracking-[0.12em]"
             >
               <Calendar className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
-              Book Now
+              {t("cta.bookNow")}
             </Link>
             <LanguageSwitcher compact className="shrink-0" />
           </div>
@@ -135,7 +137,7 @@ export default function Header() {
             <LanguageSwitcher compact className="flex h-10 items-center" />
             <button
               onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
+              aria-label={t("header.openMenu")}
               aria-expanded={mobileOpen}
               className="flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5"
             >
@@ -153,8 +155,8 @@ export default function Header() {
       {mobileOpen && (
         <button
           onClick={() => setMobileOpen(false)}
-          aria-label="Close menu"
-          className="fixed right-5 top-6 z-50 flex h-10 w-10 items-center justify-center text-2xl text-white lg:hidden"
+          aria-label={t("header.closeMenu")}
+          className="fixed end-5 top-6 z-50 flex h-10 w-10 items-center justify-center text-2xl text-white lg:hidden"
         >
           ×
         </button>

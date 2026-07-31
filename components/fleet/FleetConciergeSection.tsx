@@ -1,7 +1,8 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Phone } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Reveal from "@/components/shared/Reveal";
+import Ltr from "@/components/shared/Ltr";
 import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 
 const RECOMMENDATIONS = [
@@ -47,7 +48,7 @@ export default function FleetConciergeSection() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-4 text-left sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-1 gap-4 text-start sm:grid-cols-2 lg:grid-cols-4">
           {RECOMMENDATIONS.map((item, index) => (
             <Reveal key={item.name} delay={index * 80}>
               <Link
@@ -69,7 +70,7 @@ export default function FleetConciergeSection() {
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"
           >
             <Phone className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-            Call {SITE.phoneDisplay}
+            Call <Ltr>{SITE.phoneDisplay}</Ltr>
           </a>
           <a
             href={getWhatsAppLink("Hi, I'd like help choosing the right vehicle.")}

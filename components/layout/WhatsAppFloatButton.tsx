@@ -12,7 +12,7 @@ export default function WhatsAppFloatButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Apex Limo on WhatsApp"
-      className="group fixed bottom-6 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-black/40 transition-transform duration-200 hover:scale-105 sm:bottom-8 sm:right-8"
+      className="group fixed bottom-6 end-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-black/40 transition-transform duration-200 hover:scale-105 sm:bottom-8 sm:end-8"
     >
       <span className="absolute inset-0 -z-10 animate-pulse-slow rounded-full bg-[#25D366]/40" />
       <svg

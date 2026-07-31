@@ -1,7 +1,9 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import { Star, Car, UserCheck, MapPin } from "lucide-react";
 import Container from "@/components/shared/Container";
 import { RATING, FLEET_SIZE, PRIMARY_CTA } from "@/lib/constants";
+import Ltr from "@/components/shared/Ltr";
 
 const TRUST_ITEMS = [
   { icon: Car, label: `${FLEET_SIZE} Luxury Vehicles` },
@@ -17,7 +19,8 @@ const TRUST_ITEMS = [
  * scrolls straight to the listings below rather than navigating away, since
  * they're already on this page.
  */
-export default function FleetHero() {
+export default async function FleetHero() {
+  const t = await getTranslations("common.cta");
   const filledStars = Math.round(parseFloat(RATING));
 
   return (
@@ -78,14 +81,14 @@ export default function FleetHero() {
                   />
                 ))}
               </div>
-              <span className="text-sm font-semibold text-white">{RATING} Rating</span>
+              <span className="text-sm font-semibold text-white"><Ltr>{RATING} Rating</Ltr></span>
             </div>
 
             {TRUST_ITEMS.map((item) => (
               <div key={item.label} className="flex items-center gap-2">
                 <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
                 <item.icon className="h-4 w-4 text-[#C9A14A]" strokeWidth={1.5} aria-hidden="true" />
-                <span className="text-sm text-[#B8B8B8]">{item.label}</span>
+                <span className="text-sm text-[#B8B8B8]"><Ltr>{item.label}</Ltr></span>
               </div>
             ))}
           </div>
@@ -101,7 +104,7 @@ export default function FleetHero() {
               href={PRIMARY_CTA.quote.href}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-[#C9A14A] hover:text-[#C9A14A]"
             >
-              {PRIMARY_CTA.quote.label}
+              {t("getInstantQuote")}
             </Link>
           </div>
         </div>

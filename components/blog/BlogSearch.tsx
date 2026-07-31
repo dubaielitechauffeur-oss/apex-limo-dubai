@@ -29,7 +29,7 @@ export default function BlogSearch({ posts, imageExistsBySlug }: BlogSearchProps
     <div>
       <div className="relative mx-auto max-w-xl">
         <Search
-          className="pointer-events-none absolute left-5 top-1/2 h-4 w-4 -translate-y-1/2 text-graphite"
+          className="pointer-events-none absolute start-5 top-1/2 h-4 w-4 -translate-y-1/2 text-graphite"
           strokeWidth={1.75}
           aria-hidden="true"
         />
@@ -39,7 +39,7 @@ export default function BlogSearch({ posts, imageExistsBySlug }: BlogSearchProps
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search articles..."
           aria-label="Search blog articles by title or excerpt"
-          className="w-full rounded-full border border-gold/20 bg-ivory py-4 pl-12 pr-6 text-sm text-obsidian placeholder:text-graphite outline-none transition-colors duration-200 focus:border-gold-deep"
+          className="w-full rounded-full border border-gold/20 bg-ivory py-4 ps-12 pe-6 text-sm text-obsidian placeholder:text-graphite outline-none transition-colors duration-200 focus:border-gold-deep"
         />
       </div>
 

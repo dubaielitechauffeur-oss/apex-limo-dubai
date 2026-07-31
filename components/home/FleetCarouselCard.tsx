@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Car, Clock, Plane, type LucideIcon } from "lucide-react";
 import type { FleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
@@ -61,7 +61,7 @@ export default function FleetCarouselCard({ vehicle, whatsapp = false, tone = "l
             </span>
           </div>
         )}
-        <span className="absolute left-4 top-4 inline-flex items-center rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-obsidian shadow-sm">
+        <span className="absolute start-4 top-4 inline-flex items-center rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-obsidian shadow-sm">
           {vehicle.brand}
         </span>
       </div>

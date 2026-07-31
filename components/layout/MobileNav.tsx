@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { LOCALE_METADATA } from "@/i18n/locale-metadata";
+import type { Locale } from "@/i18n/routing";
+import Ltr from "@/components/shared/Ltr";
 import {
   NAV_LINKS,
   PRIMARY_CTA,
@@ -17,6 +21,15 @@ interface MobileNavProps {
 
 /** Full-screen mobile navigation panel, shown when the header's menu button is tapped. */
 export default function MobileNav({ open, onClose }: MobileNavProps) {
+  const t = useTranslations("common");
+  const locale = useLocale() as Locale;
+  const pathname = usePathname();
+  const router = useRouter();
+
+  function selectLocale(nextLocale: Locale) {
+    onClose();
+    router.replace(pathname, { locale: nextLocale });
+  }
   // Tracks which single nav item's submenu is expanded (accordion-style).
   // Kept by href rather than a per-item boolean so Services and Locations
   // each expand/collapse independently via their own "+" toggle, while the
@@ -47,7 +60,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
                       onClick={onClose}
                       className="font-display text-2xl text-ivory transition-colors hover:text-gold"
                     >
-                      {link.label}
+                      {t(`nav.${link.key}`)}
                     </Link>
                     <button
                       type="button"
@@ -55,7 +68,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
                         setOpenHref((current) => (current === link.href ? null : link.href))
                       }
                       aria-expanded={openHref === link.href}
-                      aria-label={`${openHref === link.href ? "Collapse" : "Expand"} ${link.label} submenu`}
+                      aria-label={`${openHref === link.href ? t("mobileNav.collapse") : t("mobileNav.expand")} ${t(`nav.${link.key}`)} ${t("mobileNav.submenu")}`}
                       className="flex h-11 w-11 shrink-0 items-center justify-center text-2xl text-gold"
                     >
                       <span
@@ -76,7 +89,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
                     aria-hidden={openHref !== link.href}
                     inert={openHref !== link.href}
                   >
-                    <ul className="flex flex-col gap-3 overflow-hidden pl-1">
+                    <ul className="flex flex-col gap-3 overflow-hidden ps-1">
                       {link.children.map((child) => (
                         <li key={child.href}>
                           <Link
@@ -84,7 +97,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
                             onClick={onClose}
                             className="text-sm text-smoke transition-colors hover:text-gold"
                           >
-                            {child.label}
+                            {t(`nav.${link.key}Children.${child.key}`)}
                           </Link>
                         </li>
                       ))}
@@ -97,7 +110,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
                   onClick={onClose}
                   className="font-display text-2xl text-ivory transition-colors hover:text-gold"
                 >
-                  {link.label}
+                  {t(`nav.${link.key}`)}
                 </Link>
               )}
             </li>
@@ -110,7 +123,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
             onClick={onClose}
             className="btn-gold w-full"
           >
-            {PRIMARY_CTA.book.label}
+            {t("cta.bookNow")}
           </Link>
           <a
             href={getWhatsAppLink()}
@@ -118,14 +131,44 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
             rel="noopener noreferrer"
             className="btn-outline w-full"
           >
-            {PRIMARY_CTA.whatsapp.label}
+            {t("cta.whatsappUs")}
           </a>
           <a
             href={getPhoneLink()}
             className="mt-2 text-center text-sm tracking-wide text-smoke"
           >
-            Or call {SITE.phoneDisplay}
+            {t("mobileNav.orCall")} <Ltr>{SITE.phoneDisplay}</Ltr>
           </a>
+        </div>
+
+        {/* Language — grid of flag + native-name toggles, mirrors the
+            desktop header's dropdown options but laid out for touch. */}
+        <div className="mt-10 border-t border-white/10 pt-8">
+          <p className="mb-4 text-xs uppercase tracking-[0.2em] text-smoke">
+            {t("header.changeLanguage")}
+          </p>
+          <ul className="grid grid-cols-2 gap-3">
+            {LOCALE_METADATA.map((option) => {
+              const selected = option.code === locale;
+              return (
+                <li key={option.code}>
+                  <button
+                    type="button"
+                    onClick={() => selectLocale(option.code)}
+                    aria-pressed={selected}
+                    className={`flex w-full items-center gap-2.5 rounded-lg border px-3.5 py-2.5 text-sm transition-colors duration-150 ${
+                      selected
+                        ? "border-gold/40 bg-gold/10 text-gold"
+                        : "border-white/10 text-smoke hover:border-white/20 hover:text-ivory"
+                    }`}
+                  >
+                    <span aria-hidden="true">{option.flag}</span>
+                    <span>{option.nativeLabel}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </nav>
     </div>

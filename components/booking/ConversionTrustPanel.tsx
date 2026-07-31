@@ -1,5 +1,6 @@
 import { Star, Car, BadgeCheck, Clock, Zap } from "lucide-react";
 import Reveal from "@/components/shared/Reveal";
+import Ltr from "@/components/shared/Ltr";
 import { RATING, FLEET_SIZE } from "@/lib/constants";
 
 const TRUST_BULLETS = [
@@ -29,7 +30,7 @@ export default function ConversionTrustPanel() {
           <Star key={i} className="h-4 w-4 fill-[#C9A14A] text-[#C9A14A]" strokeWidth={1.5} />
         ))}
       </div>
-      <p className="mt-2 font-display text-xl text-white">{RATING} Rating</p>
+      <p className="mt-2 font-display text-xl text-white"><Ltr>{RATING} Rating</Ltr></p>
       <p className="mt-3 text-sm leading-relaxed text-[#B8B8B8]">
         Trusted by executives, business travelers, tourists, and VIP clients across Dubai and
         the UAE.
@@ -39,7 +40,7 @@ export default function ConversionTrustPanel() {
         {TRUST_BULLETS.map((item) => (
           <li key={item.label} className="flex items-center gap-3 text-sm text-[#E5E5E5]">
             <item.icon className="h-4 w-4 shrink-0 text-[#C9A14A]" strokeWidth={1.5} aria-hidden="true" />
-            {item.label}
+            <Ltr>{item.label}</Ltr>
           </li>
         ))}
       </ul>

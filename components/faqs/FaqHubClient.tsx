@@ -86,7 +86,7 @@ export default function FaqHubClient() {
         <div ref={searchWrapRef} className="relative mx-auto max-w-2xl">
         <div className="relative">
           <Search
-            className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#999999]"
+            className="pointer-events-none absolute start-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#999999]"
             strokeWidth={1.75}
             aria-hidden="true"
           />
@@ -109,7 +109,7 @@ export default function FaqHubClient() {
             }}
             placeholder="What would you like to know?"
             aria-label="Search frequently asked questions"
-            className="w-full rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] py-5 pl-14 pr-6 text-base text-white placeholder:text-[#999999] outline-none transition-shadow duration-200 focus:border-[#C9A14A] focus:shadow-[0_0_0_4px_rgba(201,161,74,0.18)]"
+            className="w-full rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] py-5 ps-14 pe-6 text-base text-white placeholder:text-[#999999] outline-none transition-shadow duration-200 focus:border-[#C9A14A] focus:shadow-[0_0_0_4px_rgba(201,161,74,0.18)]"
           />
         </div>
 
@@ -121,7 +121,7 @@ export default function FaqHubClient() {
                   key={entry.id}
                   type="button"
                   onClick={() => goToFaq(entry)}
-                  className="block w-full border-b border-white/5 px-6 py-4 text-left text-sm text-white transition-colors duration-150 last:border-0 hover:bg-[rgba(201,161,74,0.08)]"
+                  className="block w-full border-b border-white/5 px-6 py-4 text-start text-sm text-white transition-colors duration-150 last:border-0 hover:bg-[rgba(201,161,74,0.08)]"
                 >
                   {entry.question}
                 </button>
@@ -181,7 +181,7 @@ export default function FaqHubClient() {
                       type="button"
                       onClick={() => toggleFaq(entry.id)}
                       aria-expanded={isOpen}
-                      className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                      className="flex w-full items-center justify-between gap-6 px-6 py-5 text-start"
                     >
                       <span className="font-display text-base text-white sm:text-lg">{entry.question}</span>
                       <ChevronDown

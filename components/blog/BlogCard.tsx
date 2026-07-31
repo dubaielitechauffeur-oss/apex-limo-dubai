@@ -1,5 +1,7 @@
-import Link from "next/link";
+import { useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
+import type { Locale } from "@/i18n/routing";
 import type { BlogPost } from "@/data/blog";
 import BlogImageFrame from "./BlogImageFrame";
 
@@ -11,6 +13,7 @@ interface BlogCardProps {
 
 /** Shared post card for the /blog listing grid and each detail page's "More From the Journal" rail. */
 export default function BlogCard({ post, imageExists }: BlogCardProps) {
+  const locale = useLocale() as Locale;
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -28,7 +31,7 @@ export default function BlogCard({ post, imageExists }: BlogCardProps) {
 
       <div className="flex flex-1 flex-col p-8">
         <time dateTime={post.publishDate} className="text-xs uppercase tracking-wide text-graphite">
-          {formatDate(post.publishDate)}
+          {formatDate(post.publishDate, locale)}
         </time>
         <h2 className="mt-3 font-display text-xl text-obsidian">{post.title}</h2>
         <p className="mt-3 flex-1 text-sm leading-relaxed text-graphite">{post.excerpt}</p>

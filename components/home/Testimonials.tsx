@@ -121,7 +121,7 @@ export default function Testimonials() {
             >
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-6 left-8 select-none font-display text-[110px] leading-none text-gold/15"
+                className="pointer-events-none absolute -top-6 start-8 select-none font-display text-[110px] leading-none text-gold/15"
               >
                 &ldquo;
               </span>

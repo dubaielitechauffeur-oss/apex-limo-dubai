@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Home",
+    "fleet": "Fleet",
+    "services": "Services",
+    "locations": "Locations",
+    "about": "About",
+    "faqs": "FAQs",
+    "blog": "Blog",
+    "contact": "Contact",
+    "servicesChildren": {
+      "airportTransfers": "Airport Transfers",
+      "corporateChauffeur": "Corporate Chauffeur",
+      "luxuryChauffeur": "Luxury Chauffeur",
+      "vipTransportation": "VIP Transportation",
+      "eventTransportation": "Event Transportation",
+      "weddingChauffeur": "Wedding Chauffeur"
+    },
+    "locationsChildren": {
+      "dubaiMarina": "Dubai Marina",
+      "downtownDubai": "Downtown Dubai",
+      "palmJumeirah": "Palm Jumeirah",
+      "businessBay": "Business Bay",
+      "jumeirah": "Jumeirah",
+      "dubaiAirport": "Dubai Airport"
+    }
+  },
+  "cta": {
+    "bookNow": "Book Now",
+    "whatsappUs": "WhatsApp Us",
+    "getInstantQuote": "Get Instant Quote"
+  },
+  "footer": {
+    "tagline": "Professional chauffeurs, a premium fleet, and dependable service across Dubai.",
+    "explore": "Explore",
+    "services": "Services",
+    "locations": "Locations",
+    "reachUs": "Reach Us",
+    "whatsappUs": "WhatsApp Us",
+    "address": "Dubai, United Arab Emirates",
+    "rightsReserved": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions"
+  },
+  "header": {
+    "promoBar": "Premium Chauffeur Service Across Dubai & UAE",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "changeLanguage": "Change language"
+  },
+  "mobileNav": {
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "submenu": "submenu",
+    "orCall": "Or call"
+  },
+  "logo": {
+    "tagline": "Luxury Chauffeur"
+  }
+}

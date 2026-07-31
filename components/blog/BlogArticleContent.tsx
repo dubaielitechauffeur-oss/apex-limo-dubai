@@ -63,7 +63,7 @@ export default function BlogArticleContent({ blocks }: BlogArticleContentProps) 
           <div key={index} className="divide-y divide-obsidian/10 border-y border-obsidian/10">
             {block.items.map((faq) => (
               <details key={faq.question} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-start font-display text-lg text-obsidian marker:content-none [&::-webkit-details-marker]:hidden">
                   {faq.question}
                   <ChevronDown
                     className="h-5 w-5 shrink-0 text-gold-deep transition-transform duration-200 group-open:rotate-180"

@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import type { Service } from "@/data/services";
 
 interface LocationServiceCardProps {
@@ -52,7 +53,11 @@ export default function LocationServiceCard({ service, className = "" }: Locatio
 
         <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
           Learn More
-          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2} />
+          <DirectionalIcon
+            icon={ArrowRight}
+            className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+            strokeWidth={2}
+          />
         </span>
       </div>
     </Link>

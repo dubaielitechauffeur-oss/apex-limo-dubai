@@ -114,7 +114,7 @@
   }
 
   .phone-field .PhoneInputCountry {
-    @apply mr-3 border-r border-gold/15 pr-3;
+    @apply me-3 border-e border-gold/15 pe-3;
   }
 
   .phone-field .PhoneInputCountrySelectArrow {

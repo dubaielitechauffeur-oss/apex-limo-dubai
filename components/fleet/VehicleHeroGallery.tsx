@@ -2,9 +2,12 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { Car, ChevronLeft, ChevronRight } from "lucide-react";
 import type { FleetVehicle } from "@/data/fleet";
 import { useInfiniteCarousel } from "@/components/home/useInfiniteCarousel";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
+import { isRtlLocale } from "@/i18n/locale-metadata";
 
 interface VehicleHeroGalleryProps {
   vehicle: FleetVehicle;
@@ -39,6 +42,7 @@ export function VehicleGalleryCarousel({
   vehicle,
   sizes = "100vw",
 }: VehicleHeroGalleryProps & { sizes?: string }) {
+  const rtl = isRtlLocale(useLocale());
   const images = vehicle.images ?? [];
   const hasMultiple = images.length > 1;
 
@@ -68,7 +72,8 @@ export function VehicleGalleryCarousel({
     const dx = event.clientX - start.x;
     const dy = event.clientY - start.y;
     if (Math.abs(dx) >= SWIPE_THRESHOLD_PX && Math.abs(dx) > Math.abs(dy)) {
-      if (dx > 0) goPrev();
+      const draggedTowardStart = rtl ? dx < 0 : dx > 0;
+      if (draggedTowardStart) goPrev();
       else goNext();
     }
   };
@@ -87,7 +92,7 @@ export function VehicleGalleryCarousel({
             <Car className="h-16 w-16 text-gold/70" strokeWidth={1} aria-hidden="true" />
           </div>
         )}
-        <span className="absolute left-4 top-4 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
+        <span className="absolute start-4 top-4 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
           {vehicle.category}
         </span>
       </div>
@@ -107,7 +112,7 @@ export function VehicleGalleryCarousel({
       >
         <div
           className={`flex h-full ${instant ? "" : "transition-transform duration-500 ease-out"}`}
-          style={{ transform: `translateX(-${index * 100}%)` }}
+          style={{ transform: `translateX(${rtl ? "" : "-"}${index * 100}%)` }}
           onTransitionEnd={handleTransitionEnd}
         >
           {extended.map((image, position) => (
@@ -128,10 +133,10 @@ export function VehicleGalleryCarousel({
           ))}
         </div>
 
-        <span className="absolute left-4 top-4 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
+        <span className="absolute start-4 top-4 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
           {vehicle.category}
         </span>
-        <span className="absolute right-4 top-4 inline-flex items-center rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-[11px] font-semibold tracking-wide text-ivory backdrop-blur-sm">
+        <span className="absolute end-4 top-4 inline-flex items-center rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-[11px] font-semibold tracking-wide text-ivory backdrop-blur-sm">
           {activeRealIndex + 1} / {images.length}
         </span>
 
@@ -139,17 +144,17 @@ export function VehicleGalleryCarousel({
           type="button"
           onClick={goPrev}
           aria-label="Previous photo"
-          className="absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-ivory backdrop-blur-sm transition-colors duration-200 hover:bg-gold hover:text-obsidian"
+          className="absolute start-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-ivory backdrop-blur-sm transition-colors duration-200 hover:bg-gold hover:text-obsidian"
         >
-          <ChevronLeft className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
+          <DirectionalIcon icon={ChevronLeft} className="h-5 w-5" strokeWidth={2} />
         </button>
         <button
           type="button"
           onClick={goNext}
           aria-label="Next photo"
-          className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-ivory backdrop-blur-sm transition-colors duration-200 hover:bg-gold hover:text-obsidian"
+          className="absolute end-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-ivory backdrop-blur-sm transition-colors duration-200 hover:bg-gold hover:text-obsidian"
         >
-          <ChevronRight className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
+          <DirectionalIcon icon={ChevronRight} className="h-5 w-5" strokeWidth={2} />
         </button>
       </div>
 

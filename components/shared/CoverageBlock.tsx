@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { MapPin } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Reveal from "@/components/shared/Reveal";
@@ -27,7 +27,7 @@ export default function CoverageBlock({
   return (
     <section className="border-t border-gold/10 bg-linen py-14">
       <Container>
-        <Reveal className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
+        <Reveal className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-start">
           <div className="flex items-center gap-3">
             <MapPin className="h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
             <h2 className="font-display text-lg text-obsidian sm:text-xl">{title}</h2>

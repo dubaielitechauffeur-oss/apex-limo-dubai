@@ -1,8 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import Reveal from "@/components/shared/Reveal";
 import { LOCATIONS, type Location } from "@/data/locations";
 
@@ -111,7 +112,11 @@ export default function LocationsShowcase({
 
                 <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
                   Explore Location
-                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2} />
+                  <DirectionalIcon
+                    icon={ArrowRight}
+                    className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                    strokeWidth={2}
+                  />
                 </span>
               </div>
             </Link>

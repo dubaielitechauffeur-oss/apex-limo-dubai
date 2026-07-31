@@ -34,37 +34,43 @@ export const getWhatsAppLink = (message?: string) => {
 
 export const getPhoneLink = () => `tel:${SITE.phone}`;
 
+/**
+ * `key` resolves a label via the "nav" namespace in messages/*.json
+ * (e.g. `t(\`nav.${key}\`)`, or `t(\`nav.${parentKey}Children.${childKey}\`)`
+ * for a child) — kept separate from `href` so routing never depends on
+ * translated text.
+ */
 export const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Fleet", href: "/fleet" },
+  { key: "home", href: "/" },
+  { key: "fleet", href: "/fleet" },
   {
-    label: "Services",
+    key: "services",
     href: "/services",
     children: [
-      { label: "Airport Transfers", href: "/services/airport-transfers" },
-      { label: "Corporate Chauffeur", href: "/services/corporate-chauffeur" },
-      { label: "Luxury Chauffeur", href: "/services/luxury-chauffeur" },
-      { label: "VIP Transportation", href: "/services/vip-transportation" },
-      { label: "Event Transportation", href: "/services/event-transportation" },
-      { label: "Wedding Chauffeur", href: "/services/wedding-chauffeur" },
+      { key: "airportTransfers", href: "/services/airport-transfers" },
+      { key: "corporateChauffeur", href: "/services/corporate-chauffeur" },
+      { key: "luxuryChauffeur", href: "/services/luxury-chauffeur" },
+      { key: "vipTransportation", href: "/services/vip-transportation" },
+      { key: "eventTransportation", href: "/services/event-transportation" },
+      { key: "weddingChauffeur", href: "/services/wedding-chauffeur" },
     ],
   },
   {
-    label: "Locations",
+    key: "locations",
     href: "/locations",
     children: [
-      { label: "Dubai Marina", href: "/locations/dubai-marina" },
-      { label: "Downtown Dubai", href: "/locations/downtown-dubai" },
-      { label: "Palm Jumeirah", href: "/locations/palm-jumeirah" },
-      { label: "Business Bay", href: "/locations/business-bay" },
-      { label: "Jumeirah", href: "/locations/jbr" },
-      { label: "Dubai Airport", href: "/locations/dubai-international-airport-dxb" },
+      { key: "dubaiMarina", href: "/locations/dubai-marina" },
+      { key: "downtownDubai", href: "/locations/downtown-dubai" },
+      { key: "palmJumeirah", href: "/locations/palm-jumeirah" },
+      { key: "businessBay", href: "/locations/business-bay" },
+      { key: "jumeirah", href: "/locations/jbr" },
+      { key: "dubaiAirport", href: "/locations/dubai-international-airport-dxb" },
     ],
   },
-  { label: "About", href: "/about" },
-  { label: "FAQs", href: "/faqs" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { key: "about", href: "/about" },
+  { key: "faqs", href: "/faqs" },
+  { key: "blog", href: "/blog" },
+  { key: "contact", href: "/contact" },
 ] as const;
 
 export const SERVICES = [
@@ -114,10 +120,11 @@ export const SERVICES = [
  */
 export const FLEET_SIZE = 13;
 
+/** `key` resolves a label via the "cta" namespace in messages/*.json. */
 export const PRIMARY_CTA = {
-  book: { label: "Book Now", href: "/booking" },
-  whatsapp: { label: "WhatsApp Us", href: getWhatsAppLink() },
-  quote: { label: "Get Instant Quote", href: "/quote" },
+  book: { key: "bookNow", href: "/booking" },
+  whatsapp: { key: "whatsappUs", href: getWhatsAppLink() },
+  quote: { key: "getInstantQuote", href: "/quote" },
 } as const;
 
 export const BRAND_COLORS = {

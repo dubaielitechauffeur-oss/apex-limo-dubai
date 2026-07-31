@@ -1,7 +1,9 @@
 // Homepage hero section
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Clock, Car, Languages, Calendar, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
+import Ltr from "@/components/shared/Ltr";
 import { PRIMARY_CTA, FLEET_SIZE } from "@/lib/constants";
 
 const TRUST_INDICATORS = [
@@ -75,7 +77,7 @@ export default function Hero() {
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10"
             >
               Our Services
-              <ArrowRight className="h-4 w-4" strokeWidth={2} />
+              <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
             </Link>
           </div>
 
@@ -90,7 +92,7 @@ export default function Hero() {
                     aria-hidden="true"
                   />
                   <span className="text-xs uppercase tracking-wide text-ivory/90 sm:text-sm">
-                    {item.label}
+                    <Ltr>{item.label}</Ltr>
                   </span>
                 </div>
                 {i < TRUST_INDICATORS.length - 1 ? (

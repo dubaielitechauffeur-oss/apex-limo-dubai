@@ -1,9 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import { useLocale } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import LocationServiceCard from "./LocationServiceCard";
 import { SERVICES, type Service } from "@/data/services";
+import { isRtlLocale } from "@/i18n/locale-metadata";
 
 const CARDS_PER_VIEW = 3;
 const AUTOPLAY_INTERVAL_MS = 5000;
@@ -28,6 +31,7 @@ const PAGES = chunk(SERVICES, CARDS_PER_VIEW);
  * render this component (see LocationServicesSection).
  */
 export default function LocationServicesCarousel() {
+  const rtl = isRtlLocale(useLocale());
   const [page, setPage] = useState(0);
   const [autoplayActive, setAutoplayActive] = useState(true);
   const [inView, setInView] = useState(false);
@@ -82,7 +86,8 @@ export default function LocationServicesCarousel() {
     dragStartX.current = null;
     if (Math.abs(deltaX) < DRAG_THRESHOLD_PX) return;
     stopAutoplay();
-    goToPage(deltaX < 0 ? page + 1 : page - 1);
+    const draggedTowardNext = rtl ? deltaX > 0 : deltaX < 0;
+    goToPage(draggedTowardNext ? page + 1 : page - 1);
   }
 
   return (
@@ -90,7 +95,7 @@ export default function LocationServicesCarousel() {
       <div className="overflow-hidden" role="region" aria-label="Our services">
         <div
           className="flex cursor-grab select-none transition-transform duration-700 ease-out active:cursor-grabbing"
-          style={{ transform: `translateX(-${page * 100}%)` }}
+          style={{ transform: `translateX(${rtl ? "" : "-"}${page * 100}%)` }}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
         >
@@ -110,17 +115,17 @@ export default function LocationServicesCarousel() {
             type="button"
             onClick={goPrev}
             aria-label="Previous services"
-            className="absolute -left-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A14A]/40 bg-black/70 text-[#C9A14A] backdrop-blur-sm transition-colors duration-200 hover:border-[#C9A14A] hover:bg-black"
+            className="absolute -start-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A14A]/40 bg-black/70 text-[#C9A14A] backdrop-blur-sm transition-colors duration-200 hover:border-[#C9A14A] hover:bg-black"
           >
-            <ChevronLeft className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+            <DirectionalIcon icon={ChevronLeft} className="h-4 w-4" strokeWidth={1.75} />
           </button>
           <button
             type="button"
             onClick={goNext}
             aria-label="Next services"
-            className="absolute -right-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A14A]/40 bg-black/70 text-[#C9A14A] backdrop-blur-sm transition-colors duration-200 hover:border-[#C9A14A] hover:bg-black"
+            className="absolute -end-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A14A]/40 bg-black/70 text-[#C9A14A] backdrop-blur-sm transition-colors duration-200 hover:border-[#C9A14A] hover:bg-black"
           >
-            <ChevronRight className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+            <DirectionalIcon icon={ChevronRight} className="h-4 w-4" strokeWidth={1.75} />
           </button>
 
           <div className="mt-8 flex justify-center gap-2">

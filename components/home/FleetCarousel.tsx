@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import Reveal from "@/components/shared/Reveal";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import FleetCarouselCard from "./FleetCarouselCard";
 import { FLEET } from "@/data/fleet";
 import { FLEET_SIZE } from "@/lib/constants";
 import { useInfiniteCarousel } from "./useInfiniteCarousel";
+import { isRtlLocale } from "@/i18n/locale-metadata";
 
 /** Cards visible at once: 1 on mobile, 2 on tablet, 3 on desktop.
  *  Must stay in sync with the card wrapper's w-full/md:w-1/2/lg:w-1/3. */
@@ -44,6 +47,7 @@ const SWIPE_THRESHOLD_PX = 40;
  * directions via cloned edge cards — see useInfiniteCarousel.
  */
 export default function FleetCarousel() {
+  const rtl = isRtlLocale(useLocale());
   const slidesPerView = useSlidesPerView();
   const { sectionRef, index, instant, activeRealIndex, goNext, goPrev, goToRealIndex, handleTransitionEnd } =
     useInfiniteCarousel({
@@ -84,7 +88,8 @@ export default function FleetCarousel() {
     const dy = event.clientY - start.y;
     if (Math.abs(dx) >= SWIPE_THRESHOLD_PX && Math.abs(dx) > Math.abs(dy)) {
       didSwipeRef.current = true;
-      if (dx > 0) goPrev();
+      const draggedTowardStart = rtl ? dx < 0 : dx > 0;
+      if (draggedTowardStart) goPrev();
       else goNext();
     }
   };
@@ -127,7 +132,7 @@ export default function FleetCarousel() {
           >
             <div
               className={`flex ${instant ? "" : "transition-transform duration-500 ease-out"}`}
-              style={{ transform: `translateX(-${(index * 100) / slidesPerView}%)` }}
+              style={{ transform: `translateX(${rtl ? "" : "-"}${(index * 100) / slidesPerView}%)` }}
               onTransitionEnd={handleTransitionEnd}
             >
               {extended.map((vehicle, position) => (
@@ -143,17 +148,17 @@ export default function FleetCarousel() {
             type="button"
             onClick={goPrev}
             aria-label="Previous vehicles"
-            className="absolute -left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-left-4 lg:-left-6"
+            className="absolute -start-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-start-4 lg:-start-6"
           >
-            <ChevronLeft className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
+            <DirectionalIcon icon={ChevronLeft} className="h-5 w-5" strokeWidth={1.5} />
           </button>
           <button
             type="button"
             onClick={goNext}
             aria-label="Next vehicles"
-            className="absolute -right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-right-4 lg:-right-6"
+            className="absolute -end-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-end-4 lg:-end-6"
           >
-            <ChevronRight className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
+            <DirectionalIcon icon={ChevronRight} className="h-5 w-5" strokeWidth={1.5} />
           </button>
         </div>
 

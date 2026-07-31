@@ -137,7 +137,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
       <p className="text-[11px] uppercase tracking-wide text-smoke">Starting from</p>
       <p className="mt-1 font-display text-2xl text-gold">
         {formatAed(vehicle.rates.oneHour)}
-        <span className="ml-1 text-sm font-normal text-smoke">/ hour in Dubai</span>
+        <span className="ms-1 text-sm font-normal text-smoke">/ hour in Dubai</span>
       </p>
 
       <h3 className="mt-5 font-display text-xl text-heading">Request a Quote</h3>

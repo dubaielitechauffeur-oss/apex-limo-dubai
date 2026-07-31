@@ -80,7 +80,7 @@ export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProp
                     type="button"
                     onClick={() => setOpenIndex(isOpen ? null : index)}
                     aria-expanded={isOpen}
-                    className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                    className="flex w-full items-center justify-between gap-6 px-6 py-5 text-start"
                   >
                     <span className="font-display text-base text-obsidian sm:text-lg">
                       {faq.question}

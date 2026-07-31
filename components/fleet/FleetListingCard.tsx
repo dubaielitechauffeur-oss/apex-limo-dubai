@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Car, Users, Briefcase, Wifi, GlassWater, type LucideIcon } from "lucide-react";
 import type { FleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
@@ -63,7 +63,7 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] lg:min-h-[380px] lg:flex-row">
       {/* Left — hero photograph, the dominant element of the card */}
-      <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-t-2xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 lg:aspect-auto lg:w-[55%] lg:rounded-l-2xl lg:rounded-tr-none">
+      <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-t-2xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 lg:aspect-auto lg:w-[55%] lg:rounded-s-2xl lg:rounded-se-none">
         {cover ? (
           <Image
             src={cover.src}
@@ -80,11 +80,11 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
             </span>
           </div>
         )}
-        <span className="absolute left-5 top-5 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
+        <span className="absolute start-5 top-5 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
           Driver Included
         </span>
         {vehicle.badge ? (
-          <span className="absolute right-5 top-5 inline-flex items-center rounded-full border border-[#C9A14A]/60 bg-black/55 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#C9A14A] backdrop-blur-sm">
+          <span className="absolute end-5 top-5 inline-flex items-center rounded-full border border-[#C9A14A]/60 bg-black/55 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#C9A14A] backdrop-blur-sm">
             {vehicle.badge}
           </span>
         ) : null}
