@@ -1,20 +1,20 @@
 {
   "nav": {
-    "home": "Home",
-    "fleet": "Fleet",
-    "services": "Services",
-    "locations": "Locations",
-    "about": "About",
-    "faqs": "FAQs",
-    "blog": "Blog",
-    "contact": "Contact",
+    "home": "首页",
+    "fleet": "车队",
+    "services": "服务",
+    "locations": "服务区域",
+    "about": "关于我们",
+    "faqs": "常见问题",
+    "blog": "资讯",
+    "contact": "联系我们",
     "servicesChildren": {
-      "airportTransfers": "Airport Transfers",
-      "corporateChauffeur": "Corporate Chauffeur",
-      "luxuryChauffeur": "Luxury Chauffeur",
-      "vipTransportation": "VIP Transportation",
-      "eventTransportation": "Event Transportation",
-      "weddingChauffeur": "Wedding Chauffeur"
+      "airportTransfers": "机场接送",
+      "corporateChauffeur": "企业专车",
+      "luxuryChauffeur": "豪华专属司机",
+      "vipTransportation": "VIP专车服务",
+      "eventTransportation": "活动用车",
+      "weddingChauffeur": "婚礼专车"
     },
     "locationsChildren": {
       "dubaiMarina": "Dubai Marina",
@@ -26,35 +26,35 @@
     }
   },
   "cta": {
-    "bookNow": "Book Now",
-    "whatsappUs": "WhatsApp Us",
-    "getInstantQuote": "Get Instant Quote"
+    "bookNow": "立即预订",
+    "whatsappUs": "通过WhatsApp咨询",
+    "getInstantQuote": "获取即时报价"
   },
   "footer": {
-    "tagline": "Professional chauffeurs, a premium fleet, and dependable service across Dubai.",
-    "explore": "Explore",
-    "services": "Services",
-    "locations": "Locations",
-    "reachUs": "Reach Us",
-    "whatsappUs": "WhatsApp Us",
-    "address": "Dubai, United Arab Emirates",
-    "rightsReserved": "All rights reserved.",
-    "privacyPolicy": "Privacy Policy",
-    "termsConditions": "Terms & Conditions"
+    "tagline": "专业司机、豪华车队,以及遍布迪拜的可靠服务。",
+    "explore": "探索",
+    "services": "服务",
+    "locations": "服务区域",
+    "reachUs": "联系我们",
+    "whatsappUs": "通过WhatsApp咨询",
+    "address": "迪拜,阿拉伯联合酋长国",
+    "rightsReserved": "保留所有权利。",
+    "privacyPolicy": "隐私政策",
+    "termsConditions": "条款与条件"
   },
   "header": {
-    "promoBar": "Premium Chauffeur Service Across Dubai & UAE",
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu",
-    "changeLanguage": "Change language"
+    "promoBar": "迪拜及阿联酋高端专属司机服务",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "changeLanguage": "切换语言"
   },
   "mobileNav": {
-    "expand": "Expand",
-    "collapse": "Collapse",
-    "submenu": "submenu",
-    "orCall": "Or call"
+    "expand": "展开",
+    "collapse": "收起",
+    "submenu": "子菜单",
+    "orCall": "或致电"
   },
   "logo": {
-    "tagline": "Luxury Chauffeur"
+    "tagline": "豪华专属司机"
   }
 }

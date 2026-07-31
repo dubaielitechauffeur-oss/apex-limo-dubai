@@ -1,20 +1,20 @@
 {
   "nav": {
-    "home": "Home",
-    "fleet": "Fleet",
-    "services": "Services",
-    "locations": "Locations",
-    "about": "About",
-    "faqs": "FAQs",
-    "blog": "Blog",
-    "contact": "Contact",
+    "home": "Startseite",
+    "fleet": "Flotte",
+    "services": "Service",
+    "locations": "Standorte",
+    "about": "Über uns",
+    "faqs": "Fragen",
+    "blog": "Journal",
+    "contact": "Kontakt",
     "servicesChildren": {
-      "airportTransfers": "Airport Transfers",
-      "corporateChauffeur": "Corporate Chauffeur",
-      "luxuryChauffeur": "Luxury Chauffeur",
-      "vipTransportation": "VIP Transportation",
-      "eventTransportation": "Event Transportation",
-      "weddingChauffeur": "Wedding Chauffeur"
+      "airportTransfers": "Flughafentransfer",
+      "corporateChauffeur": "Firmenchauffeur",
+      "luxuryChauffeur": "Luxus-Chauffeur",
+      "vipTransportation": "VIP-Transport",
+      "eventTransportation": "Veranstaltungstransport",
+      "weddingChauffeur": "Hochzeitschauffeur"
     },
     "locationsChildren": {
       "dubaiMarina": "Dubai Marina",
@@ -26,35 +26,35 @@
     }
   },
   "cta": {
-    "bookNow": "Book Now",
-    "whatsappUs": "WhatsApp Us",
-    "getInstantQuote": "Get Instant Quote"
+    "bookNow": "Jetzt buchen",
+    "whatsappUs": "Auf WhatsApp schreiben",
+    "getInstantQuote": "Sofortangebot erhalten"
   },
   "footer": {
-    "tagline": "Professional chauffeurs, a premium fleet, and dependable service across Dubai.",
-    "explore": "Explore",
-    "services": "Services",
-    "locations": "Locations",
-    "reachUs": "Reach Us",
-    "whatsappUs": "WhatsApp Us",
-    "address": "Dubai, United Arab Emirates",
-    "rightsReserved": "All rights reserved.",
-    "privacyPolicy": "Privacy Policy",
-    "termsConditions": "Terms & Conditions"
+    "tagline": "Professionelle Chauffeure, eine Premiumflotte und zuverlässiger Service in ganz Dubai.",
+    "explore": "Entdecken",
+    "services": "Leistungen",
+    "locations": "Standorte",
+    "reachUs": "Kontakt",
+    "whatsappUs": "Auf WhatsApp schreiben",
+    "address": "Dubai, Vereinigte Arabische Emirate",
+    "rightsReserved": "Alle Rechte vorbehalten.",
+    "privacyPolicy": "Datenschutzerklärung",
+    "termsConditions": "Allgemeine Geschäftsbedingungen"
   },
   "header": {
-    "promoBar": "Premium Chauffeur Service Across Dubai & UAE",
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu",
-    "changeLanguage": "Change language"
+    "promoBar": "Premium-Chauffeurservice in ganz Dubai und den VAE",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "changeLanguage": "Sprache ändern"
   },
   "mobileNav": {
-    "expand": "Expand",
-    "collapse": "Collapse",
-    "submenu": "submenu",
-    "orCall": "Or call"
+    "expand": "Erweitern",
+    "collapse": "Einklappen",
+    "submenu": "Untermenü",
+    "orCall": "Oder rufen Sie an:"
   },
   "logo": {
-    "tagline": "Luxury Chauffeur"
+    "tagline": "Luxus-Chauffeur"
   }
 }

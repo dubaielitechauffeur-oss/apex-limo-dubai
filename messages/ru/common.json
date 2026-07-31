@@ -1,20 +1,20 @@
 {
   "nav": {
-    "home": "Home",
-    "fleet": "Fleet",
-    "services": "Services",
-    "locations": "Locations",
-    "about": "About",
-    "faqs": "FAQs",
-    "blog": "Blog",
-    "contact": "Contact",
+    "home": "Главная",
+    "fleet": "Автопарк",
+    "services": "Услуги",
+    "locations": "Локации",
+    "about": "О нас",
+    "faqs": "Вопросы",
+    "blog": "Блог",
+    "contact": "Контакты",
     "servicesChildren": {
-      "airportTransfers": "Airport Transfers",
-      "corporateChauffeur": "Corporate Chauffeur",
-      "luxuryChauffeur": "Luxury Chauffeur",
-      "vipTransportation": "VIP Transportation",
-      "eventTransportation": "Event Transportation",
-      "weddingChauffeur": "Wedding Chauffeur"
+      "airportTransfers": "Трансфер из аэропорта",
+      "corporateChauffeur": "Корпоративный шофёр",
+      "luxuryChauffeur": "Роскошный шофёр",
+      "vipTransportation": "VIP-транспорт",
+      "eventTransportation": "Транспорт для мероприятий",
+      "weddingChauffeur": "Свадебный шофёр"
     },
     "locationsChildren": {
       "dubaiMarina": "Dubai Marina",
@@ -26,35 +26,35 @@
     }
   },
   "cta": {
-    "bookNow": "Book Now",
-    "whatsappUs": "WhatsApp Us",
-    "getInstantQuote": "Get Instant Quote"
+    "bookNow": "Забронировать сейчас",
+    "whatsappUs": "Написать нам в WhatsApp",
+    "getInstantQuote": "Мгновенный расчёт стоимости"
   },
   "footer": {
-    "tagline": "Professional chauffeurs, a premium fleet, and dependable service across Dubai.",
-    "explore": "Explore",
-    "services": "Services",
-    "locations": "Locations",
-    "reachUs": "Reach Us",
-    "whatsappUs": "WhatsApp Us",
-    "address": "Dubai, United Arab Emirates",
-    "rightsReserved": "All rights reserved.",
-    "privacyPolicy": "Privacy Policy",
-    "termsConditions": "Terms & Conditions"
+    "tagline": "Профессиональные шофёры, роскошный автопарк и надёжный сервис по всему Дубаю.",
+    "explore": "Навигация",
+    "services": "Услуги",
+    "locations": "Локации",
+    "reachUs": "Контакты",
+    "whatsappUs": "Написать нам в WhatsApp",
+    "address": "Дубай, Объединённые Арабские Эмираты",
+    "rightsReserved": "Все права защищены.",
+    "privacyPolicy": "Политика конфиденциальности",
+    "termsConditions": "Условия использования"
   },
   "header": {
-    "promoBar": "Premium Chauffeur Service Across Dubai & UAE",
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu",
-    "changeLanguage": "Change language"
+    "promoBar": "Премиальный сервис шофёра по всему Дубаю и ОАЭ",
+    "openMenu": "Открыть меню",
+    "closeMenu": "Закрыть меню",
+    "changeLanguage": "Изменить язык"
   },
   "mobileNav": {
-    "expand": "Expand",
-    "collapse": "Collapse",
-    "submenu": "submenu",
-    "orCall": "Or call"
+    "expand": "Развернуть",
+    "collapse": "Свернуть",
+    "submenu": "подменю",
+    "orCall": "Или позвоните"
   },
   "logo": {
-    "tagline": "Luxury Chauffeur"
+    "tagline": "Люкс-шофёр"
   }
 }

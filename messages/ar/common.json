@@ -1,20 +1,20 @@
 {
   "nav": {
-    "home": "Home",
-    "fleet": "Fleet",
-    "services": "Services",
-    "locations": "Locations",
-    "about": "About",
-    "faqs": "FAQs",
-    "blog": "Blog",
-    "contact": "Contact",
+    "home": "الرئيسية",
+    "fleet": "الأسطول",
+    "services": "الخدمات",
+    "locations": "المناطق",
+    "about": "من نحن",
+    "faqs": "الأسئلة",
+    "blog": "المدونة",
+    "contact": "تواصلوا معنا",
     "servicesChildren": {
-      "airportTransfers": "Airport Transfers",
-      "corporateChauffeur": "Corporate Chauffeur",
-      "luxuryChauffeur": "Luxury Chauffeur",
-      "vipTransportation": "VIP Transportation",
-      "eventTransportation": "Event Transportation",
-      "weddingChauffeur": "Wedding Chauffeur"
+      "airportTransfers": "نقل المطار",
+      "corporateChauffeur": "سائق الشركات",
+      "luxuryChauffeur": "سائق فاخر",
+      "vipTransportation": "نقل كبار الشخصيات",
+      "eventTransportation": "نقل الفعاليات",
+      "weddingChauffeur": "سائق حفلات الزفاف"
     },
     "locationsChildren": {
       "dubaiMarina": "Dubai Marina",
@@ -26,35 +26,35 @@
     }
   },
   "cta": {
-    "bookNow": "Book Now",
-    "whatsappUs": "WhatsApp Us",
-    "getInstantQuote": "Get Instant Quote"
+    "bookNow": "احجزوا الآن",
+    "whatsappUs": "راسلنا عبر واتساب",
+    "getInstantQuote": "احصلوا على عرض سعر فوري"
   },
   "footer": {
-    "tagline": "Professional chauffeurs, a premium fleet, and dependable service across Dubai.",
-    "explore": "Explore",
-    "services": "Services",
-    "locations": "Locations",
-    "reachUs": "Reach Us",
-    "whatsappUs": "WhatsApp Us",
-    "address": "Dubai, United Arab Emirates",
-    "rightsReserved": "All rights reserved.",
-    "privacyPolicy": "Privacy Policy",
-    "termsConditions": "Terms & Conditions"
+    "tagline": "سائقون محترفون، وأسطول فاخر، وخدمة يمكن الاعتماد عليها في جميع أنحاء دبي.",
+    "explore": "استكشف",
+    "services": "الخدمات",
+    "locations": "المناطق",
+    "reachUs": "تواصلوا معنا",
+    "whatsappUs": "راسلنا عبر واتساب",
+    "address": "دبي، الإمارات العربية المتحدة",
+    "rightsReserved": "جميع الحقوق محفوظة.",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsConditions": "الشروط والأحكام"
   },
   "header": {
-    "promoBar": "Premium Chauffeur Service Across Dubai & UAE",
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu",
-    "changeLanguage": "Change language"
+    "promoBar": "خدمة سائق فاخرة في جميع أنحاء دبي والإمارات",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "changeLanguage": "تغيير اللغة"
   },
   "mobileNav": {
-    "expand": "Expand",
-    "collapse": "Collapse",
-    "submenu": "submenu",
-    "orCall": "Or call"
+    "expand": "توسيع",
+    "collapse": "طي",
+    "submenu": "القائمة الفرعية",
+    "orCall": "أو اتصلوا على"
   },
   "logo": {
-    "tagline": "Luxury Chauffeur"
+    "tagline": "سائق فاخر"
   }
 }
