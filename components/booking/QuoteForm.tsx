@@ -8,7 +8,6 @@ import FormSectionHeading from "@/components/shared/FormSectionHeading";
 import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
-import { FLEET } from "@/data/fleet";
 import type { QuoteFormData } from "@/lib/types";
 import { validateQuoteForm, hasErrors, type FormErrors } from "@/lib/validation";
 
@@ -41,6 +40,16 @@ export interface LocationOption {
   name: string;
 }
 
+/** Trimmed, locale-resolved fleet data — just enough for the ?vehicle=
+ *  prefill and the vehicle dropdown, mirroring ServiceOption's
+ *  client-bundle-bloat fix above (the full FLEET array holds every
+ *  locale's vehicle copy, which must never ship to this client bundle). */
+export interface VehicleOption {
+  slug: string;
+  name: string;
+  category: string;
+}
+
 /** Turns a URL slug like "airport-transfers" into "Airport Transfers" as a readable fallback. */
 function prettifySlug(slug: string): string {
   return slug
@@ -57,13 +66,14 @@ function prettifySlug(slug: string): string {
 function buildInitialQuoteForm(
   searchParams: ReturnType<typeof useSearchParams>,
   services: ServiceOption[],
-  locations: LocationOption[]
+  locations: LocationOption[],
+  vehicles: VehicleOption[]
 ): QuoteFormData {
   const form: QuoteFormData = { ...EMPTY_FORM };
 
   const vehicleSlug = searchParams.get("vehicle");
   if (vehicleSlug) {
-    const vehicle = FLEET.find((v) => v.slug === vehicleSlug);
+    const vehicle = vehicles.find((v) => v.slug === vehicleSlug);
     if (vehicle) form.vehicle = vehicle.name;
   }
 
@@ -95,13 +105,15 @@ function QuoteFormSkeleton() {
 function QuoteFormFields({
   services,
   locations,
+  vehicles,
 }: {
   services: ServiceOption[];
   locations: LocationOption[];
+  vehicles: VehicleOption[];
 }) {
   const searchParams = useSearchParams();
   const [form, setForm] = useState<QuoteFormData>(() =>
-    buildInitialQuoteForm(searchParams, services, locations)
+    buildInitialQuoteForm(searchParams, services, locations, vehicles)
   );
   const [errors, setErrors] = useState<FormErrors<QuoteFormData>>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -353,7 +365,7 @@ function QuoteFormFields({
             className="field-input"
           >
             <option value="">No preference</option>
-            {FLEET.map((vehicle) => (
+            {vehicles.map((vehicle) => (
               <option key={vehicle.slug} value={vehicle.name}>
                 {vehicle.name} — {vehicle.category}
               </option>
@@ -406,13 +418,15 @@ function QuoteFormFields({
 export default function QuoteForm({
   services,
   locations,
+  vehicles,
 }: {
   services: ServiceOption[];
   locations: LocationOption[];
+  vehicles: VehicleOption[];
 }) {
   return (
     <Suspense fallback={<QuoteFormSkeleton />}>
-      <QuoteFormFields services={services} locations={locations} />
+      <QuoteFormFields services={services} locations={locations} vehicles={vehicles} />
     </Suspense>
   );
 }

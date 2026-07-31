@@ -8,6 +8,7 @@ import ConversionSeoIntro from "@/components/booking/ConversionSeoIntro";
 import ConversionTrustPanel from "@/components/booking/ConversionTrustPanel";
 import { getAllServices } from "@/data/services";
 import { getAllLocations } from "@/data/locations";
+import { getAllVehicles } from "@/data/fleet";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 interface PageProps {
@@ -30,6 +31,7 @@ export default async function BookingPage({ params }: PageProps) {
   setRequestLocale(locale as Locale);
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const locations = getAllLocations(locale as Locale).map(({ slug, name }) => ({ slug, name }));
+  const vehicles = getAllVehicles(locale as Locale).map(({ slug, name, category }) => ({ slug, name, category }));
   return (
     <>
       <script
@@ -63,7 +65,7 @@ export default async function BookingPage({ params }: PageProps) {
         <Container>
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.7fr_1fr] lg:gap-10">
             <div className="rounded-2xl border border-[rgba(201,161,74,0.15)] bg-[#111111] p-6 sm:p-8 lg:p-10">
-              <BookingForm services={services} locations={locations} />
+              <BookingForm services={services} locations={locations} vehicles={vehicles} />
             </div>
 
             <aside>

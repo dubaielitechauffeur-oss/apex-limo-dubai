@@ -1,0 +1,175 @@
+{
+  "carousel": {
+    "eyebrow": "The Fleet",
+    "title": "Explore Our Fleet",
+    "subtitleTemplate": "{count} late-model vehicles, one uncompromising standard — every journey with a professional chauffeur included.",
+    "ariaLabel": "Fleet vehicles carousel",
+    "prevAriaLabel": "Previous vehicles",
+    "nextAriaLabel": "Next vehicles",
+    "goToVehicleAriaLabel": "Go to {name}",
+    "viewFullFleet": "View Our Full Fleet"
+  },
+  "card": {
+    "imageComingSoon": "Image Coming Soon",
+    "tenHours": "10 Hours",
+    "fiveHours": "5 Hours",
+    "oneHour": "1 Hour",
+    "airport": "Airport",
+    "viewCar": "View Car",
+    "whatsapp": "WhatsApp",
+    "contactUs": "Contact Us"
+  },
+  "listingCard": {
+    "driverIncluded": "Driver Included",
+    "imageComingSoon": "Image Coming Soon",
+    "wifi": "WiFi",
+    "water": "Water",
+    "twoHours": "2 Hours",
+    "airportTransfer": "Airport Transfer",
+    "fiveHours": "5 Hours",
+    "tenHours": "10 Hours",
+    "additionalHour": "Additional Hour",
+    "additionalCity": "Additional City",
+    "includesNote": "Includes driver, fuel, tolls (Salik) — excludes 5% VAT",
+    "disclaimer": "Starting rates only. Final pricing may vary based on route, date, and requirements. Enquire on WhatsApp or call for an exact quote.",
+    "enquireWhatsapp": "Enquire on WhatsApp",
+    "viewDetails": "View Details"
+  },
+  "hero": {
+    "eyebrow": "Luxury Chauffeur Fleet",
+    "titleTemplate": "{count} Luxury Vehicles for Every Occasion",
+    "subtitle": "Choose from executive sedans, VIP SUVs, luxury vans, and chauffeur-driven vehicles available across Dubai and the UAE.",
+    "luxuryVehiclesTemplate": "{count} Luxury Vehicles",
+    "professionalChauffeurs": "Professional Chauffeurs",
+    "availableAcross": "Available Across Dubai & UAE",
+    "ratingTemplate": "{rating} Rating",
+    "viewFleet": "View Fleet"
+  },
+  "trust": {
+    "rating": "Rating",
+    "luxuryVehicles": "Luxury Vehicles",
+    "professionalChauffeurs": "Professional Chauffeurs",
+    "availableAcross": "Available Across Dubai & UAE"
+  },
+  "concierge": {
+    "eyebrow": "Personal Concierge",
+    "title": "Need Help Choosing the Right Vehicle?",
+    "subtitle": "A quick guide to get you started — or speak to our concierge team for a personal recommendation.",
+    "call": "Call",
+    "whatsappUs": "WhatsApp Us",
+    "whatsappMessage": "Hi, I'd like help choosing the right vehicle.",
+    "recommendations": {
+      "mercedesSClass": { "name": "Mercedes S-Class", "blurb": "Ideal for executives and business travel." },
+      "mercedesVClass": { "name": "Mercedes V-Class", "blurb": "Perfect for families and small groups." },
+      "rollsRoyce": { "name": "Rolls-Royce", "blurb": "For VIP occasions and premium experiences." },
+      "rangeRover": { "name": "Range Rover", "blurb": "Luxury city travel and events." }
+    }
+  },
+  "detail": {
+    "breadcrumbAriaLabel": "Breadcrumb",
+    "withChauffeurInDubai": "with Chauffeur in Dubai",
+    "passengersLabel": "Up to {count} Passengers",
+    "passengersShort": "{count} passengers",
+    "bagsShort": "{count} bags",
+    "ratingTemplate": "{rating} Rating",
+    "bookNow": "Book Now",
+    "getQuote": "Get Quote",
+    "enquireWhatsapp": "Enquire on WhatsApp",
+    "popularFor": "Popular for",
+    "inConnector": "in",
+    "quickFacts": {
+      "category": "Category",
+      "passengers": "Passengers",
+      "luggage": "Luggage",
+      "bestFor": "Best For"
+    },
+    "availablePackages": "Available Chauffeur Packages",
+    "packagesSubtitle": "Transparent chauffeur rates, fixed once your booking is confirmed.",
+    "oneHour": "1 Hour",
+    "airportTransfer": "Airport Transfer",
+    "fiveHours": "5 Hours",
+    "tenHours": "10 Hours",
+    "additionalHour": "Additional Hour",
+    "additionalCity": "Additional City",
+    "includesNote": "Includes professional chauffeur, fuel, tolls (Salik) & parking — excludes 5% VAT.",
+    "disclaimer": "Starting rates only. Final pricing may vary based on route, date, and requirements. Enquire on WhatsApp or call for an exact quote.",
+    "trustNote": "Professional chauffeur included • No deposit required • Flexible cancellation policy",
+    "onboardEyebrow": "Onboard",
+    "featuresTitle": "Features & Amenities",
+    "whyThisVehicleEyebrow": "Why This Vehicle",
+    "whyChooseTitleTemplate": "Why Choose the {name}",
+    "howItWorksEyebrow": "Simple & Seamless",
+    "howItWorksTitle": "How It Works",
+    "step1Title": "Tell Us Your Plans",
+    "step1Description": "Message us on WhatsApp, call, or send a quote request with your pickup time, location, and trip details.",
+    "step2Title": "We Confirm the Details",
+    "step2Description": "Your chauffeur, exact rate, and pickup window are confirmed in writing, with flight tracking added automatically for airport runs.",
+    "step3Title": "Arrive in Style",
+    "step3Description": "Your chauffeur arrives on time, door open, ready to go, for a smooth, unhurried ride to your destination.",
+    "vehicleEyebrow": "The Vehicle",
+    "aboutTitleTemplate": "About the {name}",
+    "exploreMoreEyebrow": "Explore More",
+    "exploreSimilarTitle": "Explore Similar Vehicles",
+    "categories": {
+      "Sedan": "Sedan",
+      "SUV": "SUV",
+      "Van": "Van",
+      "Ultra-Luxury": "Ultra-Luxury"
+    }
+  },
+  "summaryCard": {
+    "passengers": "Passengers",
+    "luggage": "Luggage",
+    "chauffeurIncluded": "Chauffeur Included"
+  },
+  "heroGallery": {
+    "previousPhoto": "Previous photo",
+    "nextPhoto": "Next photo",
+    "goToPhotoAriaLabel": "Go to photo {index}"
+  },
+  "heroQuoteForm": {
+    "startingFrom": "Starting from",
+    "perHourInDubai": "/ hour in Dubai",
+    "requestQuote": "Request a Quote",
+    "approxRouteNote": "Just an approximate route — no obligation.",
+    "thankYouName": "Thank you, {name}!",
+    "thankYou": "Thank You!",
+    "quoteReceivedTemplate": "Your quote request for the {name} is in. Our team will follow up shortly.",
+    "reference": "Reference",
+    "followUpWhatsapp": "Follow Up on WhatsApp",
+    "followUpMessageTemplate": "Hello Apex Limo, I just requested a quote for the {name}{refPart} and wanted to follow up.",
+    "refPartTemplate": " (ref: {reference})",
+    "submit": "Request My Quote",
+    "sending": "Sending…",
+    "noDepositNote": "No deposit required • Flexible cancellation policy"
+  },
+  "faqSection": {
+    "eyebrow": "Common Questions",
+    "titleTemplate": "{name} FAQs",
+    "subtitleTemplate": "Everything you need to know about hiring the {name} in Dubai.",
+    "q1": {
+      "question": "How much does it cost to hire {name} with chauffeur in Dubai?",
+      "answer": "Chauffeur-driven rates for the {name} are shown in the packages above, covering hourly, half-day, full-day and airport-transfer hire. Enquire on WhatsApp or request a quote for an exact price based on your dates and requirements."
+    },
+    "q2": {
+      "question": "Is chauffeur service included with {name}?",
+      "answer": "Yes — every {name} booking includes a professional, uniformed chauffeur. This is a chauffeur-driven service; self-drive is not available."
+    },
+    "q3": {
+      "question": "Can I book {name} for airport transfers?",
+      "answer": "Yes. The {name} is available for DXB and DWC airport transfers with flight tracking and a meet-and-greet as standard, so your chauffeur adjusts pickup time to your actual landing."
+    },
+    "q4": {
+      "question": "Is hourly hire available for {name}?",
+      "answer": "Yes — the {name} can be booked hourly, by the half-day or full-day, in addition to point-to-point transfers. Pricing for each duration is shown in the packages above."
+    },
+    "q5": {
+      "question": "Can I book {name} for business meetings?",
+      "answer": "Yes. The {name} is a popular choice for corporate travel — client pickups, roadshows, and back-to-back meetings — with a chauffeur who can wait on standby between stops."
+    },
+    "q6": {
+      "question": "How far in advance should I book {name}?",
+      "answer": "Same-day and next-day bookings are often possible, but we recommend booking at least 24–48 hours ahead where you can, and further in advance for weddings, events, or peak dates."
+    }
+  }
+}

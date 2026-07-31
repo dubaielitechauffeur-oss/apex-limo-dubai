@@ -12,7 +12,7 @@ import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
-import { FLEET } from "@/data/fleet";
+import { getAllVehicles } from "@/data/fleet";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -39,7 +39,7 @@ function fleetJsonLd(locale: Locale) {
     "@type": "ItemList",
     name: `${SITE.name} Fleet`,
     url: `${SITE.url}${localizedPath(locale, "/fleet")}`,
-    itemListElement: FLEET.map((vehicle, index) => ({
+    itemListElement: getAllVehicles(locale).map((vehicle, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
@@ -61,6 +61,7 @@ function fleetJsonLd(locale: Locale) {
 export default async function FleetPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const vehicles = getAllVehicles(locale as Locale);
   return (
     <div>
       <script
@@ -85,7 +86,7 @@ export default async function FleetPage({ params }: PageProps) {
       <Section id="fleet-listings" tone="ivory">
         <Container>
           <div className="flex flex-col gap-8">
-            {FLEET.map((vehicle, index) => (
+            {vehicles.map((vehicle, index) => (
               <Reveal key={vehicle.slug} delay={Math.min(index * 60, 300)}>
                 <FleetListingCard vehicle={vehicle} />
               </Reveal>

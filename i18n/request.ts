@@ -13,11 +13,12 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
-  const [common, home, services, locations, about, contact, faqs, metadata] = await Promise.all([
+  const [common, home, services, locations, fleet, about, contact, faqs, metadata] = await Promise.all([
     import(`../messages/${locale}/common.json`).then((m) => m.default),
     import(`../messages/${locale}/home.json`).then((m) => m.default),
     import(`../messages/${locale}/services.json`).then((m) => m.default),
     import(`../messages/${locale}/locations.json`).then((m) => m.default),
+    import(`../messages/${locale}/fleet.json`).then((m) => m.default),
     import(`../messages/${locale}/about.json`).then((m) => m.default),
     import(`../messages/${locale}/contact.json`).then((m) => m.default),
     import(`../messages/${locale}/faqs.json`).then((m) => m.default),
@@ -31,6 +32,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       home,
       services,
       locations,
+      fleet,
       about,
       contact,
       faqs,

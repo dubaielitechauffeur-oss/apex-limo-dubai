@@ -1,14 +1,16 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { Users, Briefcase, BadgeCheck, Car } from "lucide-react";
 import Reveal from "@/components/shared/Reveal";
-import type { FleetVehicle } from "@/data/fleet";
+import type { PlainFleetVehicle } from "@/data/fleet";
 
 interface VehicleSummaryCardProps {
-  vehicle: FleetVehicle;
+  vehicle: PlainFleetVehicle;
 }
 
 /** Luxury vehicle summary shown above the quote form when arriving via ?vehicle=. */
-export default function VehicleSummaryCard({ vehicle }: VehicleSummaryCardProps) {
+export default async function VehicleSummaryCard({ vehicle }: VehicleSummaryCardProps) {
+  const t = await getTranslations("fleet.summaryCard");
   const cover = vehicle.images?.[0];
 
   return (
@@ -41,15 +43,15 @@ export default function VehicleSummaryCard({ vehicle }: VehicleSummaryCardProps)
         <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
           <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-[#999999]">
             <Users className="h-4 w-4 text-[#C9A14A]" strokeWidth={1.5} aria-hidden="true" />
-            {vehicle.passengers} Passengers
+            {vehicle.passengers} {t("passengers")}
           </span>
           <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-[#999999]">
             <Briefcase className="h-4 w-4 text-[#C9A14A]" strokeWidth={1.5} aria-hidden="true" />
-            {vehicle.luggage} Luggage
+            {vehicle.luggage} {t("luggage")}
           </span>
           <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-[#999999]">
             <BadgeCheck className="h-4 w-4 text-[#C9A14A]" strokeWidth={1.5} aria-hidden="true" />
-            Chauffeur Included
+            {t("chauffeurIncluded")}
           </span>
         </div>
       </div>

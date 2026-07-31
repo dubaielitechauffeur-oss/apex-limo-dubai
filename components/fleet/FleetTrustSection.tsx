@@ -1,13 +1,8 @@
+import { getTranslations } from "next-intl/server";
 import { Star, Car, UserCheck, MapPin } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Reveal from "@/components/shared/Reveal";
 import { RATING, FLEET_SIZE } from "@/lib/constants";
-
-const METRICS = [
-  { icon: Car, value: `${FLEET_SIZE}`, label: "Luxury Vehicles" },
-  { icon: UserCheck, value: "100%", label: "Professional Chauffeurs" },
-  { icon: MapPin, value: "24/7", label: "Available Across Dubai & UAE" },
-];
 
 /**
  * Fleet page trust band — same visual language and classes as the
@@ -15,8 +10,15 @@ const METRICS = [
  * ivory 4-up grid), with content specific to the Fleet page instead of
  * duplicating/repurposing TrustStats itself.
  */
-export default function FleetTrustSection() {
+export default async function FleetTrustSection() {
+  const t = await getTranslations("fleet.trust");
   const filledStars = Math.round(parseFloat(RATING));
+
+  const METRICS = [
+    { icon: Car, value: `${FLEET_SIZE}`, label: t("luxuryVehicles") },
+    { icon: UserCheck, value: "100%", label: t("professionalChauffeurs") },
+    { icon: MapPin, value: "24/7", label: t("availableAcross") },
+  ];
 
   return (
     <section className="border-t border-gold/10 bg-ivory py-16">
@@ -35,7 +37,7 @@ export default function FleetTrustSection() {
               ))}
             </div>
             <span className="font-display text-2xl text-obsidian sm:text-3xl">{RATING}</span>
-            <span className="text-xs uppercase tracking-wide text-graphite">Rating</span>
+            <span className="text-xs uppercase tracking-wide text-graphite">{t("rating")}</span>
           </Reveal>
 
           {METRICS.map((metric, index) => (

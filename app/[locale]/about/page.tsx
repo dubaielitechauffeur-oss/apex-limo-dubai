@@ -26,7 +26,7 @@ import BookingCTA from "@/components/home/BookingCTA";
 import AboutHero from "@/components/about/AboutHero";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { RATING } from "@/lib/constants";
-import { FLEET } from "@/data/fleet";
+import { getAllVehicles } from "@/data/fleet";
 import { FLEET_SIZE } from "@/lib/constants";
 import { LOCATIONS } from "@/data/locations";
 import { TESTIMONIALS } from "@/data/testimonials";
@@ -74,9 +74,21 @@ export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations("about");
+  const tCard = await getTranslations("fleet.card");
   const valueItems = t.raw("values.items") as { title: string; description: string }[];
   const whyChooseItems = t.raw("whyChoose.items") as { title: string; description: string }[];
   const standardsItems = t.raw("standards.items") as string[];
+  const vehicles = getAllVehicles(locale as Locale);
+  const cardLabels = {
+    imageComingSoon: tCard("imageComingSoon"),
+    tenHours: tCard("tenHours"),
+    fiveHours: tCard("fiveHours"),
+    oneHour: tCard("oneHour"),
+    airport: tCard("airport"),
+    viewCar: tCard("viewCar"),
+    whatsapp: tCard("whatsapp"),
+    contactUs: tCard("contactUs"),
+  };
   return (
     <div>
       <script
@@ -223,10 +235,10 @@ export default async function AboutPage({ params }: PageProps) {
           </Reveal>
           <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURED_FLEET_SLUGS.map((slug, index) => {
-              const vehicle = FLEET.find((v) => v.slug === slug);
+              const vehicle = vehicles.find((v) => v.slug === slug);
               return vehicle ? (
                 <Reveal key={vehicle.slug} delay={index * 100}>
-                  <FleetCarouselCard vehicle={vehicle} />
+                  <FleetCarouselCard vehicle={vehicle} labels={cardLabels} />
                 </Reveal>
               ) : null;
             })}

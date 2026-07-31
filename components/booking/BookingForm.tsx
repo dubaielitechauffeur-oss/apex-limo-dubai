@@ -7,8 +7,7 @@ import FormField from "@/components/shared/FormField";
 import FormSectionHeading from "@/components/shared/FormSectionHeading";
 import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
-import { FLEET } from "@/data/fleet";
-import type { ServiceOption, LocationOption } from "./QuoteForm";
+import type { ServiceOption, LocationOption, VehicleOption } from "./QuoteForm";
 import { getWhatsAppLink } from "@/lib/constants";
 import type { BookingFormData } from "@/lib/types";
 import { validateBookingForm, hasErrors, type FormErrors } from "@/lib/validation";
@@ -54,13 +53,14 @@ function prettifySlug(slug: string): string {
 function buildInitialBookingForm(
   searchParams: ReturnType<typeof useSearchParams>,
   services: ServiceOption[],
-  locations: LocationOption[]
+  locations: LocationOption[],
+  vehicles: VehicleOption[]
 ): BookingFormData {
   const form: BookingFormData = { ...EMPTY_FORM };
 
   const vehicleSlug = searchParams.get("vehicle");
   if (vehicleSlug) {
-    const vehicle = FLEET.find((v) => v.slug === vehicleSlug);
+    const vehicle = vehicles.find((v) => v.slug === vehicleSlug);
     if (vehicle) form.vehicle = vehicle.name;
   }
 
@@ -93,13 +93,15 @@ function BookingFormSkeleton() {
 function BookingFormFields({
   services,
   locations,
+  vehicles,
 }: {
   services: ServiceOption[];
   locations: LocationOption[];
+  vehicles: VehicleOption[];
 }) {
   const searchParams = useSearchParams();
   const [form, setForm] = useState<BookingFormData>(() =>
-    buildInitialBookingForm(searchParams, services, locations)
+    buildInitialBookingForm(searchParams, services, locations, vehicles)
   );
   const [errors, setErrors] = useState<FormErrors<BookingFormData>>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -363,7 +365,7 @@ function BookingFormFields({
             className={`field-input ${errors.vehicle ? "field-input-error" : ""}`}
           >
             <option value="">Select a vehicle</option>
-            {FLEET.map((vehicle) => (
+            {vehicles.map((vehicle) => (
               <option key={vehicle.slug} value={vehicle.name}>
                 {vehicle.name} — {vehicle.category}
               </option>
@@ -460,13 +462,15 @@ function BookingFormFields({
 export default function BookingForm({
   services,
   locations,
+  vehicles,
 }: {
   services: ServiceOption[];
   locations: LocationOption[];
+  vehicles: VehicleOption[];
 }) {
   return (
     <Suspense fallback={<BookingFormSkeleton />}>
-      <BookingFormFields services={services} locations={locations} />
+      <BookingFormFields services={services} locations={locations} vehicles={vehicles} />
     </Suspense>
   );
 }

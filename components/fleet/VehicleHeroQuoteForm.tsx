@@ -1,17 +1,18 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useTranslations } from "next-intl";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
 import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
-import type { FleetVehicle } from "@/data/fleet";
+import type { PlainFleetVehicle } from "@/data/fleet";
 import type { QuoteFormData } from "@/lib/types";
 import { validateQuoteForm, hasErrors, type FormErrors } from "@/lib/validation";
 
 interface VehicleHeroQuoteFormProps {
-  vehicle: FleetVehicle;
+  vehicle: PlainFleetVehicle;
 }
 
 /** Hardcoded to a real, recognized service so the lead notification reads
@@ -32,11 +33,14 @@ const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
  * since the API only stores free text there.
  */
 export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormProps) {
+  const t = useTranslations("fleet.heroQuoteForm");
+  const tDetail = useTranslations("fleet.detail");
+
   const durationOptions = [
-    { label: `1 Hour — ${formatAed(vehicle.rates.oneHour)}`, value: "1 Hour" },
-    { label: `Airport Transfer — ${formatAed(vehicle.rates.airport)}`, value: "Airport Transfer" },
-    { label: `5 Hours — ${formatAed(vehicle.rates.fiveHours)}`, value: "5 Hours" },
-    { label: `10 Hours — ${formatAed(vehicle.rates.tenHours)}`, value: "10 Hours" },
+    { label: `${tDetail("oneHour")} — ${formatAed(vehicle.rates.oneHour)}`, value: "1 Hour" },
+    { label: `${tDetail("airportTransfer")} — ${formatAed(vehicle.rates.airport)}`, value: "Airport Transfer" },
+    { label: `${tDetail("fiveHours")} — ${formatAed(vehicle.rates.fiveHours)}`, value: "5 Hours" },
+    { label: `${tDetail("tenHours")} — ${formatAed(vehicle.rates.tenHours)}`, value: "10 Hours" },
   ];
 
   const [fullName, setFullName] = useState("");
@@ -106,14 +110,14 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
       >
         <CheckCircle2 className="h-10 w-10 text-gold" strokeWidth={1.5} />
         <h3 className="mt-5 font-display text-2xl text-heading">
-          {fullName ? `Thank you, ${fullName.split(" ")[0]}!` : "Thank You!"}
+          {fullName ? t("thankYouName", { name: fullName.split(" ")[0] }) : t("thankYou")}
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-smoke">
-          Your quote request for the {vehicle.name} is in. Our team will follow up shortly.
+          {t("quoteReceivedTemplate", { name: vehicle.name })}
           {reference ? (
             <>
               {" "}
-              Reference <span className="font-semibold text-gold">{reference}</span>.
+              {t("reference")} <span className="font-semibold text-gold">{reference}</span>.
             </>
           ) : null}
         </p>
@@ -126,7 +130,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
           external
           className="mt-6"
         >
-          Follow Up on WhatsApp
+          {t("followUpWhatsapp")}
         </CTAButton>
       </div>
     );
@@ -134,14 +138,14 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
 
   return (
     <div className="rounded-2xl border border-gold/20 bg-charcoal p-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] xl:p-8">
-      <p className="text-[11px] uppercase tracking-wide text-smoke">Starting from</p>
+      <p className="text-[11px] uppercase tracking-wide text-smoke">{t("startingFrom")}</p>
       <p className="mt-1 font-display text-2xl text-gold">
         {formatAed(vehicle.rates.oneHour)}
-        <span className="ms-1 text-sm font-normal text-smoke">/ hour in Dubai</span>
+        <span className="ms-1 text-sm font-normal text-smoke">{t("perHourInDubai")}</span>
       </p>
 
-      <h3 className="mt-5 font-display text-xl text-heading">Request a Quote</h3>
-      <p className="mt-1 text-xs text-smoke">Just an approximate route — no obligation.</p>
+      <h3 className="mt-5 font-display text-xl text-heading">{t("requestQuote")}</h3>
+      <p className="mt-1 text-xs text-smoke">{t("approxRouteNote")}</p>
 
       <form onSubmit={handleSubmit} noValidate className="mt-5 space-y-4">
         {status === "error" && serverMessage ? (
@@ -235,15 +239,15 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
           {status === "submitting" ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" strokeWidth={2} />
-              Sending…
+              {t("sending")}
             </>
           ) : (
-            "Request My Quote"
+            t("submit")
           )}
         </button>
 
         <p className="text-center text-[11px] text-smoke/70">
-          No deposit required &bull; Flexible cancellation policy
+          {t("noDepositNote")}
         </p>
       </form>
     </div>

@@ -2,15 +2,15 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Car, ChevronLeft, ChevronRight } from "lucide-react";
-import type { FleetVehicle } from "@/data/fleet";
+import type { PlainFleetVehicle } from "@/data/fleet";
 import { useInfiniteCarousel } from "@/components/home/useInfiniteCarousel";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import { isRtlLocale } from "@/i18n/locale-metadata";
 
 interface VehicleHeroGalleryProps {
-  vehicle: FleetVehicle;
+  vehicle: PlainFleetVehicle;
 }
 
 const AUTOPLAY_DELAY_MS = 1000;
@@ -43,8 +43,11 @@ export function VehicleGalleryCarousel({
   sizes = "100vw",
 }: VehicleHeroGalleryProps & { sizes?: string }) {
   const rtl = isRtlLocale(useLocale());
+  const t = useTranslations("fleet.heroGallery");
+  const tCategory = useTranslations("fleet.detail.categories");
   const images = vehicle.images ?? [];
   const hasMultiple = images.length > 1;
+  const categoryLabel = tCategory(vehicle.category);
 
   const { sectionRef, index, instant, activeRealIndex, goNext, goPrev, goToRealIndex, handleTransitionEnd } =
     useInfiniteCarousel({
@@ -93,7 +96,7 @@ export function VehicleGalleryCarousel({
           </div>
         )}
         <span className="absolute start-4 top-4 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
-          {vehicle.category}
+          {categoryLabel}
         </span>
       </div>
     );
@@ -134,7 +137,7 @@ export function VehicleGalleryCarousel({
         </div>
 
         <span className="absolute start-4 top-4 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
-          {vehicle.category}
+          {categoryLabel}
         </span>
         <span className="absolute end-4 top-4 inline-flex items-center rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-[11px] font-semibold tracking-wide text-ivory backdrop-blur-sm">
           {activeRealIndex + 1} / {images.length}
@@ -143,7 +146,7 @@ export function VehicleGalleryCarousel({
         <button
           type="button"
           onClick={goPrev}
-          aria-label="Previous photo"
+          aria-label={t("previousPhoto")}
           className="absolute start-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-ivory backdrop-blur-sm transition-colors duration-200 hover:bg-gold hover:text-obsidian"
         >
           <DirectionalIcon icon={ChevronLeft} className="h-5 w-5" strokeWidth={2} />
@@ -151,7 +154,7 @@ export function VehicleGalleryCarousel({
         <button
           type="button"
           onClick={goNext}
-          aria-label="Next photo"
+          aria-label={t("nextPhoto")}
           className="absolute end-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-ivory backdrop-blur-sm transition-colors duration-200 hover:bg-gold hover:text-obsidian"
         >
           <DirectionalIcon icon={ChevronRight} className="h-5 w-5" strokeWidth={2} />
@@ -164,7 +167,7 @@ export function VehicleGalleryCarousel({
             key={i}
             type="button"
             onClick={() => goToRealIndex(i)}
-            aria-label={`Go to photo ${i + 1}`}
+            aria-label={t("goToPhotoAriaLabel", { index: i + 1 })}
             aria-current={i === activeRealIndex}
             className={`h-2 rounded-full transition-all duration-300 ${
               i === activeRealIndex ? "w-6 bg-gold" : "w-2 bg-gold/30"

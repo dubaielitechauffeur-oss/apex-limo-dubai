@@ -1,192 +1,51 @@
-"use client";
-
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocale } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import Container from "@/components/shared/Container";
-import SectionHeading from "@/components/shared/SectionHeading";
-import Reveal from "@/components/shared/Reveal";
-import DirectionalIcon from "@/components/shared/DirectionalIcon";
-import FleetCarouselCard from "./FleetCarouselCard";
-import { FLEET } from "@/data/fleet";
+import { getLocale, getTranslations } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
+import { getAllVehicles } from "@/data/fleet";
 import { FLEET_SIZE } from "@/lib/constants";
-import { useInfiniteCarousel } from "./useInfiniteCarousel";
-import { isRtlLocale } from "@/i18n/locale-metadata";
-
-/** Cards visible at once: 1 on mobile, 2 on tablet, 3 on desktop.
- *  Must stay in sync with the card wrapper's w-full/md:w-1/2/lg:w-1/3. */
-function useSlidesPerView() {
-  const [slidesPerView, setSlidesPerView] = useState(3);
-
-  useEffect(() => {
-    const update = () => {
-      if (window.matchMedia("(min-width: 1024px)").matches) setSlidesPerView(3);
-      else if (window.matchMedia("(min-width: 768px)").matches) setSlidesPerView(2);
-      else setSlidesPerView(1);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  return slidesPerView;
-}
-
-const AUTOPLAY_DELAY_MS = 1000;
-const AUTOPLAY_INTERVAL_MS = 4000;
-const SWIPE_THRESHOLD_PX = 40;
+import FleetCarouselClient from "./FleetCarouselClient";
 
 /**
- * "Explore Our Fleet" — the primary homepage fleet section: an infinite,
- * one-card-at-a-time carousel with side arrows and dot indicators.
- * Auto-plays only while the section is on-screen (pausing when scrolled
- * away and re-arming, after a short delay, when it scrolls back into
- * view) — but only until the user manually touches the arrows/dots, at
- * which point auto-play stops for good. Loops seamlessly in both
- * directions via cloned edge cards — see useInfiniteCarousel.
+ * Server wrapper for the homepage fleet carousel — localizes the fleet
+ * data and translates the surrounding chrome here, then passes plain
+ * props into the "use client" carousel (FleetCarouselClient). Keeps the
+ * `data/fleet` module (which holds all 6 locales' worth of vehicle copy)
+ * out of the client bundle entirely; only this one page's already-resolved
+ * strings cross the server/client boundary.
  */
-export default function FleetCarousel() {
-  const rtl = isRtlLocale(useLocale());
-  const slidesPerView = useSlidesPerView();
-  const { sectionRef, index, instant, activeRealIndex, goNext, goPrev, goToRealIndex, handleTransitionEnd } =
-    useInfiniteCarousel({
-      itemCount: FLEET.length,
-      slidesPerView,
-      autoplayDelayMs: AUTOPLAY_DELAY_MS,
-      autoplayIntervalMs: AUTOPLAY_INTERVAL_MS,
-      stopOnInteraction: true,
-      pauseWhenOffscreen: true,
-    });
+export default async function FleetCarousel() {
+  const locale = (await getLocale()) as Locale;
+  const t = await getTranslations("fleet.carousel");
+  const tCard = await getTranslations("fleet.card");
+  const vehicles = getAllVehicles(locale);
 
-  // Clone `slidesPerView` cards from each edge so the track can keep
-  // sliding in one direction through the wrap point (see useInfiniteCarousel).
-  const extended = useMemo(() => {
-    const startClones = FLEET.slice(-slidesPerView);
-    const endClones = FLEET.slice(0, slidesPerView);
-    return [...startClones, ...FLEET, ...endClones];
-  }, [slidesPerView]);
-
-  // Touch/mouse swipe support: a drag ending past the threshold advances
-  // one card, same as tapping an arrow. Tracked via refs (not state) since
-  // only the release matters — no per-frame re-render is needed while
-  // dragging. A swipe that ends on a card's link suppresses the resulting
-  // click so a drag doesn't also navigate.
-  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
-  const didSwipeRef = useRef(false);
-
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === "mouse" && event.button !== 0) return;
-    dragStartRef.current = { x: event.clientX, y: event.clientY };
-  };
-
-  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
-    const start = dragStartRef.current;
-    dragStartRef.current = null;
-    if (!start) return;
-    const dx = event.clientX - start.x;
-    const dy = event.clientY - start.y;
-    if (Math.abs(dx) >= SWIPE_THRESHOLD_PX && Math.abs(dx) > Math.abs(dy)) {
-      didSwipeRef.current = true;
-      const draggedTowardStart = rtl ? dx < 0 : dx > 0;
-      if (draggedTowardStart) goPrev();
-      else goNext();
-    }
-  };
-
-  const handleClickCapture = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (didSwipeRef.current) {
-      didSwipeRef.current = false;
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  };
+  // Resolved server-side (rather than passed as a function prop) — Server
+  // Component props crossing into a Client Component must be plain
+  // serializable data, never functions.
+  const vehicleAriaLabels = Object.fromEntries(
+    vehicles.map((vehicle) => [vehicle.slug, t("goToVehicleAriaLabel", { name: vehicle.name })])
+  );
 
   return (
-    <section
-      ref={sectionRef as React.RefObject<HTMLElement>}
-      className="border-t border-gold/10 bg-linen py-24"
-    >
-      <Container>
-        <Reveal>
-          <SectionHeading
-            eyebrow="The Fleet"
-            title="Explore Our Fleet"
-            subtitle={`${FLEET_SIZE} late-model vehicles, one uncompromising standard — every journey with a professional chauffeur included.`}
-            tone="light"
-          />
-        </Reveal>
-
-        <div className="relative mt-16">
-          {/* Track */}
-          <div
-            className="touch-pan-y overflow-hidden"
-            role="region"
-            aria-label="Fleet vehicles carousel"
-            onPointerDown={handlePointerDown}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={() => {
-              dragStartRef.current = null;
-            }}
-            onClickCapture={handleClickCapture}
-          >
-            <div
-              className={`flex ${instant ? "" : "transition-transform duration-500 ease-out"}`}
-              style={{ transform: `translateX(${rtl ? "" : "-"}${(index * 100) / slidesPerView}%)` }}
-              onTransitionEnd={handleTransitionEnd}
-            >
-              {extended.map((vehicle, position) => (
-                <div key={`${vehicle.slug}-${position}`} className="w-full shrink-0 px-3 md:w-1/2 lg:w-1/3">
-                  <FleetCarouselCard vehicle={vehicle} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Arrows */}
-          <button
-            type="button"
-            onClick={goPrev}
-            aria-label="Previous vehicles"
-            className="absolute -start-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-start-4 lg:-start-6"
-          >
-            <DirectionalIcon icon={ChevronLeft} className="h-5 w-5" strokeWidth={1.5} />
-          </button>
-          <button
-            type="button"
-            onClick={goNext}
-            aria-label="Next vehicles"
-            className="absolute -end-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-ivory text-obsidian shadow-md transition-colors duration-200 hover:bg-gold hover:text-obsidian sm:-end-4 lg:-end-6"
-          >
-            <DirectionalIcon icon={ChevronRight} className="h-5 w-5" strokeWidth={1.5} />
-          </button>
-        </div>
-
-        {/* Dot indicators — one per vehicle */}
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {FLEET.map((vehicle, realIndex) => (
-            <button
-              key={vehicle.slug}
-              type="button"
-              onClick={() => goToRealIndex(realIndex)}
-              aria-label={`Go to ${vehicle.name}`}
-              aria-current={realIndex === activeRealIndex ? "true" : undefined}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                realIndex === activeRealIndex ? "w-6 bg-gold" : "w-2 bg-gold/30 hover:bg-gold/50"
-              }`}
-            />
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Link
-            href="/fleet"
-            className="inline-flex items-center justify-center rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
-          >
-            View Our Full Fleet
-          </Link>
-        </div>
-      </Container>
-    </section>
+    <FleetCarouselClient
+      vehicles={vehicles}
+      cardLabels={{
+        imageComingSoon: tCard("imageComingSoon"),
+        tenHours: tCard("tenHours"),
+        fiveHours: tCard("fiveHours"),
+        oneHour: tCard("oneHour"),
+        airport: tCard("airport"),
+        viewCar: tCard("viewCar"),
+        whatsapp: tCard("whatsapp"),
+        contactUs: tCard("contactUs"),
+      }}
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      subtitle={t("subtitleTemplate", { count: FLEET_SIZE })}
+      ariaLabel={t("ariaLabel")}
+      prevAriaLabel={t("prevAriaLabel")}
+      nextAriaLabel={t("nextAriaLabel")}
+      vehicleAriaLabels={vehicleAriaLabels}
+      viewFullFleet={t("viewFullFleet")}
+    />
   );
 }

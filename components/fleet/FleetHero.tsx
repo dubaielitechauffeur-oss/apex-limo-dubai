@@ -5,12 +5,6 @@ import Container from "@/components/shared/Container";
 import { RATING, FLEET_SIZE, PRIMARY_CTA } from "@/lib/constants";
 import Ltr from "@/components/shared/Ltr";
 
-const TRUST_ITEMS = [
-  { icon: Car, label: `${FLEET_SIZE} Luxury Vehicles` },
-  { icon: UserCheck, label: "Professional Chauffeurs" },
-  { icon: MapPin, label: "Available Across Dubai & UAE" },
-];
-
 /**
  * Fleet page hero — a full editorial showroom moment (reusing the same
  * luxury fleet lineup + Burj Khalifa photograph as the homepage CTA, since
@@ -21,7 +15,14 @@ const TRUST_ITEMS = [
  */
 export default async function FleetHero() {
   const t = await getTranslations("common.cta");
+  const tHero = await getTranslations("fleet.hero");
   const filledStars = Math.round(parseFloat(RATING));
+
+  const TRUST_ITEMS = [
+    { icon: Car, label: tHero("luxuryVehiclesTemplate", { count: FLEET_SIZE }) },
+    { icon: UserCheck, label: tHero("professionalChauffeurs") },
+    { icon: MapPin, label: tHero("availableAcross") },
+  ];
 
   return (
     <section className="relative isolate flex min-h-[560px] items-center overflow-hidden bg-[#0A0A0A] py-20 sm:min-h-[80vh] lg:min-h-[85vh]">
@@ -55,16 +56,15 @@ export default async function FleetHero() {
       <Container className="relative z-10">
         <div className="max-w-2xl">
           <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-[#C9A14A] sm:text-sm">
-            Luxury Chauffeur Fleet
+            {tHero("eyebrow")}
           </span>
 
           <h1 className="mt-6 animate-slide-in-left font-display text-4xl leading-[1.05] text-white sm:text-6xl lg:text-7xl">
-            {FLEET_SIZE} Luxury Vehicles for Every Occasion
+            {tHero("titleTemplate", { count: FLEET_SIZE })}
           </h1>
 
           <p className="mt-7 max-w-lg animate-fade-in text-base leading-relaxed text-[#B8B8B8] [animation-delay:200ms] sm:text-lg">
-            Choose from executive sedans, VIP SUVs, luxury vans, and
-            chauffeur-driven vehicles available across Dubai and the UAE.
+            {tHero("subtitle")}
           </p>
 
           {/* Trust indicators */}
@@ -81,7 +81,7 @@ export default async function FleetHero() {
                   />
                 ))}
               </div>
-              <span className="text-sm font-semibold text-white"><Ltr>{RATING} Rating</Ltr></span>
+              <span className="text-sm font-semibold text-white"><Ltr>{tHero("ratingTemplate", { rating: RATING })}</Ltr></span>
             </div>
 
             {TRUST_ITEMS.map((item) => (
@@ -98,7 +98,7 @@ export default async function FleetHero() {
               href="#fleet-listings"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"
             >
-              View Fleet
+              {tHero("viewFleet")}
             </a>
             <Link
               href={PRIMARY_CTA.quote.href}
