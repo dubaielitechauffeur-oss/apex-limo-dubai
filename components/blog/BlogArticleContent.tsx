@@ -1,9 +1,9 @@
 import { ChevronDown } from "lucide-react";
 import RichParagraph from "@/components/services/RichParagraph";
-import type { BlogContentBlock } from "@/data/blog";
+import type { PlainBlogContentBlock } from "@/data/blog";
 
 interface BlogArticleContentProps {
-  blocks: BlogContentBlock[];
+  blocks: PlainBlogContentBlock[];
 }
 
 /** Renders a blog post's typed content blocks — headings, paragraphs, lists, and FAQ. */

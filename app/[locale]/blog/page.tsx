@@ -49,7 +49,8 @@ function blogListJsonLd(posts: ReturnType<typeof getAllBlogPosts>) {
 export default async function BlogPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
-  const posts = getAllBlogPosts();
+  const t = await getTranslations("blog.hero");
+  const posts = getAllBlogPosts(locale as Locale);
   const imageExistsBySlug = Object.fromEntries(
     posts.map((post) => [post.slug, blogImageExists(post.featuredImage.src)])
   );
@@ -74,13 +75,12 @@ export default async function BlogPage({ params }: PageProps) {
       {/* Hero */}
       <Section tone="obsidian" padding="sm" separator={false}>
         <Container className="text-center">
-          <span className="animate-fade-in label-eyebrow">Insights &amp; Journal</span>
+          <span className="animate-fade-in label-eyebrow">{t("eyebrow")}</span>
           <h1 className="mx-auto mt-5 max-w-3xl animate-fade-in font-display text-4xl text-heading [animation-delay:150ms] sm:text-5xl">
-            Luxury Chauffeur Insights
+            {t("title")}
           </h1>
           <p className="mx-auto mt-5 max-w-2xl animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
-            Travel tips, chauffeur guides, airport transfer advice, business travel insights and
-            luxury transportation updates.
+            {t("subtitle")}
           </p>
         </Container>
       </Section>

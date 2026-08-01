@@ -1,19 +1,21 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Search } from "lucide-react";
-import type { BlogPost } from "@/data/blog";
+import type { PlainBlogPost } from "@/data/blog";
 import Reveal from "@/components/shared/Reveal";
 import BlogCard from "./BlogCard";
 
 interface BlogSearchProps {
-  posts: BlogPost[];
+  posts: PlainBlogPost[];
   /** Precomputed server-side (see lib/blogImage.ts), keyed by slug — this component never touches the filesystem itself. */
   imageExistsBySlug: Record<string, boolean>;
 }
 
 /** Client-side search + grid for the /blog listing page — filters on title and excerpt only, no backend involved. */
 export default function BlogSearch({ posts, imageExistsBySlug }: BlogSearchProps) {
+  const t = useTranslations("blog.search");
   const [query, setQuery] = useState("");
 
   const visiblePosts = useMemo(() => {
@@ -37,8 +39,8 @@ export default function BlogSearch({ posts, imageExistsBySlug }: BlogSearchProps
           type="text"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search articles..."
-          aria-label="Search blog articles by title or excerpt"
+          placeholder={t("placeholder")}
+          aria-label={t("ariaLabel")}
           className="w-full rounded-full border border-gold/20 bg-ivory py-4 ps-12 pe-6 text-sm text-obsidian placeholder:text-graphite outline-none transition-colors duration-200 focus:border-gold-deep"
         />
       </div>
@@ -58,7 +60,7 @@ export default function BlogSearch({ posts, imageExistsBySlug }: BlogSearchProps
           </div>
         ) : (
           <p className="mt-16 text-center text-sm text-graphite">
-            No articles match &ldquo;{query}&rdquo;. Try a different search term.
+            {t("noResultsTemplate", { query })}
           </p>
         )}
       </div>

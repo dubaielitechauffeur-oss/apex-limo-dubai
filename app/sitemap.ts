@@ -5,7 +5,7 @@ import { routing } from "@/i18n/routing";
 import { FLEET } from "@/data/fleet";
 import { SERVICES } from "@/data/services";
 import { LOCATIONS } from "@/data/locations";
-import { getAllBlogPosts } from "@/data/blog";
+import { BLOG_POSTS } from "@/data/blog";
 
 type ChangeFrequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 
@@ -66,7 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     localizedEntries(`/locations/${location.slug}`, now, "monthly", 0.7)
   );
 
-  const blogRoutes = getAllBlogPosts().flatMap((post) =>
+  const blogRoutes = BLOG_POSTS.flatMap((post) =>
     localizedEntries(`/blog/${post.slug}`, new Date(post.publishDate), "monthly", 0.6)
   );
 

@@ -1,12 +1,12 @@
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
-import type { BlogPost } from "@/data/blog";
+import type { PlainBlogPost } from "@/data/blog";
 import BlogImageFrame from "./BlogImageFrame";
 
 interface BlogCardProps {
-  post: BlogPost;
+  post: PlainBlogPost;
   /** Precomputed server-side (see lib/blogImage.ts) so this stays a plain, client-safe component. */
   imageExists: boolean;
 }
@@ -14,6 +14,7 @@ interface BlogCardProps {
 /** Shared post card for the /blog listing grid and each detail page's "More From the Journal" rail. */
 export default function BlogCard({ post, imageExists }: BlogCardProps) {
   const locale = useLocale() as Locale;
+  const t = useTranslations("blog.card");
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -36,7 +37,7 @@ export default function BlogCard({ post, imageExists }: BlogCardProps) {
         <h2 className="mt-3 font-display text-xl text-obsidian">{post.title}</h2>
         <p className="mt-3 flex-1 text-sm leading-relaxed text-graphite">{post.excerpt}</p>
         <span className="mt-6 inline-flex w-fit items-center gap-2 text-xs font-bold uppercase tracking-wide text-gold-deep transition-colors duration-200 group-hover:text-obsidian">
-          Read More
+          {t("readMore")}
           <span aria-hidden="true">&rarr;</span>
         </span>
       </div>

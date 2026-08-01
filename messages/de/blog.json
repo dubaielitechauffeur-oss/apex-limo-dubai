@@ -1,0 +1,25 @@
+{
+  "hero": {
+    "eyebrow": "Wissenswertes & Journal",
+    "title": "Luxus-Chauffeur-Wissenswertes",
+    "subtitle": "Reisetipps, Chauffeur-Ratgeber, Hinweise zu Flughafentransfers, Einblicke in Geschäftsreisen und Neuigkeiten rund um den Luxustransport."
+  },
+  "search": {
+    "placeholder": "Artikel durchsuchen...",
+    "ariaLabel": "Blogartikel nach Titel oder Zusammenfassung durchsuchen",
+    "noResultsTemplate": "Keine Artikel gefunden für „{query}“. Versuchen Sie einen anderen Suchbegriff."
+  },
+  "card": {
+    "readMore": "Weiterlesen"
+  },
+  "detail": {
+    "backToJournal": "Zurück zum Journal",
+    "keepReadingEyebrow": "Weiterlesen",
+    "moreFromJournalTitle": "Mehr aus dem Journal",
+    "bookingCtaHeading": "Benötigen Sie einen Luxus-Chauffeur in Dubai?",
+    "bookingCtaSubtitle": "Buchen Sie ein Premium-Fahrzeug mit Chauffeur für Flughafentransfers, Geschäftsreisen, Stadtrundfahrten und besondere Anlässe."
+  },
+  "imageFrame": {
+    "imagePending": "Bild folgt in Kürze"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "hero": {
+    "eyebrow": "洞察与专栏",
+    "title": "豪华专属司机洞察",
+    "subtitle": "出行贴士、司机服务指南、机场接送建议、商务出行洞察,以及豪华交通资讯更新。"
+  },
+  "search": {
+    "placeholder": "搜索文章...",
+    "ariaLabel": "按标题或摘要搜索博客文章",
+    "noResultsTemplate": "没有与“{query}”匹配的文章。请尝试其他搜索词。"
+  },
+  "card": {
+    "readMore": "阅读更多"
+  },
+  "detail": {
+    "backToJournal": "返回专栏",
+    "keepReadingEyebrow": "继续阅读",
+    "moreFromJournalTitle": "更多专栏文章",
+    "bookingCtaHeading": "需要在迪拜预订豪华专属司机吗?",
+    "bookingCtaSubtitle": "预订高级专属司机用车,享受机场接送、商务出行、城市观光及特殊活动服务。"
+  },
+  "imageFrame": {
+    "imagePending": "图片即将上线"
+  }
+}

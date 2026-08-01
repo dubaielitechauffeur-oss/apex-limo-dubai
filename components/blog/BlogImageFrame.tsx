@@ -1,9 +1,10 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { ImageIcon } from "lucide-react";
-import type { BlogImage } from "@/data/blog";
+import type { PlainBlogImage } from "@/data/blog";
 
 interface BlogImageFrameProps {
-  image: BlogImage;
+  image: PlainBlogImage;
   /** Precomputed server-side via lib/blogImage.ts — this component never touches the filesystem itself, so it's safe in a client bundle. */
   exists: boolean;
   priority?: boolean;
@@ -17,6 +18,8 @@ interface BlogImageFrameProps {
  * toggling needed — adding the file and rebuilding makes it render.
  */
 export default function BlogImageFrame({ image, exists, priority, sizes }: BlogImageFrameProps) {
+  const t = useTranslations("blog.imageFrame");
+
   if (exists) {
     return (
       <Image
@@ -33,7 +36,7 @@ export default function BlogImageFrame({ image, exists, priority, sizes }: BlogI
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-charcoal via-obsidian to-charcoal p-6 text-center">
       <ImageIcon className="h-8 w-8 text-gold/50" strokeWidth={1} aria-hidden="true" />
-      <p className="text-[10px] uppercase tracking-wide text-smoke">Image pending</p>
+      <p className="text-[10px] uppercase tracking-wide text-smoke">{t("imagePending")}</p>
       <p className="max-w-xs break-words text-[11px] text-smoke/80">{image.alt}</p>
       <p className="max-w-xs break-all font-mono text-[10px] text-gold/70">public{image.src}</p>
     </div>

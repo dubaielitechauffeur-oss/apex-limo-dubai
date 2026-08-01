@@ -28,7 +28,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = getBlogPostBySlug(slug, locale as Locale);
 
   if (!post) {
     const t = await getTranslations({ locale: locale as Locale, namespace: "metadata.blogPost" });
@@ -57,13 +57,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function BlogPostPage({ params }: PageProps) {
   const { locale, slug } = await params;
   setRequestLocale(locale as Locale);
-  const post = getBlogPostBySlug(slug);
+  const post = getBlogPostBySlug(slug, locale as Locale);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = getRelatedBlogPosts(post.slug);
+  const t = await getTranslations("blog.detail");
+  const relatedPosts = getRelatedBlogPosts(post.slug, locale as Locale);
   const faqBlock = post.content.find((block) => block.type === "faq");
   const featuredImageExists = blogImageExists(post.featuredImage.src);
 
@@ -116,7 +117,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             className="inline-flex animate-fade-in items-center gap-2 text-xs uppercase tracking-wide text-smoke transition-colors hover:text-gold"
           >
             <DirectionalIcon icon={ArrowLeft} className="h-3.5 w-3.5" strokeWidth={2} />
-            Back to Journal
+            {t("backToJournal")}
           </Link>
 
           <div className="relative mt-8 aspect-[16/9] w-full animate-fade-in overflow-hidden rounded-sm border border-gold/20 [animation-delay:150ms]">
@@ -157,7 +158,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         <Section tone="linen">
           <Container>
             <Reveal>
-              <SectionHeading eyebrow="Keep Reading" title="More From the Journal" tone="light" />
+              <SectionHeading eyebrow={t("keepReadingEyebrow")} title={t("moreFromJournalTitle")} tone="light" />
             </Reveal>
             <div
               className={`mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-gold/15 bg-gold/15 sm:grid-cols-2 ${
@@ -178,8 +179,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       ) : null}
 
       <BookingCTA
-        heading="Need a Luxury Chauffeur in Dubai?"
-        subtitle="Book a premium chauffeur-driven vehicle for airport transfers, business travel, city tours and special events."
+        heading={t("bookingCtaHeading")}
+        subtitle={t("bookingCtaSubtitle")}
       />
     </div>
   );
