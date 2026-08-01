@@ -221,9 +221,9 @@ function QuoteFormFields({
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <CTAButton
             href={getWhatsAppLink(
-              `Hello Apex Limo, I just requested a quote${
-                reference ? ` (ref: ${reference})` : ""
-              } and wanted to follow up.`
+              t("quote.followUpMessageTemplate", {
+                refPart: reference ? t("quote.refPartTemplate", { reference }) : "",
+              })
             )}
             external
           >

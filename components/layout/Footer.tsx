@@ -38,7 +38,7 @@ export default async function Footer() {
           <div>
             <ApexLogo size="md" align="center" className="sm:items-start sm:text-start" />
             <p className="mt-6 max-w-xs text-center text-sm leading-relaxed text-smoke sm:text-start">
-              {SITE.tagline}. {t("footer.tagline")}
+              {t("siteTagline")}. {t("footer.tagline")}
             </p>
           </div>
 
@@ -104,7 +104,7 @@ export default async function Footer() {
               </li>
               <li>
                 <a
-                  href={getWhatsAppLink()}
+                  href={getWhatsAppLink(t("whatsappGenericMessage"))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-gold"

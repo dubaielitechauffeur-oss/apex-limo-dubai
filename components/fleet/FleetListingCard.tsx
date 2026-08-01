@@ -133,9 +133,7 @@ export default async function FleetListingCard({ vehicle }: FleetListingCardProp
             detail page); Enquire on WhatsApp is the secondary action. */}
         <div className="mt-3.5 flex flex-col gap-3 sm:flex-row">
           <a
-            href={getWhatsAppLink(
-              `Hello Apex Limo, I would like to enquire about the ${vehicle.name}.`,
-            )}
+            href={getWhatsAppLink(t("whatsappMessage", { name: vehicle.name }))}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#25D366] px-4 py-3 text-xs font-bold uppercase tracking-wide text-white shadow-sm transition-colors duration-200 hover:bg-[#1EBE5A]"

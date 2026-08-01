@@ -14,6 +14,10 @@ export interface FleetCarouselCardLabels {
   viewCar: string;
   whatsapp: string;
   contactUs: string;
+  /** "Hello Apex Limo, I would like to enquire about the {name}." — {name}
+   *  substituted client-side since this card is reused across every
+   *  vehicle in the carousel with one shared, pre-translated labels object. */
+  whatsappMessageTemplate: string;
 }
 
 interface FleetCarouselCardProps {
@@ -118,9 +122,7 @@ export default function FleetCarouselCard({ vehicle, labels, whatsapp = false, t
         </Link>
         {whatsapp ? (
           <a
-            href={getWhatsAppLink(
-              `Hello Apex Limo, I would like to enquire about the ${vehicle.name}.`,
-            )}
+            href={getWhatsAppLink(labels.whatsappMessageTemplate.replace("{name}", vehicle.name))}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#25D366] px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A]"

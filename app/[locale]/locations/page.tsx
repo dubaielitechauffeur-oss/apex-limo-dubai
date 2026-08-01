@@ -34,6 +34,7 @@ function locationsJsonLd(locale: Locale, locations: PlainLocation[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: locale,
     name: `${SITE.name} Service Areas`,
     url: `${SITE.url}${localizedPath(locale, "/locations")}`,
     itemListElement: locations.map((location, index) => ({
@@ -52,6 +53,7 @@ export default async function LocationsPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations("locations");
+  const tNav = await getTranslations("common.nav");
   const locations = getAllLocations(locale as Locale);
   return (
     <div>
@@ -65,7 +67,7 @@ export default async function LocationsPage({ params }: PageProps) {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "Locations", path: "/locations" }], locale as Locale)
+            breadcrumbJsonLd([{ name: tNav("locations"), path: "/locations" }], locale as Locale, tNav("home"))
           ),
         }}
       />

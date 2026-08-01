@@ -84,6 +84,7 @@ function vehicleJsonLd(vehicle: PlainFleetVehicle, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "Car",
+    inLanguage: locale,
     name: vehicle.name,
     description: vehicle.longDescription,
     vehicleSeatingCapacity: vehicle.passengers,
@@ -151,6 +152,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   const t = await getTranslations("fleet.detail");
   const tNav = await getTranslations("common.nav");
   const tCard = await getTranslations("fleet.card");
+  const tA11y = await getTranslations("common.a11y");
   const cardLabels = {
     imageComingSoon: tCard("imageComingSoon"),
     tenHours: tCard("tenHours"),
@@ -160,6 +162,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     viewCar: tCard("viewCar"),
     whatsapp: tCard("whatsapp"),
     contactUs: tCard("contactUs"),
+    whatsappMessageTemplate: tCard("whatsappMessageTemplate"),
   };
 
   const HOW_IT_WORKS = [
@@ -181,7 +184,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   const otherCategory = allVehicles.filter((v) => v.slug !== vehicle.slug && v.category !== vehicle.category);
   const similarVehicles = [...sameCategory, ...otherCategory].slice(0, 3);
 
-  const whatsappMessage = `Hello Apex Limo, I'd like to book the ${vehicle.name}.`;
+  const whatsappMessage = t("whatsappMessage", { name: vehicle.name });
   const filledStars = Math.round(parseFloat(RATING));
 
   const crossLinks = VEHICLE_CROSS_LINKS[vehicle.slug];
@@ -220,7 +223,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(vehicle.faqs)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(vehicle.faqs, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
@@ -229,10 +232,11 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           __html: JSON.stringify(
             breadcrumbJsonLd(
               [
-                { name: "Fleet", path: "/fleet" },
+                { name: tNav("fleet"), path: "/fleet" },
                 { name: vehicle.name, path: `/fleet/${vehicle.slug}` },
               ],
-              locale as Locale
+              locale as Locale,
+              tNav("home")
             )
           ),
         }}
@@ -271,7 +275,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               <span>{t("passengersLabel", { count: vehicle.passengers })}</span>
             </div>
             <div className="mt-3 flex animate-fade-in items-center gap-2 [animation-delay:400ms]">
-              <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+              <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
@@ -364,7 +368,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
             <div className="mt-4 flex animate-fade-in flex-wrap items-center gap-3 text-sm text-smoke [animation-delay:350ms]">
               <div className="flex items-center gap-2">
-                <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+                <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}

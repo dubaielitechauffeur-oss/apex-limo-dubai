@@ -44,7 +44,8 @@
     "supportOffice": "Kundensupport-Büro",
     "supportHours": "8:00 – 22:00 Uhr (Golfzeit)",
     "hoursDisclaimer": "Buchungen und dringende Anfragen werden rund um die Uhr bearbeitet, an jedem Tag des Jahres, auch an Feiertagen.",
-    "urgentWhatsapp": "Brauchen Sie sofort einen Chauffeur? Schreiben Sie uns auf WhatsApp."
+    "urgentWhatsapp": "Brauchen Sie sofort einen Chauffeur? Schreiben Sie uns auf WhatsApp.",
+    "urgentWhatsappMessage": "Hallo Apex Limo, ich benötige dringend einen Chauffeur — bitte teilen Sie mir die Verfügbarkeit mit."
   },
   "serviceAreas": {
     "eyebrow": "Einsatzgebiete",

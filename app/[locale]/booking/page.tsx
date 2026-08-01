@@ -30,6 +30,7 @@ export default async function BookingPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations({ locale, namespace: "forms" });
+  const tNav = await getTranslations({ locale, namespace: "common.nav" });
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const locations = getAllLocations(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const vehicles = getAllVehicles(locale as Locale).map(({ slug, name, category }) => ({ slug, name, category }));
@@ -40,7 +41,7 @@ export default async function BookingPage({ params }: PageProps) {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: t("booking.breadcrumbLabel"), path: "/booking" }], locale as Locale)
+            breadcrumbJsonLd([{ name: t("booking.breadcrumbLabel"), path: "/booking" }], locale as Locale, tNav("home"))
           ),
         }}
       />

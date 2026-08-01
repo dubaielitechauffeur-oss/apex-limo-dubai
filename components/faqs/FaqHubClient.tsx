@@ -4,13 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Search, ChevronDown } from "lucide-react";
 import Reveal from "@/components/shared/Reveal";
-import type { FaqCategory, FaqHubEntry } from "@/data/faqHub";
+import type { FaqCategory, PlainFaqHubEntry } from "@/data/faqHub";
 
 const SUGGESTION_LIMIT = 8;
 const HIGHLIGHT_DURATION_MS = 1800;
 
 interface FaqHubClientProps {
-  faqs: FaqHubEntry[];
+  faqs: PlainFaqHubEntry[];
   categories: FaqCategory[];
 }
 
@@ -57,7 +57,7 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
   }, [activeCategory, ALL_FAQS]);
 
   const groupedFaqs = useMemo(() => {
-    const groups = new Map<string, FaqHubEntry[]>();
+    const groups = new Map<string, PlainFaqHubEntry[]>();
     for (const faq of visibleFaqs) {
       const list = groups.get(faq.category) ?? [];
       list.push(faq);
@@ -75,7 +75,7 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
     });
   }
 
-  function goToFaq(entry: FaqHubEntry) {
+  function goToFaq(entry: PlainFaqHubEntry) {
     setQuery("");
     setSuggestionsOpen(false);
     setActiveCategory("all");

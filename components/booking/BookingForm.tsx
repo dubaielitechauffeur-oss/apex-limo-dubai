@@ -46,7 +46,8 @@ function buildInitialBookingForm(
   searchParams: ReturnType<typeof useSearchParams>,
   services: ServiceOption[],
   locations: LocationOption[],
-  vehicles: VehicleOption[]
+  vehicles: VehicleOption[],
+  serviceRequestedTemplate: string
 ): BookingFormData {
   const form: BookingFormData = { ...EMPTY_FORM };
 
@@ -66,7 +67,7 @@ function buildInitialBookingForm(
   if (serviceSlug) {
     const service = services.find((s) => s.slug === serviceSlug);
     const serviceName = service ? service.name : prettifySlug(serviceSlug);
-    form.specialRequests = `Service requested: ${serviceName}`;
+    form.specialRequests = serviceRequestedTemplate.replace("{name}", serviceName);
   }
 
   return form;
@@ -95,7 +96,13 @@ function BookingFormFields({
   const locale = useLocale();
   const searchParams = useSearchParams();
   const [form, setForm] = useState<BookingFormData>(() =>
-    buildInitialBookingForm(searchParams, services, locations, vehicles)
+    buildInitialBookingForm(
+      searchParams,
+      services,
+      locations,
+      vehicles,
+      t("booking.serviceRequestedTemplate")
+    )
   );
   const [errors, setErrors] = useState<FormErrors<BookingFormData>>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -209,9 +216,9 @@ function BookingFormFields({
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <CTAButton
             href={getWhatsAppLink(
-              `Hello Apex Limo, I just submitted a booking request${
-                reference ? ` (ref: ${reference})` : ""
-              } and wanted to confirm.`
+              t("booking.confirmMessageTemplate", {
+                refPart: reference ? t("booking.refPartTemplate", { reference }) : "",
+              })
             )}
             external
           >

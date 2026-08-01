@@ -37,6 +37,7 @@ function fleetJsonLd(locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: locale,
     name: `${SITE.name} Fleet`,
     url: `${SITE.url}${localizedPath(locale, "/fleet")}`,
     itemListElement: getAllVehicles(locale).map((vehicle, index) => ({
@@ -61,6 +62,7 @@ function fleetJsonLd(locale: Locale) {
 export default async function FleetPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const tNav = await getTranslations("common.nav");
   const vehicles = getAllVehicles(locale as Locale);
   return (
     <div>
@@ -74,7 +76,7 @@ export default async function FleetPage({ params }: PageProps) {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "Fleet", path: "/fleet" }], locale as Locale)
+            breadcrumbJsonLd([{ name: tNav("fleet"), path: "/fleet" }], locale as Locale, tNav("home"))
           ),
         }}
       />

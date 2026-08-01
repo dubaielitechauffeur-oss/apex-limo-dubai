@@ -140,9 +140,10 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
         </p>
         <CTAButton
           href={getWhatsAppLink(
-            `Hello Apex Limo, I just requested a quote for the ${vehicle.name}${
-              reference ? ` (ref: ${reference})` : ""
-            } and wanted to follow up.`
+            t("followUpMessageTemplate", {
+              name: vehicle.name,
+              refPart: reference ? t("refPartTemplate", { reference }) : "",
+            })
           )}
           external
           className="mt-6"

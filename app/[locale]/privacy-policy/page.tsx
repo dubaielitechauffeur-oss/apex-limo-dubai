@@ -6,6 +6,7 @@ import Section from "@/components/shared/Section";
 import Ltr from "@/components/shared/Ltr";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
+import { formatDate } from "@/lib/format";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -22,13 +23,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   });
 }
 
-const LAST_UPDATED = "July 9, 2026";
+const LAST_UPDATED_ISO = "2026-07-09";
 
 export default async function PrivacyPolicyPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations({ locale, namespace: "legal.privacyPolicy" });
+  const tNav = await getTranslations({ locale, namespace: "common.nav" });
   const breadcrumbLabel = t("title");
+  const lastUpdated = formatDate(LAST_UPDATED_ISO, locale as Locale);
   return (
     <>
       <script
@@ -36,7 +39,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: breadcrumbLabel, path: "/privacy-policy" }], locale as Locale)
+            breadcrumbJsonLd([{ name: breadcrumbLabel, path: "/privacy-policy" }], locale as Locale, tNav("home"))
           ),
         }}
       />
@@ -47,7 +50,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
           {t("title")}
         </h1>
         <p className="mt-4 text-xs uppercase tracking-wide text-graphite">
-          {t("lastUpdatedLabel")}: {LAST_UPDATED}
+          {t("lastUpdatedLabel")}: {lastUpdated}
         </p>
         <p className="mt-6 text-sm leading-relaxed text-graphite sm:text-base">
           {t("intro", { siteName: SITE.name })}

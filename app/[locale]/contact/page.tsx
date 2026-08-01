@@ -46,12 +46,16 @@ const TRUST_BADGE_ICONS = [Clock, BadgeCheck, Car, MessageCircle];
 
 /** Data-only fields per card — label/detail(WhatsApp only)/description/cta
  *  come from messages/{locale}/contact.json's quickContact.cards, indexed
- *  by position. Phone/email are real contact data, never translated. */
-const QUICK_CONTACT_CARD_META = [
-  { icon: Phone, href: getPhoneLink(), external: false, dataDetail: SITE.phoneDisplay },
-  { icon: MessageCircle, href: getWhatsAppLink(), external: true, dataDetail: undefined },
-  { icon: Mail, href: `mailto:${SITE.email}`, external: false, dataDetail: SITE.email },
-];
+ *  by position. Phone/email are real contact data, never translated. Built
+ *  as a function (rather than a module-level const) since the WhatsApp
+ *  href needs the current locale's translated prefill message. */
+function getQuickContactCardMeta(whatsappMessage: string) {
+  return [
+    { icon: Phone, href: getPhoneLink(), external: false, dataDetail: SITE.phoneDisplay },
+    { icon: MessageCircle, href: getWhatsAppLink(whatsappMessage), external: true, dataDetail: undefined },
+    { icon: Mail, href: `mailto:${SITE.email}`, external: false, dataDetail: SITE.email },
+  ];
+}
 
 /** Icon order matches whyContact.items in messages/{locale}/contact.json. */
 const WHY_CONTACT_ICONS = [Award, Clock, BadgeCheck, Car, Zap, Headphones];
@@ -60,6 +64,9 @@ export default async function ContactPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations("contact");
+  const tNav = await getTranslations("common.nav");
+  const tCommon = await getTranslations("common");
+  const quickContactCardMeta = getQuickContactCardMeta(tCommon("whatsappGenericMessage"));
   const trustBadges = t.raw("trustBadges") as string[];
   const quickContactCards = t.raw("quickContact.cards") as {
     label: string;
@@ -74,14 +81,14 @@ export default async function ContactPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(contactFaqs)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(contactFaqs, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "Contact", path: "/contact" }], locale as Locale)
+            breadcrumbJsonLd([{ name: tNav("contact"), path: "/contact" }], locale as Locale, tNav("home"))
           ),
         }}
       />
@@ -125,7 +132,7 @@ export default async function ContactPage({ params }: PageProps) {
 
           <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {quickContactCards.map((card, index) => {
-              const meta = QUICK_CONTACT_CARD_META[index];
+              const meta = quickContactCardMeta[index];
               return (
                 <Reveal key={card.label} delay={index * 100}>
                 <a
@@ -296,7 +303,7 @@ export default async function ContactPage({ params }: PageProps) {
                   </li>
                   <li>
                     <a
-                      href={getWhatsAppLink()}
+                      href={getWhatsAppLink(tCommon("whatsappGenericMessage"))}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 transition-colors hover:text-[#C9A14A]"
@@ -320,7 +327,7 @@ export default async function ContactPage({ params }: PageProps) {
                   </li>
                 </ul>
                 <div className="mt-6 flex flex-col gap-3">
-                  <CTAButton href={getWhatsAppLink()} external>
+                  <CTAButton href={getWhatsAppLink(tCommon("whatsappGenericMessage"))} external>
                     {t("sidebar.whatsappUs")}
                   </CTAButton>
                   <CTAButton href={getPhoneLink()} variant="outline">
@@ -347,9 +354,7 @@ export default async function ContactPage({ params }: PageProps) {
                 </dl>
                 <p className="mt-4 text-xs text-[#999999]">{t("sidebar.hoursDisclaimer")}</p>
                 <a
-                  href={getWhatsAppLink(
-                    "Hello Apex Limo, I need a chauffeur urgently — please advise availability."
-                  )}
+                  href={getWhatsAppLink(t("sidebar.urgentWhatsappMessage"))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#C9A14A] transition-colors hover:text-[#e0bd6b]"

@@ -62,6 +62,8 @@
   "logo": {
     "tagline": "豪华专属司机"
   },
+  "siteTagline": "迪拜顶级专属司机与豪华轿车服务",
+  "whatsappGenericMessage": "您好 Apex Limo，我想在迪拜预订专属司机服务。",
   "notFound": {
     "title": "页面未找到",
     "description": "您查找的页面不存在,或可能已被移动。",

@@ -10,6 +10,7 @@
     "viewFullFleet": "查看完整车队"
   },
   "card": {
+    "whatsappMessageTemplate": "您好Apex Limo,我想咨询{name}相关事宜。",
     "imageComingSoon": "图片即将上线",
     "tenHours": "10小时",
     "fiveHours": "5小时",
@@ -20,6 +21,7 @@
     "contactUs": "联系我们"
   },
   "listingCard": {
+    "whatsappMessage": "您好Apex Limo,我想咨询{name}相关事宜。",
     "driverIncluded": "含专属司机",
     "imageComingSoon": "图片即将上线",
     "wifi": "WiFi",
@@ -43,6 +45,7 @@
     "professionalChauffeurs": "专业司机",
     "availableAcross": "覆盖迪拜及阿联酋全境",
     "ratingTemplate": "{rating}分评价",
+    "imageAlt": "Apex Limo豪华车队与迪拜哈利法塔天际线",
     "viewFleet": "查看车队"
   },
   "trust": {
@@ -66,6 +69,7 @@
     }
   },
   "detail": {
+    "whatsappMessage": "您好Apex Limo,我想预订{name}。",
     "breadcrumbAriaLabel": "面包屑导航",
     "withChauffeurInDubai": "配专属司机 · 迪拜",
     "passengersLabel": "最多载{count}位乘客",

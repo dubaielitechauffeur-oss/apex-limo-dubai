@@ -94,6 +94,7 @@ function serviceJsonLd(service: PlainService, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    inLanguage: locale,
     name: service.name,
     description: service.shortDescription,
     url: `${SITE.url}${localizedPath(locale, `/services/${service.slug}`)}`,
@@ -123,6 +124,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   }
 
   const t = await getTranslations("services");
+  const tNav = await getTranslations("common.nav");
   const Icon = ICONS[service.slug] ?? Crown;
   const MetricIcon = METRIC_ICONS[service.slug] ?? Users;
   const otherServices = getAllServices(locale as Locale)
@@ -145,7 +147,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(service.faqs)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(service.faqs, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
@@ -154,10 +156,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           __html: JSON.stringify(
             breadcrumbJsonLd(
               [
-                { name: "Services", path: "/services" },
+                { name: tNav("services"), path: "/services" },
                 { name: service.name, path: `/services/${service.slug}` },
               ],
-              locale as Locale
+              locale as Locale,
+              tNav("home")
             )
           ),
         }}

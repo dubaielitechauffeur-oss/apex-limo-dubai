@@ -17,7 +17,7 @@ export default async function AboutHero() {
       <div className="absolute inset-0">
         <Image
           src="/images/about/about-hero-fleet-lineup.webp"
-          alt="A lineup of black Mercedes chauffeur sedans and vans parked side by side"
+          alt={t("imageAlt")}
           fill
           priority
           sizes="100vw"

@@ -1,5 +1,6 @@
 {
   "hero": {
+    "imageAlt": "A lineup of black Mercedes chauffeur sedans and vans parked side by side",
     "eyebrow": "About Apex",
     "title": "Dubai's Trusted Name in Chauffeur-Driven Luxury",
     "paragraph": "{siteName} was built on a simple premise: luxury transportation should be as dependable as it is comfortable. From a single airport transfer to a full wedding convoy, we bring the same standard of professionalism to every booking across Dubai and the UAE."
@@ -27,6 +28,7 @@
     ]
   },
   "standards": {
+    "imageAlt": "Apex Limo chauffeur opening the car door for a client outside an office building",
     "eyebrow": "Our People",
     "title": "Professional Chauffeur Standards",
     "intro": "Every chauffeur who drives for Apex meets the same baseline before they're assigned a single booking:",

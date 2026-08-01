@@ -8,7 +8,8 @@
     "ourServices": "Nos services",
     "trustConcierge": "Conciergerie 24/7",
     "trustVehiclesTemplate": "{count} véhicules de luxe",
-    "trustMultilingual": "Chauffeurs multilingues"
+    "trustMultilingual": "Chauffeurs multilingues",
+    "imageAlt": "Chauffeur Apex Limo à côté d'une Mercedes Classe S noire à Dubaï"
   },
   "featureStrip": {
     "punctualTitle": "Ponctuel",

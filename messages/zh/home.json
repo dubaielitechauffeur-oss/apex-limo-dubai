@@ -8,7 +8,8 @@
     "ourServices": "我们的服务",
     "trustConcierge": "24/7礼宾服务",
     "trustVehiclesTemplate": "{count}辆豪华座驾",
-    "trustMultilingual": "多语言司机团队"
+    "trustMultilingual": "多语言司机团队",
+    "imageAlt": "Apex Limo司机站在迪拜一辆黑色奔驰S级轿车旁"
   },
   "featureStrip": {
     "punctualTitle": "准时可靠",

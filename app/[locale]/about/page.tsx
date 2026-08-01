@@ -75,6 +75,8 @@ export default async function AboutPage({ params }: PageProps) {
   setRequestLocale(locale as Locale);
   const t = await getTranslations("about");
   const tCard = await getTranslations("fleet.card");
+  const tA11y = await getTranslations("common.a11y");
+  const tNav = await getTranslations("common.nav");
   const valueItems = t.raw("values.items") as { title: string; description: string }[];
   const whyChooseItems = t.raw("whyChoose.items") as { title: string; description: string }[];
   const standardsItems = t.raw("standards.items") as string[];
@@ -88,6 +90,7 @@ export default async function AboutPage({ params }: PageProps) {
     viewCar: tCard("viewCar"),
     whatsapp: tCard("whatsapp"),
     contactUs: tCard("contactUs"),
+    whatsappMessageTemplate: tCard("whatsappMessageTemplate"),
   };
   return (
     <div>
@@ -96,7 +99,7 @@ export default async function AboutPage({ params }: PageProps) {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "About", path: "/about" }], locale as Locale)
+            breadcrumbJsonLd([{ name: tNav("about"), path: "/about" }], locale as Locale, tNav("home"))
           ),
         }}
       />
@@ -178,7 +181,7 @@ export default async function AboutPage({ params }: PageProps) {
             <Reveal className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(0,0,0,0.4)] lg:order-2">
               <Image
                 src="/images/services/luxury-chauffeur-door-service.webp"
-                alt="Apex Limo chauffeur opening the car door for a client outside an office building"
+                alt={t("standards.imageAlt")}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
@@ -305,7 +308,7 @@ export default async function AboutPage({ params }: PageProps) {
                 </span>
 
                 <div className="relative flex h-full flex-col">
-                  <div className="flex gap-0.5" role="img" aria-label={`${testimonial.rating} out of 5 stars`}>
+                  <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: testimonial.rating })}>
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}

@@ -10,6 +10,7 @@
     "viewFullFleet": "Unsere gesamte Flotte ansehen"
   },
   "card": {
+    "whatsappMessageTemplate": "Hallo Apex Limo, ich möchte mich zu {name} erkundigen.",
     "imageComingSoon": "Bild folgt in Kürze",
     "tenHours": "10 Stunden",
     "fiveHours": "5 Stunden",
@@ -20,6 +21,7 @@
     "contactUs": "Kontaktieren Sie uns"
   },
   "listingCard": {
+    "whatsappMessage": "Hallo Apex Limo, ich möchte mich zu {name} erkundigen.",
     "driverIncluded": "Fahrer inklusive",
     "imageComingSoon": "Bild folgt in Kürze",
     "wifi": "WLAN",
@@ -43,6 +45,7 @@
     "professionalChauffeurs": "Professionelle Chauffeure",
     "availableAcross": "Verfügbar in ganz Dubai & den VAE",
     "ratingTemplate": "Bewertung {rating}",
+    "imageAlt": "Die Luxusflotte von Apex Limo vor der Skyline des Burj Khalifa in Dubai",
     "viewFleet": "Flotte ansehen"
   },
   "trust": {
@@ -66,6 +69,7 @@
     }
   },
   "detail": {
+    "whatsappMessage": "Hallo Apex Limo, ich möchte {name} buchen.",
     "breadcrumbAriaLabel": "Breadcrumb-Navigation",
     "withChauffeurInDubai": "mit Chauffeur in Dubai",
     "passengersLabel": "Bis zu {count} Passagiere",

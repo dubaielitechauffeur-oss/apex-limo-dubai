@@ -8,7 +8,8 @@
     "ourServices": "خدماتنا",
     "trustConcierge": "خدمة كونسيرج على مدار الساعة",
     "trustVehiclesTemplate": "{count} سيارة فاخرة",
-    "trustMultilingual": "سائقون متعددو اللغات"
+    "trustMultilingual": "سائقون متعددو اللغات",
+    "imageAlt": "سائق Apex Limo إلى جانب سيارة مرسيدس الفئة S سوداء في دبي"
   },
   "featureStrip": {
     "punctualTitle": "الالتزام بالمواعيد",

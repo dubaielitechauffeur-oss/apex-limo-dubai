@@ -10,6 +10,7 @@
     "viewFullFleet": "Смотреть весь автопарк"
   },
   "card": {
+    "whatsappMessageTemplate": "Здравствуйте, Apex Limo, хочу узнать подробности об автомобиле «{name}».",
     "imageComingSoon": "Фото скоро появится",
     "tenHours": "10 часов",
     "fiveHours": "5 часов",
@@ -20,6 +21,7 @@
     "contactUs": "Связаться с нами"
   },
   "listingCard": {
+    "whatsappMessage": "Здравствуйте, Apex Limo, хочу узнать подробности об автомобиле «{name}».",
     "driverIncluded": "С водителем",
     "imageComingSoon": "Фото скоро появится",
     "wifi": "Wi-Fi",
@@ -43,6 +45,7 @@
     "professionalChauffeurs": "Профессиональные водители",
     "availableAcross": "Доступно по всему Дубаю и ОАЭ",
     "ratingTemplate": "Рейтинг {rating}",
+    "imageAlt": "Люксовый автопарк Apex Limo на фоне силуэта Бурдж-Халифа в Дубае",
     "viewFleet": "Смотреть автопарк"
   },
   "trust": {
@@ -66,6 +69,7 @@
     }
   },
   "detail": {
+    "whatsappMessage": "Здравствуйте, Apex Limo, хочу забронировать {name}.",
     "breadcrumbAriaLabel": "Хлебные крошки",
     "withChauffeurInDubai": "с водителем в Дубае",
     "passengersLabel": "До {count} пассажиров",

@@ -8,7 +8,8 @@
     "ourServices": "Наши услуги",
     "trustConcierge": "Консьерж-сервис 24/7",
     "trustVehiclesTemplate": "{count} люксовых автомобилей",
-    "trustMultilingual": "Шофёры, говорящие на разных языках"
+    "trustMultilingual": "Шофёры, говорящие на разных языках",
+    "imageAlt": "Шофёр Apex Limo рядом с чёрным Mercedes S-Class в Дубае"
   },
   "featureStrip": {
     "punctualTitle": "Пунктуальность",

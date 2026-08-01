@@ -77,6 +77,7 @@ function locationJsonLd(location: PlainLocation, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    inLanguage: locale,
     "additionalType": "https://schema.org/LimousineService",
     "@id": `${SITE.url}/locations/${location.slug}#localbusiness`,
     name: `${SITE.name} — ${location.name}`,
@@ -111,6 +112,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
   }
 
   const t = await getTranslations("locations");
+  const tNav = await getTranslations("common.nav");
   const Icon = location.isAirport ? Plane : MapPin;
   const otherLocations = getAllLocations(locale as Locale)
     .filter((l) => l.slug !== location.slug)
@@ -132,7 +134,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(location.faqs)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(location.faqs, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
@@ -141,10 +143,11 @@ export default async function LocationDetailPage({ params }: PageProps) {
           __html: JSON.stringify(
             breadcrumbJsonLd(
               [
-                { name: "Locations", path: "/locations" },
+                { name: tNav("locations"), path: "/locations" },
                 { name: location.name, path: `/locations/${location.slug}` },
               ],
-              locale as Locale
+              locale as Locale,
+              tNav("home")
             )
           ),
         }}

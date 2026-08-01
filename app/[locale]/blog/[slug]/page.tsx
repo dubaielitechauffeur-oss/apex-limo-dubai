@@ -64,6 +64,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   const t = await getTranslations("blog.detail");
+  const tNav = await getTranslations("common.nav");
   const relatedPosts = getRelatedBlogPosts(post.slug, locale as Locale);
   const faqBlock = post.content.find((block) => block.type === "faq");
   const featuredImageExists = blogImageExists(post.featuredImage.src);
@@ -90,7 +91,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqBlock.items)) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqBlock.items, locale as Locale)) }}
         />
       ) : null}
       <script
@@ -100,10 +101,11 @@ export default async function BlogPostPage({ params }: PageProps) {
           __html: JSON.stringify(
             breadcrumbJsonLd(
               [
-                { name: "Blog", path: "/blog" },
+                { name: tNav("blog"), path: "/blog" },
                 { name: post.title, path: `/blog/${post.slug}` },
               ],
-              locale as Locale
+              locale as Locale,
+              tNav("home")
             )
           ),
         }}

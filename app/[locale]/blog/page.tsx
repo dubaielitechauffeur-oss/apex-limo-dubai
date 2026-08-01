@@ -26,10 +26,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /** ItemList of BlogPosting entities for the journal listing page. */
-function blogListJsonLd(posts: ReturnType<typeof getAllBlogPosts>) {
+function blogListJsonLd(posts: ReturnType<typeof getAllBlogPosts>, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: locale,
     name: `${SITE.name} Journal`,
     url: `${SITE.url}/blog`,
     itemListElement: posts.map((post, index) => ({
@@ -50,6 +51,7 @@ export default async function BlogPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations("blog.hero");
+  const tNav = await getTranslations("common.nav");
   const posts = getAllBlogPosts(locale as Locale);
   const imageExistsBySlug = Object.fromEntries(
     posts.map((post) => [post.slug, blogImageExists(post.featuredImage.src)])
@@ -60,14 +62,14 @@ export default async function BlogPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd(posts)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd(posts, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "Blog", path: "/blog" }], locale as Locale)
+            breadcrumbJsonLd([{ name: tNav("blog"), path: "/blog" }], locale as Locale, tNav("home"))
           ),
         }}
       />

@@ -1,5 +1,6 @@
 {
   "hero": {
+    "imageAlt": "Une rangée de berlines et de vans Mercedes noirs pour chauffeur, garés côte à côte",
     "eyebrow": "À propos d'Apex",
     "title": "Le nom de confiance de Dubaï pour le transport de luxe avec chauffeur",
     "paragraph": "{siteName} a été fondée sur un principe simple: le transport de luxe doit être aussi fiable que confortable. D'un simple transfert aéroport à un cortège de mariage complet, nous apportons le même niveau de professionnalisme à chaque réservation à Dubaï et dans les Émirats."
@@ -27,6 +28,7 @@
     ]
   },
   "standards": {
+    "imageAlt": "Chauffeur Apex Limo ouvrant la portière à un client devant un immeuble de bureaux",
     "eyebrow": "Notre équipe",
     "title": "Normes professionnelles des chauffeurs",
     "intro": "Chaque chauffeur qui conduit pour Apex répond aux mêmes exigences de base avant de se voir confier une première réservation:",

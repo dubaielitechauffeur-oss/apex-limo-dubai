@@ -32,6 +32,7 @@ export default async function QuotePage({ params, searchParams }: QuotePageProps
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations({ locale, namespace: "forms" });
+  const tNav = await getTranslations({ locale, namespace: "common.nav" });
   const { vehicle: vehicleSlug } = await searchParams;
   const vehicle = vehicleSlug ? getVehicleBySlug(vehicleSlug, locale as Locale) : undefined;
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
@@ -45,7 +46,7 @@ export default async function QuotePage({ params, searchParams }: QuotePageProps
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: t("quote.breadcrumbLabel"), path: "/quote" }], locale as Locale)
+            breadcrumbJsonLd([{ name: t("quote.breadcrumbLabel"), path: "/quote" }], locale as Locale, tNav("home"))
           ),
         }}
       />

@@ -29,7 +29,7 @@ export default async function Hero() {
           />
           <img
             src="/images/home/hero-chauffeur-door-night.webp"
-            alt="Apex Limo chauffeur beside a black Mercedes S-Class in Dubai"
+            alt={t("imageAlt")}
             fetchPriority="high"
             decoding="async"
             className="h-full w-full object-cover object-[center_65%] md:object-[70%_center] lg:object-[65%_center]"

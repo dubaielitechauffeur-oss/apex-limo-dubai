@@ -44,7 +44,8 @@
     "supportOffice": "Customer Support Office",
     "supportHours": "8:00 AM – 10:00 PM (GST)",
     "hoursDisclaimer": "Bookings and urgent requests are handled around the clock, every day of the year, including public holidays.",
-    "urgentWhatsapp": "Need a chauffeur right now? WhatsApp us."
+    "urgentWhatsapp": "Need a chauffeur right now? WhatsApp us.",
+    "urgentWhatsappMessage": "Hello Apex Limo, I need a chauffeur urgently — please advise availability."
   },
   "serviceAreas": {
     "eyebrow": "Service Areas",

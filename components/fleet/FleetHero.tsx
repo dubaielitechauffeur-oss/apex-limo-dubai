@@ -31,7 +31,7 @@ export default async function FleetHero() {
         <source media="(max-width: 767px)" srcSet="/images/cta/cta-mobile.webp" />
         <img
           src="/images/cta/cta-desktop.webp"
-          alt="The Apex Limo luxury fleet lineup with the Burj Khalifa skyline in Dubai"
+          alt={tHero("imageAlt")}
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-[center_70%]"

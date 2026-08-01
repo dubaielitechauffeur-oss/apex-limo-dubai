@@ -44,7 +44,8 @@
     "supportOffice": "客户支持办公室",
     "supportHours": "上午8:00至晚上10:00(海湾标准时间)",
     "hoursDisclaimer": "预订及紧急需求全天候处理,全年无休,包括公共假期。",
-    "urgentWhatsapp": "现在就需要用车?通过WhatsApp联系我们。"
+    "urgentWhatsapp": "现在就需要用车?通过WhatsApp联系我们。",
+    "urgentWhatsappMessage": "您好Apex Limo,我急需一位司机——请告知是否有空。"
   },
   "serviceAreas": {
     "eyebrow": "服务区域",

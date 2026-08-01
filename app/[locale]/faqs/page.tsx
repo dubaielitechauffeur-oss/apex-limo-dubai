@@ -5,7 +5,7 @@ import Container from "@/components/shared/Container";
 import BookingCTA from "@/components/home/BookingCTA";
 import FaqHubClient from "@/components/faqs/FaqHubClient";
 import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
-import { ALL_FAQS, FAQ_CATEGORIES } from "@/data/faqHub";
+import { getAllFaqs, FAQ_CATEGORIES } from "@/data/faqHub";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -26,19 +26,21 @@ export default async function FaqsPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations("faqs");
+  const tNav = await getTranslations({ locale, namespace: "common.nav" });
+  const faqs = getAllFaqs(locale as Locale);
   return (
     <div>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(ALL_FAQS)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "FAQs", path: "/faqs" }], locale as Locale)
+            breadcrumbJsonLd([{ name: tNav("faqs"), path: "/faqs" }], locale as Locale, tNav("home"))
           ),
         }}
       />
@@ -59,7 +61,7 @@ export default async function FaqsPage({ params }: PageProps) {
       {/* Search + category filters + FAQ accordions */}
       <section className="bg-[#161616] py-20 sm:py-24">
         <Container>
-          <FaqHubClient faqs={ALL_FAQS} categories={FAQ_CATEGORIES} />
+          <FaqHubClient faqs={faqs} categories={FAQ_CATEGORIES} />
         </Container>
       </section>
 

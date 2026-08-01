@@ -1,5 +1,6 @@
 {
   "hero": {
+    "imageAlt": "Eine Reihe schwarzer Mercedes-Chauffeurlimousinen und -Vans, die nebeneinander geparkt sind",
     "eyebrow": "Über Apex",
     "title": "Dubais vertrauenswürdiger Name für Luxus-Chauffeurservice",
     "paragraph": "{siteName} wurde nach einem einfachen Grundsatz gegründet: Luxustransport sollte ebenso zuverlässig wie komfortabel sein. Von einem einzelnen Flughafentransfer bis zu einer kompletten Hochzeitskolonne bieten wir bei jeder Buchung in Dubai und den VAE denselben professionellen Standard."
@@ -27,6 +28,7 @@
     ]
   },
   "standards": {
+    "imageAlt": "Ein Apex Limo Chauffeur öffnet einem Kunden vor einem Bürogebäude die Autotür",
     "eyebrow": "Unser Team",
     "title": "Professionelle Chauffeur-Standards",
     "intro": "Jeder Chauffeur, der für Apex fährt, erfüllt dieselben Grundanforderungen, bevor ihm eine erste Buchung zugewiesen wird:",

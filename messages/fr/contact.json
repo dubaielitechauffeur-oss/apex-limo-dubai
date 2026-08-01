@@ -44,7 +44,8 @@
     "supportOffice": "Bureau d'assistance client",
     "supportHours": "8h00 – 22h00 (heure du Golfe)",
     "hoursDisclaimer": "Les réservations et demandes urgentes sont traitées 24h/24, tous les jours de l'année, y compris les jours fériés.",
-    "urgentWhatsapp": "Besoin d'un chauffeur immédiatement? Écrivez-nous sur WhatsApp."
+    "urgentWhatsapp": "Besoin d'un chauffeur immédiatement? Écrivez-nous sur WhatsApp.",
+    "urgentWhatsappMessage": "Bonjour Apex Limo, j'ai besoin d'un chauffeur en urgence — merci de m'indiquer les disponibilités."
   },
   "serviceAreas": {
     "eyebrow": "Zones de service",

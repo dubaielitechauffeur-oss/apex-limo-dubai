@@ -10,6 +10,7 @@
     "viewFullFleet": "عرض أسطولنا الكامل"
   },
   "card": {
+    "whatsappMessageTemplate": "مرحبًا Apex Limo، أرغب في الاستفسار عن {name}.",
     "imageComingSoon": "الصورة قريبًا",
     "tenHours": "10 ساعات",
     "fiveHours": "5 ساعات",
@@ -20,6 +21,7 @@
     "contactUs": "تواصل معنا"
   },
   "listingCard": {
+    "whatsappMessage": "مرحبًا Apex Limo، أرغب في الاستفسار عن {name}.",
     "driverIncluded": "يشمل السائق",
     "imageComingSoon": "الصورة قريبًا",
     "wifi": "واي فاي",
@@ -43,6 +45,7 @@
     "professionalChauffeurs": "سائقون محترفون",
     "availableAcross": "متوفرة في جميع أنحاء دبي والإمارات",
     "ratingTemplate": "تقييم {rating}",
+    "imageAlt": "أسطول Apex Limo الفاخر مع أفق برج خليفة في دبي",
     "viewFleet": "عرض الأسطول"
   },
   "trust": {
@@ -66,6 +69,7 @@
     }
   },
   "detail": {
+    "whatsappMessage": "مرحبًا Apex Limo، أرغب في حجز {name}.",
     "breadcrumbAriaLabel": "مسار التنقل",
     "withChauffeurInDubai": "بسائق خاص في دبي",
     "passengersLabel": "حتى {count} راكب",

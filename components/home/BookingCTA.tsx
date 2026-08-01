@@ -25,6 +25,7 @@ export default async function BookingCTA({
 }: BookingCTAProps) {
   const t = await getTranslations("common.cta");
   const td = await getTranslations("common.bookingCta");
+  const tCommon = await getTranslations("common");
   const resolvedEyebrow = eyebrow ?? td("eyebrow");
   const resolvedHeading = heading ?? td("heading");
   const resolvedSubtitle = subtitle ?? td("subtitle");
@@ -91,7 +92,7 @@ export default async function BookingCTA({
             <CTAButton href={PRIMARY_CTA.quote.href} variant="outline">
               {t("getInstantQuote")}
             </CTAButton>
-            <CTAButton href={getWhatsAppLink()} variant="outline" external>
+            <CTAButton href={getWhatsAppLink(tCommon("whatsappGenericMessage"))} variant="outline" external>
               {t("whatsappUs")}
             </CTAButton>
           </div>

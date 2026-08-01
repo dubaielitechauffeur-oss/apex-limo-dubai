@@ -17,13 +17,15 @@ export function localizedPath(locale: Locale, path: string): string {
   return locale === routing.defaultLocale ? path : `/${locale}${path}`;
 }
 
-/** Per-locale site-wide metadata defaults, applied via each locale's root layout. */
-export function getDefaultMetadata(locale: Locale): Metadata {
+/** Per-locale site-wide metadata defaults, applied via each locale's root layout.
+ *  `tagline` is the translated `common.siteTagline` message — resolved by the
+ *  caller (a Server Component) since this function itself isn't async. */
+export function getDefaultMetadata(locale: Locale, tagline: string = SITE.tagline): Metadata {
   const url = `${SITE.url}${localizedPath(locale, "/")}`;
   return {
     metadataBase: new URL(SITE.url),
     title: {
-      default: `${SITE.name} | ${SITE.tagline}`,
+      default: `${SITE.name} | ${tagline}`,
       template: `%s | ${SITE.name}`,
     },
     description: SITE.description,
@@ -50,7 +52,7 @@ export function getDefaultMetadata(locale: Locale): Metadata {
       alternateLocale: routing.locales.filter((l) => l !== locale).map((l) => OG_LOCALE_MAP[l]),
       url,
       siteName: SITE.name,
-      title: `${SITE.name} | ${SITE.tagline}`,
+      title: `${SITE.name} | ${tagline}`,
       description: SITE.description,
       images: [
         {
@@ -63,7 +65,7 @@ export function getDefaultMetadata(locale: Locale): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${SITE.name} | ${SITE.tagline}`,
+      title: `${SITE.name} | ${tagline}`,
       description: SITE.description,
       images: ["/og-image.jpg"],
     },
@@ -246,10 +248,11 @@ interface PlainFaqEntry {
  * and resolve to the current locale before passing them in here, so this
  * function stays decoupled from any one data file's schema.
  */
-export function faqJsonLd(faqs: PlainFaqEntry[]) {
+export function faqJsonLd(faqs: PlainFaqEntry[], locale: Locale = routing.defaultLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: locale,
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -283,6 +286,7 @@ export function breadcrumbJsonLd(
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    inLanguage: locale,
     itemListElement: crumbs.map((crumb, index) => ({
       "@type": "ListItem",
       position: index + 1,

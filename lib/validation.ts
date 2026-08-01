@@ -36,19 +36,19 @@ export function validateBookingForm(
 ): FormErrors<BookingFormData> {
   const errors: FormErrors<BookingFormData> = {};
 
-  if (!data.fullName.trim() || data.fullName.trim().length < 2) {
+  if (!data.fullName?.trim() || data.fullName.trim().length < 2) {
     errors.fullName = messages.fullNameRequired;
   }
-  if (!PHONE_PATTERN.test(data.phone.trim())) {
+  if (!PHONE_PATTERN.test(data.phone?.trim() ?? "")) {
     errors.phone = messages.phoneInvalid;
   }
-  if (!EMAIL_PATTERN.test(data.email.trim())) {
+  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "")) {
     errors.email = messages.emailInvalid;
   }
-  if (!data.pickupLocation.trim()) {
+  if (!data.pickupLocation?.trim()) {
     errors.pickupLocation = messages.pickupRequired;
   }
-  if (!data.dropoffLocation.trim()) {
+  if (!data.dropoffLocation?.trim()) {
     errors.dropoffLocation = messages.dropoffRequired;
   }
   if (!data.date) {
@@ -77,19 +77,19 @@ export function validateQuoteForm(
 ): FormErrors<QuoteFormData> {
   const errors: FormErrors<QuoteFormData> = {};
 
-  if (!data.fullName.trim() || data.fullName.trim().length < 2) {
+  if (!data.fullName?.trim() || data.fullName.trim().length < 2) {
     errors.fullName = messages.fullNameRequired;
   }
-  if (!PHONE_PATTERN.test(data.phone.trim())) {
+  if (!PHONE_PATTERN.test(data.phone?.trim() ?? "")) {
     errors.phone = messages.phoneInvalid;
   }
-  if (!EMAIL_PATTERN.test(data.email.trim())) {
+  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "")) {
     errors.email = messages.emailInvalid;
   }
   if (!data.serviceType) {
     errors.serviceType = messages.serviceRequired;
   }
-  if (!data.pickupLocation.trim()) {
+  if (!data.pickupLocation?.trim()) {
     errors.pickupLocation = messages.pickupRequired;
   }
   if (data.date && !isTodayOrLater(data.date)) {

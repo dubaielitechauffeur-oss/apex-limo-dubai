@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "../globals.css";
 import Header from "@/components/layout/Header";
@@ -25,7 +25,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: RootLayoutProps): Promise<Metadata> {
   const { locale } = await params;
   if (!routing.locales.includes(locale as Locale)) notFound();
-  return getDefaultMetadata(locale as Locale);
+  const t = await getTranslations({ locale, namespace: "common" });
+  return getDefaultMetadata(locale as Locale, t("siteTagline"));
 }
 
 /**

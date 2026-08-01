@@ -126,7 +126,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
             {t("cta.bookNow")}
           </Link>
           <a
-            href={getWhatsAppLink()}
+            href={getWhatsAppLink(t("whatsappGenericMessage"))}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline w-full"

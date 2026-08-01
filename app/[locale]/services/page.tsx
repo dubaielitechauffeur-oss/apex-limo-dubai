@@ -53,6 +53,7 @@ function servicesJsonLd(locale: Locale, services: PlainService[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: locale,
     name: `${SITE.name} Services`,
     url: `${SITE.url}${localizedPath(locale, "/services")}`,
     itemListElement: services.map((service, index) => ({
@@ -81,6 +82,7 @@ export default async function ServicesPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations("services");
+  const tNav = await getTranslations("common.nav");
   const servicesFaqs = getServicesFaqs(locale as Locale);
   const services = getAllServices(locale as Locale);
   return (
@@ -97,7 +99,7 @@ export default async function ServicesPage({ params }: PageProps) {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "Services", path: "/services" }], locale as Locale)
+            breadcrumbJsonLd([{ name: tNav("services"), path: "/services" }], locale as Locale, tNav("home"))
           ),
         }}
       />

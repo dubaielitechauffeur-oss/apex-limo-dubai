@@ -13,7 +13,7 @@ export default async function LocationsHero() {
       <div className="absolute inset-0">
         <Image
           src="/images/locations/locations-hero.webp"
-          alt="Dubai Marina skyline at dusk"
+          alt={t("imageAlt")}
           fill
           priority
           sizes="100vw"
