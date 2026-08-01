@@ -3,31 +3,43 @@
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, Info, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { usePathname } from "@/i18n/navigation";
 import { getWhatsAppLink } from "@/lib/constants";
 
-const STORAGE_KEY = "apex-construction-notice-ack";
+/** Matches the fleet listing ("/fleet") and every vehicle detail page
+ *  ("/fleet/[vehicle]") — locale-stripped, since usePathname() from
+ *  i18n/navigation already excludes the locale segment. */
+const FLEET_PATH_PATTERN = /^\/fleet(\/.*)?$/;
 
 /**
- * One-time welcome notice, shown on first visit only (remembered via
- * localStorage) — lets visitors know the site is still being polished
- * while making clear every booking/quote is fully live, then gets out
- * of the way. Renders nothing during SSR/first paint to avoid a
- * hydration mismatch; the localStorage check only runs client-side.
+ * Welcome / pricing notice — shown on every fresh page load (no
+ * persistence, unlike a typical one-time dismissal), and re-shown
+ * whenever the visitor navigates to the fleet listing or a vehicle
+ * detail page, since that's where demo pricing is displayed. Renders
+ * nothing during SSR/first paint to avoid a hydration mismatch; the
+ * open state is only ever set client-side.
  */
 export default function ConstructionNoticeModal() {
   const t = useTranslations("common.constructionNotice");
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ctaRef = useRef<HTMLButtonElement>(null);
+  const previousPathname = useRef(pathname);
 
+  // Every time the site loads (first visit, reload, or direct link), show it.
   useEffect(() => {
-    try {
-      if (!window.localStorage.getItem(STORAGE_KEY)) {
-        setOpen(true);
-      }
-    } catch {
+    setOpen(true);
+  }, []);
+
+  // Re-show it on client-side navigation into the fleet listing or any
+  // vehicle detail page, even if it was already dismissed earlier.
+  useEffect(() => {
+    if (previousPathname.current === pathname) return;
+    previousPathname.current = pathname;
+    if (FLEET_PATH_PATTERN.test(pathname)) {
       setOpen(true);
     }
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -47,11 +59,6 @@ export default function ConstructionNoticeModal() {
 
   function dismiss() {
     setOpen(false);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      // Private browsing / disabled storage — dismissal just won't persist.
-    }
   }
 
   if (!open) return null;
