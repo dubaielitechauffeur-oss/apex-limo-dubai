@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function BookingPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const t = await getTranslations({ locale, namespace: "forms" });
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const locations = getAllLocations(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const vehicles = getAllVehicles(locale as Locale).map(({ slug, name, category }) => ({ slug, name, category }));
@@ -39,26 +40,18 @@ export default async function BookingPage({ params }: PageProps) {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "Booking", path: "/booking" }], locale as Locale)
+            breadcrumbJsonLd([{ name: t("booking.breadcrumbLabel"), path: "/booking" }], locale as Locale)
           ),
         }}
       />
 
       <ConversionPageIntro
-        heading="Book Your Dubai Chauffeur"
-        description="For airport transfers, business travel, VIP transportation, city rides, and executive chauffeur services across Dubai and the UAE."
+        heading={t("booking.pageHeading")}
+        description={t("conversion.sharedDescription")}
       />
 
       <ConversionSeoIntro>
-        Apex Limo &amp; Chauffeur Dubai offers a premium Dubai chauffeur service built around
-        reliability and discretion. Whether you need airport transfers to DXB or DWC, business
-        travel between meetings, or executive transportation for a full day, our professional
-        chauffeurs deliver a polished, on-time experience every time. Reserve one of our luxury
-        vehicles — from executive sedans to the Rolls-Royce Phantom — for VIP chauffeur service
-        across Dubai and the wider UAE. Every booking includes a licensed, background-checked
-        driver, fuel, tolls, and VIP valet parking, so you can focus on your journey instead of
-        the details. Complete the form below and our concierge team will confirm your
-        reservation shortly.
+        {t("booking.seoIntro")}
       </ConversionSeoIntro>
 
       <section className="bg-[#0A0A0A] pb-20 sm:pb-28">

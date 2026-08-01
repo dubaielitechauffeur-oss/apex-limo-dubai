@@ -2,6 +2,7 @@
 
 import { useState, useRef, Suspense, FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
 import FormSectionHeading from "@/components/shared/FormSectionHeading";
@@ -10,16 +11,7 @@ import CTAButton from "@/components/shared/CTAButton";
 import type { ServiceOption, LocationOption, VehicleOption } from "./QuoteForm";
 import { getWhatsAppLink } from "@/lib/constants";
 import type { BookingFormData } from "@/lib/types";
-import { validateBookingForm, hasErrors, type FormErrors } from "@/lib/validation";
-
-const HOUR_OPTIONS = [
-  "One-way transfer",
-  "2 hours",
-  "4 hours",
-  "6 hours",
-  "8 hours (full day)",
-  "Custom — specify in notes",
-];
+import { validateBookingForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
 const EMPTY_FORM: BookingFormData = {
   fullName: "",
@@ -99,6 +91,8 @@ function BookingFormFields({
   locations: LocationOption[];
   vehicles: VehicleOption[];
 }) {
+  const t = useTranslations("forms");
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const [form, setForm] = useState<BookingFormData>(() =>
     buildInitialBookingForm(searchParams, services, locations, vehicles)
@@ -113,6 +107,31 @@ function BookingFormFields({
 
   const todayISO = new Date().toISOString().split("T")[0];
 
+  const hourOptions = [
+    t("hourOptions.oneWay"),
+    t("hourOptions.twoHours"),
+    t("hourOptions.fourHours"),
+    t("hourOptions.sixHours"),
+    t("hourOptions.eightHours"),
+    t("hourOptions.custom"),
+  ];
+
+  const validationMessages: ValidationMessages = {
+    fullNameRequired: t("validation.fullNameRequired"),
+    phoneInvalid: t("validation.phoneInvalid"),
+    emailInvalid: t("validation.emailInvalid"),
+    pickupRequired: t("validation.pickupRequired"),
+    dropoffRequired: t("validation.dropoffRequired"),
+    pickupDateRequired: t("validation.pickupDateRequired"),
+    pickupDatePast: t("validation.pickupDatePast"),
+    datePast: t("validation.datePast"),
+    timeRequired: t("validation.timeRequired"),
+    vehicleRequired: t("validation.vehicleRequired"),
+    passengersMin: t("validation.passengersMin"),
+    passengersMax: t("validation.passengersMax"),
+    serviceRequired: t("validation.serviceRequired"),
+  };
+
   function update<K extends keyof BookingFormData>(key: K, value: BookingFormData[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
     if (errors[key]) {
@@ -123,11 +142,11 @@ function BookingFormFields({
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const validationErrors = validateBookingForm(form);
+    const validationErrors = validateBookingForm(form, validationMessages);
     setErrors(validationErrors);
     if (hasErrors(validationErrors)) {
       setStatus("error");
-      setServerMessage("Please correct the highlighted fields and try again.");
+      setServerMessage(t("status.correctFields"));
       return;
     }
 
@@ -138,15 +157,13 @@ function BookingFormFields({
       const res = await fetch("/api/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, locale }),
       });
       const data = await res.json();
 
       if (!res.ok || !data.success) {
         setStatus("error");
-        setServerMessage(
-          data.message ?? "Something went wrong. Please try again or WhatsApp us."
-        );
+        setServerMessage(data.message ?? t("status.genericError"));
         return;
       }
 
@@ -164,9 +181,7 @@ function BookingFormFields({
       setForm(EMPTY_FORM);
     } catch {
       setStatus("error");
-      setServerMessage(
-        "We couldn't reach our server. Please try again or WhatsApp us directly."
-      );
+      setServerMessage(t("status.networkError"));
     }
   }
 
@@ -179,15 +194,14 @@ function BookingFormFields({
       >
         <CheckCircle2 className="h-10 w-10 text-[#C9A14A]" strokeWidth={1.5} />
         <h3 className="mt-5 font-display text-2xl text-white">
-          {customerName ? `Thank you, ${customerName}!` : "Thank You!"}
+          {customerName ? t("booking.thankYouName", { name: customerName }) : t("booking.thankYou")}
         </h3>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-[#B8B8B8]">
-          Your booking request has been received successfully. Our team will
-          contact you shortly to confirm your booking details.
+          {t("booking.successBody")}
           {reference ? (
             <>
               {" "}
-              Your reference is{" "}
+              {t("booking.referenceLabel")}{" "}
               <span className="font-semibold text-[#C9A14A]">{reference}</span>.
             </>
           ) : null}
@@ -201,7 +215,7 @@ function BookingFormFields({
             )}
             external
           >
-            Confirm on WhatsApp
+            {t("booking.confirmWhatsapp")}
           </CTAButton>
           <button
             onClick={() => {
@@ -211,7 +225,7 @@ function BookingFormFields({
             className="btn-outline"
             type="button"
           >
-            Make Another Booking
+            {t("booking.makeAnother")}
           </button>
         </div>
       </div>
@@ -231,10 +245,10 @@ function BookingFormFields({
       ) : null}
 
       <div className="space-y-6">
-        <FormSectionHeading step={1} title="Personal Details" />
+        <FormSectionHeading step={1} title={t("sections.personalDetails")} />
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <FormField id="fullName" label="Full Name" required error={errors.fullName}>
+          <FormField id="fullName" label={t("fields.fullName")} required error={errors.fullName}>
             <input
               id="fullName"
               name="fullName"
@@ -245,11 +259,11 @@ function BookingFormFields({
               aria-describedby={errors.fullName ? "fullName-error" : undefined}
               aria-invalid={Boolean(errors.fullName)}
               className={`field-input ${errors.fullName ? "field-input-error" : ""}`}
-              placeholder="e.g. James Carter"
+              placeholder={t("fields.fullNamePlaceholder")}
             />
           </FormField>
 
-          <FormField id="phone" label="Phone Number" required error={errors.phone}>
+          <FormField id="phone" label={t("fields.phone")} required error={errors.phone}>
             <PhoneInputField
               id="phone"
               value={form.phone}
@@ -260,7 +274,7 @@ function BookingFormFields({
           </FormField>
         </div>
 
-        <FormField id="email" label="Email" required error={errors.email}>
+        <FormField id="email" label={t("fields.email")} required error={errors.email}>
           <input
             id="email"
             name="email"
@@ -271,18 +285,18 @@ function BookingFormFields({
             aria-describedby={errors.email ? "email-error" : undefined}
             aria-invalid={Boolean(errors.email)}
             className={`field-input ${errors.email ? "field-input-error" : ""}`}
-            placeholder="you@company.com"
+            placeholder={t("fields.emailPlaceholder")}
           />
         </FormField>
       </div>
 
       <div className="space-y-6">
-        <FormSectionHeading step={2} title="Journey Details" />
+        <FormSectionHeading step={2} title={t("sections.journeyDetails")} />
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <FormField
             id="pickupLocation"
-            label="Pickup Location"
+            label={t("fields.pickupLocation")}
             required
             error={errors.pickupLocation}
           >
@@ -295,13 +309,13 @@ function BookingFormFields({
               aria-describedby={errors.pickupLocation ? "pickupLocation-error" : undefined}
               aria-invalid={Boolean(errors.pickupLocation)}
               className={`field-input ${errors.pickupLocation ? "field-input-error" : ""}`}
-              placeholder="e.g. Dubai International Airport, T3"
+              placeholder={t("fields.pickupLocationPlaceholderAirport")}
             />
           </FormField>
 
           <FormField
             id="dropoffLocation"
-            label="Drop-off Location"
+            label={t("fields.dropoffLocation")}
             required
             error={errors.dropoffLocation}
           >
@@ -316,13 +330,13 @@ function BookingFormFields({
               }
               aria-invalid={Boolean(errors.dropoffLocation)}
               className={`field-input ${errors.dropoffLocation ? "field-input-error" : ""}`}
-              placeholder="e.g. Burj Al Arab, Jumeirah"
+              placeholder={t("fields.dropoffLocationPlaceholder")}
             />
           </FormField>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <FormField id="date" label="Date" required error={errors.date}>
+          <FormField id="date" label={t("fields.date")} required error={errors.date}>
             <input
               id="date"
               name="date"
@@ -336,7 +350,7 @@ function BookingFormFields({
             />
           </FormField>
 
-          <FormField id="time" label="Time" required error={errors.time}>
+          <FormField id="time" label={t("fields.time")} required error={errors.time}>
             <input
               id="time"
               name="time"
@@ -352,9 +366,9 @@ function BookingFormFields({
       </div>
 
       <div className="space-y-6">
-        <FormSectionHeading step={3} title="Vehicle & Requirements" />
+        <FormSectionHeading step={3} title={t("sections.vehicleAndRequirements")} />
 
-        <FormField id="vehicle" label="Vehicle Selection" required error={errors.vehicle}>
+        <FormField id="vehicle" label={t("fields.vehicle")} required error={errors.vehicle}>
           <select
             id="vehicle"
             name="vehicle"
@@ -364,7 +378,7 @@ function BookingFormFields({
             aria-invalid={Boolean(errors.vehicle)}
             className={`field-input ${errors.vehicle ? "field-input-error" : ""}`}
           >
-            <option value="">Select a vehicle</option>
+            <option value="">{t("fields.selectVehicle")}</option>
             {vehicles.map((vehicle) => (
               <option key={vehicle.slug} value={vehicle.name}>
                 {vehicle.name} — {vehicle.category}
@@ -376,7 +390,7 @@ function BookingFormFields({
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <FormField
             id="passengers"
-            label="Passenger Count"
+            label={t("fields.passengers")}
             required
             error={errors.passengers}
           >
@@ -396,8 +410,8 @@ function BookingFormFields({
 
           <FormField
             id="hours"
-            label="Number of Hours"
-            hint="Leave as one-way if this isn't an hourly hire."
+            label={t("fields.hours")}
+            hint={t("fields.hoursHint")}
           >
             <select
               id="hours"
@@ -407,8 +421,8 @@ function BookingFormFields({
               aria-describedby="hours-hint"
               className="field-input"
             >
-              <option value="">Select duration</option>
-              {HOUR_OPTIONS.map((option) => (
+              <option value="">{t("fields.selectDuration")}</option>
+              {hourOptions.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
@@ -419,8 +433,8 @@ function BookingFormFields({
 
         <FormField
           id="specialRequests"
-          label="Special Requests"
-          hint="Child seats, meet-and-greet signage, extra stops, accessibility needs, etc."
+          label={t("fields.specialRequests")}
+          hint={t("fields.specialRequestsHint")}
         >
           <textarea
             id="specialRequests"
@@ -430,7 +444,7 @@ function BookingFormFields({
             onChange={(e) => update("specialRequests", e.target.value)}
             aria-describedby="specialRequests-hint"
             className="field-input resize-none"
-            placeholder="Anything our chauffeur should know in advance"
+            placeholder={t("fields.specialRequestsPlaceholder")}
           />
         </FormField>
       </div>
@@ -443,10 +457,10 @@ function BookingFormFields({
         {status === "submitting" ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" strokeWidth={2} />
-            Submitting…
+            {t("booking.submitting")}
           </>
         ) : (
-          "Reserve Chauffeur"
+          t("booking.submit")
         )}
       </button>
     </form>

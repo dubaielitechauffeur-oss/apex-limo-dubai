@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: QuotePageProps): Promise<Meta
 export default async function QuotePage({ params, searchParams }: QuotePageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const t = await getTranslations({ locale, namespace: "forms" });
   const { vehicle: vehicleSlug } = await searchParams;
   const vehicle = vehicleSlug ? getVehicleBySlug(vehicleSlug, locale as Locale) : undefined;
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
@@ -44,25 +45,18 @@ export default async function QuotePage({ params, searchParams }: QuotePageProps
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: "Get a Quote", path: "/quote" }], locale as Locale)
+            breadcrumbJsonLd([{ name: t("quote.breadcrumbLabel"), path: "/quote" }], locale as Locale)
           ),
         }}
       />
 
       <ConversionPageIntro
-        heading="Get an Instant Chauffeur Quote"
-        description="For airport transfers, business travel, VIP transportation, city rides, and executive chauffeur services across Dubai and the UAE."
+        heading={t("quote.pageHeading")}
+        description={t("conversion.sharedDescription")}
       />
 
       <ConversionSeoIntro>
-        Apex Limo &amp; Chauffeur Dubai makes it easy to price a Dubai chauffeur service in
-        minutes. Tell us about your airport transfer, business travel, or executive
-        transportation needs and we&apos;ll return a fast, no-obligation quote. Our luxury
-        vehicles and professional chauffeurs are trusted by executives, tourists, and VIP
-        clients across Dubai and the UAE — from a single airport pickup to a full day of VIP
-        chauffeur service. Every quote includes the driver, fuel, tolls, and VIP valet parking,
-        so the price you see is the price you pay. Share your trip details below and our
-        concierge team will respond quickly with accurate, tailored pricing.
+        {t("quote.seoIntro")}
       </ConversionSeoIntro>
 
       <section className="bg-[#0A0A0A] pb-20 sm:pb-28">

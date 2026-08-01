@@ -19,3 +19,12 @@ export function formatDate(iso: string, locale: Locale = "en"): string {
     timeZone: "UTC",
   }).format(new Date(iso));
 }
+
+/**
+ * Formats an AED amount, e.g. 1500 -> "AED 1,500". Numerals stay Western in
+ * every locale (including Arabic) per UAE business/digital convention, so
+ * this deliberately doesn't take a locale param.
+ */
+export function formatAed(amount: number): string {
+  return `AED ${amount.toLocaleString("en-US")}`;
+}

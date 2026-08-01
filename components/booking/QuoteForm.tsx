@@ -2,6 +2,7 @@
 
 import { useState, useRef, Suspense, FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
 import FormSectionHeading from "@/components/shared/FormSectionHeading";
@@ -9,7 +10,7 @@ import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
 import type { QuoteFormData } from "@/lib/types";
-import { validateQuoteForm, hasErrors, type FormErrors } from "@/lib/validation";
+import { validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
 const EMPTY_FORM: QuoteFormData = {
   fullName: "",
@@ -111,6 +112,8 @@ function QuoteFormFields({
   locations: LocationOption[];
   vehicles: VehicleOption[];
 }) {
+  const t = useTranslations("forms");
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const [form, setForm] = useState<QuoteFormData>(() =>
     buildInitialQuoteForm(searchParams, services, locations, vehicles)
@@ -125,6 +128,22 @@ function QuoteFormFields({
 
   const todayISO = new Date().toISOString().split("T")[0];
 
+  const validationMessages: ValidationMessages = {
+    fullNameRequired: t("validation.fullNameRequired"),
+    phoneInvalid: t("validation.phoneInvalid"),
+    emailInvalid: t("validation.emailInvalid"),
+    pickupRequired: t("validation.pickupRequired"),
+    dropoffRequired: t("validation.dropoffRequired"),
+    pickupDateRequired: t("validation.pickupDateRequired"),
+    pickupDatePast: t("validation.pickupDatePast"),
+    datePast: t("validation.datePast"),
+    timeRequired: t("validation.timeRequired"),
+    vehicleRequired: t("validation.vehicleRequired"),
+    passengersMin: t("validation.passengersMin"),
+    passengersMax: t("validation.passengersMax"),
+    serviceRequired: t("validation.serviceRequired"),
+  };
+
   function update<K extends keyof QuoteFormData>(key: K, value: QuoteFormData[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
     if (errors[key]) {
@@ -135,11 +154,11 @@ function QuoteFormFields({
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const validationErrors = validateQuoteForm(form);
+    const validationErrors = validateQuoteForm(form, validationMessages);
     setErrors(validationErrors);
     if (hasErrors(validationErrors)) {
       setStatus("error");
-      setServerMessage("Please correct the highlighted fields and try again.");
+      setServerMessage(t("status.correctFields"));
       return;
     }
 
@@ -150,15 +169,13 @@ function QuoteFormFields({
       const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, locale }),
       });
       const data = await res.json();
 
       if (!res.ok || !data.success) {
         setStatus("error");
-        setServerMessage(
-          data.message ?? "Something went wrong. Please try again or WhatsApp us."
-        );
+        setServerMessage(data.message ?? t("status.genericError"));
         return;
       }
 
@@ -176,9 +193,7 @@ function QuoteFormFields({
       setForm(EMPTY_FORM);
     } catch {
       setStatus("error");
-      setServerMessage(
-        "We couldn't reach our server. Please try again or WhatsApp us directly."
-      );
+      setServerMessage(t("status.networkError"));
     }
   }
 
@@ -191,15 +206,14 @@ function QuoteFormFields({
       >
         <CheckCircle2 className="h-10 w-10 text-[#C9A14A]" strokeWidth={1.5} />
         <h3 className="mt-5 font-display text-2xl text-white">
-          {customerName ? `Thank you, ${customerName}!` : "Thank You!"}
+          {customerName ? t("quote.thankYouName", { name: customerName }) : t("quote.thankYou")}
         </h3>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-[#B8B8B8]">
-          Your quote request has been submitted successfully. Our team will
-          get back to you shortly with pricing and availability.
+          {t("quote.successBody")}
           {reference ? (
             <>
               {" "}
-              Your reference is{" "}
+              {t("quote.referenceLabel")}{" "}
               <span className="font-semibold text-[#C9A14A]">{reference}</span>.
             </>
           ) : null}
@@ -213,7 +227,7 @@ function QuoteFormFields({
             )}
             external
           >
-            Follow Up on WhatsApp
+            {t("quote.followUpWhatsapp")}
           </CTAButton>
           <button
             onClick={() => {
@@ -223,7 +237,7 @@ function QuoteFormFields({
             className="btn-outline"
             type="button"
           >
-            Request Another Quote
+            {t("quote.requestAnother")}
           </button>
         </div>
       </div>
@@ -243,10 +257,10 @@ function QuoteFormFields({
       ) : null}
 
       <div className="space-y-6">
-        <FormSectionHeading step={1} title="Personal Details" />
+        <FormSectionHeading step={1} title={t("sections.personalDetails")} />
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <FormField id="q-fullName" label="Full Name" required error={errors.fullName}>
+          <FormField id="q-fullName" label={t("fields.fullName")} required error={errors.fullName}>
             <input
               id="q-fullName"
               name="fullName"
@@ -257,11 +271,11 @@ function QuoteFormFields({
               aria-describedby={errors.fullName ? "q-fullName-error" : undefined}
               aria-invalid={Boolean(errors.fullName)}
               className={`field-input ${errors.fullName ? "field-input-error" : ""}`}
-              placeholder="e.g. James Carter"
+              placeholder={t("fields.fullNamePlaceholder")}
             />
           </FormField>
 
-          <FormField id="q-phone" label="Phone Number" required error={errors.phone}>
+          <FormField id="q-phone" label={t("fields.phone")} required error={errors.phone}>
             <PhoneInputField
               id="q-phone"
               value={form.phone}
@@ -272,7 +286,7 @@ function QuoteFormFields({
           </FormField>
         </div>
 
-        <FormField id="q-email" label="Email" required error={errors.email}>
+        <FormField id="q-email" label={t("fields.email")} required error={errors.email}>
           <input
             id="q-email"
             name="email"
@@ -283,17 +297,17 @@ function QuoteFormFields({
             aria-describedby={errors.email ? "q-email-error" : undefined}
             aria-invalid={Boolean(errors.email)}
             className={`field-input ${errors.email ? "field-input-error" : ""}`}
-            placeholder="you@company.com"
+            placeholder={t("fields.emailPlaceholder")}
           />
         </FormField>
       </div>
 
       <div className="space-y-6">
-        <FormSectionHeading step={2} title="Journey Details" />
+        <FormSectionHeading step={2} title={t("sections.journeyDetails")} />
 
         <FormField
           id="q-serviceType"
-          label="Service Needed"
+          label={t("fields.serviceNeeded")}
           required
           error={errors.serviceType}
         >
@@ -306,7 +320,7 @@ function QuoteFormFields({
             aria-invalid={Boolean(errors.serviceType)}
             className={`field-input ${errors.serviceType ? "field-input-error" : ""}`}
           >
-            <option value="">Select a service</option>
+            <option value="">{t("fields.selectService")}</option>
             {services.map((service) => (
               <option key={service.slug} value={service.name}>
                 {service.name}
@@ -318,7 +332,7 @@ function QuoteFormFields({
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <FormField
             id="q-pickupLocation"
-            label="Pickup Location"
+            label={t("fields.pickupLocation")}
             required
             error={errors.pickupLocation}
           >
@@ -333,11 +347,11 @@ function QuoteFormFields({
               }
               aria-invalid={Boolean(errors.pickupLocation)}
               className={`field-input ${errors.pickupLocation ? "field-input-error" : ""}`}
-              placeholder="e.g. Dubai Marina"
+              placeholder={t("fields.pickupLocationPlaceholderCity")}
             />
           </FormField>
 
-          <FormField id="q-date" label="Date (if known)" error={errors.date}>
+          <FormField id="q-date" label={t("fields.dateOptional")} error={errors.date}>
             <input
               id="q-date"
               name="date"
@@ -354,9 +368,9 @@ function QuoteFormFields({
       </div>
 
       <div className="space-y-6">
-        <FormSectionHeading step={3} title="Vehicle & Requirements" />
+        <FormSectionHeading step={3} title={t("sections.vehicleAndRequirements")} />
 
-        <FormField id="q-vehicle" label="Preferred Vehicle (optional)">
+        <FormField id="q-vehicle" label={t("fields.vehicleOptional")}>
           <select
             id="q-vehicle"
             name="vehicle"
@@ -364,7 +378,7 @@ function QuoteFormFields({
             onChange={(e) => update("vehicle", e.target.value)}
             className="field-input"
           >
-            <option value="">No preference</option>
+            <option value="">{t("fields.noPreference")}</option>
             {vehicles.map((vehicle) => (
               <option key={vehicle.slug} value={vehicle.name}>
                 {vehicle.name} — {vehicle.category}
@@ -375,8 +389,8 @@ function QuoteFormFields({
 
         <FormField
           id="q-message"
-          label="Tell Us More"
-          hint="Trip details, number of passengers, or anything that helps us quote accurately."
+          label={t("fields.tellUsMore")}
+          hint={t("fields.tellUsMoreHint")}
         >
           <textarea
             id="q-message"
@@ -386,7 +400,7 @@ function QuoteFormFields({
             onChange={(e) => update("message", e.target.value)}
             aria-describedby="q-message-hint"
             className="field-input resize-none"
-            placeholder="Optional — the more detail, the more accurate the quote"
+            placeholder={t("fields.tellUsMorePlaceholder")}
           />
         </FormField>
       </div>
@@ -399,10 +413,10 @@ function QuoteFormFields({
         {status === "submitting" ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" strokeWidth={2} />
-            Sending…
+            {t("quote.sending")}
           </>
         ) : (
-          "Request Instant Quote"
+          t("quote.submit")
         )}
       </button>
     </form>

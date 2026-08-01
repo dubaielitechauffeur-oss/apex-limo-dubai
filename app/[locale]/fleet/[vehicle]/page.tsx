@@ -43,6 +43,7 @@ import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
+import { formatAed } from "@/lib/format";
 import { FLEET, getAllVehicles, getVehicleBySlug, type PlainFleetVehicle } from "@/data/fleet";
 import { getServiceBySlug } from "@/data/services";
 import { getLocationBySlug } from "@/data/locations";
@@ -100,8 +101,6 @@ function vehicleJsonLd(vehicle: PlainFleetVehicle, locale: Locale) {
     },
   };
 }
-
-const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
 
 /** Best-effort keyword match from a plain-text feature/amenity string to a
  *  representative icon, purely presentational — the underlying

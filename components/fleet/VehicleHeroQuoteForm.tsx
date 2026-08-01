@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
 import PhoneInputField from "@/components/shared/PhoneInputField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
+import { formatAed } from "@/lib/format";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import type { QuoteFormData } from "@/lib/types";
-import { validateQuoteForm, hasErrors, type FormErrors } from "@/lib/validation";
+import { validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
 interface VehicleHeroQuoteFormProps {
   vehicle: PlainFleetVehicle;
@@ -22,8 +23,6 @@ const SERVICE_TYPE = "Luxury Chauffeur Service";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
-
 /**
  * Compact quote request card for the desktop hero — sits beside the gallery
  * instead of the CTA-button row. Posts to the exact same /api/quote
@@ -35,6 +34,8 @@ const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
 export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormProps) {
   const t = useTranslations("fleet.heroQuoteForm");
   const tDetail = useTranslations("fleet.detail");
+  const tForms = useTranslations("forms");
+  const locale = useLocale();
 
   const durationOptions = [
     { label: `${tDetail("oneHour")} — ${formatAed(vehicle.rates.oneHour)}`, value: "1 Hour" },
@@ -55,6 +56,22 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
   const [reference, setReference] = useState("");
   const todayISO = new Date().toISOString().split("T")[0];
 
+  const validationMessages: ValidationMessages = {
+    fullNameRequired: tForms("validation.fullNameRequired"),
+    phoneInvalid: tForms("validation.phoneInvalid"),
+    emailInvalid: tForms("validation.emailInvalid"),
+    pickupRequired: tForms("validation.pickupRequired"),
+    dropoffRequired: tForms("validation.dropoffRequired"),
+    pickupDateRequired: tForms("validation.pickupDateRequired"),
+    pickupDatePast: tForms("validation.pickupDatePast"),
+    datePast: tForms("validation.datePast"),
+    timeRequired: tForms("validation.timeRequired"),
+    vehicleRequired: tForms("validation.vehicleRequired"),
+    passengersMin: tForms("validation.passengersMin"),
+    passengersMax: tForms("validation.passengersMax"),
+    serviceRequired: tForms("validation.serviceRequired"),
+  };
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
@@ -69,11 +86,11 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
       message: `Package: ${duration}. Submitted from the ${vehicle.name} page.`,
     };
 
-    const validationErrors = validateQuoteForm(payload);
+    const validationErrors = validateQuoteForm(payload, validationMessages);
     setErrors(validationErrors);
     if (hasErrors(validationErrors)) {
       setStatus("error");
-      setServerMessage("Please correct the highlighted fields and try again.");
+      setServerMessage(tForms("status.correctFields"));
       return;
     }
 
@@ -84,13 +101,13 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
       const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, locale }),
       });
       const data = await res.json();
 
       if (!res.ok || !data.success) {
         setStatus("error");
-        setServerMessage(data.message ?? "Something went wrong. Please try again or WhatsApp us.");
+        setServerMessage(data.message ?? tForms("status.genericError"));
         return;
       }
 
@@ -98,7 +115,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
       setStatus("success");
     } catch {
       setStatus("error");
-      setServerMessage("We couldn't reach our server. Please try again or WhatsApp us directly.");
+      setServerMessage(tForms("status.networkError"));
     }
   }
 
@@ -155,7 +172,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
           </div>
         ) : null}
 
-        <FormField id="hq-fullName" label="Full Name" required error={errors.fullName}>
+        <FormField id="hq-fullName" label={tForms("fields.fullName")} required error={errors.fullName}>
           <input
             id="hq-fullName"
             type="text"
@@ -164,11 +181,11 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
             onChange={(e) => setFullName(e.target.value)}
             aria-invalid={Boolean(errors.fullName)}
             className={`field-input ${errors.fullName ? "field-input-error" : ""}`}
-            placeholder="Your name"
+            placeholder={tForms("fields.fullNamePlaceholderShort")}
           />
         </FormField>
 
-        <FormField id="hq-phone" label="Phone Number" required error={errors.phone}>
+        <FormField id="hq-phone" label={tForms("fields.phone")} required error={errors.phone}>
           <PhoneInputField
             id="hq-phone"
             value={phone}
@@ -178,7 +195,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
         </FormField>
 
         <div className="grid grid-cols-2 gap-3">
-          <FormField id="hq-date" label="Date" error={errors.date}>
+          <FormField id="hq-date" label={tForms("fields.date")} error={errors.date}>
             <input
               id="hq-date"
               type="date"
@@ -190,7 +207,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
             />
           </FormField>
 
-          <FormField id="hq-duration" label="Package">
+          <FormField id="hq-duration" label={tForms("fields.package")}>
             <select
               id="hq-duration"
               value={duration}
@@ -206,7 +223,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
           </FormField>
         </div>
 
-        <FormField id="hq-pickup" label="Pickup Location" required error={errors.pickupLocation}>
+        <FormField id="hq-pickup" label={tForms("fields.pickupLocation")} required error={errors.pickupLocation}>
           <input
             id="hq-pickup"
             type="text"
@@ -214,11 +231,11 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
             onChange={(e) => setPickupLocation(e.target.value)}
             aria-invalid={Boolean(errors.pickupLocation)}
             className={`field-input ${errors.pickupLocation ? "field-input-error" : ""}`}
-            placeholder="e.g. Dubai Marina"
+            placeholder={tForms("fields.pickupLocationPlaceholderCity")}
           />
         </FormField>
 
-        <FormField id="hq-email" label="Email" required error={errors.email}>
+        <FormField id="hq-email" label={tForms("fields.email")} required error={errors.email}>
           <input
             id="hq-email"
             type="email"
@@ -227,7 +244,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
             onChange={(e) => setEmail(e.target.value)}
             aria-invalid={Boolean(errors.email)}
             className={`field-input ${errors.email ? "field-input-error" : ""}`}
-            placeholder="you@company.com"
+            placeholder={tForms("fields.emailPlaceholder")}
           />
         </FormField>
 

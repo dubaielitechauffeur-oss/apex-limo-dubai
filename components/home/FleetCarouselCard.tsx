@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { Car, Clock, Plane, type LucideIcon } from "lucide-react";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
+import { formatAed } from "@/lib/format";
 
 export interface FleetCarouselCardLabels {
   imageComingSoon: string;
@@ -33,8 +34,6 @@ interface FleetCarouselCardProps {
    *  page's related-vehicles grid. Same structure/content either way. */
   tone?: "light" | "dark";
 }
-
-const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
 
 /**
  * Compact vertical card for the homepage fleet carousel — image with a

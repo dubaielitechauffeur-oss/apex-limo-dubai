@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { Car, Users, Briefcase, Wifi, GlassWater, type LucideIcon } from "lucide-react";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
+import { formatAed } from "@/lib/format";
 
 interface FleetListingCardProps {
   vehicle: PlainFleetVehicle;
@@ -22,8 +23,6 @@ function SpecItem({ icon: Icon, label }: SpecItemProps) {
     </div>
   );
 }
-
-const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
 
 interface PriceItemProps {
   label: string;
