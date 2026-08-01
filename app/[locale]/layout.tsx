@@ -9,6 +9,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppFloatButton from "@/components/layout/WhatsAppFloatButton";
 import CallFloatButton from "@/components/layout/CallFloatButton";
 import ScrollToTopButton from "@/components/layout/ScrollToTopButton";
+import ConstructionNoticeModal from "@/components/layout/ConstructionNoticeModal";
 import { getDefaultMetadata, organizationJsonLd } from "@/lib/seo";
 import { routing, type Locale } from "@/i18n/routing";
 import { logoFont } from "@/fonts/logo";
@@ -72,6 +73,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
       </head>
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider messages={messages}>
+          <ConstructionNoticeModal />
           <Header />
           <main className="flex-1 pt-[117px]">{children}</main>
           <Footer />
