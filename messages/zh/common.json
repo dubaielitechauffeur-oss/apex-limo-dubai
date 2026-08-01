@@ -68,6 +68,8 @@
     "eyebrow": "来自 Apex Limo 的提示",
     "heading": "我们正在完善您的体验",
     "body": "我们的网站仍在持续优化中，未来几天您可能会看到一些细节上的调整。所有预订与报价请求均已全面开通，并由我们的团队亲自处理。",
+    "priceNotice": "网站上显示的车辆价格目前为<b>演示价格</b>，并非最终价格。如需预订，请<whatsappLink>通过 WhatsApp 与我们联系</whatsappLink>。",
+    "priceNoticeWhatsappMessage": "您好 Apex Limo，我看到网站上的价格是演示价格——能否告知实际价格并协助我预订？",
     "cta": "继续浏览网站",
     "closeAriaLabel": "关闭提示"
   },

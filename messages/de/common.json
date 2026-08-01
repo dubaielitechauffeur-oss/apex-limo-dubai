@@ -68,6 +68,8 @@
     "eyebrow": "Ein Hinweis von Apex Limo",
     "heading": "Wir feilen an Ihrem Erlebnis",
     "body": "Unsere Website wird noch weiter verfeinert, daher werden Sie in den kommenden Tagen möglicherweise einige Anpassungen bemerken. Alle Buchungs- und Angebotsanfragen sind voll funktionsfähig und werden persönlich von unserem Team bearbeitet.",
+    "priceNotice": "Die angezeigten Fahrzeugpreise sind derzeit <b>Demopreise</b> und nicht endgültig. Zum Buchen kontaktieren Sie uns bitte <whatsappLink>über WhatsApp</whatsappLink>.",
+    "priceNoticeWhatsappMessage": "Hallo Apex Limo, ich habe die Demopreise auf Ihrer Website gesehen — könnten Sie mir den tatsächlichen Preis mitteilen und mir bei der Buchung helfen?",
     "cta": "Weiter zur Website",
     "closeAriaLabel": "Hinweis schließen"
   },

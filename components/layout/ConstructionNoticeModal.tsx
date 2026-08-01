@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Sparkles, X } from "lucide-react";
+import { Sparkles, Info, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { getWhatsAppLink } from "@/lib/constants";
 
 const STORAGE_KEY = "apex-construction-notice-ack";
 
@@ -91,7 +92,27 @@ export default function ConstructionNoticeModal() {
           {t("body")}
         </p>
 
-        <button ref={ctaRef} type="button" onClick={dismiss} className="btn-gold mt-8 w-full">
+        <div className="mt-6 flex items-start gap-2.5 rounded-xl border border-gold/30 bg-gold/[0.08] p-4 text-start">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-gold" strokeWidth={1.75} />
+          <p className="text-xs leading-relaxed text-ivory sm:text-sm">
+            {t.rich("priceNotice", {
+              b: (chunks) => <strong className="font-semibold text-gold">{chunks}</strong>,
+              whatsappLink: (chunks) => (
+                <a
+                  href={getWhatsAppLink(t("priceNoticeWhatsappMessage"))}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={dismiss}
+                  className="font-semibold text-gold underline underline-offset-4 transition-colors hover:text-gold-pale"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
+          </p>
+        </div>
+
+        <button ref={ctaRef} type="button" onClick={dismiss} className="btn-gold mt-6 w-full">
           {t("cta")}
         </button>
       </div>
