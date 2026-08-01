@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Star, BadgeCheck } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
@@ -7,9 +8,9 @@ import { SITE, RATING } from "@/lib/constants";
 import { organizationId } from "@/lib/seo";
 
 /** Renders a row of filled/outline stars for a given rating out of 5. */
-function StarRow({ rating, size = "h-4 w-4" }: { rating: number; size?: string }) {
+function StarRow({ rating, ariaLabel, size = "h-4 w-4" }: { rating: number; ariaLabel: string; size?: string }) {
   return (
-    <div className="flex gap-0.5" role="img" aria-label={`${rating} out of 5 stars`}>
+    <div className="flex gap-0.5" role="img" aria-label={ariaLabel}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
@@ -70,8 +71,10 @@ function reviewsJsonLd() {
  * aggregate rating/JSON-LD above and below the cards still reflects every
  * review in data/testimonials.ts, not just the 3 marked `featured`.
  */
-export default function Testimonials() {
-  const featured = TESTIMONIALS.filter((t) => t.featured);
+export default async function Testimonials() {
+  const t = await getTranslations("home.testimonials");
+  const tA11y = await getTranslations("common.a11y");
+  const featured = TESTIMONIALS.filter((item) => item.featured);
   const mapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     SITE.name
   )}`;
@@ -87,8 +90,8 @@ export default function Testimonials() {
       <Container>
         <Reveal>
           <SectionHeading
-            eyebrow="Client Words"
-            title="What Riding With Apex Feels Like"
+            eyebrow={t("eyebrow")}
+            title={t("title")}
             tone="light"
           />
         </Reveal>
@@ -96,11 +99,15 @@ export default function Testimonials() {
         {/* Google-style aggregate rating */}
         <Reveal delay={100} className="mx-auto mt-10 flex flex-col items-center gap-3 text-center">
           <div className="flex items-center gap-3">
-            <StarRow rating={Math.round(parseFloat(RATING))} size="h-6 w-6" />
+            <StarRow
+              rating={Math.round(parseFloat(RATING))}
+              ariaLabel={tA11y("ratingOutOf5Template", { rating: RATING })}
+              size="h-6 w-6"
+            />
             <span className="font-display text-3xl text-obsidian">{RATING}</span>
           </div>
           <p className="text-xs uppercase tracking-[0.2em] text-graphite">
-            Based on verified client reviews
+            {t("basedOnReviews")}
           </p>
           <a
             href={mapsSearchUrl}
@@ -108,7 +115,7 @@ export default function Testimonials() {
             rel="noopener noreferrer"
             className="text-xs text-obsidian underline underline-offset-4 transition-colors hover:text-gold-deep"
           >
-            Find us on Google Maps
+            {t("findUsOnGoogleMaps")}
           </a>
         </Reveal>
 
@@ -141,7 +148,7 @@ export default function Testimonials() {
                   </figcaption>
                   <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wide text-graphite">
                     <BadgeCheck className="h-3.5 w-3.5 text-gold-deep" strokeWidth={1.5} />
-                    Verified Client
+                    {t("verifiedClient")}
                   </span>
                 </div>
               </div>

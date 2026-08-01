@@ -61,5 +61,16 @@
   },
   "logo": {
     "tagline": "سائق فاخر"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "تقييم {rating} من 5 نجوم",
+    "whatsappChatAriaLabel": "تواصل مع Apex Limo عبر واتساب",
+    "callAriaLabelTemplate": "اتصل بـ {name}",
+    "backToTop": "العودة إلى الأعلى",
+    "areasCovered": "المناطق المشمولة",
+    "ourServicesRegion": "خدماتنا",
+    "previousServices": "الخدمات السابقة",
+    "nextServices": "الخدمات التالية",
+    "goToServicesPageTemplate": "الانتقال إلى صفحة الخدمات {index}"
   }
 }

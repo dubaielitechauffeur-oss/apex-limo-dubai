@@ -16,6 +16,7 @@ interface ConversionPageIntroProps {
  */
 export default function ConversionPageIntro({ heading, description }: ConversionPageIntroProps) {
   const t = useTranslations("forms.conversion");
+  const tA11y = useTranslations("common.a11y");
   const otherIndicators = [
     { icon: Car, label: t("fleetSizeVehicles", { count: FLEET_SIZE }) },
     { icon: Headphones, label: t("concierge247") },
@@ -34,7 +35,7 @@ export default function ConversionPageIntro({ heading, description }: Conversion
 
         <div className="mx-auto mt-7 flex max-w-2xl animate-fade-in flex-wrap items-center justify-center gap-x-6 gap-y-3 [animation-delay:400ms]">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#B8B8B8] sm:text-[13px]">
-            <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+            <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-3.5 w-3.5 fill-[#C9A14A] text-[#C9A14A]" strokeWidth={1.5} />
               ))}

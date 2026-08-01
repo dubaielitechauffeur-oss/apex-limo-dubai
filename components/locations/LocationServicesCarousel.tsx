@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import LocationServiceCard from "./LocationServiceCard";
@@ -42,6 +42,7 @@ export default function LocationServicesCarousel({
   learnMoreLabel,
 }: LocationServicesCarouselProps) {
   const rtl = isRtlLocale(useLocale());
+  const t = useTranslations("common.a11y");
   const [page, setPage] = useState(0);
   const [autoplayActive, setAutoplayActive] = useState(true);
   const [inView, setInView] = useState(false);
@@ -103,7 +104,7 @@ export default function LocationServicesCarousel({
 
   return (
     <div ref={sectionRef} className="relative">
-      <div className="overflow-hidden" role="region" aria-label="Our services">
+      <div className="overflow-hidden" role="region" aria-label={t("ourServicesRegion")}>
         <div
           className="flex cursor-grab select-none transition-transform duration-700 ease-out active:cursor-grabbing"
           style={{ transform: `translateX(${rtl ? "" : "-"}${page * 100}%)` }}
@@ -125,7 +126,7 @@ export default function LocationServicesCarousel({
           <button
             type="button"
             onClick={goPrev}
-            aria-label="Previous services"
+            aria-label={t("previousServices")}
             className="absolute -start-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A14A]/40 bg-black/70 text-[#C9A14A] backdrop-blur-sm transition-colors duration-200 hover:border-[#C9A14A] hover:bg-black"
           >
             <DirectionalIcon icon={ChevronLeft} className="h-4 w-4" strokeWidth={1.75} />
@@ -133,7 +134,7 @@ export default function LocationServicesCarousel({
           <button
             type="button"
             onClick={goNext}
-            aria-label="Next services"
+            aria-label={t("nextServices")}
             className="absolute -end-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A14A]/40 bg-black/70 text-[#C9A14A] backdrop-blur-sm transition-colors duration-200 hover:border-[#C9A14A] hover:bg-black"
           >
             <DirectionalIcon icon={ChevronRight} className="h-4 w-4" strokeWidth={1.75} />
@@ -148,7 +149,7 @@ export default function LocationServicesCarousel({
                   stopAutoplay();
                   goToPage(i);
                 }}
-                aria-label={`Go to services page ${i + 1}`}
+                aria-label={t("goToServicesPageTemplate", { index: i + 1 })}
                 aria-current={i === page ? "true" : undefined}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
                   i === page ? "w-6 bg-[#C9A14A]" : "w-1.5 bg-[#C9A14A]/30 hover:bg-[#C9A14A]/50"

@@ -24,6 +24,7 @@ interface CoverageBlockProps {
  */
 export default async function CoverageBlock({ title }: CoverageBlockProps) {
   const resolvedTitle = title ?? (await getTranslations("locations.coverage"))("title");
+  const tA11y = await getTranslations("common.a11y");
   return (
     <section className="border-t border-gold/10 bg-linen py-14">
       <Container>
@@ -33,7 +34,7 @@ export default async function CoverageBlock({ title }: CoverageBlockProps) {
             <h2 className="font-display text-lg text-obsidian sm:text-xl">{resolvedTitle}</h2>
           </div>
 
-          <nav aria-label="Areas covered" className="flex flex-wrap justify-center gap-2 sm:justify-end">
+          <nav aria-label={tA11y("areasCovered")} className="flex flex-wrap justify-center gap-2 sm:justify-end">
             {COVERAGE_LOCATIONS.map((location) => (
               <Link
                 key={location.slug}

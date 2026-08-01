@@ -61,5 +61,16 @@
   },
   "logo": {
     "tagline": "豪华专属司机"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "评分{rating}(满分5星)",
+    "whatsappChatAriaLabel": "通过WhatsApp联系Apex Limo",
+    "callAriaLabelTemplate": "致电{name}",
+    "backToTop": "返回顶部",
+    "areasCovered": "覆盖区域",
+    "ourServicesRegion": "我们的服务",
+    "previousServices": "上一组服务",
+    "nextServices": "下一组服务",
+    "goToServicesPageTemplate": "跳转至服务页面{index}"
   }
 }

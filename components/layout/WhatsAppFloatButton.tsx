@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { getWhatsAppLink } from "@/lib/constants";
 
 /**
@@ -5,13 +6,14 @@ import { getWhatsAppLink } from "@/lib/constants";
  * Kept as a server component — no interactivity beyond a native link,
  * so no client JS is shipped for it.
  */
-export default function WhatsAppFloatButton() {
+export default async function WhatsAppFloatButton() {
+  const t = await getTranslations("common.a11y");
   return (
     <a
       href={getWhatsAppLink()}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat with Apex Limo on WhatsApp"
+      aria-label={t("whatsappChatAriaLabel")}
       className="group fixed bottom-6 end-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-black/40 transition-transform duration-200 hover:scale-105 sm:bottom-8 sm:end-8"
     >
       <span className="absolute inset-0 -z-10 animate-pulse-slow rounded-full bg-[#25D366]/40" />

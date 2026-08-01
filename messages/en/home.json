@@ -1,7 +1,66 @@
 {
+  "hero": {
+    "eyebrow": "Dubai's Premier Chauffeur Service",
+    "titleLine1": "Elevate Every Journey",
+    "titleLine2Template": "with <brand>Apex Limo</brand>",
+    "description": "Experience discreet, professional and luxurious chauffeur-driven travel across Dubai and the UAE. Airport transfers, corporate travel and private chauffeur services tailored to perfection.",
+    "bookNow": "Book Now",
+    "ourServices": "Our Services",
+    "trustConcierge": "24/7 Concierge",
+    "trustVehiclesTemplate": "{count} Luxury Vehicles",
+    "trustMultilingual": "Multilingual Chauffeurs"
+  },
+  "featureStrip": {
+    "punctualTitle": "Punctual",
+    "punctualDescription": "We value your time and ensure on-time service, every time.",
+    "professionalTitle": "Professional Chauffeurs",
+    "professionalDescription": "Licensed, background-checked drivers trained in etiquette and discretion.",
+    "safeTitle": "Safe & Reliable",
+    "safeDescription": "Insured vehicles and consistent safety standards on every single trip.",
+    "luxuryTitle": "Luxury Experience",
+    "luxuryDescription": "A premium fleet and attentive service, matched to every occasion."
+  },
+  "brandsShowcase": {
+    "eyebrow": "Our Partners",
+    "title": "Our Brands",
+    "viewFleet": "View Our Fleet",
+    "bookCar": "Book a Car",
+    "requestDetails": "Request Details"
+  },
+  "trustStats": {
+    "rating": "Rating",
+    "airportTransfers": "Airport Transfers",
+    "happyClients": "Happy Clients",
+    "concierge": "Concierge"
+  },
+  "whyChooseUs": {
+    "eyebrow": "Why Apex",
+    "title": "Consistency Is the Luxury",
+    "subtitle": "Anyone can drive a nice car. What clients come back for is knowing exactly what to expect, every single time.",
+    "licensedTitle": "Licensed, Vetted Chauffeurs",
+    "licensedDescription": "Every driver holds a UAE commercial license, passes a background check, and is trained in professional etiquette.",
+    "maintainedTitle": "Meticulously Maintained Fleet",
+    "maintainedDescription": "Late-model vehicles, detailed and inspected before every booking — no exceptions.",
+    "availabilityTitle": "24/7 Availability",
+    "availabilityDescription": "Book a chauffeur any hour, any day. Dubai doesn't stop, and neither do we.",
+    "pricingTitle": "Transparent, Fixed Pricing",
+    "pricingDescription": "The quote you're given is the price you pay — no surge pricing, no surprise fees.",
+    "punctualityTitle": "Punctuality Guaranteed",
+    "punctualityDescription": "Flight tracking and route planning mean your chauffeur is always there before you are.",
+    "corporateTitle": "Trusted by Corporates & Hotels",
+    "corporateDescription": "Standing accounts with businesses and hospitality partners across Dubai rely on us daily."
+  },
+  "testimonials": {
+    "eyebrow": "Client Words",
+    "title": "What Riding With Apex Feels Like",
+    "basedOnReviews": "Based on verified client reviews",
+    "findUsOnGoogleMaps": "Find us on Google Maps",
+    "verifiedClient": "Verified Client"
+  },
   "faq": {
     "eyebrow": "Good to Know",
     "title": "Frequently Asked Questions",
-    "subtitle": "Answers to the questions we hear most from first-time and returning clients."
+    "subtitle": "Answers to the questions we hear most from first-time and returning clients.",
+    "viewAllFaqs": "View All FAQs"
   }
 }

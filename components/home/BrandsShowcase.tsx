@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
@@ -13,12 +14,13 @@ import { BRANDS } from "@/data/brands";
  * point is seamless (respects prefers-reduced-motion via the site-wide
  * rule in globals.css).
  */
-export default function BrandsShowcase() {
+export default async function BrandsShowcase() {
+  const t = await getTranslations("home.brandsShowcase");
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
         <Reveal>
-          <SectionHeading eyebrow="Our Partners" title="Our Brands" tone="light" />
+          <SectionHeading eyebrow={t("eyebrow")} title={t("title")} tone="light" />
         </Reveal>
 
         <div className="relative mx-auto mt-16 max-w-5xl overflow-hidden">
@@ -36,19 +38,19 @@ export default function BrandsShowcase() {
             href="/fleet"
             className="w-full rounded-lg bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
-            View Our Fleet
+            {t("viewFleet")}
           </Link>
           <Link
             href="/booking"
             className="w-full rounded-lg bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
-            Book a Car
+            {t("bookCar")}
           </Link>
           <Link
             href="/contact"
             className="w-full rounded-lg bg-gold px-8 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep sm:w-auto"
           >
-            Request Details
+            {t("requestDetails")}
           </Link>
         </div>
       </Container>

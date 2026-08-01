@@ -61,5 +61,16 @@
   },
   "logo": {
     "tagline": "Люкс-шофёр"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "Рейтинг {rating} из 5 звёзд",
+    "whatsappChatAriaLabel": "Написать Apex Limo в WhatsApp",
+    "callAriaLabelTemplate": "Позвонить {name}",
+    "backToTop": "Наверх",
+    "areasCovered": "Обслуживаемые районы",
+    "ourServicesRegion": "Наши услуги",
+    "previousServices": "Предыдущие услуги",
+    "nextServices": "Следующие услуги",
+    "goToServicesPageTemplate": "Перейти на страницу услуг {index}"
   }
 }

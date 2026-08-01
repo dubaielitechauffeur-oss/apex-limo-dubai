@@ -1,7 +1,66 @@
 {
+  "hero": {
+    "eyebrow": "Le service de chauffeur de référence à Dubaï",
+    "titleLine1": "Sublimez chaque trajet",
+    "titleLine2Template": "avec <brand>Apex Limo</brand>",
+    "description": "Découvrez un service de chauffeur discret, professionnel et luxueux dans tout Dubaï et les Émirats arabes unis. Transferts aéroport, déplacements professionnels et services de chauffeur privé sur mesure, jusque dans les moindres détails.",
+    "bookNow": "Réserver maintenant",
+    "ourServices": "Nos services",
+    "trustConcierge": "Conciergerie 24/7",
+    "trustVehiclesTemplate": "{count} véhicules de luxe",
+    "trustMultilingual": "Chauffeurs multilingues"
+  },
+  "featureStrip": {
+    "punctualTitle": "Ponctuel",
+    "punctualDescription": "Nous accordons de l'importance à votre temps et garantissons un service ponctuel, à chaque fois.",
+    "professionalTitle": "Chauffeurs professionnels",
+    "professionalDescription": "Chauffeurs agréés, ayant fait l'objet d'une vérification d'antécédents et formés à l'étiquette et à la discrétion.",
+    "safeTitle": "Sûr et fiable",
+    "safeDescription": "Véhicules assurés et normes de sécurité constantes à chaque trajet.",
+    "luxuryTitle": "Une expérience de luxe",
+    "luxuryDescription": "Une flotte haut de gamme et un service attentionné, adaptés à chaque occasion."
+  },
+  "brandsShowcase": {
+    "eyebrow": "Nos partenaires",
+    "title": "Nos marques",
+    "viewFleet": "Découvrir notre flotte",
+    "bookCar": "Réserver une voiture",
+    "requestDetails": "Demander des détails"
+  },
+  "trustStats": {
+    "rating": "Note",
+    "airportTransfers": "Transferts aéroport",
+    "happyClients": "Clients satisfaits",
+    "concierge": "Conciergerie"
+  },
+  "whyChooseUs": {
+    "eyebrow": "Pourquoi Apex",
+    "title": "La régularité, c'est le vrai luxe",
+    "subtitle": "Conduire une belle voiture, tout le monde peut le faire. Ce qui fait revenir nos clients, c'est de savoir exactement à quoi s'attendre, à chaque fois.",
+    "licensedTitle": "Chauffeurs agréés et vérifiés",
+    "licensedDescription": "Chaque chauffeur détient une licence commerciale émiratie, a fait l'objet d'une vérification d'antécédents et est formé à l'étiquette professionnelle.",
+    "maintainedTitle": "Une flotte méticuleusement entretenue",
+    "maintainedDescription": "Des véhicules récents, nettoyés en détail et inspectés avant chaque réservation — sans exception.",
+    "availabilityTitle": "Disponibilité 24/7",
+    "availabilityDescription": "Réservez un chauffeur à toute heure, tous les jours. Dubaï ne s'arrête jamais, et nous non plus.",
+    "pricingTitle": "Tarifs transparents et fixes",
+    "pricingDescription": "Le devis qui vous est donné est le prix que vous payez — sans majoration aux heures de pointe, sans frais surprises.",
+    "punctualityTitle": "Ponctualité garantie",
+    "punctualityDescription": "Le suivi des vols et la planification des itinéraires garantissent que votre chauffeur est toujours là avant vous.",
+    "corporateTitle": "La confiance des entreprises et des hôtels",
+    "corporateDescription": "Des comptes permanents avec des entreprises et des partenaires hôteliers dans tout Dubaï nous font confiance au quotidien."
+  },
+  "testimonials": {
+    "eyebrow": "Paroles de clients",
+    "title": "Ce que l'on ressent à bord d'un véhicule Apex",
+    "basedOnReviews": "Basé sur des avis clients vérifiés",
+    "findUsOnGoogleMaps": "Retrouvez-nous sur Google Maps",
+    "verifiedClient": "Client vérifié"
+  },
   "faq": {
     "eyebrow": "Bon à savoir",
     "title": "Questions fréquentes",
-    "subtitle": "Réponses aux questions les plus posées par nos clients, nouveaux comme fidèles."
+    "subtitle": "Réponses aux questions les plus posées par nos clients, nouveaux comme fidèles.",
+    "viewAllFaqs": "Voir toutes les questions"
   }
 }

@@ -12,6 +12,7 @@ import { RATING, FLEET_SIZE } from "@/lib/constants";
 export default function ConversionTrustPanel() {
   const t = useTranslations("forms.conversion");
   const tPanel = useTranslations("forms.conversion.trustPanel");
+  const tA11y = useTranslations("common.a11y");
 
   const trustBullets = [
     { icon: Car, label: t("fleetSizeVehicles", { count: FLEET_SIZE }) },
@@ -29,7 +30,7 @@ export default function ConversionTrustPanel() {
 
   return (
     <Reveal className="rounded-2xl border border-[rgba(201,161,74,0.2)] bg-[#111111] p-6 sm:p-8">
-      <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+      <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} className="h-4 w-4 fill-[#C9A14A] text-[#C9A14A]" strokeWidth={1.5} />
         ))}

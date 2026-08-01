@@ -16,6 +16,7 @@ import Ltr from "@/components/shared/Ltr";
 export default async function FleetHero() {
   const t = await getTranslations("common.cta");
   const tHero = await getTranslations("fleet.hero");
+  const tA11y = await getTranslations("common.a11y");
   const filledStars = Math.round(parseFloat(RATING));
 
   const TRUST_ITEMS = [
@@ -70,7 +71,7 @@ export default async function FleetHero() {
           {/* Trust indicators */}
           <div className="mt-9 flex animate-fade-in flex-wrap items-center gap-x-6 gap-y-3 [animation-delay:350ms]">
             <div className="flex items-center gap-2">
-              <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+              <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}

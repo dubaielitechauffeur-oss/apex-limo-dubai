@@ -14,6 +14,7 @@ export default async function FAQSection() {
       eyebrow={t("eyebrow")}
       title={t("title")}
       subtitle={t("subtitle")}
+      viewAllLabel={t("viewAllFaqs")}
     />
   );
 }

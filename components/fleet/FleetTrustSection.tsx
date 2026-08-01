@@ -12,6 +12,7 @@ import { RATING, FLEET_SIZE } from "@/lib/constants";
  */
 export default async function FleetTrustSection() {
   const t = await getTranslations("fleet.trust");
+  const tA11y = await getTranslations("common.a11y");
   const filledStars = Math.round(parseFloat(RATING));
 
   const METRICS = [
@@ -25,7 +26,7 @@ export default async function FleetTrustSection() {
       <Container>
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           <Reveal className="flex flex-col items-center gap-2 text-center">
-            <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+            <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}

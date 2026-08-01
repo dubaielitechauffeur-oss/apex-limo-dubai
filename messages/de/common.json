@@ -61,5 +61,16 @@
   },
   "logo": {
     "tagline": "Luxus-Chauffeur"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "{rating} von 5 Sternen",
+    "whatsappChatAriaLabel": "Mit Apex Limo auf WhatsApp chatten",
+    "callAriaLabelTemplate": "{name} anrufen",
+    "backToTop": "Nach oben",
+    "areasCovered": "Abgedeckte Gebiete",
+    "ourServicesRegion": "Unsere Services",
+    "previousServices": "Vorherige Services",
+    "nextServices": "Nächste Services",
+    "goToServicesPageTemplate": "Zur Serviceseite {index} wechseln"
   }
 }
