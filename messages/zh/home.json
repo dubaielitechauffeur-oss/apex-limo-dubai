@@ -1,0 +1,67 @@
+{
+  "hero": {
+    "eyebrow": "迪拜顶级专属司机服务",
+    "titleLine1": "臻享非凡旅程",
+    "titleLine2Template": "尽在 <brand>Apex Limo</brand>",
+    "description": "在迪拜及阿联酋各地畅享私密、专业且奢华的专属司机出行服务。机场接送、商务出行及私人专属司机服务,为您精心打造完美体验。",
+    "bookNow": "立即预订",
+    "ourServices": "我们的服务",
+    "trustConcierge": "24/7礼宾服务",
+    "trustVehiclesTemplate": "{count}辆豪华座驾",
+    "trustMultilingual": "多语言司机团队",
+    "imageAlt": "Apex Limo司机站在迪拜一辆黑色奔驰S级轿车旁"
+  },
+  "featureStrip": {
+    "punctualTitle": "准时可靠",
+    "punctualDescription": "我们珍视您的时间,确保每一次服务都准时无误。",
+    "professionalTitle": "专业司机",
+    "professionalDescription": "持证上岗、经背景审查的司机,受过专业礼仪与保密培训。",
+    "safeTitle": "安全可靠",
+    "safeDescription": "投保车辆与始终如一的安全标准,守护每一次出行。",
+    "luxuryTitle": "尊贵体验",
+    "luxuryDescription": "尊贵车队与悉心服务,契合每一个场合。"
+  },
+  "brandsShowcase": {
+    "eyebrow": "合作品牌",
+    "title": "我们的品牌",
+    "viewFleet": "查看我们的车队",
+    "bookCar": "预订用车",
+    "requestDetails": "获取详情"
+  },
+  "trustStats": {
+    "rating": "评分",
+    "airportTransfers": "机场接送次数",
+    "happyClients": "满意客户",
+    "concierge": "礼宾服务"
+  },
+  "whyChooseUs": {
+    "eyebrow": "为何选择Apex",
+    "title": "始终如一,方为尊贵",
+    "subtitle": "开一辆好车谁都可以做到。而客户之所以一再选择我们,是因为他们清楚每一次都能获得同样值得信赖的体验。",
+    "licensedTitle": "持证、经审查的专业司机",
+    "licensedDescription": "每位司机均持有阿联酋商业驾驶执照,通过背景审查,并接受专业礼仪培训。",
+    "maintainedTitle": "精心维护的车队",
+    "maintainedDescription": "每次预订前,车辆均经过细致清洁与检查,款款均为近年新款车型——绝无例外。",
+    "availabilityTitle": "24/7全天候服务",
+    "availabilityDescription": "全天候、全年无休,随时为您预订专属司机。迪拜从不停歇,我们也是。",
+    "pricingTitle": "透明固定收费",
+    "pricingDescription": "报价即为最终价格——无高峰加价,无隐藏费用。",
+    "punctualityTitle": "准时保证",
+    "punctualityDescription": "航班追踪与路线规划,确保您的司机总是提前抵达恭候。",
+    "corporateTitle": "深受企业与酒店信赖",
+    "corporateDescription": "迪拜各地的企业与酒店合作伙伴每日依赖我们的长期合作账户提供服务。"
+  },
+  "testimonials": {
+    "eyebrow": "客户心声",
+    "title": "与Apex同行的感受",
+    "basedOnReviews": "基于已验证的客户评价",
+    "findUsOnGoogleMaps": "在谷歌地图上找到我们",
+    "verifiedClient": "已验证客户"
+  },
+  "faq": {
+    "eyebrow": "实用信息",
+    "title": "常见问题",
+    "subtitle": "解答新老客户最常询问的问题。",
+    "viewAllFaqs": "查看所有常见问题"
+  }
+}

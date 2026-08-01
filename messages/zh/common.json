@@ -1,0 +1,84 @@
+{
+  "nav": {
+    "home": "首页",
+    "fleet": "车队",
+    "services": "服务",
+    "locations": "服务区域",
+    "about": "关于我们",
+    "faqs": "常见问题",
+    "blog": "资讯",
+    "contact": "联系我们",
+    "servicesChildren": {
+      "airportTransfers": "机场接送",
+      "corporateChauffeur": "企业专车",
+      "luxuryChauffeur": "豪华专属司机",
+      "vipTransportation": "VIP专车服务",
+      "eventTransportation": "活动用车",
+      "weddingChauffeur": "婚礼专车"
+    },
+    "locationsChildren": {
+      "dubaiMarina": "Dubai Marina",
+      "downtownDubai": "Downtown Dubai",
+      "palmJumeirah": "Palm Jumeirah",
+      "businessBay": "Business Bay",
+      "jumeirah": "Jumeirah",
+      "dubaiAirport": "Dubai Airport"
+    }
+  },
+  "cta": {
+    "bookNow": "立即预订",
+    "whatsappUs": "通过WhatsApp咨询",
+    "getInstantQuote": "获取即时报价"
+  },
+  "bookingCta": {
+    "eyebrow": "随时恭候您的预订",
+    "heading": "今天就在迪拜预订您的专属司机",
+    "subtitle": "告诉我们您的目的地,我们将为您匹配合适的车型与司机——通常几分钟内即可确认。"
+  },
+  "footer": {
+    "tagline": "专业司机、豪华车队,以及遍布迪拜的可靠服务。",
+    "explore": "探索",
+    "services": "服务",
+    "locations": "服务区域",
+    "reachUs": "联系我们",
+    "whatsappUs": "通过WhatsApp咨询",
+    "address": "迪拜,阿拉伯联合酋长国",
+    "rightsReserved": "保留所有权利。",
+    "privacyPolicy": "隐私政策",
+    "termsConditions": "条款与条件"
+  },
+  "header": {
+    "promoBar": "迪拜及阿联酋高端专属司机服务",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "changeLanguage": "切换语言"
+  },
+  "mobileNav": {
+    "expand": "展开",
+    "collapse": "收起",
+    "submenu": "子菜单",
+    "orCall": "或致电"
+  },
+  "logo": {
+    "tagline": "豪华专属司机"
+  },
+  "siteTagline": "迪拜顶级专属司机与豪华轿车服务",
+  "whatsappGenericMessage": "您好 Apex Limo，我想在迪拜预订专属司机服务。",
+  "notFound": {
+    "title": "页面未找到",
+    "description": "您查找的页面不存在,或可能已被移动。",
+    "backToHome": "返回首页",
+    "browseFleet": "浏览车队"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "评分{rating}(满分5星)",
+    "whatsappChatAriaLabel": "通过WhatsApp联系Apex Limo",
+    "callAriaLabelTemplate": "致电{name}",
+    "backToTop": "返回顶部",
+    "areasCovered": "覆盖区域",
+    "ourServicesRegion": "我们的服务",
+    "previousServices": "上一组服务",
+    "nextServices": "下一组服务",
+    "goToServicesPageTemplate": "跳转至服务页面{index}"
+  }
+}

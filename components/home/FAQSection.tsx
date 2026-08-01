@@ -1,13 +1,20 @@
+import { getLocale, getTranslations } from "next-intl/server";
 import FAQAccordion from "@/components/shared/FAQAccordion";
-import { FAQS } from "@/data/faqs";
+import { getFaqs } from "@/data/faqs";
+import type { Locale } from "@/i18n/routing";
 
-export default function FAQSection() {
+export default async function FAQSection() {
+  const locale = (await getLocale()) as Locale;
+  const t = await getTranslations("home.faq");
+  const faqs = getFaqs(locale);
+
   return (
     <FAQAccordion
-      faqs={FAQS}
-      eyebrow="Good to Know"
-      title="Frequently Asked Questions"
-      subtitle="Answers to the questions we hear most from first-time and returning clients."
+      faqs={faqs}
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      subtitle={t("subtitle")}
+      viewAllLabel={t("viewAllFaqs")}
     />
   );
 }

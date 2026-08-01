@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import Container from "@/components/shared/Container";
 import { SITE } from "@/lib/constants";
 
@@ -8,13 +9,15 @@ import { SITE } from "@/lib/constants";
  * paragraph) laid over the client's fleet-lineup photo instead of a
  * plain obsidian background.
  */
-export default function AboutHero() {
+export default async function AboutHero() {
+  const t = await getTranslations("about.hero");
+
   return (
     <section className="relative isolate flex min-h-[420px] items-center overflow-hidden bg-obsidian py-20 sm:min-h-[45vh]">
       <div className="absolute inset-0">
         <Image
           src="/images/about/about-hero-fleet-lineup.webp"
-          alt="A lineup of black Mercedes chauffeur sedans and vans parked side by side"
+          alt={t("imageAlt")}
           fill
           priority
           sizes="100vw"
@@ -33,16 +36,12 @@ export default function AboutHero() {
       />
 
       <Container className="relative z-10 max-w-3xl">
-        <span className="animate-fade-in label-eyebrow">About Apex</span>
+        <span className="animate-fade-in label-eyebrow">{t("eyebrow")}</span>
         <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:100ms] sm:text-5xl">
-          Dubai&apos;s Trusted Name in Chauffeur-Driven Luxury
+          {t("title")}
         </h1>
         <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:250ms] sm:text-base">
-          {SITE.name} was built on a simple premise: luxury transportation
-          should be as dependable as it is comfortable. From a single
-          airport transfer to a full wedding convoy, we bring the same
-          standard of professionalism to every booking across Dubai and the
-          UAE.
+          {t("paragraph", { siteName: SITE.name })}
         </p>
       </Container>
     </section>

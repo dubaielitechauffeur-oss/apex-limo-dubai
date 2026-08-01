@@ -1,0 +1,58 @@
+{
+  "faq": {
+    "eyebrow": "实用信息",
+    "title": "常见问题",
+    "subtitle": "关于预订、价格以及Apex司机服务详情的所有必备信息。"
+  },
+  "learnMore": "了解更多",
+  "hero": {
+    "eyebrow": "我们的服务",
+    "title": "迪拜专属司机服务",
+    "subtitle": "从单次机场接送到统一协调的婚礼车队——Apex的每一项服务均以准时守信、低调周到以及匹配场合需求的车队为核心。",
+    "cta": "预订司机",
+    "imageAlt": "Apex Limo司机戴白手套为黑色奔驰S级车门开门,背景为迪拜天际线及哈利法塔"
+  },
+  "listing": {
+    "eyebrow": "我们提供的服务",
+    "title": "迪拜专属司机服务",
+    "subtitle": "从单次机场接送到统一协调的婚礼车队,Apex的每一项服务均以准时守信、低调周到以及匹配场合需求的车队为核心。",
+    "whatsappAriaLabel": "通过WhatsApp咨询{name}相关事宜",
+    "whatsappMessage": "您好,我对{name}感兴趣。"
+  },
+  "grid": {
+    "eyebrow": "我们提供的服务",
+    "title": "专属司机服务,为您量身打造",
+    "subtitle": "从机场接送到VIP专车服务,每一段行程都经过精心规划,并以最高标准交付。"
+  },
+  "otherServices": {
+    "eyebrow": "探索更多",
+    "title": "其他服务",
+    "subtitle": "Apex的每一项服务均共享同一支车队、同一批司机及同等水准的悉心关照。"
+  },
+  "detail": {
+    "backToServices": "返回服务页面",
+    "titleSuffix": "迪拜{name}",
+    "bookNow": "立即预订",
+    "getQuote": "获取报价",
+    "whatsappUs": "通过WhatsApp咨询",
+    "whatsappMessage": "您好Apex Limo,我想咨询{name}相关事宜。",
+    "popularChoicePrefix": "该服务的热门之选:",
+    "ratingEyebrow": "迪拜信赖之选",
+    "ratingTitleTemplate": "为何{name}客户选择Apex",
+    "reviewsCaption": "基于经核实的客户评价",
+    "outOf5": "/ 5分评分",
+    "benefitsEyebrow": "服务优势",
+    "benefitsTitle": "服务内容",
+    "whyApexEyebrow": "为何选择Apex",
+    "whyChooseTitleTemplate": "为何选择Apex的{name}",
+    "faqEyebrow": "常见问题",
+    "faqTitleTemplate": "{name}常见问题",
+    "faqSubtitle": "解答关于此项服务最常被问及的问题。",
+    "viewAllFaqs": "查看全部常见问题"
+  },
+  "finalCta": {
+    "eyebrow": "随时恭候您的预订",
+    "heading": "今天就在迪拜预订您的专属司机",
+    "subtitle": "告诉我们您的目的地,我们将为您匹配合适的车型与司机——通常几分钟内即可确认。"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "hero": {
+    "imageAlt": "黄昏时分的迪拜码头天际线",
+    "eyebrow": "服务覆盖区域",
+    "title": "我们的服务区域",
+    "subtitle": "从海滨住宅区到商业区,Apex司机对迪拜各社区、接客点及交通状况了如指掌。"
+  },
+  "listing": {
+    "eyebrow": "服务覆盖区域",
+    "title": "我们在迪拜覆盖的区域",
+    "subtitle": "从海滨住宅区到商业区,Apex司机对迪拜各社区、接客点及交通状况了如指掌。",
+    "exploreArea": "探索该区域"
+  },
+  "detail": {
+    "backToLocations": "返回服务区域",
+    "titleTemplate": "{name}专属司机服务",
+    "bookNow": "立即预订",
+    "getQuote": "获取报价",
+    "whatsappUs": "通过WhatsApp咨询",
+    "whatsappMessage": "您好Apex Limo,我想在{name}预订一位司机。",
+    "popularChoicePrefix": "{name}的热门之选:",
+    "airportNote": "正前往或离开机场?[了解我们的机场接送服务](/services/airport-transfers),掌握航班追踪与专人接机详情。",
+    "whyApexEyebrow": "为何选择Apex",
+    "whyChooseTitleTemplate": "为何在{name}选择Apex",
+    "popularRoutesEyebrow": "热门路线",
+    "commonJourneysTitleTemplate": "从{name}出发的常见行程",
+    "commonQuestionsEyebrow": "常见问题",
+    "faqTitleTemplate": "{name}常见问题",
+    "exploreMoreEyebrow": "探索更多",
+    "otherAreasTitle": "我们服务的其他区域",
+    "otherAreasSubtitleTemplate": "以下{siteName}周边目的地同样提供专属司机服务。"
+  },
+  "showcase": {
+    "eyebrow": "我们的服务范围",
+    "title": "覆盖迪拜及阿联酋的尊贵专属司机服务",
+    "subtitle": "在迪拜最重要的商务、休闲及住宅目的地,均可享受豪华专属司机服务。",
+    "exploreLocation": "探索该地点"
+  },
+  "coverage": {
+    "title": "服务覆盖迪拜及阿联酋全境"
+  }
+}

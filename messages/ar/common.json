@@ -1,0 +1,84 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "fleet": "الأسطول",
+    "services": "الخدمات",
+    "locations": "المناطق",
+    "about": "من نحن",
+    "faqs": "الأسئلة",
+    "blog": "المدونة",
+    "contact": "تواصلوا معنا",
+    "servicesChildren": {
+      "airportTransfers": "نقل المطار",
+      "corporateChauffeur": "سائق الشركات",
+      "luxuryChauffeur": "سائق فاخر",
+      "vipTransportation": "نقل كبار الشخصيات",
+      "eventTransportation": "نقل الفعاليات",
+      "weddingChauffeur": "سائق حفلات الزفاف"
+    },
+    "locationsChildren": {
+      "dubaiMarina": "Dubai Marina",
+      "downtownDubai": "Downtown Dubai",
+      "palmJumeirah": "Palm Jumeirah",
+      "businessBay": "Business Bay",
+      "jumeirah": "Jumeirah",
+      "dubaiAirport": "Dubai Airport"
+    }
+  },
+  "cta": {
+    "bookNow": "احجزوا الآن",
+    "whatsappUs": "راسلنا عبر واتساب",
+    "getInstantQuote": "احصلوا على عرض سعر فوري"
+  },
+  "bookingCta": {
+    "eyebrow": "نحن جاهزون لخدمتكم",
+    "heading": "احجزوا سائقكم في دبي اليوم",
+    "subtitle": "أخبرونا بوجهتكم وسنوفر لكم السيارة والسائق المناسبين - يتم التأكيد عادة خلال دقائق."
+  },
+  "footer": {
+    "tagline": "سائقون محترفون، وأسطول فاخر، وخدمة يمكن الاعتماد عليها في جميع أنحاء دبي.",
+    "explore": "استكشف",
+    "services": "الخدمات",
+    "locations": "المناطق",
+    "reachUs": "تواصلوا معنا",
+    "whatsappUs": "راسلنا عبر واتساب",
+    "address": "دبي، الإمارات العربية المتحدة",
+    "rightsReserved": "جميع الحقوق محفوظة.",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsConditions": "الشروط والأحكام"
+  },
+  "header": {
+    "promoBar": "خدمة سائق فاخرة في جميع أنحاء دبي والإمارات",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "changeLanguage": "تغيير اللغة"
+  },
+  "mobileNav": {
+    "expand": "توسيع",
+    "collapse": "طي",
+    "submenu": "القائمة الفرعية",
+    "orCall": "أو اتصلوا على"
+  },
+  "logo": {
+    "tagline": "سائق فاخر"
+  },
+  "siteTagline": "خدمة السائق الخاص والليموزين الأولى في دبي",
+  "whatsappGenericMessage": "مرحبًا أبيكس ليمو، أرغب في حجز خدمة سائق خاص في دبي.",
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "الصفحة التي تبحث عنها غير موجودة أو ربما تم نقلها.",
+    "backToHome": "العودة إلى الرئيسية",
+    "browseFleet": "تصفح الأسطول"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "تقييم {rating} من 5 نجوم",
+    "whatsappChatAriaLabel": "تواصل مع Apex Limo عبر واتساب",
+    "callAriaLabelTemplate": "اتصل بـ {name}",
+    "backToTop": "العودة إلى الأعلى",
+    "areasCovered": "المناطق المشمولة",
+    "ourServicesRegion": "خدماتنا",
+    "previousServices": "الخدمات السابقة",
+    "nextServices": "الخدمات التالية",
+    "goToServicesPageTemplate": "الانتقال إلى صفحة الخدمات {index}"
+  }
+}

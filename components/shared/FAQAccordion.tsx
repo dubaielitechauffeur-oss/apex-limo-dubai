@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import Reveal from "@/components/shared/Reveal";
 
 export interface FAQItem {
@@ -17,6 +18,7 @@ interface FAQAccordionProps {
   eyebrow?: string;
   title?: string;
   subtitle?: string;
+  viewAllLabel?: string;
 }
 
 /**
@@ -32,6 +34,7 @@ export default function FAQAccordion({
   eyebrow = "Good to Know",
   title = "Frequently Asked Questions",
   subtitle,
+  viewAllLabel = "View All FAQs",
 }: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -59,14 +62,14 @@ export default function FAQAccordion({
             return (
               <Reveal key={faq.question} delay={Math.min(index * 60, 300)}>
               <div
-                className={`border-l-2 transition-colors duration-200 ${
+                className={`border-s-2 transition-colors duration-200 ${
                   isOpen ? "border-gold" : "border-transparent"
                 }`}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-6 px-6 py-6 text-left"
+                  className="flex w-full items-center justify-between gap-6 px-6 py-6 text-start"
                 >
                   <span
                     className={`font-display text-lg transition-colors duration-200 sm:text-xl ${
@@ -101,8 +104,8 @@ export default function FAQAccordion({
             href="/faqs"
             className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 hover:text-gold-deep"
           >
-            View All FAQs
-            <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+            {viewAllLabel}
+            <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
           </Link>
         </div>
       </Container>

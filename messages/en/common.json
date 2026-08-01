@@ -1,0 +1,84 @@
+{
+  "nav": {
+    "home": "Home",
+    "fleet": "Fleet",
+    "services": "Services",
+    "locations": "Locations",
+    "about": "About",
+    "faqs": "FAQs",
+    "blog": "Blog",
+    "contact": "Contact",
+    "servicesChildren": {
+      "airportTransfers": "Airport Transfers",
+      "corporateChauffeur": "Corporate Chauffeur",
+      "luxuryChauffeur": "Luxury Chauffeur",
+      "vipTransportation": "VIP Transportation",
+      "eventTransportation": "Event Transportation",
+      "weddingChauffeur": "Wedding Chauffeur"
+    },
+    "locationsChildren": {
+      "dubaiMarina": "Dubai Marina",
+      "downtownDubai": "Downtown Dubai",
+      "palmJumeirah": "Palm Jumeirah",
+      "businessBay": "Business Bay",
+      "jumeirah": "Jumeirah",
+      "dubaiAirport": "Dubai Airport"
+    }
+  },
+  "cta": {
+    "bookNow": "Book Now",
+    "whatsappUs": "WhatsApp Us",
+    "getInstantQuote": "Get Instant Quote"
+  },
+  "bookingCta": {
+    "eyebrow": "Ready When You Are",
+    "heading": "Reserve Your Chauffeur in Dubai Today",
+    "subtitle": "Tell us where you're headed and we'll match you with the right vehicle and driver — usually confirmed within minutes."
+  },
+  "footer": {
+    "tagline": "Professional chauffeurs, a premium fleet, and dependable service across Dubai.",
+    "explore": "Explore",
+    "services": "Services",
+    "locations": "Locations",
+    "reachUs": "Reach Us",
+    "whatsappUs": "WhatsApp Us",
+    "address": "Dubai, United Arab Emirates",
+    "rightsReserved": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions"
+  },
+  "header": {
+    "promoBar": "Premium Chauffeur Service Across Dubai & UAE",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "changeLanguage": "Change language"
+  },
+  "mobileNav": {
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "submenu": "submenu",
+    "orCall": "Or call"
+  },
+  "logo": {
+    "tagline": "Luxury Chauffeur"
+  },
+  "siteTagline": "Dubai's Premier Chauffeur & Limousine Service",
+  "whatsappGenericMessage": "Hello Apex Limo, I would like to book a chauffeur service in Dubai.",
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or may have moved.",
+    "backToHome": "Back to Home",
+    "browseFleet": "Browse the Fleet"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "{rating} out of 5 stars",
+    "whatsappChatAriaLabel": "Chat with Apex Limo on WhatsApp",
+    "callAriaLabelTemplate": "Call {name}",
+    "backToTop": "Back to top",
+    "areasCovered": "Areas covered",
+    "ourServicesRegion": "Our services",
+    "previousServices": "Previous services",
+    "nextServices": "Next services",
+    "goToServicesPageTemplate": "Go to services page {index}"
+  }
+}

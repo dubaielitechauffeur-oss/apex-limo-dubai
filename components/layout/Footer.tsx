@@ -1,26 +1,33 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import Container from "@/components/shared/Container";
 import ApexLogo from "./ApexLogo";
+import Ltr from "@/components/shared/Ltr";
 import {
   NAV_LINKS,
-  SERVICES,
   SITE,
   getPhoneLink,
   getWhatsAppLink,
 } from "@/lib/constants";
+import { getAllServices } from "@/data/services";
+import type { Locale } from "@/i18n/routing";
 
-/** Curated footer order + display-name override, mirroring the homepage
- *  LocationsShowcase pattern — "Jumeirah" links to the existing JBR page. */
+/** Curated footer order, mirroring the homepage LocationsShowcase pattern —
+ *  "Jumeirah" links to the existing JBR page. `key` resolves its label from
+ *  the same nav.locationsChildren.* translations the header dropdown uses. */
 const FOOTER_LOCATIONS = [
-  { slug: "dubai-marina", label: "Dubai Marina" },
-  { slug: "downtown-dubai", label: "Downtown Dubai" },
-  { slug: "palm-jumeirah", label: "Palm Jumeirah" },
-  { slug: "business-bay", label: "Business Bay" },
-  { slug: "jbr", label: "Jumeirah" },
-  { slug: "dubai-international-airport-dxb", label: "Dubai Airport" },
+  { slug: "dubai-marina", key: "dubaiMarina" },
+  { slug: "downtown-dubai", key: "downtownDubai" },
+  { slug: "palm-jumeirah", key: "palmJumeirah" },
+  { slug: "business-bay", key: "businessBay" },
+  { slug: "jbr", key: "jumeirah" },
+  { slug: "dubai-international-airport-dxb", key: "dubaiAirport" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const locale = (await getLocale()) as Locale;
+  const t = await getTranslations("common");
+  const services = getAllServices(locale);
   const year = new Date().getFullYear();
 
   return (
@@ -29,16 +36,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div>
-            <ApexLogo size="md" align="center" className="sm:items-start sm:text-left" />
-            <p className="mt-6 max-w-xs text-center text-sm leading-relaxed text-smoke sm:text-left">
-              {SITE.tagline}. Professional chauffeurs, a premium fleet, and
-              dependable service across Dubai.
+            <ApexLogo size="md" align="center" className="sm:items-start sm:text-start" />
+            <p className="mt-6 max-w-xs text-center text-sm leading-relaxed text-smoke sm:text-start">
+              {t("siteTagline")}. {t("footer.tagline")}
             </p>
           </div>
 
           {/* Sitemap */}
           <div>
-            <h3 className="label-eyebrow mb-5">Explore</h3>
+            <h3 className="label-eyebrow mb-5">{t("footer.explore")}</h3>
             <ul className="flex flex-col gap-3">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
@@ -46,7 +52,7 @@ export default function Footer() {
                     href={link.href}
                     className="text-sm text-smoke transition-colors hover:text-gold"
                   >
-                    {link.label}
+                    {t(`nav.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -55,9 +61,9 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="label-eyebrow mb-5">Services</h3>
+            <h3 className="label-eyebrow mb-5">{t("footer.services")}</h3>
             <ul className="flex flex-col gap-3">
-              {SERVICES.map((service) => (
+              {services.map((service) => (
                 <li key={service.slug}>
                   <Link
                     href={`/services/${service.slug}`}
@@ -72,7 +78,7 @@ export default function Footer() {
 
           {/* Locations */}
           <div>
-            <h3 className="label-eyebrow mb-5">Locations</h3>
+            <h3 className="label-eyebrow mb-5">{t("footer.locations")}</h3>
             <ul className="flex flex-col gap-3">
               {FOOTER_LOCATIONS.map((location) => (
                 <li key={location.slug}>
@@ -80,7 +86,7 @@ export default function Footer() {
                     href={`/locations/${location.slug}`}
                     className="text-sm text-smoke transition-colors hover:text-gold"
                   >
-                    {location.label}
+                    {t(`nav.locationsChildren.${location.key}`)}
                   </Link>
                 </li>
               ))}
@@ -89,21 +95,21 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="label-eyebrow mb-5">Reach Us</h3>
+            <h3 className="label-eyebrow mb-5">{t("footer.reachUs")}</h3>
             <ul className="flex flex-col gap-3 text-sm text-smoke">
               <li>
                 <a href={getPhoneLink()} className="transition-colors hover:text-gold">
-                  {SITE.phoneDisplay}
+                  <Ltr>{SITE.phoneDisplay}</Ltr>
                 </a>
               </li>
               <li>
                 <a
-                  href={getWhatsAppLink()}
+                  href={getWhatsAppLink(t("whatsappGenericMessage"))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-gold"
                 >
-                  WhatsApp Us
+                  {t("footer.whatsappUs")}
                 </a>
               </li>
               <li>
@@ -114,7 +120,7 @@ export default function Footer() {
                   {SITE.email}
                 </a>
               </li>
-              <li className="pt-1 text-smoke/80">Dubai, United Arab Emirates</li>
+              <li className="pt-1 text-smoke/80">{t("footer.address")}</li>
             </ul>
           </div>
         </div>
@@ -123,14 +129,14 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 text-xs text-smoke/70 sm:flex-row">
           <p>
-            &copy; {year} {SITE.name}. All rights reserved.
+            &copy; {year} {SITE.name}. {t("footer.rightsReserved")}
           </p>
           <div className="flex gap-6">
             <Link href="/privacy-policy" className="transition-colors hover:text-gold">
-              Privacy Policy
+              {t("footer.privacyPolicy")}
             </Link>
             <Link href="/terms" className="transition-colors hover:text-gold">
-              Terms &amp; Conditions
+              {t("footer.termsConditions")}
             </Link>
           </div>
         </div>

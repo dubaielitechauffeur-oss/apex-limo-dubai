@@ -1,10 +1,12 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-import type { Service } from "@/data/services";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
+import type { PlainService } from "@/data/services";
 
 interface LocationServiceCardProps {
-  service: Service;
+  service: PlainService;
+  learnMoreLabel: string;
   /** Extra classes for sizing/shrink behavior — differs between the mobile
    *  scroll-snap row and the desktop carousel. */
   className?: string;
@@ -17,7 +19,11 @@ interface LocationServiceCardProps {
  * Services" section can be restructured (desktop carousel) without ever
  * touching the homepage component.
  */
-export default function LocationServiceCard({ service, className = "" }: LocationServiceCardProps) {
+export default function LocationServiceCard({
+  service,
+  learnMoreLabel,
+  className = "",
+}: LocationServiceCardProps) {
   return (
     <Link
       href={`/services/${service.slug}`}
@@ -51,8 +57,12 @@ export default function LocationServiceCard({ service, className = "" }: Locatio
         </div>
 
         <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
-          Learn More
-          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2} />
+          {learnMoreLabel}
+          <DirectionalIcon
+            icon={ArrowRight}
+            className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+            strokeWidth={2}
+          />
         </span>
       </div>
     </Link>

@@ -1,16 +1,21 @@
 // Homepage hero section
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Clock, Car, Languages, Calendar, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
+import Ltr from "@/components/shared/Ltr";
 import { PRIMARY_CTA, FLEET_SIZE } from "@/lib/constants";
 
-const TRUST_INDICATORS = [
-  { icon: Clock, label: "24/7 Concierge" },
-  { icon: Car, label: `${FLEET_SIZE} Luxury Vehicles` },
-  { icon: Languages, label: "Multilingual Chauffeurs" },
-];
+export default async function Hero() {
+  const t = await getTranslations("home.hero");
 
-export default function Hero() {
+  const TRUST_INDICATORS = [
+    { icon: Clock, label: t("trustConcierge") },
+    { icon: Car, label: t("trustVehiclesTemplate", { count: FLEET_SIZE }) },
+    { icon: Languages, label: t("trustMultilingual") },
+  ];
+
   return (
     <section className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-obsidian sm:min-h-[85vh] lg:min-h-[88vh]">
       {/* Full-bleed hero photograph. `<picture>` + `<source media>` swaps the
@@ -24,7 +29,7 @@ export default function Hero() {
           />
           <img
             src="/images/home/hero-chauffeur-door-night.webp"
-            alt="Apex Limo chauffeur beside a black Mercedes S-Class in Dubai"
+            alt={t("imageAlt")}
             fetchPriority="high"
             decoding="async"
             className="h-full w-full object-cover object-[center_65%] md:object-[70%_center] lg:object-[65%_center]"
@@ -46,20 +51,20 @@ export default function Hero() {
       <Container className="relative z-10 py-24 sm:py-28">
         <div className="max-w-2xl">
           <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
-            Dubai&apos;s Premier Chauffeur Service
+            {t("eyebrow")}
           </span>
 
           <h1 className="mt-6 animate-slide-in-left font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
-            <span className="block">Elevate Every Journey</span>
+            <span className="block">{t("titleLine1")}</span>
             <span className="block text-heading">
-              with <span className="text-gold">Apex Limo</span>
+              {t.rich("titleLine2Template", {
+                brand: (chunks) => <span className="text-gold">{chunks}</span>,
+              })}
             </span>
           </h1>
 
           <p className="mt-7 max-w-lg animate-fade-in text-base leading-relaxed text-smoke [animation-delay:200ms] sm:text-lg">
-            Experience discreet, professional and luxurious chauffeur-driven
-            travel across Dubai and the UAE. Airport transfers, corporate
-            travel and private chauffeur services tailored to perfection.
+            {t("description")}
           </p>
 
           <div className="mt-10 flex animate-fade-in flex-col gap-4 [animation-delay:350ms] sm:flex-row">
@@ -68,21 +73,21 @@ export default function Hero() {
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
             >
               <Calendar className="h-4 w-4" strokeWidth={2} />
-              Book Now
+              {t("bookNow")}
             </Link>
             <Link
               href="/services"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10"
             >
-              Our Services
-              <ArrowRight className="h-4 w-4" strokeWidth={2} />
+              {t("ourServices")}
+              <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
             </Link>
           </div>
 
           {/* Trust indicators */}
           <div className="mt-12 flex animate-fade-in flex-wrap items-center gap-x-6 gap-y-4 [animation-delay:500ms] sm:gap-x-8">
             {TRUST_INDICATORS.map((item, i) => (
-              <div key={item.label} className="flex items-center gap-6 sm:gap-8">
+              <div key={i} className="flex items-center gap-6 sm:gap-8">
                 <div className="flex items-center gap-2.5">
                   <item.icon
                     className="h-4 w-4 shrink-0 text-gold"
@@ -90,7 +95,7 @@ export default function Hero() {
                     aria-hidden="true"
                   />
                   <span className="text-xs uppercase tracking-wide text-ivory/90 sm:text-sm">
-                    {item.label}
+                    <Ltr>{item.label}</Ltr>
                   </span>
                 </div>
                 {i < TRUST_INDICATORS.length - 1 ? (

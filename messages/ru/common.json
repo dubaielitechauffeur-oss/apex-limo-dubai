@@ -1,0 +1,84 @@
+{
+  "nav": {
+    "home": "Главная",
+    "fleet": "Автопарк",
+    "services": "Услуги",
+    "locations": "Локации",
+    "about": "О нас",
+    "faqs": "Вопросы",
+    "blog": "Блог",
+    "contact": "Контакты",
+    "servicesChildren": {
+      "airportTransfers": "Трансфер из аэропорта",
+      "corporateChauffeur": "Корпоративный шофёр",
+      "luxuryChauffeur": "Роскошный шофёр",
+      "vipTransportation": "VIP-транспорт",
+      "eventTransportation": "Транспорт для мероприятий",
+      "weddingChauffeur": "Свадебный шофёр"
+    },
+    "locationsChildren": {
+      "dubaiMarina": "Dubai Marina",
+      "downtownDubai": "Downtown Dubai",
+      "palmJumeirah": "Palm Jumeirah",
+      "businessBay": "Business Bay",
+      "jumeirah": "Jumeirah",
+      "dubaiAirport": "Dubai Airport"
+    }
+  },
+  "cta": {
+    "bookNow": "Забронировать сейчас",
+    "whatsappUs": "Написать нам в WhatsApp",
+    "getInstantQuote": "Мгновенный расчёт стоимости"
+  },
+  "bookingCta": {
+    "eyebrow": "Мы готовы, когда готовы вы",
+    "heading": "Забронируйте шофёра в Дубае сегодня",
+    "subtitle": "Расскажите нам, куда вы направляетесь, и мы подберём подходящий автомобиль и водителя — обычно подтверждение приходит в течение нескольких минут."
+  },
+  "footer": {
+    "tagline": "Профессиональные шофёры, роскошный автопарк и надёжный сервис по всему Дубаю.",
+    "explore": "Навигация",
+    "services": "Услуги",
+    "locations": "Локации",
+    "reachUs": "Контакты",
+    "whatsappUs": "Написать нам в WhatsApp",
+    "address": "Дубай, Объединённые Арабские Эмираты",
+    "rightsReserved": "Все права защищены.",
+    "privacyPolicy": "Политика конфиденциальности",
+    "termsConditions": "Условия использования"
+  },
+  "header": {
+    "promoBar": "Премиальный сервис шофёра по всему Дубаю и ОАЭ",
+    "openMenu": "Открыть меню",
+    "closeMenu": "Закрыть меню",
+    "changeLanguage": "Изменить язык"
+  },
+  "mobileNav": {
+    "expand": "Развернуть",
+    "collapse": "Свернуть",
+    "submenu": "подменю",
+    "orCall": "Или позвоните"
+  },
+  "logo": {
+    "tagline": "Люкс-шофёр"
+  },
+  "siteTagline": "Ведущий сервис шофёров и лимузинов в Дубае",
+  "whatsappGenericMessage": "Здравствуйте, Apex Limo, я хотел(а) бы заказать услугу шофёра в Дубае.",
+  "notFound": {
+    "title": "Страница не найдена",
+    "description": "Страница, которую вы ищете, не существует или была перемещена.",
+    "backToHome": "На главную",
+    "browseFleet": "Смотреть автопарк"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "Рейтинг {rating} из 5 звёзд",
+    "whatsappChatAriaLabel": "Написать Apex Limo в WhatsApp",
+    "callAriaLabelTemplate": "Позвонить {name}",
+    "backToTop": "Наверх",
+    "areasCovered": "Обслуживаемые районы",
+    "ourServicesRegion": "Наши услуги",
+    "previousServices": "Предыдущие услуги",
+    "nextServices": "Следующие услуги",
+    "goToServicesPageTemplate": "Перейти на страницу услуг {index}"
+  }
+}

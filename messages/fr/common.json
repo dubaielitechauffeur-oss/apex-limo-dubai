@@ -1,0 +1,84 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "fleet": "Flotte",
+    "services": "Services",
+    "locations": "Zones",
+    "about": "À propos",
+    "faqs": "Questions",
+    "blog": "Journal",
+    "contact": "Contact",
+    "servicesChildren": {
+      "airportTransfers": "Transferts aéroport",
+      "corporateChauffeur": "Chauffeur d'entreprise",
+      "luxuryChauffeur": "Chauffeur de luxe",
+      "vipTransportation": "Transport VIP",
+      "eventTransportation": "Transport événementiel",
+      "weddingChauffeur": "Chauffeur de mariage"
+    },
+    "locationsChildren": {
+      "dubaiMarina": "Dubai Marina",
+      "downtownDubai": "Downtown Dubai",
+      "palmJumeirah": "Palm Jumeirah",
+      "businessBay": "Business Bay",
+      "jumeirah": "Jumeirah",
+      "dubaiAirport": "Dubai Airport"
+    }
+  },
+  "cta": {
+    "bookNow": "Réserver",
+    "whatsappUs": "Écrivez-nous sur WhatsApp",
+    "getInstantQuote": "Devis instantané"
+  },
+  "bookingCta": {
+    "eyebrow": "Prêts quand vous l'êtes",
+    "heading": "Réservez votre chauffeur à Dubaï dès aujourd'hui",
+    "subtitle": "Indiquez-nous votre destination et nous vous associerons au véhicule et au chauffeur adaptés — confirmation généralement sous quelques minutes."
+  },
+  "footer": {
+    "tagline": "Des chauffeurs professionnels, une flotte haut de gamme et un service fiable dans tout Dubaï.",
+    "explore": "Explorer",
+    "services": "Services",
+    "locations": "Zones",
+    "reachUs": "Contact",
+    "whatsappUs": "Écrivez-nous sur WhatsApp",
+    "address": "Dubaï, Émirats arabes unis",
+    "rightsReserved": "Tous droits réservés.",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsConditions": "Conditions générales"
+  },
+  "header": {
+    "promoBar": "Service de chauffeur haut de gamme à Dubaï et aux Émirats",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "changeLanguage": "Changer de langue"
+  },
+  "mobileNav": {
+    "expand": "Développer",
+    "collapse": "Réduire",
+    "submenu": "sous-menu",
+    "orCall": "Ou appelez le"
+  },
+  "logo": {
+    "tagline": "Chauffeur de luxe"
+  },
+  "siteTagline": "Le service de chauffeur et de limousine de référence à Dubaï",
+  "whatsappGenericMessage": "Bonjour Apex Limo, je souhaiterais réserver un service de chauffeur à Dubaï.",
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou a peut-être été déplacée.",
+    "backToHome": "Retour à l'accueil",
+    "browseFleet": "Découvrir la flotte"
+  },
+  "a11y": {
+    "ratingOutOf5Template": "{rating} sur 5 étoiles",
+    "whatsappChatAriaLabel": "Discuter avec Apex Limo sur WhatsApp",
+    "callAriaLabelTemplate": "Appeler {name}",
+    "backToTop": "Retour en haut",
+    "areasCovered": "Zones couvertes",
+    "ourServicesRegion": "Nos services",
+    "previousServices": "Services précédents",
+    "nextServices": "Services suivants",
+    "goToServicesPageTemplate": "Aller à la page de services {index}"
+  }
+}

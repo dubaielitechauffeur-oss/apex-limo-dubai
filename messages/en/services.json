@@ -1,0 +1,58 @@
+{
+  "faq": {
+    "eyebrow": "Good to Know",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about booking, pricing, and what to expect from an Apex chauffeur service."
+  },
+  "learnMore": "Learn More",
+  "hero": {
+    "eyebrow": "Our Services",
+    "title": "Chauffeur Services in Dubai",
+    "subtitle": "From a single airport pickup to a fully coordinated wedding convoy — every Apex service is built around punctuality, discretion, and a fleet that matches the occasion.",
+    "cta": "Book Chauffeur",
+    "imageAlt": "Apex Limo chauffeur in white gloves opening the door of a black Mercedes S-Class with the Dubai skyline and Burj Khalifa behind"
+  },
+  "listing": {
+    "eyebrow": "What We Offer",
+    "title": "Chauffeur Services in Dubai",
+    "subtitle": "From a single airport pickup to a fully coordinated wedding convoy, every Apex service is built around punctuality, discretion, and a fleet that matches the occasion.",
+    "whatsappAriaLabel": "WhatsApp us about {name}",
+    "whatsappMessage": "Hi, I'm interested in {name}."
+  },
+  "grid": {
+    "eyebrow": "What We Offer",
+    "title": "Chauffeur Services Built Around You",
+    "subtitle": "From airport transfers to VIP transportation, every journey is planned and delivered to the highest standard."
+  },
+  "otherServices": {
+    "eyebrow": "Explore More",
+    "title": "Other Services",
+    "subtitle": "Every Apex service shares the same fleet, chauffeurs, and standard of care."
+  },
+  "detail": {
+    "backToServices": "Back to Services",
+    "titleSuffix": "{name} in Dubai",
+    "bookNow": "Book Now",
+    "getQuote": "Get Quote",
+    "whatsappUs": "WhatsApp Us",
+    "whatsappMessage": "Hello Apex Limo, I'd like to enquire about {name}.",
+    "popularChoicePrefix": "Popular choice for this service:",
+    "ratingEyebrow": "Trusted in Dubai",
+    "ratingTitleTemplate": "Why {name} Clients Choose Apex",
+    "reviewsCaption": "Based on verified client reviews",
+    "outOf5": "/ 5 Rating",
+    "benefitsEyebrow": "Benefits",
+    "benefitsTitle": "What's Included",
+    "whyApexEyebrow": "Why Apex",
+    "whyChooseTitleTemplate": "Why Choose Apex for {name}",
+    "faqEyebrow": "Common Questions",
+    "faqTitleTemplate": "{name} FAQs",
+    "faqSubtitle": "Answers to the questions we hear most about this service.",
+    "viewAllFaqs": "View All FAQs"
+  },
+  "finalCta": {
+    "eyebrow": "Ready When You Are",
+    "heading": "Reserve Your Chauffeur in Dubai Today",
+    "subtitle": "Tell us where you're headed and we'll match you with the right vehicle and driver — usually confirmed within minutes."
+  }
+}

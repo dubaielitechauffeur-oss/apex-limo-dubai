@@ -1,11 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Car, Users, Briefcase, Wifi, GlassWater, type LucideIcon } from "lucide-react";
-import type { FleetVehicle } from "@/data/fleet";
+import type { PlainFleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
+import { formatAed } from "@/lib/format";
 
 interface FleetListingCardProps {
-  vehicle: FleetVehicle;
+  vehicle: PlainFleetVehicle;
 }
 
 interface SpecItemProps {
@@ -21,8 +23,6 @@ function SpecItem({ icon: Icon, label }: SpecItemProps) {
     </div>
   );
 }
-
-const formatAed = (amount: number) => `AED ${amount.toLocaleString("en-US")}`;
 
 interface PriceItemProps {
   label: string;
@@ -48,22 +48,24 @@ function PriceItem({ label, amount }: PriceItemProps) {
  * FleetCarouselCard (homepage carousel and the vehicle detail page's
  * "related vehicles" grid), so this redesign never touches that one.
  */
-export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
+export default async function FleetListingCard({ vehicle }: FleetListingCardProps) {
+  const t = await getTranslations("fleet.listingCard");
+  const tSummary = await getTranslations("fleet.summaryCard");
   const cover = vehicle.images?.[0];
 
   const priceTiers: { label: string; amount: number }[] = [
-    { label: "2 Hours", amount: vehicle.rates.oneHour },
-    { label: "Airport Transfer", amount: vehicle.rates.airport },
-    { label: "5 Hours", amount: vehicle.rates.fiveHours },
-    { label: "10 Hours", amount: vehicle.rates.tenHours },
-    { label: "Additional Hour", amount: vehicle.rates.extraHour },
-    { label: "Additional City", amount: vehicle.rates.additionalCity },
+    { label: t("twoHours"), amount: vehicle.rates.oneHour },
+    { label: t("airportTransfer"), amount: vehicle.rates.airport },
+    { label: t("fiveHours"), amount: vehicle.rates.fiveHours },
+    { label: t("tenHours"), amount: vehicle.rates.tenHours },
+    { label: t("additionalHour"), amount: vehicle.rates.extraHour },
+    { label: t("additionalCity"), amount: vehicle.rates.additionalCity },
   ];
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] lg:min-h-[380px] lg:flex-row">
       {/* Left — hero photograph, the dominant element of the card */}
-      <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-t-2xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 lg:aspect-auto lg:w-[55%] lg:rounded-l-2xl lg:rounded-tr-none">
+      <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-t-2xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 lg:aspect-auto lg:w-[55%] lg:rounded-s-2xl lg:rounded-se-none">
         {cover ? (
           <Image
             src={cover.src}
@@ -76,15 +78,15 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
           <div className="flex h-full w-full flex-col items-center justify-center gap-2">
             <Car className="h-12 w-12 text-white/30" strokeWidth={1} aria-hidden="true" />
             <span className="text-[10px] uppercase tracking-widest text-white/50">
-              Image Coming Soon
+              {t("imageComingSoon")}
             </span>
           </div>
         )}
-        <span className="absolute left-5 top-5 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
-          Driver Included
+        <span className="absolute start-5 top-5 inline-flex items-center rounded-full bg-gold px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-obsidian shadow-sm">
+          {t("driverIncluded")}
         </span>
         {vehicle.badge ? (
-          <span className="absolute right-5 top-5 inline-flex items-center rounded-full border border-[#C9A14A]/60 bg-black/55 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#C9A14A] backdrop-blur-sm">
+          <span className="absolute end-5 top-5 inline-flex items-center rounded-full border border-[#C9A14A]/60 bg-black/55 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#C9A14A] backdrop-blur-sm">
             {vehicle.badge}
           </span>
         ) : null}
@@ -105,14 +107,14 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
 
         {/* Specifications — capacity and standard amenities only */}
         <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-neutral-200 py-2.5">
-          <SpecItem icon={Users} label={`${vehicle.passengers} Passengers`} />
-          <SpecItem icon={Briefcase} label={`${vehicle.luggage} Luggage`} />
-          <SpecItem icon={Wifi} label="WiFi" />
-          <SpecItem icon={GlassWater} label="Water" />
+          <SpecItem icon={Users} label={`${vehicle.passengers} ${tSummary("passengers")}`} />
+          <SpecItem icon={Briefcase} label={`${vehicle.luggage} ${tSummary("luggage")}`} />
+          <SpecItem icon={Wifi} label={t("wifi")} />
+          <SpecItem icon={GlassWater} label={t("water")} />
         </div>
 
         <p className="mt-1.5 text-[11px] italic leading-snug text-graphite">
-          Includes driver, fuel, tolls (Salik) — excludes 5% VAT
+          {t("includesNote")}
         </p>
 
         {/* Chauffeur rates — a refined price panel, not a rental-style
@@ -124,17 +126,14 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
         </div>
 
         <p className="mt-2 text-[10px] leading-snug text-graphite/70">
-          Starting rates only. Final pricing may vary based on route, date, and requirements.
-          Enquire on WhatsApp or call for an exact quote.
+          {t("disclaimer")}
         </p>
 
         {/* Actions — View Details is the primary conversion path (vehicle
             detail page); Enquire on WhatsApp is the secondary action. */}
         <div className="mt-3.5 flex flex-col gap-3 sm:flex-row">
           <a
-            href={getWhatsAppLink(
-              `Hello Apex Limo, I would like to enquire about the ${vehicle.name}.`,
-            )}
+            href={getWhatsAppLink(t("whatsappMessage", { name: vehicle.name }))}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#25D366] px-4 py-3 text-xs font-bold uppercase tracking-wide text-white shadow-sm transition-colors duration-200 hover:bg-[#1EBE5A]"
@@ -142,13 +141,13 @@ export default function FleetListingCard({ vehicle }: FleetListingCardProps) {
             <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 shrink-0 fill-white">
               <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.902 6.47L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.457-1.507l-.392-.232-4.58 1.107 1.128-4.462-.256-.406A9.77 9.77 0 0 1 5.182 15c0-5.964 4.855-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818zm5.965-8.14c-.327-.164-1.936-.955-2.237-1.064-.3-.109-.518-.164-.737.164-.218.327-.845 1.064-1.036 1.282-.19.218-.382.246-.709.082-.327-.164-1.38-.508-2.629-1.62-.972-.867-1.628-1.937-1.819-2.264-.19-.327-.02-.504.144-.667.148-.147.327-.382.49-.573.164-.19.218-.327.327-.545.109-.218.055-.41-.027-.573-.082-.164-.737-1.777-1.01-2.434-.266-.64-.537-.553-.737-.563l-.628-.011c-.218 0-.573.082-.873.41-.3.327-1.145 1.12-1.145 2.73 0 1.61 1.172 3.165 1.336 3.383.164.218 2.308 3.524 5.593 4.942.782.338 1.392.54 1.868.69.785.25 1.5.215 2.065.13.63-.094 1.936-.79 2.21-1.554.273-.764.273-1.418.19-1.555-.081-.136-.3-.218-.627-.382z" />
             </svg>
-            Enquire on WhatsApp
+            {t("enquireWhatsapp")}
           </a>
           <Link
             href={`/fleet/${vehicle.slug}`}
             className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-gold px-4 py-3 text-xs font-bold uppercase tracking-wide text-obsidian shadow-sm transition-colors duration-200 hover:bg-gold-deep"
           >
-            View Details
+            {t("viewDetails")}
           </Link>
         </div>
       </div>

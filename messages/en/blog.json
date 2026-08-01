@@ -1,0 +1,25 @@
+{
+  "hero": {
+    "eyebrow": "Insights & Journal",
+    "title": "Luxury Chauffeur Insights",
+    "subtitle": "Travel tips, chauffeur guides, airport transfer advice, business travel insights and luxury transportation updates."
+  },
+  "search": {
+    "placeholder": "Search articles...",
+    "ariaLabel": "Search blog articles by title or excerpt",
+    "noResultsTemplate": "No articles match \"{query}\". Try a different search term."
+  },
+  "card": {
+    "readMore": "Read More"
+  },
+  "detail": {
+    "backToJournal": "Back to Journal",
+    "keepReadingEyebrow": "Keep Reading",
+    "moreFromJournalTitle": "More From the Journal",
+    "bookingCtaHeading": "Need a Luxury Chauffeur in Dubai?",
+    "bookingCtaSubtitle": "Book a premium chauffeur-driven vehicle for airport transfers, business travel, city tours and special events."
+  },
+  "imageFrame": {
+    "imagePending": "Image pending"
+  }
+}

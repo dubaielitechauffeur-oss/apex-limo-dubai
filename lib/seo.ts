@@ -1,75 +1,94 @@
 import type { Metadata } from "next";
 import { SITE } from "./constants";
-import type { FAQ } from "@/data/faqs";
+import { routing, type Locale } from "@/i18n/routing";
 
-/**
- * Base metadata applied via the root layout. Individual routes should
- * call `buildMetadata()` to extend/override this per page.
- */
-export const defaultMetadata: Metadata = {
-  metadataBase: new URL(SITE.url),
-  title: {
-    default: `${SITE.name} | ${SITE.tagline}`,
-    template: `%s | ${SITE.name}`,
-  },
-  description: SITE.description,
-  keywords: [
-    "chauffeur service Dubai",
-    "limo service Dubai",
-    "airport transfer Dubai",
-    "corporate chauffeur Dubai",
-    "VIP transportation Dubai",
-    "luxury car service Dubai",
-    "wedding car Dubai",
-  ],
-  authors: [{ name: SITE.name }],
-  creator: SITE.name,
-  publisher: SITE.name,
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: true,
-  },
-  openGraph: {
-    type: "website",
-    locale: SITE.locale,
-    url: SITE.url,
-    siteName: SITE.name,
-    title: `${SITE.name} | ${SITE.tagline}`,
-    description: SITE.description,
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: SITE.name,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${SITE.name} | ${SITE.tagline}`,
-    description: SITE.description,
-    images: ["/og-image.jpg"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+/** Open Graph locale tags per site locale (BCP-47-ish, underscore form OG expects). */
+const OG_LOCALE_MAP: Record<Locale, string> = {
+  en: "en_AE",
+  ar: "ar_AE",
+  ru: "ru_RU",
+  zh: "zh_CN",
+  fr: "fr_FR",
+  de: "de_DE",
 };
 
+/** Prefixes `path` with the locale segment for every locale except the default. */
+export function localizedPath(locale: Locale, path: string): string {
+  return locale === routing.defaultLocale ? path : `/${locale}${path}`;
+}
+
+/** Per-locale site-wide metadata defaults, applied via each locale's root layout.
+ *  `tagline` is the translated `common.siteTagline` message — resolved by the
+ *  caller (a Server Component) since this function itself isn't async. */
+export function getDefaultMetadata(locale: Locale, tagline: string = SITE.tagline): Metadata {
+  const url = `${SITE.url}${localizedPath(locale, "/")}`;
+  return {
+    metadataBase: new URL(SITE.url),
+    title: {
+      default: `${SITE.name} | ${tagline}`,
+      template: `%s | ${SITE.name}`,
+    },
+    description: SITE.description,
+    keywords: [
+      "chauffeur service Dubai",
+      "limo service Dubai",
+      "airport transfer Dubai",
+      "corporate chauffeur Dubai",
+      "VIP transportation Dubai",
+      "luxury car service Dubai",
+      "wedding car Dubai",
+    ],
+    authors: [{ name: SITE.name }],
+    creator: SITE.name,
+    publisher: SITE.name,
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: true,
+    },
+    openGraph: {
+      type: "website",
+      locale: OG_LOCALE_MAP[locale],
+      alternateLocale: routing.locales.filter((l) => l !== locale).map((l) => OG_LOCALE_MAP[l]),
+      url,
+      siteName: SITE.name,
+      title: `${SITE.name} | ${tagline}`,
+      description: SITE.description,
+      images: [
+        {
+          url: "/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: SITE.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${SITE.name} | ${tagline}`,
+      description: SITE.description,
+      images: ["/og-image.jpg"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+  };
+}
+
 interface BuildMetadataOptions {
+  locale: Locale;
   title: string;
   description: string;
   path?: string;
@@ -81,8 +100,10 @@ interface BuildMetadataOptions {
   publishedTime?: string;
 }
 
-/** Helper for generating page-level metadata that inherits site defaults. */
+/** Helper for generating page-level metadata that inherits site defaults, with
+ *  full hreflang/alternate-locale coverage for the requested locale. */
 export function buildMetadata({
+  locale,
   title,
   description,
   path = "",
@@ -90,20 +111,31 @@ export function buildMetadata({
   type = "website",
   publishedTime,
 }: BuildMetadataOptions): Metadata {
-  const url = `${SITE.url}${path}`;
+  const url = `${SITE.url}${localizedPath(locale, path)}`;
+
+  // Every locale's URL for this path, plus x-default pointing at the
+  // unprefixed (English) URL — the entry point Google's hreflang guidance
+  // recommends for visitors whose language doesn't match any listed locale.
+  const languages: Record<string, string> = Object.fromEntries(
+    routing.locales.map((l) => [l, `${SITE.url}${localizedPath(l, path)}`])
+  );
+  languages["x-default"] = `${SITE.url}${path}`;
+
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages },
     openGraph: {
       type,
       title,
       description,
       url,
       siteName: SITE.name,
+      locale: OG_LOCALE_MAP[locale],
+      alternateLocale: routing.locales.filter((l) => l !== locale).map((l) => OG_LOCALE_MAP[l]),
       images: images
         ? images.map((img) => ({ url: img }))
-        : defaultMetadata.openGraph?.images,
+        : getDefaultMetadata(locale).openGraph?.images,
       ...(type === "article" && publishedTime ? { publishedTime } : {}),
     },
     twitter: {
@@ -137,7 +169,7 @@ export function organizationId(): string {
  * specific categorization is preserved via `additionalType` instead of
  * being removed.
  */
-export function organizationJsonLd() {
+export function organizationJsonLd(locale: Locale = routing.defaultLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -149,6 +181,7 @@ export function organizationJsonLd() {
     logo: `${SITE.url}/images/brand/apex-logo.webp`,
     telephone: SITE.phone,
     email: SITE.email,
+    inLanguage: locale,
     areaServed: {
       "@type": "City",
       name: "Dubai",
@@ -164,6 +197,7 @@ export function organizationJsonLd() {
 }
 
 interface ArticleJsonLdInput {
+  locale: Locale;
   title: string;
   description: string;
   image: string;
@@ -172,8 +206,8 @@ interface ArticleJsonLdInput {
 }
 
 /** Article JSON-LD for a blog post, reusing the same organization node as publisher/author. */
-export function articleJsonLd({ title, description, image, publishDate, path }: ArticleJsonLdInput) {
-  const url = `${SITE.url}${path}`;
+export function articleJsonLd({ locale, title, description, image, publishDate, path }: ArticleJsonLdInput) {
+  const url = `${SITE.url}${localizedPath(locale, path)}`;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -184,6 +218,7 @@ export function articleJsonLd({ title, description, image, publishDate, path }: 
     dateModified: publishDate,
     mainEntityOfPage: url,
     url,
+    inLanguage: locale,
     author: {
       "@type": "Organization",
       "@id": organizationId(),
@@ -201,11 +236,23 @@ export function articleJsonLd({ title, description, image, publishDate, path }: 
   };
 }
 
-/** FAQPage JSON-LD, built from the site's FAQ data for rich-result eligibility. */
-export function faqJsonLd(faqs: FAQ[]) {
+interface PlainFaqEntry {
+  question: string;
+  answer: string;
+}
+
+/**
+ * FAQPage JSON-LD, built from the site's FAQ data for rich-result
+ * eligibility. Takes already-locale-resolved plain strings — callers
+ * pull from whichever data source (fleet/services/locations/faqHub/etc.)
+ * and resolve to the current locale before passing them in here, so this
+ * function stays decoupled from any one data file's schema.
+ */
+export function faqJsonLd(faqs: PlainFaqEntry[], locale: Locale = routing.defaultLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: locale,
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -226,19 +273,25 @@ interface BreadcrumbItem {
 /**
  * BreadcrumbList JSON-LD for a page's position in the site hierarchy.
  * Always starts from Home — pass the remaining crumbs down to (and
- * including) the current page.
+ * including) the current page. `homeLabel` defaults to English; pages pass
+ * a translated label once nav copy is localized in a later phase.
  */
-export function breadcrumbJsonLd(items: BreadcrumbItem[]) {
-  const crumbs: BreadcrumbItem[] = [{ name: "Home", path: "/" }, ...items];
+export function breadcrumbJsonLd(
+  items: BreadcrumbItem[],
+  locale: Locale = routing.defaultLocale,
+  homeLabel = "Home"
+) {
+  const crumbs: BreadcrumbItem[] = [{ name: homeLabel, path: "/" }, ...items];
 
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    inLanguage: locale,
     itemListElement: crumbs.map((crumb, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name: crumb.name,
-      item: `${SITE.url}${crumb.path}`,
+      item: `${SITE.url}${localizedPath(locale, crumb.path)}`,
     })),
   };
 }

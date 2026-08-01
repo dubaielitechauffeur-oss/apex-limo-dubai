@@ -1,0 +1,72 @@
+{
+  "home": {
+    "title": "迪拜高端专属司机与豪华轿车服务",
+    "description": "覆盖迪拜及阿联酋全境的豪华机场接送、企业专车服务、VIP专车及高管出行服务。几分钟内即可预订专业司机。"
+  },
+  "fleet": {
+    "title": "豪华车队 | 奔驰、宝马、路虎揽胜与劳斯莱斯幻影",
+    "description": "探索Apex Limo迪拜车队:奔驰S级、奔驰V级、宝马7系、凯迪拉克凯雷德、路虎揽胜行政版及劳斯莱斯幻影。立即在线预订或获取即时报价。"
+  },
+  "fleetVehicle": {
+    "titleTemplate": "{name} | 迪拜{category}专属司机服务",
+    "descriptionTemplate": "在迪拜预订配备专业司机的{name}。{description}",
+    "notFoundTitle": "未找到该车型",
+    "notFoundDescription": "在Apex Limo车队中未找到该车型。"
+  },
+  "services": {
+    "title": "迪拜专属司机服务",
+    "description": "涵盖迪拜及阿联酋全境的机场接送、企业专车、豪华专属司机、VIP专车服务、活动用车及婚礼专车服务。"
+  },
+  "service": {
+    "titleTemplate": "迪拜{name}",
+    "descriptionTemplate": "{shortDescription}立即在线预订,或从Apex Limo & Chauffeur Dubai获取即时报价。",
+    "notFoundTitle": "未找到该服务",
+    "notFoundDescription": "未能找到该服务。"
+  },
+  "locations": {
+    "title": "迪拜服务范围",
+    "description": "专属司机服务覆盖Dubai Marina、Palm Jumeirah、Downtown Dubai、Business Bay、JBR及迪拜国际机场(DXB)。"
+  },
+  "location": {
+    "titleTemplate": "{name}专属司机服务 | 迪拜",
+    "descriptionTemplate": "{shortDescription}立即在线预订,或从Apex Limo & Chauffeur Dubai获取即时报价。",
+    "notFoundTitle": "未找到该区域",
+    "notFoundDescription": "未能找到该服务区域。"
+  },
+  "blog": {
+    "title": "资讯",
+    "description": "来自Apex Limo & Chauffeur Dubai的出行贴士、专属司机指南、机场接送建议、商务出行洞察及豪华出行资讯。"
+  },
+  "blogPost": {
+    "notFoundTitle": "未找到该文章",
+    "notFoundDescription": "未能在Apex Limo资讯中找到该文章。"
+  },
+  "about": {
+    "title": "关于我们",
+    "description": "了解Apex Limo & Chauffeur Dubai——我们的使命、价值观、专业司机标准、豪华车队,以及我们在迪拜和阿联酋的服务范围。"
+  },
+  "contact": {
+    "title": "联系我们",
+    "description": "通过电话、WhatsApp或联系表单联系Apex Limo & Chauffeur Dubai。全天候提供预订、企业账户及紧急用车服务支持。"
+  },
+  "faqs": {
+    "title": "常见问题",
+    "description": "了解关于专属司机服务、机场接送、价格、预订、车型选择以及迪拜与阿联酋豪华出行服务的详细解答。"
+  },
+  "booking": {
+    "title": "在迪拜预订专属司机",
+    "description": "几分钟内即可在迪拜预订专业司机。选择您的车型,设置上下车地点,我们的团队将尽快确认您的预订。"
+  },
+  "quote": {
+    "title": "获取即时报价",
+    "description": "为您在迪拜的专属司机、机场接送或VIP专车服务获取快速、无义务的报价。告诉我们您的行程详情,我们会尽快回复。"
+  },
+  "privacyPolicy": {
+    "title": "隐私政策",
+    "description": "了解Apex Limo & Chauffeur Dubai如何收集、使用及保护在迪拜和阿联酋预订专属司机、机场接送、商务出行及活动用车服务客户的个人信息。"
+  },
+  "terms": {
+    "title": "条款与条件",
+    "description": "Apex Limo & Chauffeur Dubai的条款与条件,涵盖预订、取消、退款、付款、专属司机服务、客户责任、责任限制以及迪拜与阿联酋的服务可用性。"
+  }
+}

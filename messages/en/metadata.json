@@ -1,0 +1,72 @@
+{
+  "home": {
+    "title": "Premium Chauffeur & Limousine Service in Dubai",
+    "description": "Luxury airport transfers, corporate chauffeur services, VIP transportation and executive travel across Dubai and the UAE. Book a professional chauffeur in minutes."
+  },
+  "fleet": {
+    "title": "Luxury Fleet | Mercedes, BMW, Range Rover & Rolls-Royce Phantom",
+    "description": "Explore the Apex Limo Dubai fleet: Mercedes S-Class, Mercedes V-Class, BMW 7 Series, Cadillac Escalade, Range Rover Autobiography, and Rolls-Royce Phantom. Book online or get an instant quote."
+  },
+  "fleetVehicle": {
+    "titleTemplate": "{name} | Chauffeur-Driven {category} in Dubai",
+    "descriptionTemplate": "Book the {name} with a professional chauffeur in Dubai. {description}",
+    "notFoundTitle": "Vehicle Not Found",
+    "notFoundDescription": "This vehicle could not be found in the Apex Limo fleet."
+  },
+  "services": {
+    "title": "Chauffeur Services in Dubai",
+    "description": "Airport transfers, corporate chauffeur, luxury chauffeur, VIP transportation, event transportation, and wedding chauffeur service across Dubai and the UAE."
+  },
+  "service": {
+    "titleTemplate": "{name} in Dubai",
+    "descriptionTemplate": "{shortDescription} Book online or get an instant quote from Apex Limo & Chauffeur Dubai.",
+    "notFoundTitle": "Service Not Found",
+    "notFoundDescription": "This service could not be found."
+  },
+  "locations": {
+    "title": "Areas We Serve in Dubai",
+    "description": "Chauffeur service across Dubai Marina, Palm Jumeirah, Downtown Dubai, Business Bay, JBR, and Dubai International Airport (DXB)."
+  },
+  "location": {
+    "titleTemplate": "Chauffeur Service in {name} | Dubai",
+    "descriptionTemplate": "{shortDescription} Book online or get an instant quote from Apex Limo & Chauffeur Dubai.",
+    "notFoundTitle": "Location Not Found",
+    "notFoundDescription": "This service area could not be found."
+  },
+  "blog": {
+    "title": "Journal",
+    "description": "Travel tips, chauffeur guides, airport transfer advice, business travel insights and luxury transportation updates from Apex Limo & Chauffeur Dubai."
+  },
+  "blogPost": {
+    "notFoundTitle": "Article Not Found",
+    "notFoundDescription": "This article could not be found on the Apex Limo journal."
+  },
+  "about": {
+    "title": "About Us",
+    "description": "Learn about Apex Limo & Chauffeur Dubai — our mission, values, professional chauffeur standards, luxury fleet, and the areas we serve across Dubai and the UAE."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "Contact Apex Limo & Chauffeur Dubai by phone, WhatsApp, or our contact form. 24/7 availability for bookings, corporate accounts, and emergency chauffeur requests."
+  },
+  "faqs": {
+    "title": "Frequently Asked Questions",
+    "description": "Find answers about chauffeur services, airport transfers, pricing, bookings, fleet options and luxury transportation across Dubai and the UAE."
+  },
+  "booking": {
+    "title": "Book a Chauffeur in Dubai",
+    "description": "Book a professional chauffeur in Dubai in minutes. Choose your vehicle, set your pickup and drop-off, and our team will confirm your reservation shortly."
+  },
+  "quote": {
+    "title": "Get an Instant Quote",
+    "description": "Get a fast, no-obligation quote for chauffeur, airport transfer, or VIP transportation services in Dubai. Tell us your trip details and we'll respond shortly."
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "description": "How Apex Limo & Chauffeur Dubai collects, uses, and protects the personal data of clients booking chauffeur, airport transfer, corporate travel, and event transportation services in Dubai and the UAE."
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "description": "Terms and conditions for Apex Limo & Chauffeur Dubai, covering bookings, cancellations, refunds, payments, chauffeur services, client responsibilities, liability, and service availability across Dubai and the UAE."
+  }
+}

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import type { Locale } from "@/i18n/routing";
 import type { BookingFormData } from "@/lib/types";
-import { validateBookingForm, hasErrors } from "@/lib/validation";
+import { validateBookingForm, hasErrors, type ValidationMessages } from "@/lib/validation";
 import { dispatchLead } from "@/lib/notifications";
 
 function generateReference(): string {
@@ -9,22 +12,48 @@ function generateReference(): string {
   return `APX-${stamp}-${rand}`;
 }
 
+function resolveLocale(value: unknown): Locale {
+  return routing.locales.includes(value as Locale) ? (value as Locale) : routing.defaultLocale;
+}
+
 export async function POST(request: NextRequest) {
+  let locale: Locale = routing.defaultLocale;
   let body: BookingFormData;
 
   try {
-    body = await request.json();
+    const raw = await request.json();
+    locale = resolveLocale(raw.locale);
+    delete raw.locale;
+    body = raw;
   } catch {
+    const t = await getTranslations({ locale, namespace: "forms.status" });
     return NextResponse.json(
-      { success: false, message: "Invalid request body." },
+      { success: false, message: t("invalidBody") },
       { status: 400 }
     );
   }
 
-  const errors = validateBookingForm(body);
+  const t = await getTranslations({ locale, namespace: "forms" });
+  const validationMessages: ValidationMessages = {
+    fullNameRequired: t("validation.fullNameRequired"),
+    phoneInvalid: t("validation.phoneInvalid"),
+    emailInvalid: t("validation.emailInvalid"),
+    pickupRequired: t("validation.pickupRequired"),
+    dropoffRequired: t("validation.dropoffRequired"),
+    pickupDateRequired: t("validation.pickupDateRequired"),
+    pickupDatePast: t("validation.pickupDatePast"),
+    datePast: t("validation.datePast"),
+    timeRequired: t("validation.timeRequired"),
+    vehicleRequired: t("validation.vehicleRequired"),
+    passengersMin: t("validation.passengersMin"),
+    passengersMax: t("validation.passengersMax"),
+    serviceRequired: t("validation.serviceRequired"),
+  };
+
+  const errors = validateBookingForm(body, validationMessages);
   if (hasErrors(errors)) {
     return NextResponse.json(
-      { success: false, message: "Please correct the highlighted fields.", errors },
+      { success: false, message: t("status.correctFieldsApi"), errors },
       { status: 422 }
     );
   }
@@ -45,8 +74,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(
     {
       success: true,
-      message:
-        "Your booking request has been received. Our team will confirm shortly.",
+      message: t("booking.successMessageApi"),
       reference,
     },
     { status: 200 }

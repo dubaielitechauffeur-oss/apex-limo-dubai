@@ -1,0 +1,72 @@
+{
+  "home": {
+    "title": "Premium-Chauffeur- und Limousinenservice in Dubai",
+    "description": "Luxuriöse Flughafentransfers, Firmenchauffeurservice, VIP-Transport und Geschäftsreisen in ganz Dubai und den VAE. Buchen Sie in wenigen Minuten einen professionellen Chauffeur."
+  },
+  "fleet": {
+    "title": "Luxusflotte | Mercedes, BMW, Range Rover & Rolls-Royce Phantom",
+    "description": "Entdecken Sie die Apex Limo Dubai Flotte: Mercedes S-Klasse, Mercedes V-Klasse, BMW 7er, Cadillac Escalade, Range Rover Autobiography und Rolls-Royce Phantom. Buchen Sie online oder erhalten Sie ein Sofortangebot."
+  },
+  "fleetVehicle": {
+    "titleTemplate": "{name} | {category} mit Chauffeur in Dubai",
+    "descriptionTemplate": "Buchen Sie den {name} mit einem professionellen Chauffeur in Dubai. {description}",
+    "notFoundTitle": "Fahrzeug nicht gefunden",
+    "notFoundDescription": "Dieses Fahrzeug wurde in der Apex Limo Flotte nicht gefunden."
+  },
+  "services": {
+    "title": "Chauffeurservice in Dubai",
+    "description": "Flughafentransfers, Firmenchauffeur, Luxus-Chauffeur, VIP-Transport, Veranstaltungstransport und Hochzeitschauffeur in ganz Dubai und den VAE."
+  },
+  "service": {
+    "titleTemplate": "{name} in Dubai",
+    "descriptionTemplate": "{shortDescription} Buchen Sie online oder erhalten Sie ein Sofortangebot von Apex Limo & Chauffeur Dubai.",
+    "notFoundTitle": "Service nicht gefunden",
+    "notFoundDescription": "Dieser Service wurde nicht gefunden."
+  },
+  "locations": {
+    "title": "Einsatzgebiete in Dubai",
+    "description": "Chauffeurservice in Dubai Marina, Palm Jumeirah, Downtown Dubai, Business Bay, JBR und am Dubai International Airport (DXB)."
+  },
+  "location": {
+    "titleTemplate": "Chauffeurservice in {name} | Dubai",
+    "descriptionTemplate": "{shortDescription} Buchen Sie online oder erhalten Sie ein Sofortangebot von Apex Limo & Chauffeur Dubai.",
+    "notFoundTitle": "Standort nicht gefunden",
+    "notFoundDescription": "Dieses Einsatzgebiet wurde nicht gefunden."
+  },
+  "blog": {
+    "title": "Journal",
+    "description": "Reisetipps, Chauffeur-Guides, Ratschläge zu Flughafentransfers, Einblicke in Geschäftsreisen und Neuigkeiten zum Luxustransport von Apex Limo & Chauffeur Dubai."
+  },
+  "blogPost": {
+    "notFoundTitle": "Artikel nicht gefunden",
+    "notFoundDescription": "Dieser Artikel konnte im Apex Limo Journal nicht gefunden werden."
+  },
+  "about": {
+    "title": "Über uns",
+    "description": "Erfahren Sie mehr über Apex Limo & Chauffeur Dubai — unsere Mission, Werte, professionellen Chauffeurstandards, unsere Luxusflotte und die Gebiete, die wir in ganz Dubai und den VAE bedienen."
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "description": "Kontaktieren Sie Apex Limo & Chauffeur Dubai per Telefon, WhatsApp oder unser Kontaktformular. Rund um die Uhr verfügbar für Buchungen, Firmenkonten und dringende Anfragen."
+  },
+  "faqs": {
+    "title": "Häufig gestellte Fragen",
+    "description": "Finden Sie Antworten zu Chauffeurservice, Flughafentransfers, Preisen, Buchungen, Flottenoptionen und Luxustransport in ganz Dubai und den VAE."
+  },
+  "booking": {
+    "title": "Chauffeur in Dubai buchen",
+    "description": "Buchen Sie in wenigen Minuten einen professionellen Chauffeur in Dubai. Wählen Sie Ihr Fahrzeug, legen Sie Abhol- und Zielort fest, und unser Team bestätigt Ihre Reservierung in Kürze."
+  },
+  "quote": {
+    "title": "Sofortangebot erhalten",
+    "description": "Erhalten Sie ein schnelles, unverbindliches Angebot für Chauffeurservice, Flughafentransfer oder VIP-Transport in Dubai. Teilen Sie uns die Details Ihrer Reise mit, und wir melden uns in Kürze."
+  },
+  "privacyPolicy": {
+    "title": "Datenschutzerklärung",
+    "description": "Wie Apex Limo & Chauffeur Dubai die persönlichen Daten von Kunden erhebt, nutzt und schützt, die Chauffeurservice, Flughafentransfer, Geschäftsreisen und Veranstaltungstransport in Dubai und den VAE buchen."
+  },
+  "terms": {
+    "title": "Allgemeine Geschäftsbedingungen",
+    "description": "Allgemeine Geschäftsbedingungen von Apex Limo & Chauffeur Dubai zu Buchungen, Stornierungen, Rückerstattungen, Zahlungen, Chauffeurservice, Kundenpflichten, Haftung und Serviceverfügbarkeit in Dubai und den VAE."
+  }
+}

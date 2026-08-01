@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { MapPin } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Reveal from "@/components/shared/Reveal";
@@ -21,19 +22,19 @@ interface CoverageBlockProps {
  * a full Locations section. Shared between the service detail pages (sits
  * just above the FAQ) and the Fleet page (sits just after the listings).
  */
-export default function CoverageBlock({
-  title = "Available Across Dubai & UAE",
-}: CoverageBlockProps) {
+export default async function CoverageBlock({ title }: CoverageBlockProps) {
+  const resolvedTitle = title ?? (await getTranslations("locations.coverage"))("title");
+  const tA11y = await getTranslations("common.a11y");
   return (
     <section className="border-t border-gold/10 bg-linen py-14">
       <Container>
-        <Reveal className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
+        <Reveal className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-start">
           <div className="flex items-center gap-3">
             <MapPin className="h-5 w-5 shrink-0 text-gold-deep" strokeWidth={1.5} aria-hidden="true" />
-            <h2 className="font-display text-lg text-obsidian sm:text-xl">{title}</h2>
+            <h2 className="font-display text-lg text-obsidian sm:text-xl">{resolvedTitle}</h2>
           </div>
 
-          <nav aria-label="Areas covered" className="flex flex-wrap justify-center gap-2 sm:justify-end">
+          <nav aria-label={tA11y("areasCovered")} className="flex flex-wrap justify-center gap-2 sm:justify-end">
             {COVERAGE_LOCATIONS.map((location) => (
               <Link
                 key={location.slug}

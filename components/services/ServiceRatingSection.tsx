@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Star, type LucideIcon } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
@@ -5,10 +6,10 @@ import Reveal from "@/components/shared/Reveal";
 import { RATING } from "@/lib/constants";
 
 /** Renders a row of filled/outline stars for the site rating (out of 5). */
-function StarRow() {
+function StarRow({ ariaLabel }: { ariaLabel: string }) {
   const filled = Math.round(parseFloat(RATING));
   return (
-    <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+    <div className="flex gap-0.5" role="img" aria-label={ariaLabel}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
@@ -21,11 +22,13 @@ function StarRow() {
 }
 
 interface ServiceRatingSectionProps {
-  eyebrow?: string;
-  title?: string;
+  eyebrow: string;
+  title: string;
   metricIcon: LucideIcon;
   metricValue: string;
   metricLabel: string;
+  reviewsCaption: string;
+  outOf5Label: string;
 }
 
 /**
@@ -33,13 +36,16 @@ interface ServiceRatingSectionProps {
  * the homepage Testimonials rating row (stars, RATING constant, ivory
  * section), paired with one metric that varies by service context.
  */
-export default function ServiceRatingSection({
-  eyebrow = "Trusted in Dubai",
-  title = "Rated by Our Clients",
+export default async function ServiceRatingSection({
+  eyebrow,
+  title,
   metricIcon: MetricIcon,
   metricValue,
   metricLabel,
+  reviewsCaption,
+  outOf5Label,
 }: ServiceRatingSectionProps) {
+  const tA11y = await getTranslations("common.a11y");
   return (
     <section className="border-t border-gold/10 bg-pearl py-24">
       <Container>
@@ -49,13 +55,13 @@ export default function ServiceRatingSection({
 
         <div className="mx-auto mt-12 flex flex-col items-center justify-center gap-10 sm:flex-row sm:gap-16">
           <Reveal className="flex flex-col items-center gap-3 text-center">
-            <StarRow />
+            <StarRow ariaLabel={tA11y("ratingOutOf5Template", { rating: RATING })} />
             <div className="flex items-baseline gap-2">
               <span className="font-display text-4xl text-obsidian">{RATING}</span>
-              <span className="text-xs uppercase tracking-wide text-graphite">/ 5 Rating</span>
+              <span className="text-xs uppercase tracking-wide text-graphite">{outOf5Label}</span>
             </div>
             <p className="text-xs uppercase tracking-[0.2em] text-graphite">
-              Based on verified client reviews
+              {reviewsCaption}
             </p>
           </Reveal>
 

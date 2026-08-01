@@ -1,0 +1,149 @@
+{
+  "privacyPolicy": {
+    "eyebrow": "Rechtliches",
+    "title": "Datenschutzerklärung",
+    "lastUpdatedLabel": "Zuletzt aktualisiert",
+    "intro": "{siteName} betreibt einen Chauffeurtransportdienst in ganz Dubai und den Vereinigten Arabischen Emiraten, einschließlich Flughafentransfers, Geschäftsreisen, VIP-Transport, Veranstaltungslogistik und Hochzeitschauffeurdiensten. Diese Datenschutzerklärung erläutert, wie wir personenbezogene Daten erheben, verwenden, offenlegen und schützen, wenn Sie unsere Website besuchen, ein Angebot anfordern, eine Buchung vornehmen oder anderweitig mit uns kommunizieren, und beschreibt die Ihnen in Bezug auf diese Daten zur Verfügung stehenden Wahlmöglichkeiten und Rechte.",
+    "s1": {
+      "heading": "1. Einleitung",
+      "p1": "{siteName} („Apex‟, „wir‟ oder „unser‟) respektiert Ihre Privatsphäre und verpflichtet sich, die personenbezogenen Daten zu schützen, die Sie mit uns teilen, wenn Sie unsere Website nutzen, ein Angebot anfordern, einen Chauffeur buchen oder anderweitig mit unseren Luxustransportdiensten in Dubai und den gesamten VAE interagieren. Diese Richtlinie erläutert, welche Daten wir erheben, warum wir sie erheben, wie sie verwendet und gespeichert werden, mit wem sie geteilt werden können, und welche Rechte Sie in Bezug darauf haben. Sie gilt für Besucher unserer Website, Personen, die ein Angebot anfordern oder eine Buchung vornehmen, Firmenkunden und deren reisende Mitarbeiter sowie jeden, der unser Team per Telefon, E-Mail oder WhatsApp kontaktiert.",
+      "p2": "Durch die Nutzung unserer Website oder die Inanspruchnahme unserer Chauffeurdienste bestätigen Sie, dass Sie diese Datenschutzerklärung gelesen und verstanden haben. Falls Sie mit einem Teil davon nicht einverstanden sind, nutzen Sie bitte unsere Website oder Dienste nicht, oder kontaktieren Sie uns direkt, um Ihre Bedenken zu besprechen, bevor Sie eine Buchung vornehmen."
+    },
+    "s2": {
+      "heading": "2. Von uns erhobene Informationen",
+      "sub1Heading": "Buchungs- und Fahrtdaten",
+      "sub1Paragraph": "Wenn Sie eine Buchung vornehmen oder ein Angebot für Flughafentransfers, Firmenchauffeurservice, Luxus- oder VIP-Transport, Veranstaltungslogistik oder einen Hochzeitschauffeur anfordern, erheben wir die zur Planung und Durchführung dieser Fahrt erforderlichen Informationen: Ihren vollständigen Namen, Ihre Telefonnummer, E-Mail-Adresse, Abhol- und Zielorte, Reisedatum und -uhrzeit, Flugnummer (bei Flughafentransfers), Fahrzeugpräferenz, Anzahl der Passagiere und des Gepäcks sowie alle besonderen Wünsche — etwa Kindersitze, Bedürfnisse hinsichtlich der Barrierefreiheit oder veranstaltungsspezifische Anweisungen —, die Sie mit uns teilen.",
+      "sub2Heading": "Kontakt- und Anfragedaten",
+      "sub2Paragraph": "Wenn Sie uns über das Kontaktformular unserer Website, per Telefon oder über WhatsApp kontaktieren, erheben wir die Informationen, die Sie in diesem Gespräch angeben — etwa Ihren Namen, Ihre Kontaktdaten und den Inhalt Ihrer Anfrage —, damit wir Ihnen antworten und den Austausch zu Qualitäts- und Referenzzwecken dokumentieren können.",
+      "sub3Heading": "Firmenkontodaten",
+      "sub3Paragraph": "Für Kunden, die ein dauerhaftes Firmenkonto einrichten, erheben wir zusätzlich Unternehmensdetails, autorisierte Buchungskontakte, Abrechnungsinformationen und eine Aufzeichnung der unter diesem Konto gebuchten Fahrten, um die Rechnungsstellung und Kontoverwaltung zu ermöglichen.",
+      "sub4Heading": "Zahlungsinformationen",
+      "sub4Paragraph": "Bei Online-Zahlungen werden Karten- und Zahlungsdaten direkt von unseren Zahlungsabwicklungspartnern nach deren eigenen Sicherheitsstandards verarbeitet; wir speichern keine vollständigen Kartennummern auf unseren eigenen Systemen.",
+      "sub5Heading": "Automatisch erhobene Daten",
+      "sub5Paragraph": "Wie die meisten Websites erheben wir möglicherweise automatisch begrenzte technische Informationen — etwa Browsertyp, Gerätetyp, ungefährer Standort und allgemeine Nutzungsmuster — über Cookies und ähnliche Technologien, wie in der nachstehenden Cookie-Richtlinie beschrieben."
+    },
+    "s3": {
+      "heading": "3. Wie wir Ihre Informationen verwenden",
+      "items": [
+        "Zur Bestätigung, Verwaltung und Erfüllung Ihrer Buchung oder Ihres Angebotswunsches, einschließlich der Zuordnung eines passenden Fahrzeugs und Chauffeurs",
+        "Zur Kommunikation mit Ihnen über Ihre Fahrt, einschließlich Flugverfolgungs-Updates, Fahrerdetails und Zeitplanänderungen",
+        "Zur Beantwortung von Anfragen, die über unser Kontaktformular, per Telefon oder über WhatsApp eingereicht werden",
+        "Zur Führung von Aufzeichnungen für Rechnungsstellung, Quittungen und Firmenkonten",
+        "Zur Koordination von Mehrfahrzeugbuchungen für Veranstaltungen, Hochzeiten sowie VIP- oder Delegationstransporte",
+        "Zur Erfüllung unserer Sicherheits-, Versicherungs- und regulatorischen Pflichten als lizenzierter Transportanbieter",
+        "Zur Verbesserung unserer Website, unserer Dienstleistungen und des gesamten Kundenerlebnisses",
+        "Zur Einhaltung der geltenden rechtlichen und regulatorischen Pflichten in den VAE"
+      ]
+    },
+    "s4": {
+      "heading": "4. Cookies und ähnliche Technologien",
+      "p1": "Unsere Website kann Cookies und ähnliche Technologien verwenden, um Präferenzen zu speichern, zu verstehen, wie Besucher die Website nutzen, die Wirksamkeit unserer Inhalte zu messen und die Leistung zu verbessern. Dies kann essenzielle Cookies umfassen, die für die Funktion der Website erforderlich sind, sowie Analyse-Cookies, die uns helfen zu verstehen, welche Seiten und Dienste Besucher am nützlichsten finden. Sie können Cookies jederzeit über Ihre Browsereinstellungen steuern oder deaktivieren; dies kann bestimmte Funktionen der Website beeinträchtigen, etwa gespeicherte Präferenzen."
+    },
+    "s5": {
+      "heading": "5. Weitergabe von Informationen",
+      "p1": "Wir verkaufen Ihre personenbezogenen Daten nicht. Wir können begrenzte Buchungsinformationen mit dem für Ihre Fahrt zugewiesenen Chauffeur teilen (z. B. Ihren Namen, den Abholort und die Flugnummer) sowie mit Dienstleistern, die unseren Betrieb unterstützen — einschließlich Kommunikationstools, Zahlungsabwicklern und, sofern relevant, Partner-Fahrzeugbetreibern, die eine große Mehrfahrzeugbuchung unterstützen. Diesen Parteien werden nur die zur Erfüllung ihrer Funktion erforderlichen Informationen zur Verfügung gestellt, und es wird erwartet, dass sie diese sicher handhaben. Wir können Informationen auch offenlegen, wenn dies gesetzlich vorgeschrieben ist, von einer zuständigen Behörde der VAE verlangt wird, oder um die Sicherheit unserer Kunden, Chauffeure oder der Öffentlichkeit zu schützen."
+    },
+    "s6": {
+      "heading": "6. Internationale Datenübermittlungen",
+      "p1": "Einige der Drittanbieter-Tools, die wir zum Betrieb unserer Website und zur Kommunikation mit Kunden nutzen — etwa Hosting-, E-Mail- oder Messaging-Anbieter —, können Daten außerhalb der VAE speichern oder verarbeiten. In diesem Fall ergreifen wir angemessene Maßnahmen, um sicherzustellen, dass diese Anbieter einen angemessenen, mit dieser Richtlinie übereinstimmenden Datenschutzstandard einhalten."
+    },
+    "s7": {
+      "heading": "7. Datenspeicherung",
+      "p1": "Wir bewahren Buchungs-, Kontakt- und Firmenkontodaten so lange auf, wie es zur Erfüllung der in dieser Richtlinie beschriebenen Zwecke erforderlich ist, einschließlich laufender Firmenkonten und dauerhafter Kundenbeziehungen, sowie zur Einhaltung rechtlicher, buchhalterischer, versicherungstechnischer oder regulatorischer Aufbewahrungspflichten. Sobald Daten für diese Zwecke nicht mehr benötigt werden, ergreifen wir angemessene Maßnahmen, um sie zu löschen oder zu anonymisieren."
+    },
+    "s8": {
+      "heading": "8. Ihre Rechte",
+      "p1": "Je nach Ihrem Standort haben Sie möglicherweise das Recht, auf Ihre personenbezogenen Daten zuzugreifen, sie zu berichtigen, zu löschen oder deren Nutzung einzuschränken, bestimmten Verarbeitungen zu widersprechen und eine Kopie der über Sie gespeicherten Daten in einem übertragbaren Format anzufordern. Firmenkunden können auch eine Bestätigung anfordern, welche Daten für ihre autorisierten Buchungskontakte gespeichert sind. Um eines dieser Rechte auszuüben, kontaktieren Sie uns über die Angaben in Abschnitt 12 unten — wir werden innerhalb eines angemessenen Zeitraums antworten."
+    },
+    "s9": {
+      "heading": "9. Datensicherheit",
+      "p1": "Wir treffen angemessene technische und organisatorische Maßnahmen, um Ihre personenbezogenen Daten vor unbefugtem Zugriff, Verlust, Veränderung oder Missbrauch zu schützen, einschließlich der Beschränkung des Zugangs zu Buchungs- und Kontaktdaten auf Teammitglieder, die diese für ihre Arbeit benötigen. Keine Übertragungs- oder Speichermethode ist vollständig sicher, und obwohl wir uns bemühen, Ihre Informationen zu schützen, können wir keine absolute Sicherheit garantieren."
+    },
+    "s10": {
+      "heading": "10. Datenschutz für Kinder",
+      "p1": "Unsere Website und Buchungsdienste sind für die Nutzung durch Erwachsene bestimmt, die einen Chauffeurtransport organisieren, auch im Namen von Familienmitgliedern und Kindern als Fahrgästen. Wir erheben wissentlich keine personenbezogenen Daten direkt von Kindern über unsere Website."
+    },
+    "s11": {
+      "heading": "11. Änderungen dieser Richtlinie",
+      "p1": "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren, um Änderungen unserer Dienstleistungen, Technologie oder rechtlichen Verpflichtungen widerzuspiegeln. Etwaige Änderungen werden auf dieser Seite mit einem aktualisierten Datum „Zuletzt aktualisiert‟ veröffentlicht, und wesentliche Änderungen werden gegebenenfalls hervorgehoben."
+    },
+    "s12": {
+      "heading": "12. Kontaktieren Sie Uns",
+      "p1Template": "Bei Fragen zu dieser Datenschutzerklärung, zur Ausübung Ihrer Datenrechte oder um Bedenken hinsichtlich der Handhabung Ihrer Daten zu äußern, kontaktieren Sie uns unter <emailLink>{email}</emailLink> oder <phoneLink>{phone}</phoneLink>. Unser Team steht Ihnen rund um die Uhr für buchungsbezogene Anfragen zur Verfügung und während der regulären Geschäftszeiten für Datenschutzanfragen."
+    }
+  },
+  "terms": {
+    "eyebrow": "Rechtliches",
+    "title": "Allgemeine Geschäftsbedingungen",
+    "lastUpdatedLabel": "Zuletzt aktualisiert",
+    "introTemplate": "Diese Allgemeinen Geschäftsbedingungen regeln Ihre Nutzung der Website von {siteName} sowie Ihre Buchung jeglicher Chauffeurtransportdienste bei uns, einschließlich Flughafentransfers, Firmenchauffeurservice, Luxus- und VIP-Transport, Veranstaltungstransport und Hochzeitschauffeurservice in ganz Dubai und den weiteren VAE. Durch die Anforderung eines Angebots, die Vornahme einer Buchung oder die anderweitige Nutzung unserer Dienstleistungen erklären Sie sich mit der Einhaltung dieser Bedingungen einverstanden.",
+    "s1": {
+      "heading": "1. Buchungen",
+      "p1Template": "Durch die Anforderung eines Angebots oder die Buchung eines Chauffeurservice bei {siteName} bestätigen Sie, dass die angegebenen Details — einschließlich Abhol- und Zielorte, Datum, Uhrzeit, gegebenenfalls Flugnummer, Fahrzeugauswahl sowie Passagier- und Gepäckanzahl — nach bestem Wissen korrekt sind. Eine Buchung gilt erst dann als bestätigt, wenn Sie von unserem Team per Telefon, E-Mail oder WhatsApp eine Bestätigung unter Angabe Ihrer Buchungsreferenznummer erhalten haben; eine eingereichte Anfrage oder ein Angebotswunsch allein stellt keine bestätigte Buchung dar.",
+      "p2": "Buchungen können für einen einfachen oder Hin- und Rückflughafentransfer, eine stunden- oder ganztägige Anmietung, eine Mehrfahrzeugbuchung für eine Veranstaltung oder Hochzeit, oder ein dauerhaftes Firmenkonto vorgenommen werden. Wenn eine Buchung mehrere Fahrzeuge oder eine erweiterte Route umfasst, werden die endgültigen Fahrzeugzuweisungen und das Timing vor der Fahrt direkt mit Ihrer Kontaktperson bestätigt."
+    },
+    "s2": {
+      "heading": "2. Stornierungen",
+      "items": [
+        "Stornierungen, die mehr als 24 Stunden vor der geplanten Abholung erfolgen, berechtigen zu einer vollständigen Rückerstattung oder kostenlosen Umbuchung.",
+        "Stornierungen innerhalb von 24 Stunden vor der geplanten Abholung können mit einer Stornogebühr belegt werden, die bei der Buchung mitgeteilt wird.",
+        "Nichterscheinen, bei dem der Kunde am bestätigten Abholpunkt innerhalb der geltenden Wartezeit nicht erreicht oder gefunden werden kann, kann in voller Höhe berechnet werden.",
+        "Für Hochzeiten, Veranstaltungen und Mehrfahrzeugbuchungen kann eine gesonderte Stornierungsrichtlinie gelten — einschließlich einer längeren Kündigungsfrist oder einer nicht erstattungsfähigen Anzahlung —, die bei der Buchung schriftlich bestätigt wird.",
+        "Firmenkonten können dauerhafte Buchungen gemäß den bei Einrichtung des Kontos vereinbarten Kündigungsbedingungen stornieren oder ändern."
+      ]
+    },
+    "s3": {
+      "heading": "3. Rückerstattungen",
+      "p1Template": "Wenn eine Stornierung gemäß Abschnitt 2 oben für eine Rückerstattung infrage kommt, oder wenn {siteName} eine bestätigte Buchung aufgrund von Umständen, die in unserem Einflussbereich liegen, nicht erfüllen kann, wird jeder bereits gezahlte Betrag innerhalb eines angemessenen Zeitraums, in der Regel innerhalb von 5–10 Werktagen je nach Zahlungsmethode und Anbieter, auf die ursprüngliche Zahlungsmethode zurückerstattet. Anzahlungen für Hochzeiten, Veranstaltungen oder Mehrfahrzeugbuchungen können nicht erstattungsfähig sein, sobald ein bestimmtes Fahrzeug oder Datum in Ihrem Namen reserviert wurde, wie bei der Buchung angegeben. Rückerstattungsanträge sollten mit Ihrer Buchungsreferenznummer an die Kontaktdaten in Abschnitt 12 gesendet werden."
+    },
+    "s4": {
+      "heading": "4. Zahlungen",
+      "p1": "Die Preisgestaltung wird zum Zeitpunkt der Buchung oder des Angebots bestätigt und ist für die vereinbarte Route fest, außer wenn sich der Umfang der Fahrt ändert — etwa durch zusätzliche Stopps, verlängerte Wartezeit, zusätzliche Stunden oder ein zusätzliches Fahrzeug. Standardmautgebühren sind im angebotenen Preis für Stadttransfers enthalten. Firmenkonten können monatlich nach separat vereinbarten Bedingungen abgerechnet werden, anstatt pro Fahrt zu zahlen. Akzeptierte Zahlungsmethoden (Karte, Banküberweisung oder Bargeld für ausgewählte Buchungen) werden bei der Buchung bestätigt, und für größere Veranstaltungs-, Hochzeits- oder Mehrfahrzeugbuchungen kann eine Anzahlung verlangt werden."
+    },
+    "s5": {
+      "heading": "5. Chauffeurdienste",
+      "p1Template": "Jede Buchung wird von einem professionellen, lizenzierten Chauffeur ausgeführt, der bei {siteName} angestellt oder unter Vertrag ist; keines unserer Fahrzeuge wird zur Selbstfahrer-Anmietung zur Verfügung gestellt. Chauffeure sind in professioneller Etikette, Diskretion und sicherem Fahren geschult und werden erwartet, sich bei jeder Fahrt entsprechend zu verhalten. Obwohl wir alle angemessenen Anstrengungen unternehmen, das spezifisch angefragte Fahrzeugmodell zuzuweisen, behält sich {siteName} das Recht vor, bei unvorhergesehenen mechanischen Problemen, Wartungsbedarf oder betrieblicher Notwendigkeit ein vergleichbares oder höherwertiges Fahrzeug bereitzustellen, ohne den Servicestandard zu senken."
+    },
+    "s6": {
+      "heading": "6. Wartezeitrichtlinie",
+      "p1": "Bei Flughafenabholungen ist eine kostenlose Wartezeit enthalten, um Einwanderungskontrolle und Gepäckausgabe zu berücksichtigen, gemessen ab der tatsächlichen Landezeit des Fluges mittels Live-Flugverfolgung statt der ursprünglich geplanten Landezeit. Bei allen anderen Abholungen ist eine kurze kostenlose Karenzzeit ab der geplanten Abholzeit enthalten. Wartezeit über die kostenlose Periode hinaus kann zu einem Stundensatz berechnet werden, der bei der Buchung oder auf Anfrage mitgeteilt wird."
+    },
+    "s7": {
+      "heading": "7. Bedingungen für Flughafentransfers",
+      "items": [
+        "Flugnummern müssen bei der Buchung angegeben werden, damit wir Ihren Flug für Ankünfte verfolgen können.",
+        "Die Abholzeit für Ankünfte wird automatisch anhand der Live-Flugverfolgung berechnet, nicht anhand der ursprünglich geplanten Landezeit.",
+        "Bei Abflügen sollten Kunden zur bestätigten Abholzeit bereit sein, um Zeit für Check-in und Sicherheitskontrolle am Flughafen einzuplanen.",
+        "Der Meet-and-Greet-Service umfasst ein Namensschild in der Ankunftshalle und Hilfe beim Gepäcktransport zum Fahrzeug.",
+        "Die Abdeckung umfasst den Dubai International Airport (DXB) und den Al Maktoum International Airport (DWC) sowie auf Anfrage weitere Flughäfen der VAE."
+      ]
+    },
+    "s8": {
+      "heading": "8. Kundenverantwortlichkeiten",
+      "items": [
+        "Genaue Kontaktdaten, Orte und Zeiten bei der Buchung angeben und uns umgehend informieren, falls sich diese ändern.",
+        "Sicherstellen, dass Passagierzahl und Gepäck die angegebene Kapazität des gewählten Fahrzeugs nicht überschreiten.",
+        "Sich Chauffeuren gegenüber respektvoll verhalten; beleidigendes, unsicheres oder rechtswidriges Verhalten kann zum Abbruch der Fahrt ohne Rückerstattung führen.",
+        "Uns im Voraus über besondere Anforderungen informieren, etwa Kindersitze, Bedürfnisse hinsichtlich der Barrierefreiheit oder veranstaltungsspezifische Anweisungen.",
+        "Verantwortlich sein für das Verhalten aller Passagiere, die unter einer einzigen Buchung reisen, einschließlich etwaiger Schäden am Fahrzeug.",
+        "Alle geltenden Gesetze während der Fahrt einhalten, einschließlich Anschnallpflicht und etwaiger vom Chauffeur aus Sicherheitsgründen mitgeteilter Einschränkungen."
+      ]
+    },
+    "s9": {
+      "heading": "9. Serviceverfügbarkeit",
+      "p1Template": "Chauffeur- und Buchungsdienste sind rund um die Uhr, sieben Tage die Woche, einschließlich gesetzlicher Feiertage, in ganz Dubai und den weiteren VAE verfügbar. Obwohl wir uns nach Kräften bemühen, bestätigte Buchungen ausnahmslos einzuhalten, kann die Verfügbarkeit eines bestimmten Fahrzeugmodells für Anfragen am selben Tag oder in letzter Minute nicht garantiert werden und kann während Stoßzeiten wie großen gesetzlichen Feiertagen oder stadtweiten Großveranstaltungen eingeschränkter sein. {siteName} haftet nicht für Verzögerungen oder Serviceunterbrechungen, die durch Umstände außerhalb unserer angemessenen Kontrolle verursacht werden, einschließlich, aber nicht beschränkt auf schwere Wetterbedingungen, Straßensperrungen, höhere Gewalt oder Handlungen Dritter wie Flughafen- oder Fluggesellschaftsbetrieb."
+    },
+    "s10": {
+      "heading": "10. Haftung",
+      "p1Template": "{siteName} unterhält eine gewerbliche Versicherung für seine Flotte und Chauffeure, die den Personentransport im gewöhnlichen Geschäftsbetrieb abdeckt. Unsere Haftung für Ansprüche, die aus einer Buchung entstehen, ist auf den Wert dieser Buchung beschränkt, außer in Fällen, in denen die Haftung nach geltendem VAE-Recht nicht beschränkt oder ausgeschlossen werden kann (etwa Haftung für Tod oder Personenschäden durch Fahrlässigkeit). Wir haften nicht für indirekte oder Folgeschäden, einschließlich verpasster Flüge, Anschlüsse oder Veranstaltungen, außer wenn ein solcher Schaden unmittelbar auf unsere eigene Fahrlässigkeit bei der Erbringung der Dienstleistung zurückzuführen ist."
+    },
+    "s11": {
+      "heading": "11. Anwendbares Recht",
+      "p1": "Diese Bedingungen unterliegen den Gesetzen der Vereinigten Arabischen Emirate, und alle Streitigkeiten, die sich aus einer Buchung ergeben oder damit im Zusammenhang stehen, unterliegen der ausschließlichen Zuständigkeit der Gerichte von Dubai."
+    },
+    "s12": {
+      "heading": "12. Kontaktieren Sie Uns",
+      "p1Template": "Bei Fragen zu diesen Allgemeinen Geschäftsbedingungen oder um eine bestimmte Buchung, Stornierung oder Rückerstattung zu besprechen, kontaktieren Sie uns unter <emailLink>{email}</emailLink> oder <phoneLink>{phone}</phoneLink>, rund um die Uhr erreichbar."
+    }
+  }
+}

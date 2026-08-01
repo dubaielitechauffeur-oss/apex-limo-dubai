@@ -1,5 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import Container from "@/components/shared/Container";
 import { PRIMARY_CTA } from "@/lib/constants";
 
@@ -8,13 +9,15 @@ import { PRIMARY_CTA } from "@/lib/constants";
  * as the homepage Hero, but ~45vh instead of near-full-viewport since
  * this is a secondary page, not the main landing hero.
  */
-export default function ServicesHero() {
+export default async function ServicesHero() {
+  const t = await getTranslations("services.hero");
+
   return (
     <section className="relative isolate flex min-h-[420px] items-center overflow-hidden bg-obsidian py-20 sm:min-h-[45vh]">
       <div className="absolute inset-0">
         <Image
           src="/images/services/services-hero-chauffeur-door.webp"
-          alt="Apex Limo chauffeur in white gloves opening the door of a black Mercedes S-Class with the Dubai skyline and Burj Khalifa behind"
+          alt={t("imageAlt")}
           fill
           priority
           sizes="100vw"
@@ -35,22 +38,20 @@ export default function ServicesHero() {
       <Container className="relative z-10 text-center">
         <div className="mx-auto max-w-2xl">
           <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
-            Our Services
+            {t("eyebrow")}
           </span>
           <h1 className="mt-5 animate-slide-in-left font-display text-4xl leading-[1.1] text-heading sm:text-5xl lg:text-6xl">
-            Chauffeur Services in Dubai
+            {t("title")}
           </h1>
           <p className="mx-auto mt-6 max-w-xl animate-fade-in text-base leading-relaxed text-smoke [animation-delay:200ms] sm:text-lg">
-            From a single airport pickup to a fully coordinated wedding
-            convoy — every Apex service is built around punctuality,
-            discretion, and a fleet that matches the occasion.
+            {t("subtitle")}
           </p>
           <div className="mt-8 flex animate-fade-in justify-center [animation-delay:350ms]">
             <Link
               href={PRIMARY_CTA.book.href}
               className="inline-flex items-center justify-center rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
             >
-              Book Chauffeur
+              {t("cta")}
             </Link>
           </div>
         </div>

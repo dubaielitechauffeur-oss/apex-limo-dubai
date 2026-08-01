@@ -1,0 +1,67 @@
+{
+  "hero": {
+    "eyebrow": "Dubais führender Chauffeurservice",
+    "titleLine1": "Jede Fahrt wird besonders",
+    "titleLine2Template": "mit <brand>Apex Limo</brand>",
+    "description": "Erleben Sie diskrete, professionelle und luxuriöse Fahrten mit Chauffeur in ganz Dubai und den VAE. Flughafentransfers, Geschäftsreisen und private Chauffeurdienste, bis ins Detail auf Sie abgestimmt.",
+    "bookNow": "Jetzt buchen",
+    "ourServices": "Unsere Services",
+    "trustConcierge": "24/7 Concierge-Service",
+    "trustVehiclesTemplate": "{count} Luxusfahrzeuge",
+    "trustMultilingual": "Mehrsprachige Chauffeure",
+    "imageAlt": "Apex Limo Chauffeur neben einer schwarzen Mercedes S-Klasse in Dubai"
+  },
+  "featureStrip": {
+    "punctualTitle": "Pünktlich",
+    "punctualDescription": "Wir schätzen Ihre Zeit und garantieren jedes Mal einen pünktlichen Service.",
+    "professionalTitle": "Professionelle Chauffeure",
+    "professionalDescription": "Lizenzierte, überprüfte Fahrer, geschult in Etikette und Diskretion.",
+    "safeTitle": "Sicher und zuverlässig",
+    "safeDescription": "Versicherte Fahrzeuge und durchgehend hohe Sicherheitsstandards bei jeder einzelnen Fahrt.",
+    "luxuryTitle": "Luxuriöses Erlebnis",
+    "luxuryDescription": "Eine erstklassige Flotte und aufmerksamer Service, passend zu jedem Anlass."
+  },
+  "brandsShowcase": {
+    "eyebrow": "Unsere Partner",
+    "title": "Unsere Marken",
+    "viewFleet": "Unsere Flotte ansehen",
+    "bookCar": "Fahrzeug buchen",
+    "requestDetails": "Details anfragen"
+  },
+  "trustStats": {
+    "rating": "Bewertung",
+    "airportTransfers": "Flughafentransfers",
+    "happyClients": "Zufriedene Kunden",
+    "concierge": "Concierge"
+  },
+  "whyChooseUs": {
+    "eyebrow": "Warum Apex",
+    "title": "Beständigkeit ist der wahre Luxus",
+    "subtitle": "Ein schönes Auto fahren kann jeder. Unsere Kunden kommen zurück, weil sie jedes Mal genau wissen, was sie erwartet.",
+    "licensedTitle": "Lizenzierte, geprüfte Chauffeure",
+    "licensedDescription": "Jeder Fahrer besitzt eine gewerbliche Lizenz der VAE, durchläuft eine Hintergrundüberprüfung und ist in professioneller Etikette geschult.",
+    "maintainedTitle": "Sorgfältig gepflegte Flotte",
+    "maintainedDescription": "Fahrzeuge neuerer Modelle, vor jeder Buchung gereinigt und geprüft — ohne Ausnahme.",
+    "availabilityTitle": "24/7 Verfügbarkeit",
+    "availabilityDescription": "Buchen Sie einen Chauffeur zu jeder Stunde, an jedem Tag. Dubai schläft nie, und wir auch nicht.",
+    "pricingTitle": "Transparente Festpreise",
+    "pricingDescription": "Der Preis, den Sie genannt bekommen, ist der Preis, den Sie zahlen — keine Aufschläge zu Stoßzeiten, keine versteckten Gebühren.",
+    "punctualityTitle": "Pünktlichkeit garantiert",
+    "punctualityDescription": "Flugverfolgung und Routenplanung sorgen dafür, dass Ihr Chauffeur immer vor Ihnen da ist.",
+    "corporateTitle": "Vertraut von Unternehmen und Hotels",
+    "corporateDescription": "Feste Geschäftskonten mit Unternehmen und Hotelpartnern in ganz Dubai verlassen sich täglich auf uns."
+  },
+  "testimonials": {
+    "eyebrow": "Stimmen unserer Kunden",
+    "title": "So fühlt sich eine Fahrt mit Apex an",
+    "basedOnReviews": "Basierend auf verifizierten Kundenbewertungen",
+    "findUsOnGoogleMaps": "Finden Sie uns auf Google Maps",
+    "verifiedClient": "Verifizierter Kunde"
+  },
+  "faq": {
+    "eyebrow": "Gut zu wissen",
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Antworten auf die Fragen, die uns Neu- und Stammkunden am häufigsten stellen.",
+    "viewAllFaqs": "Alle FAQs ansehen"
+  }
+}

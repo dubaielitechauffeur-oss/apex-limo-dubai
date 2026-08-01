@@ -5,6 +5,23 @@ const PHONE_PATTERN = /^\+?[\d\s-]{7,16}$/;
 
 export type FormErrors<T> = Partial<Record<keyof T, string>>;
 
+/** Translated validation messages, sourced from the `forms.validation` message namespace. */
+export interface ValidationMessages {
+  fullNameRequired: string;
+  phoneInvalid: string;
+  emailInvalid: string;
+  pickupRequired: string;
+  dropoffRequired: string;
+  pickupDateRequired: string;
+  pickupDatePast: string;
+  datePast: string;
+  timeRequired: string;
+  vehicleRequired: string;
+  passengersMin: string;
+  passengersMax: string;
+  serviceRequired: string;
+}
+
 function isTodayOrLater(dateStr: string): boolean {
   if (!dateStr) return false;
   const today = new Date();
@@ -14,67 +31,69 @@ function isTodayOrLater(dateStr: string): boolean {
 }
 
 export function validateBookingForm(
-  data: BookingFormData
+  data: BookingFormData,
+  messages: ValidationMessages
 ): FormErrors<BookingFormData> {
   const errors: FormErrors<BookingFormData> = {};
 
-  if (!data.fullName.trim() || data.fullName.trim().length < 2) {
-    errors.fullName = "Enter your full name.";
+  if (!data.fullName?.trim() || data.fullName.trim().length < 2) {
+    errors.fullName = messages.fullNameRequired;
   }
-  if (!PHONE_PATTERN.test(data.phone.trim())) {
-    errors.phone = "Enter a valid phone number, e.g. +971 5X XXX XXXX.";
+  if (!PHONE_PATTERN.test(data.phone?.trim() ?? "")) {
+    errors.phone = messages.phoneInvalid;
   }
-  if (!EMAIL_PATTERN.test(data.email.trim())) {
-    errors.email = "Enter a valid email address.";
+  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "")) {
+    errors.email = messages.emailInvalid;
   }
-  if (!data.pickupLocation.trim()) {
-    errors.pickupLocation = "Enter a pickup location.";
+  if (!data.pickupLocation?.trim()) {
+    errors.pickupLocation = messages.pickupRequired;
   }
-  if (!data.dropoffLocation.trim()) {
-    errors.dropoffLocation = "Enter a drop-off location.";
+  if (!data.dropoffLocation?.trim()) {
+    errors.dropoffLocation = messages.dropoffRequired;
   }
   if (!data.date) {
-    errors.date = "Select a pickup date.";
+    errors.date = messages.pickupDateRequired;
   } else if (!isTodayOrLater(data.date)) {
-    errors.date = "Pickup date can't be in the past.";
+    errors.date = messages.pickupDatePast;
   }
   if (!data.time) {
-    errors.time = "Select a pickup time.";
+    errors.time = messages.timeRequired;
   }
   if (!data.vehicle) {
-    errors.vehicle = "Select a vehicle.";
+    errors.vehicle = messages.vehicleRequired;
   }
   if (!data.passengers || data.passengers < 1) {
-    errors.passengers = "Enter at least 1 passenger.";
+    errors.passengers = messages.passengersMin;
   } else if (data.passengers > 14) {
-    errors.passengers = "For groups over 14, WhatsApp us directly.";
+    errors.passengers = messages.passengersMax;
   }
 
   return errors;
 }
 
 export function validateQuoteForm(
-  data: QuoteFormData
+  data: QuoteFormData,
+  messages: ValidationMessages
 ): FormErrors<QuoteFormData> {
   const errors: FormErrors<QuoteFormData> = {};
 
-  if (!data.fullName.trim() || data.fullName.trim().length < 2) {
-    errors.fullName = "Enter your full name.";
+  if (!data.fullName?.trim() || data.fullName.trim().length < 2) {
+    errors.fullName = messages.fullNameRequired;
   }
-  if (!PHONE_PATTERN.test(data.phone.trim())) {
-    errors.phone = "Enter a valid phone number, e.g. +971 5X XXX XXXX.";
+  if (!PHONE_PATTERN.test(data.phone?.trim() ?? "")) {
+    errors.phone = messages.phoneInvalid;
   }
-  if (!EMAIL_PATTERN.test(data.email.trim())) {
-    errors.email = "Enter a valid email address.";
+  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "")) {
+    errors.email = messages.emailInvalid;
   }
   if (!data.serviceType) {
-    errors.serviceType = "Select the service you need.";
+    errors.serviceType = messages.serviceRequired;
   }
-  if (!data.pickupLocation.trim()) {
-    errors.pickupLocation = "Enter a pickup location.";
+  if (!data.pickupLocation?.trim()) {
+    errors.pickupLocation = messages.pickupRequired;
   }
   if (data.date && !isTodayOrLater(data.date)) {
-    errors.date = "Date can't be in the past.";
+    errors.date = messages.datePast;
   }
 
   return errors;

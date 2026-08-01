@@ -1,0 +1,179 @@
+{
+  "carousel": {
+    "eyebrow": "尊贵车队",
+    "title": "探索我们的车队",
+    "subtitleTemplate": "{count}辆新款车型,恪守同一不妥协标准——每一趟行程均配备专业司机。",
+    "ariaLabel": "车队轮播",
+    "prevAriaLabel": "上一组车型",
+    "nextAriaLabel": "下一组车型",
+    "goToVehicleAriaLabel": "跳转至{name}",
+    "viewFullFleet": "查看完整车队"
+  },
+  "card": {
+    "whatsappMessageTemplate": "您好Apex Limo,我想咨询{name}相关事宜。",
+    "imageComingSoon": "图片即将上线",
+    "tenHours": "10小时",
+    "fiveHours": "5小时",
+    "oneHour": "1小时",
+    "airport": "机场",
+    "viewCar": "查看车辆",
+    "whatsapp": "WhatsApp",
+    "contactUs": "联系我们"
+  },
+  "listingCard": {
+    "whatsappMessage": "您好Apex Limo,我想咨询{name}相关事宜。",
+    "driverIncluded": "含专属司机",
+    "imageComingSoon": "图片即将上线",
+    "wifi": "WiFi",
+    "water": "瓶装水",
+    "twoHours": "2小时",
+    "airportTransfer": "机场接送",
+    "fiveHours": "5小时",
+    "tenHours": "10小时",
+    "additionalHour": "额外每小时",
+    "additionalCity": "额外城市",
+    "includesNote": "含司机、燃油、道路通行费(Salik)——不含5%增值税",
+    "disclaimer": "以上为起步价,最终价格可能因路线、日期及具体需求而有所变动。请通过WhatsApp咨询或致电获取准确报价。",
+    "enquireWhatsapp": "通过WhatsApp咨询",
+    "viewDetails": "查看详情"
+  },
+  "hero": {
+    "eyebrow": "豪华专属司机车队",
+    "titleTemplate": "{count}款豪华车型,满足各类出行场合",
+    "subtitle": "从行政轿车、贵宾级SUV、豪华商务车,到专属司机用车,尽在迪拜及阿联酋各地随时为您服务。",
+    "luxuryVehiclesTemplate": "{count}款豪华车型",
+    "professionalChauffeurs": "专业司机",
+    "availableAcross": "覆盖迪拜及阿联酋全境",
+    "ratingTemplate": "{rating}分评价",
+    "imageAlt": "Apex Limo豪华车队与迪拜哈利法塔天际线",
+    "viewFleet": "查看车队"
+  },
+  "trust": {
+    "rating": "评分",
+    "luxuryVehicles": "豪华车型",
+    "professionalChauffeurs": "专业司机",
+    "availableAcross": "覆盖迪拜及阿联酋全境"
+  },
+  "concierge": {
+    "eyebrow": "专属礼宾服务",
+    "title": "需要协助挑选合适的车型吗?",
+    "subtitle": "以下是快速指南,助您开始选择——或联系我们的礼宾团队获取个性化推荐。",
+    "call": "致电",
+    "whatsappUs": "WhatsApp联系我们",
+    "whatsappMessage": "您好,我需要帮助挑选合适的车型。",
+    "recommendations": {
+      "mercedesSClass": { "name": "奔驰S级", "blurb": "适合行政人士与商务出行。" },
+      "mercedesVClass": { "name": "奔驰V级", "blurb": "非常适合家庭及小型团体出行。" },
+      "rollsRoyce": { "name": "劳斯莱斯", "blurb": "适合贵宾场合与尊崇体验。" },
+      "rangeRover": { "name": "揽胜", "blurb": "适合城市豪华出行与活动场合。" }
+    }
+  },
+  "detail": {
+    "whatsappMessage": "您好Apex Limo,我想预订{name}。",
+    "breadcrumbAriaLabel": "面包屑导航",
+    "withChauffeurInDubai": "配专属司机 · 迪拜",
+    "passengersLabel": "最多载{count}位乘客",
+    "passengersShort": "{count}位乘客",
+    "bagsShort": "{count}件行李",
+    "ratingTemplate": "{rating}分评价",
+    "bookNow": "立即预订",
+    "getQuote": "获取报价",
+    "enquireWhatsapp": "通过WhatsApp咨询",
+    "popularFor": "热门用途:",
+    "inConnector": "于",
+    "quickFacts": {
+      "category": "车型类别",
+      "passengers": "乘客",
+      "luggage": "行李",
+      "bestFor": "最适合"
+    },
+    "availablePackages": "可选司机套餐",
+    "packagesSubtitle": "透明的司机用车价格,预订确认后即锁定。",
+    "oneHour": "1小时",
+    "airportTransfer": "机场接送",
+    "fiveHours": "5小时",
+    "tenHours": "10小时",
+    "additionalHour": "额外每小时",
+    "additionalCity": "额外城市",
+    "includesNote": "含专业司机、燃油、道路通行费(Salik)及停车费——不含5%增值税。",
+    "disclaimer": "以上为起步价,最终价格可能因路线、日期及具体需求而有所变动。请通过WhatsApp咨询或致电获取准确报价。",
+    "trustNote": "含专业司机 • 无需预付定金 • 灵活取消政策",
+    "onboardEyebrow": "车内配置",
+    "featuresTitle": "配置与设施",
+    "whyThisVehicleEyebrow": "为何选择此车型",
+    "whyChooseTitleTemplate": "为何选择{name}",
+    "howItWorksEyebrow": "简单无忧",
+    "howItWorksTitle": "预订流程",
+    "step1Title": "告知您的行程计划",
+    "step1Description": "通过WhatsApp留言、致电,或提交报价请求,并附上接送时间、地点及行程详情。",
+    "step2Title": "我们确认详情",
+    "step2Description": "以书面形式确认您的司机、确切价格及接送时段,机场接送行程将自动加入航班追踪服务。",
+    "step3Title": "尊享抵达礼遇",
+    "step3Description": "司机准时抵达,开门恭候,随时出发,为您带来平顺从容的抵达体验。",
+    "vehicleEyebrow": "车型介绍",
+    "aboutTitleTemplate": "关于{name}",
+    "exploreMoreEyebrow": "探索更多",
+    "exploreSimilarTitle": "探索同类车型",
+    "categories": {
+      "Sedan": "轿车",
+      "SUV": "SUV",
+      "Van": "商务车",
+      "Ultra-Luxury": "顶级豪华"
+    }
+  },
+  "summaryCard": {
+    "passengers": "乘客",
+    "luggage": "行李",
+    "chauffeurIncluded": "含专属司机"
+  },
+  "heroGallery": {
+    "previousPhoto": "上一张照片",
+    "nextPhoto": "下一张照片",
+    "goToPhotoAriaLabel": "跳转至第{index}张照片"
+  },
+  "heroQuoteForm": {
+    "startingFrom": "起步价",
+    "perHourInDubai": "/小时(迪拜)",
+    "requestQuote": "获取报价",
+    "approxRouteNote": "仅为大致路线——无需任何承诺。",
+    "thankYouName": "谢谢您,{name}!",
+    "thankYou": "感谢您!",
+    "quoteReceivedTemplate": "您针对{name}的报价请求已收到,我们的团队将尽快与您联系跟进。",
+    "reference": "参考编号",
+    "followUpWhatsapp": "通过WhatsApp跟进",
+    "followUpMessageTemplate": "您好Apex Limo,我刚提交了{name}的报价请求{refPart},想跟进了解一下。",
+    "refPartTemplate": "(参考编号:{reference})",
+    "submit": "提交我的报价请求",
+    "sending": "发送中…",
+    "noDepositNote": "无需预付定金 • 灵活取消政策"
+  },
+  "faqSection": {
+    "eyebrow": "常见问题",
+    "titleTemplate": "{name}常见问题",
+    "subtitleTemplate": "关于在迪拜租用{name}(配专属司机),您需要了解的一切。",
+    "q1": {
+      "question": "在迪拜租用配专属司机的{name}需要多少费用?",
+      "answer": "{name}配专属司机的租用价格已在上方套餐中列出,涵盖按小时、半天、全天及机场接送等多种用车方式。请通过WhatsApp咨询或提交报价请求,以获取基于您行程日期及具体需求的准确价格。"
+    },
+    "q2": {
+      "question": "预订{name}是否包含专属司机服务?",
+      "answer": "是的——每一次{name}预订均含一位身着制服的专业司机。这是专属司机用车服务,不提供自驾。"
+    },
+    "q3": {
+      "question": "可以预订{name}用于机场接送吗?",
+      "answer": "可以。{name}适用于迪拜国际机场(DXB)及阿勒马克图姆国际机场(DWC)接送,标配航班追踪与专人接机服务,您的司机会根据航班实际降落时间调整接机时间。"
+    },
+    "q4": {
+      "question": "{name}是否提供按小时租用服务?",
+      "answer": "是的——除点对点接送外,{name}还可按小时、半天或全天预订。各时长对应价格已在上方套餐中列出。"
+    },
+    "q5": {
+      "question": "可以预订{name}用于商务会议吗?",
+      "answer": "可以。{name}是商务出行的热门之选——适用于客户接送、路演及连续会议行程,司机可在各站点之间随时待命等候。"
+    },
+    "q6": {
+      "question": "应提前多久预订{name}?",
+      "answer": "通常可支持当日或次日预订,但我们建议尽可能提前24至48小时预订;若用于婚礼、活动或旺季出行,建议提前更长时间预订。"
+    }
+  }
+}

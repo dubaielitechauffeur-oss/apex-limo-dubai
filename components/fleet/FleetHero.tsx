@@ -1,13 +1,9 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import { Star, Car, UserCheck, MapPin } from "lucide-react";
 import Container from "@/components/shared/Container";
 import { RATING, FLEET_SIZE, PRIMARY_CTA } from "@/lib/constants";
-
-const TRUST_ITEMS = [
-  { icon: Car, label: `${FLEET_SIZE} Luxury Vehicles` },
-  { icon: UserCheck, label: "Professional Chauffeurs" },
-  { icon: MapPin, label: "Available Across Dubai & UAE" },
-];
+import Ltr from "@/components/shared/Ltr";
 
 /**
  * Fleet page hero — a full editorial showroom moment (reusing the same
@@ -17,8 +13,17 @@ const TRUST_ITEMS = [
  * scrolls straight to the listings below rather than navigating away, since
  * they're already on this page.
  */
-export default function FleetHero() {
+export default async function FleetHero() {
+  const t = await getTranslations("common.cta");
+  const tHero = await getTranslations("fleet.hero");
+  const tA11y = await getTranslations("common.a11y");
   const filledStars = Math.round(parseFloat(RATING));
+
+  const TRUST_ITEMS = [
+    { icon: Car, label: tHero("luxuryVehiclesTemplate", { count: FLEET_SIZE }) },
+    { icon: UserCheck, label: tHero("professionalChauffeurs") },
+    { icon: MapPin, label: tHero("availableAcross") },
+  ];
 
   return (
     <section className="relative isolate flex min-h-[560px] items-center overflow-hidden bg-[#0A0A0A] py-20 sm:min-h-[80vh] lg:min-h-[85vh]">
@@ -26,7 +31,7 @@ export default function FleetHero() {
         <source media="(max-width: 767px)" srcSet="/images/cta/cta-mobile.webp" />
         <img
           src="/images/cta/cta-desktop.webp"
-          alt="The Apex Limo luxury fleet lineup with the Burj Khalifa skyline in Dubai"
+          alt={tHero("imageAlt")}
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-[center_70%]"
@@ -52,22 +57,21 @@ export default function FleetHero() {
       <Container className="relative z-10">
         <div className="max-w-2xl">
           <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-[#C9A14A] sm:text-sm">
-            Luxury Chauffeur Fleet
+            {tHero("eyebrow")}
           </span>
 
           <h1 className="mt-6 animate-slide-in-left font-display text-4xl leading-[1.05] text-white sm:text-6xl lg:text-7xl">
-            {FLEET_SIZE} Luxury Vehicles for Every Occasion
+            {tHero("titleTemplate", { count: FLEET_SIZE })}
           </h1>
 
           <p className="mt-7 max-w-lg animate-fade-in text-base leading-relaxed text-[#B8B8B8] [animation-delay:200ms] sm:text-lg">
-            Choose from executive sedans, VIP SUVs, luxury vans, and
-            chauffeur-driven vehicles available across Dubai and the UAE.
+            {tHero("subtitle")}
           </p>
 
           {/* Trust indicators */}
           <div className="mt-9 flex animate-fade-in flex-wrap items-center gap-x-6 gap-y-3 [animation-delay:350ms]">
             <div className="flex items-center gap-2">
-              <div className="flex gap-0.5" role="img" aria-label={`${RATING} out of 5 stars`}>
+              <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
@@ -78,14 +82,14 @@ export default function FleetHero() {
                   />
                 ))}
               </div>
-              <span className="text-sm font-semibold text-white">{RATING} Rating</span>
+              <span className="text-sm font-semibold text-white"><Ltr>{tHero("ratingTemplate", { rating: RATING })}</Ltr></span>
             </div>
 
             {TRUST_ITEMS.map((item) => (
               <div key={item.label} className="flex items-center gap-2">
                 <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
                 <item.icon className="h-4 w-4 text-[#C9A14A]" strokeWidth={1.5} aria-hidden="true" />
-                <span className="text-sm text-[#B8B8B8]">{item.label}</span>
+                <span className="text-sm text-[#B8B8B8]"><Ltr>{item.label}</Ltr></span>
               </div>
             ))}
           </div>
@@ -95,13 +99,13 @@ export default function FleetHero() {
               href="#fleet-listings"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"
             >
-              View Fleet
+              {tHero("viewFleet")}
             </a>
             <Link
               href={PRIMARY_CTA.quote.href}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-[#C9A14A] hover:text-[#C9A14A]"
             >
-              {PRIMARY_CTA.quote.label}
+              {t("getInstantQuote")}
             </Link>
           </div>
         </div>

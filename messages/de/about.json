@@ -1,0 +1,73 @@
+{
+  "hero": {
+    "imageAlt": "Eine Reihe schwarzer Mercedes-Chauffeurlimousinen und -Vans, die nebeneinander geparkt sind",
+    "eyebrow": "Über Apex",
+    "title": "Dubais vertrauenswürdiger Name für Luxus-Chauffeurservice",
+    "paragraph": "{siteName} wurde nach einem einfachen Grundsatz gegründet: Luxustransport sollte ebenso zuverlässig wie komfortabel sein. Von einem einzelnen Flughafentransfer bis zu einer kompletten Hochzeitskolonne bieten wir bei jeder Buchung in Dubai und den VAE denselben professionellen Standard."
+  },
+  "ourStory": {
+    "heading": "Unsere Geschichte",
+    "paragraph1": "Dubais Straßen bewegen sich schnell, ebenso wie die Zeitpläne der Menschen, die sich auf uns verlassen — Führungskräfte zwischen Meetings, Familien nach einem langen Flug, Paare am wichtigsten Tag ihres Lebens. Apex Limo & Chauffeur Dubai wurde mit einem klaren Ziel gegründet: jedem von ihnen ein Fahrzeug und einen Fahrer zu bieten, über die sie nicht zweimal nachdenken müssen.",
+    "paragraph2": "Das bedeutet transparente, feste Preise, die vor der Fahrt vereinbart werden. Das bedeutet Chauffeure, die Ihren Flug verfolgen und nicht nur Ihre Buchungszeit. Und es bedeutet eine Flotte, die vor jeder einzelnen Fahrt geprüft und aufbereitet wird — nicht erst, wenn sie abgenutzt aussieht. Wir sind lieber die unaufdringlich zuverlässige Wahl als die auffälligste — auch wenn unsere Flotte meist beides vereint."
+  },
+  "byTheNumbers": {
+    "yearsExperience": "Jahre Erfahrung",
+    "luxuryVehicles": "Luxusfahrzeuge",
+    "happyClients": "Zufriedene Kunden",
+    "averageRating": "Durchschnittliche Bewertung"
+  },
+  "values": {
+    "eyebrow": "Was uns antreibt",
+    "title": "Unsere Mission und Werte",
+    "subtitle": "Vier Grundsätze, die jede Buchung prägen — von einer einzelnen Flughafenabholung bis zu einer kompletten Fahrzeugflotte für eine Veranstaltung.",
+    "items": [
+      { "title": "Pünktlichkeit", "description": "Jede Buchung wird mit einem realistischen, nicht optimistischen Zeitpuffer geplant. Pünktlich bedeutet pünktlich." },
+      { "title": "Diskretion und Vertrauen", "description": "Unsere Chauffeure agieren dezent im Hintergrund bei Geschäftsanrufen, privaten Gesprächen und vertraulichen Fahrten." },
+      { "title": "Sicherheit und Compliance", "description": "Lizenzierte Fahrer, versicherte Fahrzeuge und Wartungspläne, die nie dem Zufall überlassen werden." },
+      { "title": "Echte Gastfreundschaft", "description": "Ein herzlicher, professioneller Empfang bei jeder Fahrt — keine bloße Transaktion, sondern ein Serviceniveau, auf das Sie sich verlassen können." }
+    ]
+  },
+  "standards": {
+    "imageAlt": "Ein Apex Limo Chauffeur öffnet einem Kunden vor einem Bürogebäude die Autotür",
+    "eyebrow": "Unser Team",
+    "title": "Professionelle Chauffeur-Standards",
+    "intro": "Jeder Chauffeur, der für Apex fährt, erfüllt dieselben Grundanforderungen, bevor ihm eine erste Buchung zugewiesen wird:",
+    "items": [
+      "Gültige gewerbliche Fahrerlaubnis der VAE, vor Aufnahme der Tätigkeit überprüft",
+      "Hintergrundüberprüfung vor Aufnahme in das Apex-Chauffeurteam",
+      "Geschult in professioneller Etikette, Diskretion und Kundenkommunikation",
+      "Einheitlich und gepflegt gekleidet bei jeder Buchung, von Transfers bis Hochzeiten",
+      "Regelmäßige Bewertung von Pünktlichkeit, Fahrstandards und Kundenfeedback"
+    ]
+  },
+  "locations": {
+    "eyebrow": "Wo wir unterwegs sind",
+    "title": "Einsatzgebiete in ganz Dubai und den VAE",
+    "subtitle": "Unsere Chauffeure kennen diese Stadtteile im Detail — Abholpunkte, Verkehrsmuster und die schnellsten Routen zwischen ihnen.",
+    "viewAll": "Alle {count} Standorte anzeigen"
+  },
+  "fleet": {
+    "eyebrow": "Unsere Flotte",
+    "title": "Ein Fahrzeug für jeden Anlass",
+    "subtitle": "{count} Fahrzeuge, alle neuesten Modells, vor jeder Fahrt aufbereitet und passend zur Reise ausgewählt.",
+    "exploreFull": "Die gesamte Flotte entdecken"
+  },
+  "whyChoose": {
+    "eyebrow": "Warum Apex",
+    "title": "Warum sich Kunden für Apex entscheiden",
+    "subtitle": "Die Vertrauenssignale, die Kunden Buchung für Buchung zurückkehren lassen.",
+    "items": [
+      { "title": "Ein Jahrzehnt zuverlässiger Service", "description": "Seit über 10 Jahren im Dienst der Einwohner, Besucher und Unternehmen Dubais." },
+      { "title": "Über 1000 erfolgreiche Buchungen", "description": "Von einzelnen Flughafentransfers bis zu kompletten Hochzeitskolonnen — zuverlässig umgesetzt." },
+      { "title": "4,9-Sterne-Kundenbewertungen", "description": "Durchgehend mit 4,9 von verifizierten Kunden über alle unsere Services hinweg bewertet." },
+      { "title": "Partnerschaften mit Unternehmen und Hotels", "description": "Feste Beziehungen zu Unternehmen und Hospitality-Partnern in der ganzen Stadt." },
+      { "title": "Mehrsprachiges Chauffeurteam", "description": "Fahrer, die mehrere Sprachen sprechen, für ein wirklich persönliches Erlebnis." },
+      { "title": "Volle Transparenz, keine Überraschungen", "description": "Der genannte Preis ist genau der, den Sie zahlen — jedes Mal." }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Kundenstimmen",
+    "title": "Was unsere Kunden sagen",
+    "verifiedClient": "Verifizierter Kunde"
+  }
+}

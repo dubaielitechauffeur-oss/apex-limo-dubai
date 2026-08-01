@@ -1,19 +1,33 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Search, ChevronDown } from "lucide-react";
 import Reveal from "@/components/shared/Reveal";
-import { ALL_FAQS, FAQ_CATEGORIES, type FaqHubEntry } from "@/data/faqHub";
-
-const CHIPS = [
-  { key: "all", chipLabel: "All" },
-  ...FAQ_CATEGORIES.filter((c) => c.chipLabel).map((c) => ({ key: c.key, chipLabel: c.chipLabel! })),
-];
+import type { FaqCategory, PlainFaqHubEntry } from "@/data/faqHub";
 
 const SUGGESTION_LIMIT = 8;
 const HIGHLIGHT_DURATION_MS = 1800;
 
-export default function FaqHubClient() {
+interface FaqHubClientProps {
+  faqs: PlainFaqHubEntry[];
+  categories: FaqCategory[];
+}
+
+/**
+ * Receives its FAQ data as props from the Server Component page rather than
+ * importing data/faqHub.ts's ALL_FAQS/FAQ_CATEGORIES by value — ALL_FAQS is
+ * computed from getAllServices(), which references every locale's full
+ * service content, so importing it directly here would ship all of that
+ * (descriptions, benefits, etc., not just FAQ text) to the client bundle
+ * even though this component only ever renders question/answer pairs.
+ */
+export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIES }: FaqHubClientProps) {
+  const t = useTranslations("faqs");
+  const CHIP_KEYS = useMemo(
+    () => ["all", ...FAQ_CATEGORIES.filter((c) => c.showChip).map((c) => c.key)],
+    [FAQ_CATEGORIES]
+  );
   const [query, setQuery] = useState("");
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -35,15 +49,15 @@ export default function FaqHubClient() {
     const trimmed = query.trim().toLowerCase();
     if (!trimmed) return [];
     return ALL_FAQS.filter((faq) => faq.question.toLowerCase().includes(trimmed)).slice(0, SUGGESTION_LIMIT);
-  }, [query]);
+  }, [query, ALL_FAQS]);
 
   const visibleFaqs = useMemo(() => {
     if (activeCategory === "all") return ALL_FAQS;
     return ALL_FAQS.filter((faq) => faq.category === activeCategory);
-  }, [activeCategory]);
+  }, [activeCategory, ALL_FAQS]);
 
   const groupedFaqs = useMemo(() => {
-    const groups = new Map<string, FaqHubEntry[]>();
+    const groups = new Map<string, PlainFaqHubEntry[]>();
     for (const faq of visibleFaqs) {
       const list = groups.get(faq.category) ?? [];
       list.push(faq);
@@ -61,7 +75,7 @@ export default function FaqHubClient() {
     });
   }
 
-  function goToFaq(entry: FaqHubEntry) {
+  function goToFaq(entry: PlainFaqHubEntry) {
     setQuery("");
     setSuggestionsOpen(false);
     setActiveCategory("all");
@@ -86,7 +100,7 @@ export default function FaqHubClient() {
         <div ref={searchWrapRef} className="relative mx-auto max-w-2xl">
         <div className="relative">
           <Search
-            className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#999999]"
+            className="pointer-events-none absolute start-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#999999]"
             strokeWidth={1.75}
             aria-hidden="true"
           />
@@ -107,9 +121,9 @@ export default function FaqHubClient() {
                 goToFaq(suggestions[0]);
               }
             }}
-            placeholder="What would you like to know?"
-            aria-label="Search frequently asked questions"
-            className="w-full rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] py-5 pl-14 pr-6 text-base text-white placeholder:text-[#999999] outline-none transition-shadow duration-200 focus:border-[#C9A14A] focus:shadow-[0_0_0_4px_rgba(201,161,74,0.18)]"
+            placeholder={t("search.placeholder")}
+            aria-label={t("search.ariaLabel")}
+            className="w-full rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] py-5 ps-14 pe-6 text-base text-white placeholder:text-[#999999] outline-none transition-shadow duration-200 focus:border-[#C9A14A] focus:shadow-[0_0_0_4px_rgba(201,161,74,0.18)]"
           />
         </div>
 
@@ -121,13 +135,13 @@ export default function FaqHubClient() {
                   key={entry.id}
                   type="button"
                   onClick={() => goToFaq(entry)}
-                  className="block w-full border-b border-white/5 px-6 py-4 text-left text-sm text-white transition-colors duration-150 last:border-0 hover:bg-[rgba(201,161,74,0.08)]"
+                  className="block w-full border-b border-white/5 px-6 py-4 text-start text-sm text-white transition-colors duration-150 last:border-0 hover:bg-[rgba(201,161,74,0.08)]"
                 >
                   {entry.question}
                 </button>
               ))
             ) : (
-              <p className="px-6 py-4 text-sm text-[#999999]">No matching questions found.</p>
+              <p className="px-6 py-4 text-sm text-[#999999]">{t("search.noResults")}</p>
             )}
           </div>
         ) : null}
@@ -136,20 +150,20 @@ export default function FaqHubClient() {
 
       {/* Category filter chips */}
       <Reveal delay={100} className="mt-8 flex flex-wrap justify-center gap-3">
-        {CHIPS.map((chip) => {
-          const isActive = activeCategory === chip.key;
+        {CHIP_KEYS.map((key) => {
+          const isActive = activeCategory === key;
           return (
             <button
-              key={chip.key}
+              key={key}
               type="button"
-              onClick={() => setActiveCategory(chip.key)}
+              onClick={() => setActiveCategory(key)}
               className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wide transition-colors duration-200 ${
                 isActive
                   ? "bg-[#C9A14A] text-black"
                   : "border border-[rgba(201,161,74,0.2)] bg-[#111111] text-[#B8B8B8] hover:bg-[rgba(201,161,74,0.08)]"
               }`}
             >
-              {chip.chipLabel}
+              {key === "all" ? t("allChip") : t(`categories.${key}.chipLabel`)}
             </button>
           );
         })}
@@ -163,7 +177,9 @@ export default function FaqHubClient() {
         {FAQ_CATEGORIES.filter((cat) => groupedFaqs.has(cat.key)).map((cat, index) => (
           <Reveal key={cat.key} delay={Math.min(index * 60, 240)} as="div">
             {activeCategory === "all" ? (
-              <h2 className="font-display text-2xl text-white sm:text-3xl">{cat.label}</h2>
+              <h2 className="font-display text-2xl text-white sm:text-3xl">
+                {t(`categories.${cat.key}.label`)}
+              </h2>
             ) : null}
             <div className={activeCategory === "all" ? "mt-6 space-y-3" : "space-y-3"}>
               {(groupedFaqs.get(cat.key) ?? []).map((entry) => {
@@ -181,7 +197,7 @@ export default function FaqHubClient() {
                       type="button"
                       onClick={() => toggleFaq(entry.id)}
                       aria-expanded={isOpen}
-                      className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                      className="flex w-full items-center justify-between gap-6 px-6 py-5 text-start"
                     >
                       <span className="font-display text-base text-white sm:text-lg">{entry.question}</span>
                       <ChevronDown

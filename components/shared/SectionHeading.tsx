@@ -23,7 +23,7 @@ export default function SectionHeading({
   tone = "dark",
   as: Heading = "h2",
 }: SectionHeadingProps) {
-  const alignment = align === "center" ? "mx-auto text-center items-center" : "text-left items-start";
+  const alignment = align === "center" ? "mx-auto text-center items-center" : "text-start items-start";
   const eyebrowColor = tone === "light" ? "text-graphite" : "";
   const dividerColor = tone === "light" ? "bg-gold-deep" : "";
   const titleColor = tone === "light" ? "text-obsidian" : "text-heading";

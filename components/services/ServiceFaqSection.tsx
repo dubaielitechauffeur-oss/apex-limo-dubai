@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Reveal from "@/components/shared/Reveal";
+import DirectionalIcon from "@/components/shared/DirectionalIcon";
 
 export interface ServiceFaqItem {
   question: string;
@@ -13,9 +14,10 @@ export interface ServiceFaqItem {
 
 interface ServiceFaqSectionProps {
   faqs: ServiceFaqItem[];
-  eyebrow?: string;
-  title?: string;
+  eyebrow: string;
+  title: string;
   subtitle?: string;
+  viewAllLabel: string;
 }
 
 /**
@@ -27,9 +29,10 @@ interface ServiceFaqSectionProps {
  */
 export default function ServiceFaqSection({
   faqs,
-  eyebrow = "Common Questions",
-  title = "Frequently Asked Questions",
+  eyebrow,
+  title,
   subtitle,
+  viewAllLabel,
 }: ServiceFaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -48,7 +51,7 @@ export default function ServiceFaqSection({
           ) : null}
         </Reveal>
 
-        <div className="mt-14 space-y-3 text-left">
+        <div className="mt-14 space-y-3 text-start">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
@@ -62,7 +65,7 @@ export default function ServiceFaqSection({
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                  className="flex w-full items-center justify-between gap-6 px-6 py-5 text-start"
                 >
                   <span className="font-display text-base text-white sm:text-lg">
                     {faq.question}
@@ -95,8 +98,8 @@ export default function ServiceFaqSection({
             href="/faqs"
             className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 hover:text-[#e0bd6b]"
           >
-            View All FAQs
-            <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+            {viewAllLabel}
+            <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
           </Link>
         </div>
       </Container>

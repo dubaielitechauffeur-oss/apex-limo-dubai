@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Globe, Check, ChevronDown } from "lucide-react";
-import { LANGUAGES, useLanguage } from "./LanguageContext";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { LOCALE_METADATA } from "@/i18n/locale-metadata";
+import type { Locale } from "@/i18n/routing";
 
 interface LanguageSwitcherProps {
   /** "compact" drops the language code label, showing only the globe icon
@@ -12,15 +15,20 @@ interface LanguageSwitcherProps {
 }
 
 /**
- * Globe + language-code trigger that opens a small dropdown of the 3
- * supported languages. Selecting an option only updates shared context
- * state (see LanguageContext) — no translation happens yet, so every
- * page keeps rendering in English until real i18n is wired up here.
+ * Globe + language-code trigger that opens a dropdown of the 6 supported
+ * languages. Switching locale swaps only the locale segment of the current
+ * URL (via next-intl's locale-aware router) and preserves the rest of the
+ * path, so a visitor stays on the same page they were viewing.
  */
 export default function LanguageSwitcher({ compact = false, className = "" }: LanguageSwitcherProps) {
-  const { language, setLanguage } = useLanguage();
+  const locale = useLocale() as Locale;
+  const t = useTranslations("common.header");
+  const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  const current = LOCALE_METADATA.find((l) => l.code === locale) ?? LOCALE_METADATA[0];
 
   useEffect(() => {
     if (!open) return;
@@ -40,17 +48,22 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
     };
   }, [open]);
 
+  function selectLocale(nextLocale: Locale) {
+    setOpen(false);
+    router.replace(pathname, { locale: nextLocale });
+  }
+
   return (
     <div ref={rootRef} className={`relative ${className}`}>
       <button
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Change language"
+        aria-label={t("changeLanguage")}
         className="flex items-center gap-1.5 text-[13px] uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:text-[#C8A35F]"
       >
         <Globe className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-        {!compact ? <span>{language.code}</span> : null}
+        {!compact ? <span>{current.code}</span> : null}
         <ChevronDown
           className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           strokeWidth={1.5}
@@ -60,22 +73,19 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
 
       <div
         role="listbox"
-        className={`absolute right-0 top-full z-50 mt-3 w-44 origin-top-right rounded-md border border-[#1F1F1F] bg-black py-2 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)] transition-all duration-150 ${
+        className={`absolute end-0 top-full z-50 mt-3 w-44 origin-top-right rtl:origin-top-left rounded-md border border-[#1F1F1F] bg-black py-2 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)] transition-all duration-150 ${
           open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
         }`}
       >
-        {LANGUAGES.map((option) => {
-          const selected = option.code === language.code;
+        {LOCALE_METADATA.map((option) => {
+          const selected = option.code === current.code;
           return (
             <button
               key={option.code}
               role="option"
               aria-selected={selected}
-              onClick={() => {
-                setLanguage(option);
-                setOpen(false);
-              }}
-              className={`flex w-full items-center justify-between gap-3 px-4 py-2 text-left text-sm transition-colors duration-150 hover:bg-[#C8A35F]/10 ${
+              onClick={() => selectLocale(option.code)}
+              className={`flex w-full items-center justify-between gap-3 px-4 py-2 text-start text-sm transition-colors duration-150 hover:bg-[#C8A35F]/10 ${
                 selected ? "text-[#C8A35F]" : "text-[#BDBDBD]"
               }`}
             >

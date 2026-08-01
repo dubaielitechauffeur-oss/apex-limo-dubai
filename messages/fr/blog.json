@@ -1,0 +1,25 @@
+{
+  "hero": {
+    "eyebrow": "Actualités & Journal",
+    "title": "Le Journal du Chauffeur de Luxe",
+    "subtitle": "Conseils de voyage, guides chauffeur, conseils sur les transferts aéroport, informations sur les voyages d'affaires et actualités du transport de luxe."
+  },
+  "search": {
+    "placeholder": "Rechercher des articles...",
+    "ariaLabel": "Rechercher des articles de blog par titre ou extrait",
+    "noResultsTemplate": "Aucun article ne correspond à « {query} ». Essayez un autre terme de recherche."
+  },
+  "card": {
+    "readMore": "Lire la suite"
+  },
+  "detail": {
+    "backToJournal": "Retour au journal",
+    "keepReadingEyebrow": "Poursuivre la lecture",
+    "moreFromJournalTitle": "Plus d'articles du journal",
+    "bookingCtaHeading": "Besoin d'un chauffeur de luxe à Dubaï ?",
+    "bookingCtaSubtitle": "Réservez un véhicule premium avec chauffeur pour vos transferts aéroport, voyages d'affaires, visites de la ville et événements spéciaux."
+  },
+  "imageFrame": {
+    "imagePending": "Photo à venir"
+  }
+}

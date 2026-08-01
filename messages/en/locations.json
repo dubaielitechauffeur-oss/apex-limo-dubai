@@ -1,0 +1,42 @@
+{
+  "hero": {
+    "imageAlt": "Dubai Marina skyline at dusk",
+    "eyebrow": "Where We Drive",
+    "title": "Our Service Locations",
+    "subtitle": "From beachfront residences to the business district, Apex chauffeurs know Dubai's neighborhoods, pickup points, and traffic patterns in detail."
+  },
+  "listing": {
+    "eyebrow": "Where We Drive",
+    "title": "Areas We Serve Across Dubai",
+    "subtitle": "From beachfront residences to the business district, Apex chauffeurs know Dubai's neighborhoods, pickup points, and traffic patterns in detail.",
+    "exploreArea": "Explore Area"
+  },
+  "detail": {
+    "backToLocations": "Back to Locations",
+    "titleTemplate": "Chauffeur Service in {name}",
+    "bookNow": "Book Now",
+    "getQuote": "Get Quote",
+    "whatsappUs": "WhatsApp Us",
+    "whatsappMessage": "Hello Apex Limo, I'd like to book a chauffeur in {name}.",
+    "popularChoicePrefix": "A popular choice in {name}:",
+    "airportNote": "Traveling to or from the airport? [See our Airport Transfer service](/services/airport-transfers) for flight tracking and meet-and-greet details.",
+    "whyApexEyebrow": "Why Apex",
+    "whyChooseTitleTemplate": "Why Choose Apex in {name}",
+    "popularRoutesEyebrow": "Popular Routes",
+    "commonJourneysTitleTemplate": "Common Journeys From {name}",
+    "commonQuestionsEyebrow": "Common Questions",
+    "faqTitleTemplate": "{name} FAQs",
+    "exploreMoreEyebrow": "Explore More",
+    "otherAreasTitle": "Other Areas We Serve",
+    "otherAreasSubtitleTemplate": "Chauffeur service is also available across these nearby {siteName} destinations."
+  },
+  "showcase": {
+    "eyebrow": "Where We Operate",
+    "title": "Premium Chauffeur Service Across Dubai & UAE",
+    "subtitle": "Luxury chauffeur services available across Dubai's most important business, leisure and residential destinations.",
+    "exploreLocation": "Explore Location"
+  },
+  "coverage": {
+    "title": "Available Across Dubai & UAE"
+  }
+}

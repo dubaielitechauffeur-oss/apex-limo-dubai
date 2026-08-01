@@ -1,0 +1,149 @@
+{
+  "privacyPolicy": {
+    "eyebrow": "Legal",
+    "title": "Privacy Policy",
+    "lastUpdatedLabel": "Last updated",
+    "intro": "{siteName} operates a chauffeur-driven transportation service across Dubai and the United Arab Emirates, including airport transfers, corporate travel, VIP transportation, event logistics, and wedding chauffeur services. This Privacy Policy explains how we collect, use, disclose, and safeguard personal data when you visit our website, request a quote, make a booking, or otherwise communicate with us, and describes the choices and rights available to you regarding that data.",
+    "s1": {
+      "heading": "1. Introduction",
+      "p1": "{siteName} (\"Apex,\" \"we,\" \"us,\" or \"our\") respects your privacy and is committed to protecting the personal data you share with us when you use our website, request a quote, book a chauffeur, or otherwise engage with our luxury transportation services in Dubai and across the UAE. This policy explains what data we collect, why we collect it, how it is used and stored, who it may be shared with, and the rights you have over it. It applies to visitors to our website, individuals who request a quote or make a booking, corporate clients and their travelling employees, and anyone who contacts our team by phone, email, or WhatsApp.",
+      "p2": "By using our website or engaging our chauffeur services, you acknowledge that you have read and understood this Privacy Policy. If you do not agree with any part of it, please do not use our website or services, or contact us directly to discuss your concerns before proceeding with a booking."
+    },
+    "s2": {
+      "heading": "2. Information We Collect",
+      "sub1Heading": "Booking & Trip Data",
+      "sub1Paragraph": "When you make a booking or request a quote for airport transfers, corporate chauffeur service, luxury or VIP transportation, event logistics, or a wedding chauffeur, we collect the information necessary to plan and deliver that trip: your full name, phone number, email address, pickup and drop-off locations, travel date and time, flight number (for airport transfers), vehicle preference, passenger and luggage count, and any special requests — such as child seats, accessibility needs, or event-specific instructions — that you share with us.",
+      "sub2Heading": "Contact & Enquiry Data",
+      "sub2Paragraph": "When you contact us through our website's contact form, by phone, or via WhatsApp, we collect the information you provide in that conversation — such as your name, contact details, and the content of your enquiry — so that we can respond to you and keep a record of the exchange for quality and reference purposes.",
+      "sub3Heading": "Corporate Account Data",
+      "sub3Paragraph": "For clients who set up a standing corporate account, we additionally collect company details, authorized booking contacts, billing information, and a record of trips booked under that account, in order to manage invoicing and account administration.",
+      "sub4Heading": "Payment Information",
+      "sub4Paragraph": "Where payment is made online, card and payment details are processed directly by our payment processing partners under their own security standards; we do not store full card numbers on our own systems.",
+      "sub5Heading": "Automatically Collected Data",
+      "sub5Paragraph": "Like most websites, we may automatically collect limited technical information — such as browser type, device type, approximate location, and general usage patterns — through cookies and similar technologies, as described in the Cookies Policy below."
+    },
+    "s3": {
+      "heading": "3. How We Use Your Information",
+      "items": [
+        "To confirm, manage, and fulfil your booking or quote request, including matching you with an appropriate vehicle and chauffeur",
+        "To communicate with you about your trip, including flight-tracking updates, driver details, and timing changes",
+        "To respond to enquiries submitted via our contact form, phone, or WhatsApp",
+        "To maintain records for invoicing, receipts, and corporate accounts",
+        "To coordinate multi-vehicle bookings for events, weddings, and VIP or delegation transport",
+        "To meet our safety, insurance, and regulatory obligations as a licensed transportation provider",
+        "To improve our website, services, and the overall client experience",
+        "To comply with applicable legal and regulatory obligations in the UAE"
+      ]
+    },
+    "s4": {
+      "heading": "4. Cookies & Similar Technologies",
+      "p1": "Our website may use cookies and similar technologies to remember preferences, understand how visitors use the site, measure the effectiveness of our content, and improve performance. This may include essential cookies required for the site to function, and analytics cookies that help us understand which pages and services visitors find most useful. You can control or disable cookies through your browser settings at any time; doing so may affect certain features of the site, such as saved preferences."
+    },
+    "s5": {
+      "heading": "5. Sharing of Information",
+      "p1": "We do not sell your personal data. We may share limited booking information with the chauffeur assigned to your trip (such as your name, pickup location, and flight number), and with service providers who support our operations — including communication tools, payment processors, and, where relevant, partner vehicle operators supporting a large multi-vehicle booking. These parties are only given the information necessary to perform their function and are expected to handle it securely. We may also disclose information where required by law, by a competent UAE authority, or to protect the safety of our clients, chauffeurs, or the public."
+    },
+    "s6": {
+      "heading": "6. International Data Transfers",
+      "p1": "Some of the third-party tools we use to operate our website and communicate with clients — such as hosting, email, or messaging providers — may store or process data outside the UAE. Where this occurs, we take reasonable steps to ensure those providers maintain an appropriate standard of data protection consistent with this policy."
+    },
+    "s7": {
+      "heading": "7. Data Retention",
+      "p1": "We retain booking, contact, and corporate account data for as long as necessary to fulfil the purposes described in this policy, including ongoing corporate accounts and standing client relationships, and to meet legal, accounting, insurance, or regulatory record-keeping requirements. When data is no longer required for these purposes, we take reasonable steps to delete or anonymize it."
+    },
+    "s8": {
+      "heading": "8. Your Rights",
+      "p1": "Depending on your location, you may have the right to access, correct, delete, or restrict the use of your personal data, to object to certain processing, and to request a copy of the data we hold about you in a portable format. Corporate clients may also request confirmation of what data is held for their authorized booking contacts. To exercise any of these rights, contact us using the details in Section 12 below — we will respond within a reasonable timeframe."
+    },
+    "s9": {
+      "heading": "9. Data Security",
+      "p1": "We take reasonable technical and organizational measures to protect your personal data against unauthorized access, loss, alteration, or misuse, including restricting access to booking and contact data to team members who need it to do their job. No method of transmission or storage is completely secure, and while we work to protect your information, we cannot guarantee absolute security."
+    },
+    "s10": {
+      "heading": "10. Children's Privacy",
+      "p1": "Our website and booking services are intended for use by adults arranging chauffeur transportation, including on behalf of family members and children as passengers. We do not knowingly collect personal data directly from children through our website."
+    },
+    "s11": {
+      "heading": "11. Changes to This Policy",
+      "p1": "We may update this Privacy Policy from time to time to reflect changes in our services, technology, or legal obligations. Any changes will be posted on this page with a revised \"Last updated\" date, and material changes will be highlighted where appropriate."
+    },
+    "s12": {
+      "heading": "12. Contact Us",
+      "p1Template": "For any questions about this Privacy Policy, to exercise your data rights, or to raise a concern about how your data is handled, contact us at <emailLink>{email}</emailLink> or <phoneLink>{phone}</phoneLink>. Our team is available 24/7 to assist with booking-related queries and during standard business hours for data protection enquiries."
+    }
+  },
+  "terms": {
+    "eyebrow": "Legal",
+    "title": "Terms & Conditions",
+    "lastUpdatedLabel": "Last updated",
+    "introTemplate": "These Terms & Conditions govern your use of the {siteName} website and your booking of any chauffeur-driven transportation service with us, including airport transfers, corporate chauffeur service, luxury and VIP transportation, event transportation, and wedding chauffeur service across Dubai and the wider UAE. By requesting a quote, making a booking, or otherwise engaging our services, you agree to be bound by these terms.",
+    "s1": {
+      "heading": "1. Bookings",
+      "p1Template": "By requesting a quote or booking a chauffeur service with {siteName}, you confirm that the details provided — including pickup and drop-off locations, date, time, flight number where applicable, vehicle selection, and passenger and luggage count — are accurate to the best of your knowledge. A booking is considered confirmed only once you receive confirmation from our team by phone, email, or WhatsApp, referencing your booking reference number; a submitted enquiry or quote request alone does not constitute a confirmed booking.",
+      "p2": "Bookings may be made for a one-way or return airport transfer, hourly or full-day hire, a multi-vehicle event or wedding booking, or a standing corporate account. Where a booking involves multiple vehicles or an extended itinerary, final vehicle assignments and timing are confirmed directly with your point of contact ahead of the trip."
+    },
+    "s2": {
+      "heading": "2. Cancellations",
+      "items": [
+        "Cancellations made more than 24 hours before scheduled pickup are eligible for a full refund or free rescheduling.",
+        "Cancellations made within 24 hours of scheduled pickup may be subject to a cancellation fee, communicated at the time of booking.",
+        "No-shows, where the client cannot be reached or located at the confirmed pickup point within the applicable waiting time, may be charged in full.",
+        "Weddings, events, and multi-vehicle bookings may carry a separate cancellation policy — including a longer notice period or a non-refundable deposit — confirmed in writing at the time of booking.",
+        "Corporate accounts may cancel or amend standing bookings under the notice terms agreed when the account was set up."
+      ]
+    },
+    "s3": {
+      "heading": "3. Refunds",
+      "p1Template": "Where a cancellation qualifies for a refund under Section 2 above, or where {siteName} is unable to fulfil a confirmed booking due to circumstances within our control, any amount already paid will be refunded to the original payment method within a reasonable timeframe, typically within 5–10 business days depending on the payment method and provider. Deposits paid for weddings, events, or multi-vehicle bookings may be non-refundable once a specific vehicle or date has been reserved on your behalf, as disclosed at the time of booking. Refund requests should be sent to the contact details in Section 12 with your booking reference number."
+    },
+    "s4": {
+      "heading": "4. Payments",
+      "p1": "Pricing is confirmed at the time of booking or quote and is fixed for the agreed itinerary, except where the scope of the trip changes — such as additional stops, extended waiting time, extra hours, or an added vehicle. Standard toll charges are included in quoted city-transfer pricing. Corporate accounts may be invoiced monthly under separately agreed terms rather than paying per trip. Accepted payment methods (card, bank transfer, or cash for select bookings) are confirmed at the time of booking, and a deposit may be requested for larger event, wedding, or multi-vehicle bookings."
+    },
+    "s5": {
+      "heading": "5. Chauffeur Services",
+      "p1Template": "Every booking is fulfilled by a professional, licensed chauffeur employed or contracted by {siteName}; none of our vehicles are made available for self-drive hire. Chauffeurs are trained in professional etiquette, discretion, and safe driving, and are expected to conduct themselves accordingly on every trip. While we make every reasonable effort to assign the specific vehicle model requested, {siteName} reserves the right to substitute a comparable or superior vehicle in the event of unforeseen mechanical issues, maintenance requirements, or operational necessity, without reducing the standard of service."
+    },
+    "s6": {
+      "heading": "6. Waiting Time Policy",
+      "p1": "For airport pickups, complimentary waiting time is included to account for immigration and baggage claim, tracked from actual flight landing time via live flight tracking rather than the originally scheduled landing time. For all other pickups, a short complimentary grace period is included from the scheduled pickup time. Waiting time beyond the complimentary period may be charged at an hourly rate, communicated at the time of booking or on request."
+    },
+    "s7": {
+      "heading": "7. Airport Transfer Terms",
+      "items": [
+        "Flight numbers must be provided at the time of booking so we can track your flight for arrivals.",
+        "Pickup time for arrivals is calculated automatically based on live flight tracking, not the originally scheduled landing time.",
+        "For departures, clients should be ready at the confirmed pickup time to allow for check-in and security at the airport.",
+        "Meet-and-greet service includes name signage in the arrivals hall and assistance with luggage to the vehicle.",
+        "Coverage includes Dubai International Airport (DXB) and Al Maktoum International (DWC), and other UAE airports on request."
+      ]
+    },
+    "s8": {
+      "heading": "8. Client Responsibilities",
+      "items": [
+        "Provide accurate contact details, locations, and timing at the time of booking, and update us promptly if any of these change.",
+        "Ensure passenger count and luggage do not exceed the selected vehicle's stated capacity.",
+        "Behave respectfully toward chauffeurs; abusive, unsafe, or unlawful behavior may result in the trip being ended without a refund.",
+        "Inform us in advance of any special requirements, such as child seats, accessibility needs, or event-specific instructions.",
+        "Be responsible for the conduct of all passengers travelling under a single booking, including any damage caused to the vehicle.",
+        "Comply with all applicable laws while travelling, including seatbelt use and any restrictions communicated by the chauffeur for safety reasons."
+      ]
+    },
+    "s9": {
+      "heading": "9. Service Availability",
+      "p1Template": "Chauffeur and booking services are available 24 hours a day, seven days a week, including public holidays, across Dubai and the wider UAE. While we make every effort to honor confirmed bookings without exception, availability of a specific vehicle model cannot be guaranteed for same-day or last-minute requests, and may be more limited during peak periods such as major public holidays or large city-wide events. {siteName} is not liable for delays or service interruptions caused by circumstances beyond our reasonable control, including but not limited to severe weather, road closures, force majeure events, or actions of third parties such as airport or airline operations."
+    },
+    "s10": {
+      "heading": "10. Liability",
+      "p1Template": "{siteName} carries commercial insurance for its fleet and chauffeurs, covering passenger transport in the ordinary course of business. Our liability for any claim arising from a booking is limited to the value of that booking, except where liability cannot be limited or excluded under applicable UAE law (such as liability for death or personal injury caused by negligence). We are not liable for indirect or consequential losses, including missed flights, connections, or events, except where such loss arises directly from our own negligence in providing the service."
+    },
+    "s11": {
+      "heading": "11. Governing Law",
+      "p1": "These terms are governed by the laws of the United Arab Emirates, and any disputes arising from or in connection with a booking will be subject to the exclusive jurisdiction of the courts of Dubai."
+    },
+    "s12": {
+      "heading": "12. Contact Us",
+      "p1Template": "For questions about these Terms & Conditions, or to discuss a specific booking, cancellation, or refund, contact us at <emailLink>{email}</emailLink> or <phoneLink>{phone}</phoneLink>, available 24/7."
+    }
+  }
+}

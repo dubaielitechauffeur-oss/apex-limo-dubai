@@ -1,0 +1,179 @@
+{
+  "carousel": {
+    "eyebrow": "La Flotte",
+    "title": "Découvrez notre flotte",
+    "subtitleTemplate": "{count} véhicules récents, une exigence sans compromis — chaque trajet inclut un chauffeur professionnel.",
+    "ariaLabel": "Carrousel des véhicules de la flotte",
+    "prevAriaLabel": "Véhicules précédents",
+    "nextAriaLabel": "Véhicules suivants",
+    "goToVehicleAriaLabel": "Aller à {name}",
+    "viewFullFleet": "Voir toute notre flotte"
+  },
+  "card": {
+    "whatsappMessageTemplate": "Bonjour Apex Limo, je souhaiterais me renseigner sur {name}.",
+    "imageComingSoon": "Photo à venir",
+    "tenHours": "10 heures",
+    "fiveHours": "5 heures",
+    "oneHour": "1 heure",
+    "airport": "Aéroport",
+    "viewCar": "Voir le véhicule",
+    "whatsapp": "WhatsApp",
+    "contactUs": "Nous contacter"
+  },
+  "listingCard": {
+    "whatsappMessage": "Bonjour Apex Limo, je souhaiterais me renseigner sur {name}.",
+    "driverIncluded": "Chauffeur inclus",
+    "imageComingSoon": "Photo à venir",
+    "wifi": "Wi-Fi",
+    "water": "Eau",
+    "twoHours": "2 heures",
+    "airportTransfer": "Transfert aéroport",
+    "fiveHours": "5 heures",
+    "tenHours": "10 heures",
+    "additionalHour": "Heure supplémentaire",
+    "additionalCity": "Ville supplémentaire",
+    "includesNote": "Inclut chauffeur, carburant, péages (Salik) — hors TVA de 5 %",
+    "disclaimer": "Tarifs de départ uniquement. Le prix final peut varier selon l'itinéraire, la date et vos besoins. Contactez-nous sur WhatsApp ou par téléphone pour un devis exact.",
+    "enquireWhatsapp": "Nous contacter sur WhatsApp",
+    "viewDetails": "Voir les détails"
+  },
+  "hero": {
+    "eyebrow": "Flotte de chauffeurs de luxe",
+    "titleTemplate": "{count} véhicules de luxe pour chaque occasion",
+    "subtitle": "Choisissez parmi nos berlines executive, SUV VIP, vans de luxe et véhicules avec chauffeur disponibles dans tout Dubaï et les Émirats arabes unis.",
+    "luxuryVehiclesTemplate": "{count} véhicules de luxe",
+    "professionalChauffeurs": "Chauffeurs professionnels",
+    "availableAcross": "Disponible dans tout Dubaï et les Émirats",
+    "ratingTemplate": "Note de {rating}",
+    "imageAlt": "La flotte de luxe Apex Limo devant la silhouette du Burj Khalifa à Dubaï",
+    "viewFleet": "Voir la flotte"
+  },
+  "trust": {
+    "rating": "Note",
+    "luxuryVehicles": "Véhicules de luxe",
+    "professionalChauffeurs": "Chauffeurs professionnels",
+    "availableAcross": "Disponible dans tout Dubaï et les Émirats"
+  },
+  "concierge": {
+    "eyebrow": "Conciergerie personnelle",
+    "title": "Besoin d'aide pour choisir le bon véhicule ?",
+    "subtitle": "Un guide rapide pour vous aider à démarrer — ou parlez à notre équipe de conciergerie pour une recommandation personnalisée.",
+    "call": "Appeler",
+    "whatsappUs": "Contactez-nous sur WhatsApp",
+    "whatsappMessage": "Bonjour, j'aimerais de l'aide pour choisir le bon véhicule.",
+    "recommendations": {
+      "mercedesSClass": { "name": "Mercedes Classe S", "blurb": "Idéale pour les cadres et les voyages d'affaires." },
+      "mercedesVClass": { "name": "Mercedes Classe V", "blurb": "Parfaite pour les familles et les petits groupes." },
+      "rollsRoyce": { "name": "Rolls-Royce", "blurb": "Pour les occasions VIP et les expériences haut de gamme." },
+      "rangeRover": { "name": "Range Rover", "blurb": "Pour les trajets urbains de luxe et les événements." }
+    }
+  },
+  "detail": {
+    "whatsappMessage": "Bonjour Apex Limo, je souhaiterais réserver {name}.",
+    "breadcrumbAriaLabel": "Fil d'Ariane",
+    "withChauffeurInDubai": "avec chauffeur à Dubaï",
+    "passengersLabel": "Jusqu'à {count} passagers",
+    "passengersShort": "{count} passagers",
+    "bagsShort": "{count} bagages",
+    "ratingTemplate": "Note de {rating}",
+    "bookNow": "Réserver",
+    "getQuote": "Obtenir un devis",
+    "enquireWhatsapp": "Nous contacter sur WhatsApp",
+    "popularFor": "Populaire pour",
+    "inConnector": "à",
+    "quickFacts": {
+      "category": "Catégorie",
+      "passengers": "Passagers",
+      "luggage": "Bagages",
+      "bestFor": "Idéal pour"
+    },
+    "availablePackages": "Forfaits chauffeur disponibles",
+    "packagesSubtitle": "Des tarifs chauffeur transparents, fixés dès la confirmation de votre réservation.",
+    "oneHour": "1 heure",
+    "airportTransfer": "Transfert aéroport",
+    "fiveHours": "5 heures",
+    "tenHours": "10 heures",
+    "additionalHour": "Heure supplémentaire",
+    "additionalCity": "Ville supplémentaire",
+    "includesNote": "Inclut chauffeur professionnel, carburant, péages (Salik) et stationnement — hors TVA de 5 %.",
+    "disclaimer": "Tarifs de départ uniquement. Le prix final peut varier selon l'itinéraire, la date et vos besoins. Contactez-nous sur WhatsApp ou par téléphone pour un devis exact.",
+    "trustNote": "Chauffeur professionnel inclus • Aucun acompte requis • Politique d'annulation flexible",
+    "onboardEyebrow": "À bord",
+    "featuresTitle": "Équipements et prestations",
+    "whyThisVehicleEyebrow": "Pourquoi ce véhicule",
+    "whyChooseTitleTemplate": "Pourquoi choisir la {name}",
+    "howItWorksEyebrow": "Simple et fluide",
+    "howItWorksTitle": "Comment ça marche",
+    "step1Title": "Partagez-nous vos plans",
+    "step1Description": "Contactez-nous sur WhatsApp, par téléphone, ou envoyez une demande de devis avec votre heure de prise en charge, le lieu et les détails du trajet.",
+    "step2Title": "Nous confirmons les détails",
+    "step2Description": "Votre chauffeur, le tarif exact et le créneau de prise en charge sont confirmés par écrit, avec suivi de vol automatiquement ajouté pour les trajets aéroport.",
+    "step3Title": "Arrivez avec style",
+    "step3Description": "Votre chauffeur arrive à l'heure, porte ouverte, prêt à partir, pour un trajet fluide et détendu jusqu'à votre destination.",
+    "vehicleEyebrow": "Le véhicule",
+    "aboutTitleTemplate": "À propos de la {name}",
+    "exploreMoreEyebrow": "Découvrir plus",
+    "exploreSimilarTitle": "Découvrez des véhicules similaires",
+    "categories": {
+      "Sedan": "Berline",
+      "SUV": "SUV",
+      "Van": "Van",
+      "Ultra-Luxury": "Ultra-luxe"
+    }
+  },
+  "summaryCard": {
+    "passengers": "Passagers",
+    "luggage": "Bagages",
+    "chauffeurIncluded": "Chauffeur inclus"
+  },
+  "heroGallery": {
+    "previousPhoto": "Photo précédente",
+    "nextPhoto": "Photo suivante",
+    "goToPhotoAriaLabel": "Aller à la photo {index}"
+  },
+  "heroQuoteForm": {
+    "startingFrom": "À partir de",
+    "perHourInDubai": "/ heure à Dubaï",
+    "requestQuote": "Demander un devis",
+    "approxRouteNote": "Un itinéraire approximatif seulement — sans engagement.",
+    "thankYouName": "Merci, {name} !",
+    "thankYou": "Merci !",
+    "quoteReceivedTemplate": "Votre demande de devis pour la {name} a bien été reçue. Notre équipe vous contactera sous peu.",
+    "reference": "Référence",
+    "followUpWhatsapp": "Faire un suivi sur WhatsApp",
+    "followUpMessageTemplate": "Bonjour Apex Limo, je viens de demander un devis pour la {name}{refPart} et je souhaitais faire un suivi.",
+    "refPartTemplate": " (réf. : {reference})",
+    "submit": "Demander mon devis",
+    "sending": "Envoi en cours…",
+    "noDepositNote": "Aucun acompte requis • Politique d'annulation flexible"
+  },
+  "faqSection": {
+    "eyebrow": "Questions fréquentes",
+    "titleTemplate": "FAQ — {name}",
+    "subtitleTemplate": "Tout ce qu'il faut savoir sur la location de la {name} à Dubaï.",
+    "q1": {
+      "question": "Combien coûte la location de la {name} avec chauffeur à Dubaï ?",
+      "answer": "Les tarifs avec chauffeur pour la {name} sont indiqués dans les forfaits ci-dessus, couvrant la location à l'heure, à la demi-journée, à la journée et le transfert aéroport. Contactez-nous sur WhatsApp ou demandez un devis pour un prix exact selon vos dates et vos besoins."
+    },
+    "q2": {
+      "question": "Le service de chauffeur est-il inclus avec la {name} ?",
+      "answer": "Oui — chaque réservation de la {name} inclut un chauffeur professionnel en tenue. Il s'agit d'un service avec chauffeur ; la conduite en autonomie n'est pas disponible."
+    },
+    "q3": {
+      "question": "Puis-je réserver la {name} pour un transfert aéroport ?",
+      "answer": "Oui. La {name} est disponible pour les transferts aux aéroports DXB et DWC, avec suivi de vol et accueil personnalisé en standard, afin que votre chauffeur ajuste l'heure de prise en charge à l'heure réelle d'atterrissage."
+    },
+    "q4": {
+      "question": "La location à l'heure est-elle disponible pour la {name} ?",
+      "answer": "Oui — la {name} peut être réservée à l'heure, à la demi-journée ou à la journée, en plus des trajets point à point. Le tarif de chaque durée est indiqué dans les forfaits ci-dessus."
+    },
+    "q5": {
+      "question": "Puis-je réserver la {name} pour des réunions d'affaires ?",
+      "answer": "Oui. La {name} est un choix apprécié pour les déplacements professionnels — prise en charge de clients, roadshows et réunions enchaînées — avec un chauffeur qui peut patienter entre les arrêts."
+    },
+    "q6": {
+      "question": "Combien de temps à l'avance dois-je réserver la {name} ?",
+      "answer": "Les réservations le jour même ou le lendemain sont souvent possibles, mais nous recommandons de réserver au moins 24 à 48 heures à l'avance lorsque c'est possible, et davantage pour les mariages, événements ou dates de forte affluence."
+    }
+  }
+}

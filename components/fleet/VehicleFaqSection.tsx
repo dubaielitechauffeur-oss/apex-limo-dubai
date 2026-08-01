@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
@@ -10,36 +11,7 @@ interface VehicleFaqSectionProps {
   vehicleName: string;
 }
 
-/** Six starter FAQs generated from the vehicle name — chauffeur-hire
- *  focused (this is a chauffeur-driven service, not self-drive rental). */
-function buildFaqs(vehicleName: string) {
-  return [
-    {
-      question: `How much does it cost to hire ${vehicleName} with chauffeur in Dubai?`,
-      answer: `Chauffeur-driven rates for the ${vehicleName} are shown in the packages above, covering hourly, half-day, full-day and airport-transfer hire. Enquire on WhatsApp or request a quote for an exact price based on your dates and requirements.`,
-    },
-    {
-      question: `Is chauffeur service included with ${vehicleName}?`,
-      answer: `Yes — every ${vehicleName} booking includes a professional, uniformed chauffeur. This is a chauffeur-driven service; self-drive is not available.`,
-    },
-    {
-      question: `Can I book ${vehicleName} for airport transfers?`,
-      answer: `Yes. The ${vehicleName} is available for DXB and DWC airport transfers with flight tracking and a meet-and-greet as standard, so your chauffeur adjusts pickup time to your actual landing.`,
-    },
-    {
-      question: `Is hourly hire available for ${vehicleName}?`,
-      answer: `Yes — the ${vehicleName} can be booked hourly, by the half-day or full-day, in addition to point-to-point transfers. Pricing for each duration is shown in the packages above.`,
-    },
-    {
-      question: `Can I book ${vehicleName} for business meetings?`,
-      answer: `Yes. The ${vehicleName} is a popular choice for corporate travel — client pickups, roadshows, and back-to-back meetings — with a chauffeur who can wait on standby between stops.`,
-    },
-    {
-      question: `How far in advance should I book ${vehicleName}?`,
-      answer: `Same-day and next-day bookings are often possible, but we recommend booking at least 24–48 hours ahead where you can, and further in advance for weddings, events, or peak dates.`,
-    },
-  ];
-}
+const FAQ_KEYS = ["q1", "q2", "q3", "q4", "q5", "q6"] as const;
 
 /**
  * Dedicated vehicle-page FAQ accordion — light/cream background matching
@@ -49,8 +21,12 @@ function buildFaqs(vehicleName: string) {
  * FAQPage JSON-LD, unaffected by this section).
  */
 export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProps) {
+  const t = useTranslations("fleet.faqSection");
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const faqs = buildFaqs(vehicleName);
+  const faqs = FAQ_KEYS.map((key) => ({
+    question: t(`${key}.question`, { name: vehicleName }),
+    answer: t(`${key}.answer`, { name: vehicleName }),
+  }));
 
   return (
     <section className="border-t border-gold/10 bg-ivory py-20 sm:py-24">
@@ -58,9 +34,9 @@ export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProp
         <div className="max-w-3xl">
           <Reveal>
             <SectionHeading
-              eyebrow="Common Questions"
-              title={`${vehicleName} FAQs`}
-              subtitle={`Everything you need to know about hiring the ${vehicleName} in Dubai.`}
+              eyebrow={t("eyebrow")}
+              title={t("titleTemplate", { name: vehicleName })}
+              subtitle={t("subtitleTemplate", { name: vehicleName })}
               align="left"
               tone="light"
             />
@@ -80,7 +56,7 @@ export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProp
                     type="button"
                     onClick={() => setOpenIndex(isOpen ? null : index)}
                     aria-expanded={isOpen}
-                    className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                    className="flex w-full items-center justify-between gap-6 px-6 py-5 text-start"
                   >
                     <span className="font-display text-base text-obsidian sm:text-lg">
                       {faq.question}
