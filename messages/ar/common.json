@@ -62,6 +62,12 @@
   "logo": {
     "tagline": "سائق فاخر"
   },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "الصفحة التي تبحث عنها غير موجودة أو ربما تم نقلها.",
+    "backToHome": "العودة إلى الرئيسية",
+    "browseFleet": "تصفح الأسطول"
+  },
   "a11y": {
     "ratingOutOf5Template": "تقييم {rating} من 5 نجوم",
     "whatsappChatAriaLabel": "تواصل مع Apex Limo عبر واتساب",

@@ -62,6 +62,12 @@
   "logo": {
     "tagline": "Luxury Chauffeur"
   },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or may have moved.",
+    "backToHome": "Back to Home",
+    "browseFleet": "Browse the Fleet"
+  },
   "a11y": {
     "ratingOutOf5Template": "{rating} out of 5 stars",
     "whatsappChatAriaLabel": "Chat with Apex Limo on WhatsApp",
