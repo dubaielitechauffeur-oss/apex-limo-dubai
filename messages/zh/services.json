@@ -48,7 +48,8 @@
     "faqEyebrow": "常见问题",
     "faqTitleTemplate": "{name}常见问题",
     "faqSubtitle": "解答关于此项服务最常被问及的问题。",
-    "viewAllFaqs": "查看全部常见问题"
+    "viewAllFaqs": "查看全部常见问题",
+    "relatedVehiclesAnd": "和"
   },
   "finalCta": {
     "eyebrow": "随时恭候您的预订",

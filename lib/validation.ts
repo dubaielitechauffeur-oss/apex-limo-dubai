@@ -1,7 +1,21 @@
-import type { BookingFormData, QuoteFormData } from "./types";
+import type { BookingFormData, QuoteFormData, ContactFormData } from "./types";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^\+?[\d\s-]{7,16}$/;
+
+/**
+ * Upper bounds on free-text fields — every lead ends up interpolated into
+ * an outbound email (see lib/email-templates.ts), so an unbounded string
+ * is both an abuse vector (megabyte-scale POST bodies) and a readability
+ * problem for whoever triages the inbox. Short identity/location fields
+ * get a tight cap; open-ended notes/message fields get a generous one.
+ */
+const MAX_SHORT_FIELD_LENGTH = 120;
+const MAX_MESSAGE_LENGTH = 2000;
+
+function exceedsLength(value: string | undefined, max: number): boolean {
+  return (value?.length ?? 0) > max;
+}
 
 export type FormErrors<T> = Partial<Record<keyof T, string>>;
 
@@ -20,6 +34,34 @@ export interface ValidationMessages {
   passengersMin: string;
   passengersMax: string;
   serviceRequired: string;
+  messageRequired: string;
+}
+
+/**
+ * Builds a ValidationMessages object from any next-intl translator scoped
+ * to the "forms" namespace — identical `t("validation.forgets...")` call
+ * sequence previously copy-pasted verbatim across 3 API routes and 4 form
+ * components. `t` accepts both the async server `getTranslations(...)`
+ * result and the client `useTranslations("forms")` hook result, since both
+ * expose the same `(key: string) => string` call signature.
+ */
+export function buildValidationMessages(t: (key: string) => string): ValidationMessages {
+  return {
+    fullNameRequired: t("validation.fullNameRequired"),
+    phoneInvalid: t("validation.phoneInvalid"),
+    emailInvalid: t("validation.emailInvalid"),
+    pickupRequired: t("validation.pickupRequired"),
+    dropoffRequired: t("validation.dropoffRequired"),
+    pickupDateRequired: t("validation.pickupDateRequired"),
+    pickupDatePast: t("validation.pickupDatePast"),
+    datePast: t("validation.datePast"),
+    timeRequired: t("validation.timeRequired"),
+    vehicleRequired: t("validation.vehicleRequired"),
+    passengersMin: t("validation.passengersMin"),
+    passengersMax: t("validation.passengersMax"),
+    serviceRequired: t("validation.serviceRequired"),
+    messageRequired: t("validation.messageRequired"),
+  };
 }
 
 function isTodayOrLater(dateStr: string): boolean {
@@ -36,19 +78,19 @@ export function validateBookingForm(
 ): FormErrors<BookingFormData> {
   const errors: FormErrors<BookingFormData> = {};
 
-  if (!data.fullName?.trim() || data.fullName.trim().length < 2) {
+  if (!data.fullName?.trim() || data.fullName.trim().length < 2 || exceedsLength(data.fullName, MAX_SHORT_FIELD_LENGTH)) {
     errors.fullName = messages.fullNameRequired;
   }
   if (!PHONE_PATTERN.test(data.phone?.trim() ?? "")) {
     errors.phone = messages.phoneInvalid;
   }
-  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "")) {
+  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "") || exceedsLength(data.email, MAX_SHORT_FIELD_LENGTH)) {
     errors.email = messages.emailInvalid;
   }
-  if (!data.pickupLocation?.trim()) {
+  if (!data.pickupLocation?.trim() || exceedsLength(data.pickupLocation, MAX_SHORT_FIELD_LENGTH)) {
     errors.pickupLocation = messages.pickupRequired;
   }
-  if (!data.dropoffLocation?.trim()) {
+  if (!data.dropoffLocation?.trim() || exceedsLength(data.dropoffLocation, MAX_SHORT_FIELD_LENGTH)) {
     errors.dropoffLocation = messages.dropoffRequired;
   }
   if (!data.date) {
@@ -67,6 +109,9 @@ export function validateBookingForm(
   } else if (data.passengers > 14) {
     errors.passengers = messages.passengersMax;
   }
+  if (exceedsLength(data.specialRequests, MAX_MESSAGE_LENGTH)) {
+    errors.specialRequests = messages.messageRequired;
+  }
 
   return errors;
 }
@@ -77,23 +122,51 @@ export function validateQuoteForm(
 ): FormErrors<QuoteFormData> {
   const errors: FormErrors<QuoteFormData> = {};
 
-  if (!data.fullName?.trim() || data.fullName.trim().length < 2) {
+  if (!data.fullName?.trim() || data.fullName.trim().length < 2 || exceedsLength(data.fullName, MAX_SHORT_FIELD_LENGTH)) {
     errors.fullName = messages.fullNameRequired;
   }
   if (!PHONE_PATTERN.test(data.phone?.trim() ?? "")) {
     errors.phone = messages.phoneInvalid;
   }
-  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "")) {
+  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "") || exceedsLength(data.email, MAX_SHORT_FIELD_LENGTH)) {
     errors.email = messages.emailInvalid;
   }
   if (!data.serviceType) {
     errors.serviceType = messages.serviceRequired;
   }
-  if (!data.pickupLocation?.trim()) {
+  if (!data.pickupLocation?.trim() || exceedsLength(data.pickupLocation, MAX_SHORT_FIELD_LENGTH)) {
     errors.pickupLocation = messages.pickupRequired;
   }
   if (data.date && !isTodayOrLater(data.date)) {
     errors.date = messages.datePast;
+  }
+  if (exceedsLength(data.message, MAX_MESSAGE_LENGTH)) {
+    errors.message = messages.messageRequired;
+  }
+
+  return errors;
+}
+
+export function validateContactForm(
+  data: ContactFormData,
+  messages: ValidationMessages
+): FormErrors<ContactFormData> {
+  const errors: FormErrors<ContactFormData> = {};
+
+  if (!data.fullName?.trim() || data.fullName.trim().length < 2 || exceedsLength(data.fullName, MAX_SHORT_FIELD_LENGTH)) {
+    errors.fullName = messages.fullNameRequired;
+  }
+  if (!PHONE_PATTERN.test(data.phone?.trim() ?? "")) {
+    errors.phone = messages.phoneInvalid;
+  }
+  if (!EMAIL_PATTERN.test(data.email?.trim() ?? "") || exceedsLength(data.email, MAX_SHORT_FIELD_LENGTH)) {
+    errors.email = messages.emailInvalid;
+  }
+  if (exceedsLength(data.subject, MAX_SHORT_FIELD_LENGTH)) {
+    errors.subject = messages.messageRequired;
+  }
+  if (!data.message?.trim() || exceedsLength(data.message, MAX_MESSAGE_LENGTH)) {
+    errors.message = messages.messageRequired;
   }
 
   return errors;

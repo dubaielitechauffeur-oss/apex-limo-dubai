@@ -43,7 +43,6 @@ import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
-import { formatAed } from "@/lib/format";
 import { FLEET, getAllVehicles, getVehicleBySlug, type PlainFleetVehicle } from "@/data/fleet";
 import { getServiceBySlug } from "@/data/services";
 import { getLocationBySlug } from "@/data/locations";
@@ -68,6 +67,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: t("notFoundTitle"),
       description: t("notFoundDescription"),
       path: `/fleet/${slug}`,
+      robots: { index: false, follow: false },
     });
   }
 
@@ -159,6 +159,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     fiveHours: tCard("fiveHours"),
     oneHour: tCard("oneHour"),
     airport: tCard("airport"),
+    priceOnRequest: tCard("priceOnRequest"),
     viewCar: tCard("viewCar"),
     whatsapp: tCard("whatsapp"),
     contactUs: tCard("contactUs"),
@@ -204,13 +205,13 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     { label: t("quickFacts.bestFor"), value: vehicle.idealFor, icon: Compass },
   ];
 
-  const priceTiers = [
-    { label: t("oneHour"), amount: vehicle.rates.oneHour },
-    { label: t("airportTransfer"), amount: vehicle.rates.airport },
-    { label: t("fiveHours"), amount: vehicle.rates.fiveHours },
-    { label: t("tenHours"), amount: vehicle.rates.tenHours },
-    { label: t("additionalHour"), amount: vehicle.rates.extraHour },
-    { label: t("additionalCity"), amount: vehicle.rates.additionalCity },
+  const priceTierLabels = [
+    t("oneHour"),
+    t("airportTransfer"),
+    t("fiveHours"),
+    t("tenHours"),
+    t("additionalHour"),
+    t("additionalCity"),
   ];
 
   return (
@@ -463,16 +464,16 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             {t("packagesSubtitle")}
           </p>
           <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:mt-6 lg:gap-4 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
-            {priceTiers.map((tier) => (
+            {priceTierLabels.map((label) => (
               <div
-                key={tier.label}
+                key={label}
                 className="flex flex-col gap-1 lg:gap-2 lg:rounded-xl lg:border lg:border-gold/15 lg:bg-charcoal lg:p-5 lg:transition-all lg:duration-200 lg:hover:-translate-y-0.5 lg:hover:border-gold/35 lg:hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]"
               >
                 <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
-                  {tier.label}
+                  {label}
                 </span>
                 <span className="font-display text-lg font-bold text-gold">
-                  {formatAed(tier.amount)}
+                  {t("priceOnRequest")}
                 </span>
               </div>
             ))}

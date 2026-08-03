@@ -28,7 +28,8 @@
     "faqTitleTemplate": "Häufige Fragen zu {name}",
     "exploreMoreEyebrow": "Mehr entdecken",
     "otherAreasTitle": "Weitere Gebiete, die wir bedienen",
-    "otherAreasSubtitleTemplate": "Der Chauffeurservice ist auch in diesen nahegelegenen {siteName}-Zielen verfügbar."
+    "otherAreasSubtitleTemplate": "Der Chauffeurservice ist auch in diesen nahegelegenen {siteName}-Zielen verfügbar.",
+    "relatedVehiclesAnd": "und"
   },
   "showcase": {
     "eyebrow": "Wo wir tätig sind",

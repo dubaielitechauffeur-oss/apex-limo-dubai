@@ -44,8 +44,8 @@ interface LocationsShowcaseProps {
 /**
  * "Where We Operate" — a luxury editorial locations showcase, matching the
  * homepage Services section's card design exactly: large 4:5 portrait
- * photo cards, dark gradient overlay, white typography, and the same
- * scoped gold accent (#C9A14A). Desktop shows 3 per row, tablet 2, and
+ * photo cards, dark gradient overlay, white typography, and the shared
+ * `gold` design-system accent. Desktop shows 3 per row, tablet 2, and
  * mobile falls back to a native horizontal scroll-snap swipe row.
  */
 export default async function LocationsShowcase({
@@ -114,14 +114,14 @@ export default async function LocationsShowcase({
                   {location.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-[#C9A14A]/50 bg-black/30 px-3 py-1 text-[11px] uppercase tracking-wide text-white/90 backdrop-blur-sm"
+                      className="rounded-full border border-gold/50 bg-black/30 px-3 py-1 text-[11px] uppercase tracking-wide text-white/90 backdrop-blur-sm"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
+                <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 group-hover:text-gold-pale">
                   {t("exploreLocation")}
                   <DirectionalIcon
                     icon={ArrowRight}

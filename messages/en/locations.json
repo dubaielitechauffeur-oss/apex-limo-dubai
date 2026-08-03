@@ -28,7 +28,8 @@
     "faqTitleTemplate": "{name} FAQs",
     "exploreMoreEyebrow": "Explore More",
     "otherAreasTitle": "Other Areas We Serve",
-    "otherAreasSubtitleTemplate": "Chauffeur service is also available across these nearby {siteName} destinations."
+    "otherAreasSubtitleTemplate": "Chauffeur service is also available across these nearby {siteName} destinations.",
+    "relatedVehiclesAnd": "and"
   },
   "showcase": {
     "eyebrow": "Where We Operate",

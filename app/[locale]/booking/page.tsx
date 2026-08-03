@@ -55,10 +55,10 @@ export default async function BookingPage({ params }: PageProps) {
         {t("booking.seoIntro")}
       </ConversionSeoIntro>
 
-      <section className="bg-[#0A0A0A] pb-20 sm:pb-28">
+      <section className="bg-obsidian pb-20 sm:pb-28">
         <Container>
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.7fr_1fr] lg:gap-10">
-            <div className="rounded-2xl border border-[rgba(201,161,74,0.15)] bg-[#111111] p-6 sm:p-8 lg:p-10">
+            <div className="rounded-2xl border border-gold/15 bg-ink p-6 sm:p-8 lg:p-10">
               <BookingForm services={services} locations={locations} vehicles={vehicles} />
             </div>
 

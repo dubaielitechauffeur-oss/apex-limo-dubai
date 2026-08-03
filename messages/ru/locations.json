@@ -28,7 +28,8 @@
     "faqTitleTemplate": "Вопросы о {name}",
     "exploreMoreEyebrow": "Узнать больше",
     "otherAreasTitle": "Другие районы, которые мы обслуживаем",
-    "otherAreasSubtitleTemplate": "Услуги шофёра также доступны в этих близлежащих направлениях {siteName}."
+    "otherAreasSubtitleTemplate": "Услуги шофёра также доступны в этих близлежащих направлениях {siteName}.",
+    "relatedVehiclesAnd": "и"
   },
   "showcase": {
     "eyebrow": "Где мы работаем",

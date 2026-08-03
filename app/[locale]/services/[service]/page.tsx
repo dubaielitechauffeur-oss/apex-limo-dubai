@@ -78,6 +78,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: t("notFoundTitle"),
       description: t("notFoundDescription"),
       path: `/services/${slug}`,
+      robots: { index: false, follow: false },
     });
   }
 
@@ -132,10 +133,12 @@ export default async function ServiceDetailPage({ params }: PageProps) {
     .slice(0, 3);
   const whatsappMessage = t("detail.whatsappMessage", { name: service.name });
 
-  const relatedVehicleSlug = vehiclesForService(service.slug)[0];
-  const relatedVehicle = relatedVehicleSlug
-    ? FLEET.find((v) => v.slug === relatedVehicleSlug)
-    : undefined;
+  // Up to 3 related vehicles (previously only the first match rendered) —
+  // stronger internal linking without turning this into a full grid.
+  const relatedVehicleSlugs = vehiclesForService(service.slug).slice(0, 3);
+  const relatedVehicles = relatedVehicleSlugs
+    .map((slug) => FLEET.find((v) => v.slug === slug))
+    .filter((v): v is (typeof FLEET)[number] => Boolean(v));
 
   return (
     <div>
@@ -217,15 +220,22 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               </CTAButton>
             </div>
 
-            {relatedVehicle ? (
+            {relatedVehicles.length > 0 ? (
               <p className="mt-6 text-sm text-smoke">
                 {t("detail.popularChoicePrefix")}{" "}
-                <Link
-                  href={`/fleet/${relatedVehicle.slug}`}
-                  className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
-                >
-                  {relatedVehicle.name}
-                </Link>
+                {relatedVehicles.map((vehicle, index) => (
+                  <span key={vehicle.slug}>
+                    <Link
+                      href={`/fleet/${vehicle.slug}`}
+                      className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
+                    >
+                      {vehicle.name}
+                    </Link>
+                    {index < relatedVehicles.length - 1 ? (
+                      index === relatedVehicles.length - 2 ? ` ${t("detail.relatedVehiclesAnd")} ` : ", "
+                    ) : ""}
+                  </span>
+                ))}
                 .
               </p>
             ) : null}

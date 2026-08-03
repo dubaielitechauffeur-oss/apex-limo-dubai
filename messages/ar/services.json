@@ -48,7 +48,8 @@
     "faqEyebrow": "أسئلة شائعة",
     "faqTitleTemplate": "الأسئلة الشائعة حول {name}",
     "faqSubtitle": "إجابات على الأسئلة التي نسمعها أكثر حول هذه الخدمة.",
-    "viewAllFaqs": "عرض جميع الأسئلة الشائعة"
+    "viewAllFaqs": "عرض جميع الأسئلة الشائعة",
+    "relatedVehiclesAnd": "و"
   },
   "finalCta": {
     "eyebrow": "نحن جاهزون لخدمتكم",

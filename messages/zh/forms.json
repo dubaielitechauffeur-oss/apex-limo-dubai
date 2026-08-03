@@ -59,14 +59,17 @@
     "vehicleRequired": "请选择车辆。",
     "passengersMin": "请至少填写1位乘客。",
     "passengersMax": "如团队人数超过14人,请直接通过WhatsApp联系我们。",
-    "serviceRequired": "请选择您所需的服务。"
+    "serviceRequired": "请选择您所需的服务。",
+    "messageRequired": "请输入消息内容。"
   },
   "status": {
     "correctFields": "请更正标记的字段后重试。",
     "genericError": "出现了一些问题,请重试,或通过WhatsApp联系我们。",
     "networkError": "无法连接到我们的服务器,请重试,或直接通过WhatsApp联系我们。",
     "invalidBody": "请求内容无效。",
-    "correctFieldsApi": "请更正标记的字段。"
+    "correctFieldsApi": "请更正标记的字段。",
+    "rateLimited": "请求过于频繁。请稍等几分钟后重试,或直接与我们联系。",
+    "payloadTooLarge": "请求内容过大。"
   },
   "quote": {
     "sending": "发送中…",
@@ -116,7 +119,21 @@
       "step1": "已收到请求",
       "step2": "礼宾团队审核详情",
       "step3": "快速发送报价",
-      "step4": "预订已确认"
+      "step4": "预订已确认",
+      "panelHeading": "为什么选择 Apex Limo"
     }
+  },
+  "contact": {
+    "sending": "发送中…",
+    "submit": "发送消息",
+    "thankYou": "谢谢!",
+    "thankYouName": "谢谢您,{name}!",
+    "successBody": "您的消息已成功发送。我们的团队会尽快与您联系。",
+    "successMessageApi": "感谢您——您的消息已发送。我们会尽快与您联系。",
+    "referenceLabel": "您的参考编号是",
+    "followUpWhatsapp": "通过WhatsApp跟进",
+    "followUpMessageTemplate": "您好 Apex Limo,我刚通过网站发送了一条消息{refPart},想跟进一下。",
+    "refPartTemplate": "(参考编号:{reference})",
+    "sendAnother": "发送另一条消息"
   }
 }

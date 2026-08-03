@@ -100,7 +100,7 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
         <div ref={searchWrapRef} className="relative mx-auto max-w-2xl">
         <div className="relative">
           <Search
-            className="pointer-events-none absolute start-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#999999]"
+            className="pointer-events-none absolute start-5 top-1/2 h-5 w-5 -translate-y-1/2 text-smoke"
             strokeWidth={1.75}
             aria-hidden="true"
           />
@@ -123,25 +123,25 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
             }}
             placeholder={t("search.placeholder")}
             aria-label={t("search.ariaLabel")}
-            className="w-full rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] py-5 ps-14 pe-6 text-base text-white placeholder:text-[#999999] outline-none transition-shadow duration-200 focus:border-[#C9A14A] focus:shadow-[0_0_0_4px_rgba(201,161,74,0.18)]"
+            className="w-full rounded-full border border-gold/25 bg-obsidian-light py-5 ps-14 pe-6 text-base text-white placeholder:text-smoke outline-none transition-shadow duration-200 focus:border-gold focus:shadow-[0_0_0_4px_rgba(201,161,74,0.18)]"
           />
         </div>
 
         {suggestionsOpen && query.trim() ? (
-          <div className="absolute z-20 mt-3 w-full overflow-hidden rounded-2xl border border-[rgba(201,161,74,0.2)] bg-[#151515] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)]">
+          <div className="absolute z-20 mt-3 w-full overflow-hidden rounded-2xl border border-gold/20 bg-obsidian-light shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)]">
             {suggestions.length > 0 ? (
               suggestions.map((entry) => (
                 <button
                   key={entry.id}
                   type="button"
                   onClick={() => goToFaq(entry)}
-                  className="block w-full border-b border-white/5 px-6 py-4 text-start text-sm text-white transition-colors duration-150 last:border-0 hover:bg-[rgba(201,161,74,0.08)]"
+                  className="block w-full border-b border-white/5 px-6 py-4 text-start text-sm text-white transition-colors duration-150 last:border-0 hover:bg-gold/8"
                 >
                   {entry.question}
                 </button>
               ))
             ) : (
-              <p className="px-6 py-4 text-sm text-[#999999]">{t("search.noResults")}</p>
+              <p className="px-6 py-4 text-sm text-smoke">{t("search.noResults")}</p>
             )}
           </div>
         ) : null}
@@ -159,8 +159,8 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
               onClick={() => setActiveCategory(key)}
               className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wide transition-colors duration-200 ${
                 isActive
-                  ? "bg-[#C9A14A] text-black"
-                  : "border border-[rgba(201,161,74,0.2)] bg-[#111111] text-[#B8B8B8] hover:bg-[rgba(201,161,74,0.08)]"
+                  ? "bg-gold text-black"
+                  : "border border-gold/20 bg-ink text-smoke hover:bg-gold/8"
               }`}
             >
               {key === "all" ? t("allChip") : t(`categories.${key}.chipLabel`)}
@@ -189,9 +189,9 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
                   <div
                     key={entry.id}
                     id={`faq-${entry.id}`}
-                    className={`scroll-mt-28 rounded-xl border border-[rgba(201,161,74,0.15)] transition-all duration-300 ${
-                      isOpen ? "bg-[#171717]" : "bg-[#121212]"
-                    } ${isHighlighted ? "border-[#C9A14A] shadow-[0_0_0_1px_rgba(201,161,74,0.5),0_0_35px_rgba(201,161,74,0.3)]" : ""}`}
+                    className={`scroll-mt-28 rounded-xl border border-gold/15 transition-all duration-300 ${
+                      isOpen ? "bg-obsidian-light" : "bg-obsidian-light"
+                    } ${isHighlighted ? "border-gold shadow-[0_0_0_1px_rgba(201,161,74,0.5),0_0_35px_rgba(201,161,74,0.3)]" : ""}`}
                   >
                     <button
                       type="button"
@@ -201,7 +201,7 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
                     >
                       <span className="font-display text-base text-white sm:text-lg">{entry.question}</span>
                       <ChevronDown
-                        className={`h-5 w-5 shrink-0 text-[#C9A14A] transition-transform duration-200 ${
+                        className={`h-5 w-5 shrink-0 text-gold transition-transform duration-200 ${
                           isOpen ? "rotate-180" : ""
                         }`}
                         strokeWidth={1.5}
@@ -213,7 +213,7 @@ export default function FaqHubClient({ faqs: ALL_FAQS, categories: FAQ_CATEGORIE
                         isOpen ? "grid-rows-[1fr] px-6 pb-5 opacity-100" : "grid-rows-[0fr] px-6 opacity-0"
                       }`}
                     >
-                      <p className="overflow-hidden text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
+                      <p className="overflow-hidden text-sm leading-relaxed text-smoke sm:text-base">
                         {entry.answer}
                       </p>
                     </div>

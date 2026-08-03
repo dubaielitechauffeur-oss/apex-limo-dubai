@@ -45,12 +45,12 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b border-[#1F1F1F] bg-black transition-shadow duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 border-b border-charcoal bg-black transition-shadow duration-300 ${
         scrolled ? "shadow-[0_8px_30px_rgba(0,0,0,0.55)]" : ""
       }`}
     >
       {/* Promotional bar */}
-      <div className="flex h-9 items-center justify-center border-b border-[#1F1F1F] bg-black px-4">
+      <div className="flex h-9 items-center justify-center border-b border-charcoal bg-black px-4">
         <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-white sm:text-[11px] sm:tracking-[0.25em]">
           {t("header.promoBar")}
         </p>
@@ -77,14 +77,14 @@ export default function Header() {
                 <li key={link.href} className="group relative shrink-0">
                   <Link
                     href={link.href}
-                    className={`font-body text-[13px] uppercase tracking-[0.02em] whitespace-nowrap transition-colors duration-200 hover:text-[#C8A35F] xl:tracking-[0.08em] ${
-                      isActive ? "text-[#C8A35F]" : "text-white"
+                    className={`font-body text-[13px] uppercase tracking-[0.02em] whitespace-nowrap transition-colors duration-200 hover:text-champagne xl:tracking-[0.08em] ${
+                      isActive ? "text-champagne" : "text-white"
                     }`}
                   >
                     {t(`nav.${link.key}`)}
                   </Link>
                   <span
-                    className={`absolute -bottom-1.5 start-0 h-px w-full bg-[#C8A35F] transition-opacity duration-200 ${
+                    className={`absolute -bottom-1.5 start-0 h-px w-full bg-champagne transition-opacity duration-200 ${
                       isActive ? "opacity-100" : "opacity-0"
                     }`}
                     aria-hidden="true"
@@ -92,13 +92,13 @@ export default function Header() {
 
                   {"children" in link && link.children ? (
                     <div className="invisible absolute left-1/2 top-full w-64 -translate-x-1/2 translate-y-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-3 group-hover:opacity-100">
-                      <div className="rounded-sm border border-[#1F1F1F] bg-black p-4 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)]">
+                      <div className="rounded-sm border border-charcoal bg-black p-4 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)]">
                         <ul className="flex flex-col gap-3">
                           {link.children.map((child) => (
                             <li key={child.href}>
                               <Link
                                 href={child.href}
-                                className="block text-sm text-[#BDBDBD] transition-colors hover:text-[#C8A35F]"
+                                className="block text-sm text-smoke transition-colors hover:text-champagne"
                               >
                                 {t(`nav.${link.key}Children.${child.key}`)}
                               </Link>
@@ -118,13 +118,13 @@ export default function Header() {
           <div className="hidden items-center gap-2.5 justify-self-end lg:flex xl:gap-4">
             <a
               href={getPhoneLink()}
-              className="shrink-0 whitespace-nowrap text-[13px] text-[#BDBDBD] transition-colors duration-200 hover:text-[#C8A35F]"
+              className="shrink-0 whitespace-nowrap text-[13px] text-smoke transition-colors duration-200 hover:text-champagne"
             >
               <Ltr>{SITE.phoneDisplay}</Ltr>
             </a>
             <Link
               href={PRIMARY_CTA.book.href}
-              className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#C8A35F] px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-colors duration-200 hover:bg-[#B8935A] xl:px-6 xl:py-3 xl:tracking-[0.12em]"
+              className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-champagne px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-colors duration-200 hover:bg-champagne-dark xl:px-6 xl:py-3 xl:tracking-[0.12em]"
             >
               <Calendar className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
               {t("cta.bookNow")}
@@ -139,6 +139,7 @@ export default function Header() {
               onClick={() => setMobileOpen(true)}
               aria-label={t("header.openMenu")}
               aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-panel"
               className="flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5"
             >
               <span className="h-px w-6 bg-white" />

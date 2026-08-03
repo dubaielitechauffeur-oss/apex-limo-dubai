@@ -60,7 +60,7 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t("changeLanguage")}
-        className="flex items-center gap-1.5 text-[13px] uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:text-[#C8A35F]"
+        className="flex items-center gap-1.5 text-[13px] uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:text-champagne"
       >
         <Globe className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
         {!compact ? <span>{current.code}</span> : null}
@@ -73,7 +73,7 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
 
       <div
         role="listbox"
-        className={`absolute end-0 top-full z-50 mt-3 w-44 origin-top-right rtl:origin-top-left rounded-md border border-[#1F1F1F] bg-black py-2 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)] transition-all duration-150 ${
+        className={`absolute end-0 top-full z-50 mt-3 w-44 origin-top-right rtl:origin-top-left rounded-md border border-charcoal bg-black py-2 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)] transition-all duration-150 ${
           open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
         }`}
       >
@@ -85,8 +85,8 @@ export default function LanguageSwitcher({ compact = false, className = "" }: La
               role="option"
               aria-selected={selected}
               onClick={() => selectLocale(option.code)}
-              className={`flex w-full items-center justify-between gap-3 px-4 py-2 text-start text-sm transition-colors duration-150 hover:bg-[#C8A35F]/10 ${
-                selected ? "text-[#C8A35F]" : "text-[#BDBDBD]"
+              className={`flex w-full items-center justify-between gap-3 px-4 py-2 text-start text-sm transition-colors duration-150 hover:bg-champagne/10 ${
+                selected ? "text-champagne" : "text-smoke"
               }`}
             >
               <span className="flex items-center gap-2.5">

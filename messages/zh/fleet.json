@@ -18,7 +18,8 @@
     "airport": "机场",
     "viewCar": "查看车辆",
     "whatsapp": "WhatsApp",
-    "contactUs": "联系我们"
+    "contactUs": "联系我们",
+    "priceOnRequest": "专属报价"
   },
   "listingCard": {
     "whatsappMessage": "您好Apex Limo,我想咨询{name}相关事宜。",
@@ -33,9 +34,10 @@
     "additionalHour": "额外每小时",
     "additionalCity": "额外城市",
     "includesNote": "含司机、燃油、道路通行费(Salik)——不含5%增值税",
-    "disclaimer": "以上为起步价,最终价格可能因路线、日期及具体需求而有所变动。请通过WhatsApp咨询或致电获取准确报价。",
+    "disclaimer": "专属司机接送价格 — 请通过WhatsApp联系我们或申请报价,以根据您的路线、日期及具体需求获取准确价格。",
     "enquireWhatsapp": "通过WhatsApp咨询",
-    "viewDetails": "查看详情"
+    "viewDetails": "查看详情",
+    "priceOnRequest": "专属报价"
   },
   "hero": {
     "eyebrow": "豪华专属司机车队",
@@ -62,10 +64,22 @@
     "whatsappUs": "WhatsApp联系我们",
     "whatsappMessage": "您好,我需要帮助挑选合适的车型。",
     "recommendations": {
-      "mercedesSClass": { "name": "奔驰S级", "blurb": "适合行政人士与商务出行。" },
-      "mercedesVClass": { "name": "奔驰V级", "blurb": "非常适合家庭及小型团体出行。" },
-      "rollsRoyce": { "name": "劳斯莱斯", "blurb": "适合贵宾场合与尊崇体验。" },
-      "rangeRover": { "name": "揽胜", "blurb": "适合城市豪华出行与活动场合。" }
+      "mercedesSClass": {
+        "name": "奔驰S级",
+        "blurb": "适合行政人士与商务出行。"
+      },
+      "mercedesVClass": {
+        "name": "奔驰V级",
+        "blurb": "非常适合家庭及小型团体出行。"
+      },
+      "rollsRoyce": {
+        "name": "劳斯莱斯",
+        "blurb": "适合贵宾场合与尊崇体验。"
+      },
+      "rangeRover": {
+        "name": "揽胜",
+        "blurb": "适合城市豪华出行与活动场合。"
+      }
     }
   },
   "detail": {
@@ -96,7 +110,7 @@
     "additionalHour": "额外每小时",
     "additionalCity": "额外城市",
     "includesNote": "含专业司机、燃油、道路通行费(Salik)及停车费——不含5%增值税。",
-    "disclaimer": "以上为起步价,最终价格可能因路线、日期及具体需求而有所变动。请通过WhatsApp咨询或致电获取准确报价。",
+    "disclaimer": "专属司机接送价格 — 请通过WhatsApp联系我们或申请报价,以根据您的路线、日期及具体需求获取准确价格。",
     "trustNote": "含专业司机 • 无需预付定金 • 灵活取消政策",
     "onboardEyebrow": "车内配置",
     "featuresTitle": "配置与设施",
@@ -119,7 +133,8 @@
       "SUV": "SUV",
       "Van": "商务车",
       "Ultra-Luxury": "顶级豪华"
-    }
+    },
+    "priceOnRequest": "专属报价"
   },
   "summaryCard": {
     "passengers": "乘客",
@@ -132,8 +147,6 @@
     "goToPhotoAriaLabel": "跳转至第{index}张照片"
   },
   "heroQuoteForm": {
-    "startingFrom": "起步价",
-    "perHourInDubai": "/小时(迪拜)",
     "requestQuote": "获取报价",
     "approxRouteNote": "仅为大致路线——无需任何承诺。",
     "thankYouName": "谢谢您,{name}!",

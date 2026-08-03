@@ -46,20 +46,20 @@ export default async function FaqsPage({ params }: PageProps) {
       />
 
       {/* Hero */}
-      <section className="border-b border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
+      <section className="border-b border-gold/15 bg-obsidian py-20 sm:py-24">
         <Container className="text-center">
           <span className="animate-fade-in label-eyebrow">{t("hero.eyebrow")}</span>
           <h1 className="mx-auto mt-5 max-w-3xl animate-slide-in-left font-display text-4xl text-white [animation-delay:100ms] sm:text-5xl">
             {t("hero.title")}
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl animate-fade-in text-sm leading-relaxed text-[#B8B8B8] [animation-delay:250ms] sm:text-base">
+          <p className="mx-auto mt-5 max-w-2xl animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:250ms] sm:text-base">
             {t("hero.subtitle")}
           </p>
         </Container>
       </section>
 
       {/* Search + category filters + FAQ accordions */}
-      <section className="bg-[#161616] py-20 sm:py-24">
+      <section className="bg-obsidian-light py-20 sm:py-24">
         <Container>
           <FaqHubClient faqs={faqs} categories={FAQ_CATEGORIES} />
         </Container>

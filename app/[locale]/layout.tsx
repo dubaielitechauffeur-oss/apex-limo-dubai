@@ -8,6 +8,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloatButton from "@/components/layout/WhatsAppFloatButton";
 import CallFloatButton from "@/components/layout/CallFloatButton";
+import ConditionalFloatButtons from "@/components/layout/ConditionalFloatButtons";
 import ScrollToTopButton from "@/components/layout/ScrollToTopButton";
 import ConstructionNoticeModal from "@/components/layout/ConstructionNoticeModal";
 import { getDefaultMetadata, organizationJsonLd } from "@/lib/seo";
@@ -49,9 +50,10 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 
   setRequestLocale(typedLocale);
 
-  const [messages, { displayFont, bodyFont }] = await Promise.all([
+  const [messages, { displayFont, bodyFont }, t] = await Promise.all([
     getMessages(),
     loadScriptFonts(typedLocale),
+    getTranslations({ locale: typedLocale, namespace: "common.a11y" }),
   ]);
 
   const dir = typedLocale === "ar" ? "rtl" : "ltr";
@@ -73,12 +75,20 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
       </head>
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider messages={messages}>
+          <a
+            href="#main-content"
+            className="fixed start-4 top-4 z-[200] -translate-y-24 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-obsidian transition-transform duration-150 focus:translate-y-0"
+          >
+            {t("skipToContent")}
+          </a>
           <ConstructionNoticeModal />
           <Header />
-          <main className="flex-1 pt-[117px]">{children}</main>
+          <main id="main-content" className="flex-1 pt-[117px]">{children}</main>
           <Footer />
-          <WhatsAppFloatButton />
-          <CallFloatButton />
+          <ConditionalFloatButtons>
+            <WhatsAppFloatButton />
+            <CallFloatButton />
+          </ConditionalFloatButtons>
           <ScrollToTopButton />
         </NextIntlClientProvider>
       </body>

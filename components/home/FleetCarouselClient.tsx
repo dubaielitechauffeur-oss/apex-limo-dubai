@@ -8,6 +8,7 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import Reveal from "@/components/shared/Reveal";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
+import CarouselPauseButton from "@/components/shared/CarouselPauseButton";
 import FleetCarouselCard, { type FleetCarouselCardLabels } from "./FleetCarouselCard";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import { useInfiniteCarousel } from "./useInfiniteCarousel";
@@ -26,6 +27,7 @@ interface FleetCarouselClientProps {
    *  since function props can't cross the server/client boundary. */
   vehicleAriaLabels: Record<string, string>;
   viewFullFleet: string;
+  pauseAriaLabel: string;
 }
 
 /** Cards visible at once: 1 on mobile, 2 on tablet, 3 on desktop.
@@ -76,11 +78,22 @@ export default function FleetCarouselClient({
   nextAriaLabel,
   vehicleAriaLabels,
   viewFullFleet,
+  pauseAriaLabel,
 }: FleetCarouselClientProps) {
   const rtl = isRtlLocale(useLocale());
   const slidesPerView = useSlidesPerView();
-  const { sectionRef, index, instant, activeRealIndex, goNext, goPrev, goToRealIndex, handleTransitionEnd } =
-    useInfiniteCarousel({
+  const {
+    sectionRef,
+    index,
+    instant,
+    activeRealIndex,
+    goNext,
+    goPrev,
+    goToRealIndex,
+    handleTransitionEnd,
+    isAutoplaying,
+    stopAutoplay,
+  } = useInfiniteCarousel({
       itemCount: vehicles.length,
       slidesPerView,
       autoplayDelayMs: AUTOPLAY_DELAY_MS,
@@ -192,8 +205,8 @@ export default function FleetCarouselClient({
           </button>
         </div>
 
-        {/* Dot indicators — one per vehicle */}
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
+        {/* Dot indicators — one per vehicle, plus a pause control while autoplay is running */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
           {vehicles.map((vehicle, realIndex) => (
             <button
               key={vehicle.slug}
@@ -206,6 +219,12 @@ export default function FleetCarouselClient({
               }`}
             />
           ))}
+          <CarouselPauseButton
+            isAutoplaying={isAutoplaying}
+            onStop={stopAutoplay}
+            label={pauseAriaLabel}
+            className="ms-2"
+          />
         </div>
 
         <div className="mt-12 text-center">

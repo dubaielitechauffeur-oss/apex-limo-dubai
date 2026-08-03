@@ -24,6 +24,11 @@ export const SITE = {
  */
 export const RATING = "4.9";
 
+/** Shared schema.org `priceRange` value — quoted in both the root organization
+ *  and each per-location LocalBusiness JSON-LD node (lib/seo.ts, and
+ *  app/[locale]/locations/[location]/page.tsx). */
+export const PRICE_RANGE = "$$$";
+
 /** WhatsApp deep link with a pre-filled inquiry message. */
 export const getWhatsAppLink = (message?: string) => {
   const defaultMessage =

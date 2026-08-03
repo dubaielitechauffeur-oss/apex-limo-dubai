@@ -42,6 +42,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
     // aria-hidden alone doesn't affect tab order, so it's kept alongside
     // `inert` for broader assistive-tech/browser support.
     <div
+      id="mobile-nav-panel"
       className={`fixed inset-0 z-40 flex flex-col bg-obsidian transition-transform duration-300 ease-in-out lg:hidden ${
         open ? "translate-x-0" : "translate-x-full"
       }`}

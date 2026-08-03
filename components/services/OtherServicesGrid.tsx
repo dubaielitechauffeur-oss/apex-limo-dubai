@@ -66,7 +66,7 @@ export default function OtherServicesGrid({
                   {service.shortDescription}
                 </p>
 
-                <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
+                <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 group-hover:text-gold-pale">
                   {learnMoreLabel}
                   <DirectionalIcon
                     icon={ArrowRight}

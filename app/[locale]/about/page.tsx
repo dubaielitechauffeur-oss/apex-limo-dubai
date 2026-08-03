@@ -87,6 +87,7 @@ export default async function AboutPage({ params }: PageProps) {
     fiveHours: tCard("fiveHours"),
     oneHour: tCard("oneHour"),
     airport: tCard("airport"),
+    priceOnRequest: tCard("priceOnRequest"),
     viewCar: tCard("viewCar"),
     whatsapp: tCard("whatsapp"),
     contactUs: tCard("contactUs"),

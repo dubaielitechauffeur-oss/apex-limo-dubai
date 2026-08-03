@@ -7,10 +7,11 @@ import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
 import FormSectionHeading from "@/components/shared/FormSectionHeading";
 import PhoneInputField from "@/components/shared/PhoneInputField";
+import HoneypotField from "@/components/shared/HoneypotField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
 import type { QuoteFormData } from "@/lib/types";
-import { validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
+import { buildValidationMessages, validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
 const EMPTY_FORM: QuoteFormData = {
   fullName: "",
@@ -97,7 +98,7 @@ function QuoteFormSkeleton() {
   return (
     <div aria-hidden="true" className="space-y-6">
       {[...Array(4)].map((_, i) => (
-        <div key={i} className="h-12 animate-pulse bg-[#1A1A1A]" />
+        <div key={i} className="h-12 animate-pulse bg-obsidian-light" />
       ))}
     </div>
   );
@@ -128,21 +129,7 @@ function QuoteFormFields({
 
   const todayISO = new Date().toISOString().split("T")[0];
 
-  const validationMessages: ValidationMessages = {
-    fullNameRequired: t("validation.fullNameRequired"),
-    phoneInvalid: t("validation.phoneInvalid"),
-    emailInvalid: t("validation.emailInvalid"),
-    pickupRequired: t("validation.pickupRequired"),
-    dropoffRequired: t("validation.dropoffRequired"),
-    pickupDateRequired: t("validation.pickupDateRequired"),
-    pickupDatePast: t("validation.pickupDatePast"),
-    datePast: t("validation.datePast"),
-    timeRequired: t("validation.timeRequired"),
-    vehicleRequired: t("validation.vehicleRequired"),
-    passengersMin: t("validation.passengersMin"),
-    passengersMax: t("validation.passengersMax"),
-    serviceRequired: t("validation.serviceRequired"),
-  };
+  const validationMessages: ValidationMessages = buildValidationMessages(t);
 
   function update<K extends keyof QuoteFormData>(key: K, value: QuoteFormData[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -151,7 +138,7 @@ function QuoteFormFields({
     }
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const validationErrors = validateQuoteForm(form, validationMessages);
@@ -165,11 +152,13 @@ function QuoteFormFields({
     setStatus("submitting");
     setServerMessage("");
 
+    const honeypot = (new FormData(e.currentTarget).get("company") as string) ?? "";
+
     try {
       const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, locale }),
+        body: JSON.stringify({ ...form, company: honeypot, locale }),
       });
       const data = await res.json();
 
@@ -202,19 +191,19 @@ function QuoteFormFields({
       <div
         role="status"
         style={preservedMinHeight ? { minHeight: preservedMinHeight } : undefined}
-        className="flex flex-col items-center justify-end rounded-2xl border border-[rgba(201,161,74,0.25)] bg-[#111111] p-10 text-center"
+        className="flex flex-col items-center justify-end rounded-2xl border border-gold/25 bg-ink p-10 text-center"
       >
-        <CheckCircle2 className="h-10 w-10 text-[#C9A14A]" strokeWidth={1.5} />
+        <CheckCircle2 className="h-10 w-10 text-gold" strokeWidth={1.5} />
         <h3 className="mt-5 font-display text-2xl text-white">
           {customerName ? t("quote.thankYouName", { name: customerName }) : t("quote.thankYou")}
         </h3>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-[#B8B8B8]">
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-smoke">
           {t("quote.successBody")}
           {reference ? (
             <>
               {" "}
               {t("quote.referenceLabel")}{" "}
-              <span className="font-semibold text-[#C9A14A]">{reference}</span>.
+              <span className="font-semibold text-gold">{reference}</span>.
             </>
           ) : null}
         </p>
@@ -255,6 +244,8 @@ function QuoteFormFields({
           <p>{serverMessage}</p>
         </div>
       ) : null}
+
+      <HoneypotField />
 
       <div className="space-y-6">
         <FormSectionHeading step={1} title={t("sections.personalDetails")} />

@@ -206,5 +206,13 @@ export function useInfiniteCarousel({
     goPrev,
     goToRealIndex,
     handleTransitionEnd,
+    /** True while autoplay is actively cycling — exposed so callers can
+     *  render a pause control (WCAG 2.2.2: auto-advancing content running
+     *  longer than 5s needs a way to stop it). */
+    isAutoplaying: autoplayActive,
+    /** Permanently stops autoplay — same effect as any arrow/dot
+     *  interaction when `stopOnInteraction` is set, exposed directly so a
+     *  dedicated pause button doesn't need to fake a navigation action. */
+    stopAutoplay: handleInteraction,
   };
 }

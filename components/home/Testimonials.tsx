@@ -5,7 +5,6 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import Reveal from "@/components/shared/Reveal";
 import { TESTIMONIALS } from "@/data/testimonials";
 import { SITE, RATING } from "@/lib/constants";
-import { organizationId } from "@/lib/seo";
 
 /** Renders a row of filled/outline stars for a given rating out of 5. */
 function StarRow({ rating, ariaLabel, size = "h-4 w-4" }: { rating: number; ariaLabel: string; size?: string }) {
@@ -20,48 +19,6 @@ function StarRow({ rating, ariaLabel, size = "h-4 w-4" }: { rating: number; aria
       ))}
     </div>
   );
-}
-
-/**
- * Review + AggregateRating JSON-LD for the business. Uses the same @id as
- * the root LocalBusiness entity (see lib/seo.ts) so parsers recognize this
- * as additional data about the one business, not a second entity. @type is
- * "LocalBusiness" (not the more specific "LimousineService") because
- * Google's Review Snippet rich result requires the reviewed entity to be
- * LocalBusiness or a supported subtype — see the comment on
- * organizationJsonLd in lib/seo.ts for the full explanation.
- * Built from every testimonial, not just the 3 featured on-page, so the
- * aggregate rating reflects the full review count.
- */
-function reviewsJsonLd() {
-  const itemReviewed = { "@type": "LocalBusiness", "@id": organizationId() };
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "additionalType": "https://schema.org/LimousineService",
-    "@id": organizationId(),
-    name: SITE.name,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      itemReviewed,
-      ratingValue: RATING,
-      reviewCount: TESTIMONIALS.length,
-      bestRating: 5,
-    },
-    review: TESTIMONIALS.map((t) => ({
-      "@type": "Review",
-      itemReviewed,
-      author: { "@type": "Person", name: t.name },
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: t.rating,
-        bestRating: 5,
-      },
-      reviewBody: t.text,
-      datePublished: t.date,
-    })),
-  };
 }
 
 /**
@@ -81,11 +38,13 @@ export default async function Testimonials() {
 
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsJsonLd()) }}
-      />
+      {/* AggregateRating/Review JSON-LD for the business already renders
+          site-wide (every page, this one included) via organizationJsonLd()
+          in the root layout (see lib/seo.ts) — a second declaration here
+          previously redeclared the same @id with a stale hardcoded rating
+          value, which conflicted with the computed one and is exactly the
+          "Invalid object type for field 'parent_node'" bug class documented
+          on organizationJsonLd. Removed rather than duplicated. */}
 
       <Container>
         <Reveal>

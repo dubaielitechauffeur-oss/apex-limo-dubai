@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
-import type { QuoteFormData } from "@/lib/types";
-import { buildValidationMessages, validateQuoteForm, hasErrors, type ValidationMessages } from "@/lib/validation";
+import type { ContactFormData } from "@/lib/types";
+import { buildValidationMessages, validateContactForm, hasErrors, type ValidationMessages } from "@/lib/validation";
 import { dispatchLead } from "@/lib/notifications";
 import { resolveLocale, generateReference, readJsonBodyWithLimit } from "@/lib/api-lead-handler";
 import { isRateLimited, isHoneypotTripped } from "@/lib/spam-protection";
@@ -28,20 +28,20 @@ export async function POST(request: NextRequest) {
   const raw = parsed.data;
   locale = resolveLocale(raw.locale);
   delete raw.locale;
-  const body = raw as unknown as QuoteFormData;
+  const body = raw as unknown as ContactFormData;
 
   const t = await getTranslations({ locale, namespace: "forms" });
 
   if (isHoneypotTripped(raw)) {
     return NextResponse.json(
-      { success: true, message: t("quote.successMessageApi"), reference: generateReference("APX-Q-") },
+      { success: true, message: t("contact.successMessageApi"), reference: generateReference("APX-C-") },
       { status: 200 }
     );
   }
 
   const validationMessages: ValidationMessages = buildValidationMessages(t);
 
-  const errors = validateQuoteForm(body, validationMessages);
+  const errors = validateContactForm(body, validationMessages);
   if (hasErrors(errors)) {
     return NextResponse.json(
       { success: false, message: t("status.correctFieldsApi"), errors },
@@ -49,18 +49,18 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const reference = generateReference("APX-Q-");
+  const reference = generateReference("APX-C-");
 
   try {
-    await dispatchLead("quote", body, reference);
+    await dispatchLead("contact", body, reference);
   } catch (err) {
-    console.error("[api/quote] dispatch error:", err);
+    console.error("[api/contact] dispatch error:", err);
   }
 
   return NextResponse.json(
     {
       success: true,
-      message: t("quote.successMessageApi"),
+      message: t("contact.successMessageApi"),
       reference,
     },
     { status: 200 }

@@ -28,7 +28,8 @@
     "faqTitleTemplate": "{name}常见问题",
     "exploreMoreEyebrow": "探索更多",
     "otherAreasTitle": "我们服务的其他区域",
-    "otherAreasSubtitleTemplate": "以下{siteName}周边目的地同样提供专属司机服务。"
+    "otherAreasSubtitleTemplate": "以下{siteName}周边目的地同样提供专属司机服务。",
+    "relatedVehiclesAnd": "和"
   },
   "showcase": {
     "eyebrow": "我们的服务范围",

@@ -23,28 +23,28 @@ export default function ConversionPageIntro({ heading, description }: Conversion
   ];
 
   return (
-    <section className="border-b border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] pb-10 pt-14 sm:pb-12 sm:pt-20">
+    <section className="border-b border-gold/15 bg-obsidian pb-10 pt-14 sm:pb-12 sm:pt-20">
       <Container className="text-center">
         <span className="animate-fade-in label-eyebrow">{t("readyWhenYouAre")}</span>
         <h1 className="mx-auto mt-4 max-w-2xl animate-slide-in-left font-display text-3xl text-white [animation-delay:100ms] sm:text-4xl lg:text-[2.75rem]">
           {heading}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl animate-fade-in text-sm leading-relaxed text-[#B8B8B8] [animation-delay:250ms] sm:text-base">
+        <p className="mx-auto mt-4 max-w-xl animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:250ms] sm:text-base">
           {description}
         </p>
 
         <div className="mx-auto mt-7 flex max-w-2xl animate-fade-in flex-wrap items-center justify-center gap-x-6 gap-y-3 [animation-delay:400ms]">
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#B8B8B8] sm:text-[13px]">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-smoke sm:text-[13px]">
             <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
               {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-3.5 w-3.5 fill-[#C9A14A] text-[#C9A14A]" strokeWidth={1.5} />
+                <Star key={i} className="h-3.5 w-3.5 fill-gold text-gold" strokeWidth={1.5} />
               ))}
             </div>
             <Ltr>{t("ratingLabel", { rating: RATING })}</Ltr>
           </div>
           {otherIndicators.map((item) => (
-            <div key={item.label} className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#B8B8B8] sm:text-[13px]">
-              <item.icon className="h-3.5 w-3.5 text-[#C9A14A]" strokeWidth={1.75} aria-hidden="true" />
+            <div key={item.label} className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-smoke sm:text-[13px]">
+              <item.icon className="h-3.5 w-3.5 text-gold" strokeWidth={1.75} aria-hidden="true" />
               <Ltr>{item.label}</Ltr>
             </div>
           ))}

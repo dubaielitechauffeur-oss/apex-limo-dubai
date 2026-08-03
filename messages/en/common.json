@@ -68,8 +68,8 @@
     "eyebrow": "A Note From Apex Limo",
     "heading": "We're Refining Your Experience",
     "body": "Our website is still being fine-tuned, so you may notice a few details changing over the coming days. Every booking and quote request is fully live and personally handled by our team.",
-    "priceNotice": "Vehicle prices shown are currently <b>demo pricing</b>, not final rates. To book, please <whatsappLink>contact us on WhatsApp</whatsappLink>.",
-    "priceNoticeWhatsappMessage": "Hello Apex Limo, I saw the demo pricing on your website — could you share the actual rate and help me book?",
+    "priceNotice": "All chauffeur rates are personally confirmed by our team before booking — <whatsappLink>WhatsApp us</whatsappLink> or request a quote for an exact price.",
+    "priceNoticeWhatsappMessage": "Hello Apex Limo, I'd like to get an exact chauffeur rate for my trip — could you help?",
     "cta": "Continue to Website",
     "closeAriaLabel": "Close notice"
   },
@@ -88,6 +88,14 @@
     "ourServicesRegion": "Our services",
     "previousServices": "Previous services",
     "nextServices": "Next services",
-    "goToServicesPageTemplate": "Go to services page {index}"
+    "goToServicesPageTemplate": "Go to services page {index}",
+    "skipToContent": "Skip to content",
+    "pauseCarouselAriaLabel": "Pause autoplay"
+  },
+  "errorPage": {
+    "title": "Something Went Wrong",
+    "description": "We hit an unexpected error loading this page. Please try again, or head back to the homepage.",
+    "tryAgain": "Try Again",
+    "backToHome": "Back to Home"
   }
 }

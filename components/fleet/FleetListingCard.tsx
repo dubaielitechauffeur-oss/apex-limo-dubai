@@ -4,7 +4,6 @@ import { Link } from "@/i18n/navigation";
 import { Car, Users, Briefcase, Wifi, GlassWater, type LucideIcon } from "lucide-react";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
-import { formatAed } from "@/lib/format";
 
 interface FleetListingCardProps {
   vehicle: PlainFleetVehicle;
@@ -26,14 +25,20 @@ function SpecItem({ icon: Icon, label }: SpecItemProps) {
 
 interface PriceItemProps {
   label: string;
-  amount: number;
+  priceOnRequestLabel: string;
 }
 
-function PriceItem({ label, amount }: PriceItemProps) {
+/** Shows the package name only — no fabricated rate. Confirmed pricing is
+ *  quoted per-trip on WhatsApp/quote request (see `disclaimer` copy below). */
+function PriceItem({ label, priceOnRequestLabel }: PriceItemProps) {
   return (
     <div className="flex flex-col gap-0.5">
       <span className="text-[10px] font-medium uppercase tracking-wide text-graphite">{label}</span>
-      <span className="font-display text-sm font-bold text-obsidian">{formatAed(amount)}</span>
+      {/* text-obsidian (not gold-deep) — gold-deep on this light linen
+          panel measures ~3.5:1, below the 4.5:1 WCAG AA minimum for this
+          text size. Obsidian gives ~19:1 and reads as a bolder price
+          callout besides. */}
+      <span className="font-display text-sm font-bold text-obsidian">{priceOnRequestLabel}</span>
     </div>
   );
 }
@@ -53,13 +58,13 @@ export default async function FleetListingCard({ vehicle }: FleetListingCardProp
   const tSummary = await getTranslations("fleet.summaryCard");
   const cover = vehicle.images?.[0];
 
-  const priceTiers: { label: string; amount: number }[] = [
-    { label: t("twoHours"), amount: vehicle.rates.oneHour },
-    { label: t("airportTransfer"), amount: vehicle.rates.airport },
-    { label: t("fiveHours"), amount: vehicle.rates.fiveHours },
-    { label: t("tenHours"), amount: vehicle.rates.tenHours },
-    { label: t("additionalHour"), amount: vehicle.rates.extraHour },
-    { label: t("additionalCity"), amount: vehicle.rates.additionalCity },
+  const priceTierLabels: string[] = [
+    t("twoHours"),
+    t("airportTransfer"),
+    t("fiveHours"),
+    t("tenHours"),
+    t("additionalHour"),
+    t("additionalCity"),
   ];
 
   return (
@@ -86,7 +91,7 @@ export default async function FleetListingCard({ vehicle }: FleetListingCardProp
           {t("driverIncluded")}
         </span>
         {vehicle.badge ? (
-          <span className="absolute end-5 top-5 inline-flex items-center rounded-full border border-[#C9A14A]/60 bg-black/55 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#C9A14A] backdrop-blur-sm">
+          <span className="absolute end-5 top-5 inline-flex items-center rounded-full border border-gold/60 bg-black/55 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-gold backdrop-blur-sm">
             {vehicle.badge}
           </span>
         ) : null}
@@ -120,8 +125,8 @@ export default async function FleetListingCard({ vehicle }: FleetListingCardProp
         {/* Chauffeur rates — a refined price panel, not a rental-style
             bordered-tile grid, sitting between specs and the CTAs. */}
         <div className="mt-2.5 grid grid-cols-2 gap-x-6 gap-y-2 rounded-xl border border-gold/15 bg-linen/60 px-5 py-3 sm:grid-cols-3">
-          {priceTiers.map((tier) => (
-            <PriceItem key={tier.label} label={tier.label} amount={tier.amount} />
+          {priceTierLabels.map((label) => (
+            <PriceItem key={label} label={label} priceOnRequestLabel={t("priceOnRequest")} />
           ))}
         </div>
 

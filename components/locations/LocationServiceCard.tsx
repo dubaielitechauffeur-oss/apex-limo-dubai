@@ -49,14 +49,14 @@ export default function LocationServiceCard({
           {service.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full border border-[#C9A14A]/50 bg-black/30 px-3 py-1 text-[11px] uppercase tracking-wide text-white/90 backdrop-blur-sm"
+              className="rounded-full border border-gold/50 bg-black/30 px-3 py-1 text-[11px] uppercase tracking-wide text-white/90 backdrop-blur-sm"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
+        <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 group-hover:text-gold-pale">
           {learnMoreLabel}
           <DirectionalIcon
             icon={ArrowRight}
