@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { SITE } from "./constants";
+import { SITE, PRICE_RANGE } from "./constants";
 import { routing, type Locale } from "@/i18n/routing";
+import { TESTIMONIALS } from "@/data/testimonials";
 
 /** Open Graph locale tags per site locale (BCP-47-ish, underscore form OG expects). */
 const OG_LOCALE_MAP: Record<Locale, string> = {
@@ -98,6 +99,10 @@ interface BuildMetadataOptions {
   type?: "website" | "article";
   /** ISO date string — only meaningful (and only emitted) when type is "article". */
   publishedTime?: string;
+  /** Overrides the site-default indexable robots directive — used for the
+   *  not-found metadata branch of dynamic detail routes (fleet/service/
+   *  location/blog), which resolves to a real 404 response. */
+  robots?: Metadata["robots"];
 }
 
 /** Helper for generating page-level metadata that inherits site defaults, with
@@ -110,6 +115,7 @@ export function buildMetadata({
   images,
   type = "website",
   publishedTime,
+  robots,
 }: BuildMetadataOptions): Metadata {
   const url = `${SITE.url}${localizedPath(locale, path)}`;
 
@@ -125,6 +131,7 @@ export function buildMetadata({
     title,
     description,
     alternates: { canonical: url, languages },
+    ...(robots ? { robots } : {}),
     openGraph: {
       type,
       title,
@@ -191,8 +198,70 @@ export function organizationJsonLd(locale: Locale = routing.defaultLocale) {
       addressLocality: "Dubai",
       addressCountry: "AE",
     },
-    priceRange: "$$$",
+    // Chauffeur service operates 24/7; the office/support line keeps
+    // separate hours — both reflect the real hours quoted in
+    // messages/*/contact.json (sidebar.chauffeurService / supportHours),
+    // not a placeholder.
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "00:00",
+        closes: "23:59",
+      },
+    ],
+    priceRange: PRICE_RANGE,
+    // Populate once real, verified profile URLs (Google Business Profile,
+    // Instagram, Facebook, LinkedIn, etc.) are available — deliberately
+    // left empty rather than filled with placeholder/guessed URLs.
     sameAs: [] as string[],
+    ...aggregateRatingFields(),
+  };
+}
+
+/**
+ * aggregateRating + review, built from data/testimonials.ts — real,
+ * published customer testimonials already shown on the site, not
+ * fabricated figures. reviewCount intentionally matches the number of
+ * reviews actually included here (not the site-wide marketing RATING
+ * figure's underlying sample, which may include unlisted Google reviews)
+ * so the schema never claims more than what it publishes.
+ */
+function aggregateRatingFields() {
+  if (TESTIMONIALS.length === 0) return {};
+
+  const ratingValue = (
+    TESTIMONIALS.reduce((sum, review) => sum + review.rating, 0) / TESTIMONIALS.length
+  ).toFixed(1);
+
+  return {
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue,
+      reviewCount: TESTIMONIALS.length,
+      bestRating: "5",
+      worstRating: "1",
+    },
+    review: TESTIMONIALS.map((testimonial) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: testimonial.name },
+      datePublished: testimonial.date,
+      reviewBody: testimonial.text,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: testimonial.rating,
+        bestRating: "5",
+        worstRating: "1",
+      },
+    })),
   };
 }
 

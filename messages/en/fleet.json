@@ -18,7 +18,8 @@
     "airport": "Airport",
     "viewCar": "View Car",
     "whatsapp": "WhatsApp",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "priceOnRequest": "Custom Quote"
   },
   "listingCard": {
     "whatsappMessage": "Hello Apex Limo, I would like to enquire about the {name}.",
@@ -33,9 +34,10 @@
     "additionalHour": "Additional Hour",
     "additionalCity": "Additional City",
     "includesNote": "Includes driver, fuel, tolls (Salik) — excludes 5% VAT",
-    "disclaimer": "Starting rates only. Final pricing may vary based on route, date, and requirements. Enquire on WhatsApp or call for an exact quote.",
+    "disclaimer": "Personalized chauffeur rates — WhatsApp us or request a quote for an exact price based on your route, date, and requirements.",
     "enquireWhatsapp": "Enquire on WhatsApp",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "priceOnRequest": "Custom Quote"
   },
   "hero": {
     "eyebrow": "Luxury Chauffeur Fleet",
@@ -62,10 +64,22 @@
     "whatsappUs": "WhatsApp Us",
     "whatsappMessage": "Hi, I'd like help choosing the right vehicle.",
     "recommendations": {
-      "mercedesSClass": { "name": "Mercedes S-Class", "blurb": "Ideal for executives and business travel." },
-      "mercedesVClass": { "name": "Mercedes V-Class", "blurb": "Perfect for families and small groups." },
-      "rollsRoyce": { "name": "Rolls-Royce", "blurb": "For VIP occasions and premium experiences." },
-      "rangeRover": { "name": "Range Rover", "blurb": "Luxury city travel and events." }
+      "mercedesSClass": {
+        "name": "Mercedes S-Class",
+        "blurb": "Ideal for executives and business travel."
+      },
+      "mercedesVClass": {
+        "name": "Mercedes V-Class",
+        "blurb": "Perfect for families and small groups."
+      },
+      "rollsRoyce": {
+        "name": "Rolls-Royce",
+        "blurb": "For VIP occasions and premium experiences."
+      },
+      "rangeRover": {
+        "name": "Range Rover",
+        "blurb": "Luxury city travel and events."
+      }
     }
   },
   "detail": {
@@ -96,7 +110,7 @@
     "additionalHour": "Additional Hour",
     "additionalCity": "Additional City",
     "includesNote": "Includes professional chauffeur, fuel, tolls (Salik) & parking — excludes 5% VAT.",
-    "disclaimer": "Starting rates only. Final pricing may vary based on route, date, and requirements. Enquire on WhatsApp or call for an exact quote.",
+    "disclaimer": "Personalized chauffeur rates — WhatsApp us or request a quote for an exact price based on your route, date, and requirements.",
     "trustNote": "Professional chauffeur included • No deposit required • Flexible cancellation policy",
     "onboardEyebrow": "Onboard",
     "featuresTitle": "Features & Amenities",
@@ -119,7 +133,8 @@
       "SUV": "SUV",
       "Van": "Van",
       "Ultra-Luxury": "Ultra-Luxury"
-    }
+    },
+    "priceOnRequest": "Custom Quote"
   },
   "summaryCard": {
     "passengers": "Passengers",
@@ -132,8 +147,6 @@
     "goToPhotoAriaLabel": "Go to photo {index}"
   },
   "heroQuoteForm": {
-    "startingFrom": "Starting from",
-    "perHourInDubai": "/ hour in Dubai",
     "requestQuote": "Request a Quote",
     "approxRouteNote": "Just an approximate route — no obligation.",
     "thankYouName": "Thank you, {name}!",

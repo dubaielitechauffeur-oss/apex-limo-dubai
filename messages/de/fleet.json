@@ -18,7 +18,8 @@
     "airport": "Flughafen",
     "viewCar": "Fahrzeug ansehen",
     "whatsapp": "WhatsApp",
-    "contactUs": "Kontaktieren Sie uns"
+    "contactUs": "Kontaktieren Sie uns",
+    "priceOnRequest": "Individuelles Angebot"
   },
   "listingCard": {
     "whatsappMessage": "Hallo Apex Limo, ich möchte mich zu {name} erkundigen.",
@@ -33,9 +34,10 @@
     "additionalHour": "Zusätzliche Stunde",
     "additionalCity": "Zusätzliche Stadt",
     "includesNote": "Inklusive Fahrer, Kraftstoff, Mautgebühren (Salik) — zzgl. 5 % Mehrwertsteuer",
-    "disclaimer": "Nur Startpreise. Der Endpreis kann je nach Strecke, Datum und Anforderungen abweichen. Für ein genaues Angebot kontaktieren Sie uns per WhatsApp oder Telefon.",
+    "disclaimer": "Individuelle Chauffeurpreise — kontaktieren Sie uns per WhatsApp oder fordern Sie ein Angebot an, um den genauen Preis basierend auf Strecke, Datum und Anforderungen zu erhalten.",
     "enquireWhatsapp": "Per WhatsApp anfragen",
-    "viewDetails": "Details ansehen"
+    "viewDetails": "Details ansehen",
+    "priceOnRequest": "Individuelles Angebot"
   },
   "hero": {
     "eyebrow": "Luxus-Chauffeurflotte",
@@ -62,10 +64,22 @@
     "whatsappUs": "Per WhatsApp kontaktieren",
     "whatsappMessage": "Hallo, ich benötige Hilfe bei der Wahl des richtigen Fahrzeugs.",
     "recommendations": {
-      "mercedesSClass": { "name": "Mercedes S-Klasse", "blurb": "Ideal für Führungskräfte und Geschäftsreisen." },
-      "mercedesVClass": { "name": "Mercedes V-Klasse", "blurb": "Perfekt für Familien und kleine Gruppen." },
-      "rollsRoyce": { "name": "Rolls-Royce", "blurb": "Für VIP-Anlässe und exklusive Erlebnisse." },
-      "rangeRover": { "name": "Range Rover", "blurb": "Für luxuriöse Stadtfahrten und Veranstaltungen." }
+      "mercedesSClass": {
+        "name": "Mercedes S-Klasse",
+        "blurb": "Ideal für Führungskräfte und Geschäftsreisen."
+      },
+      "mercedesVClass": {
+        "name": "Mercedes V-Klasse",
+        "blurb": "Perfekt für Familien und kleine Gruppen."
+      },
+      "rollsRoyce": {
+        "name": "Rolls-Royce",
+        "blurb": "Für VIP-Anlässe und exklusive Erlebnisse."
+      },
+      "rangeRover": {
+        "name": "Range Rover",
+        "blurb": "Für luxuriöse Stadtfahrten und Veranstaltungen."
+      }
     }
   },
   "detail": {
@@ -96,7 +110,7 @@
     "additionalHour": "Zusätzliche Stunde",
     "additionalCity": "Zusätzliche Stadt",
     "includesNote": "Inklusive professionellem Chauffeur, Kraftstoff, Mautgebühren (Salik) & Parkgebühren — zzgl. 5 % Mehrwertsteuer.",
-    "disclaimer": "Nur Startpreise. Der Endpreis kann je nach Strecke, Datum und Anforderungen abweichen. Für ein genaues Angebot kontaktieren Sie uns per WhatsApp oder Telefon.",
+    "disclaimer": "Individuelle Chauffeurpreise — kontaktieren Sie uns per WhatsApp oder fordern Sie ein Angebot an, um den genauen Preis basierend auf Strecke, Datum und Anforderungen zu erhalten.",
     "trustNote": "Professioneller Chauffeur inklusive • Keine Anzahlung erforderlich • Flexible Stornierungsbedingungen",
     "onboardEyebrow": "An Bord",
     "featuresTitle": "Ausstattung & Annehmlichkeiten",
@@ -119,7 +133,8 @@
       "SUV": "SUV",
       "Van": "Van",
       "Ultra-Luxury": "Ultra-Luxus"
-    }
+    },
+    "priceOnRequest": "Individuelles Angebot"
   },
   "summaryCard": {
     "passengers": "Passagiere",
@@ -132,8 +147,6 @@
     "goToPhotoAriaLabel": "Zu Foto {index} wechseln"
   },
   "heroQuoteForm": {
-    "startingFrom": "Ab",
-    "perHourInDubai": "/ Stunde in Dubai",
     "requestQuote": "Angebot anfragen",
     "approxRouteNote": "Nur eine ungefähre Strecke — unverbindlich.",
     "thankYouName": "Danke, {name}!",

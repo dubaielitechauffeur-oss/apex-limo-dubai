@@ -1,19 +1,39 @@
 import { Resend } from "resend";
-import type { BookingFormData, QuoteFormData, LeadType } from "./types";
-import { bookingEmailHtml, quoteEmailHtml } from "./email-templates";
+import type { BookingFormData, QuoteFormData, ContactFormData, LeadType } from "./types";
+import { bookingEmailHtml, quoteEmailHtml, contactEmailHtml } from "./email-templates";
 import { SITE } from "./constants";
 
 /**
- * These functions give the booking and quote API routes a single, stable
- * place to call into for each downstream integration. `sendLeadEmail` is
- * wired to Resend; `notifyWhatsApp` and `pushToCRM` remain intentional
+ * These functions give the booking/quote/contact API routes a single,
+ * stable place to call into for each downstream integration. `sendLeadEmail`
+ * is wired to Resend; `notifyWhatsApp` and `pushToCRM` remain intentional
  * no-ops until those channels are implemented — swap a body without
  * touching the routes or forms that call them.
  */
 
 type LeadPayload =
   | { type: "booking"; data: BookingFormData; reference: string }
-  | { type: "quote"; data: QuoteFormData; reference: string };
+  | { type: "quote"; data: QuoteFormData; reference: string }
+  | { type: "contact"; data: ContactFormData; reference: string };
+
+let missingKeyWarned = false;
+
+/**
+ * A misconfigured/missing RESEND_API_KEY previously failed silently: the
+ * customer still saw a success response (by design — see dispatchLead
+ * below) while the lead's only trace was a console.error buried in
+ * server logs. This surfaces the misconfiguration loudly and immediately
+ * (once per server instance, not once per request) so it gets caught in
+ * deployment logs/monitoring before a real customer lead is lost.
+ */
+export function assertResendConfigured(): void {
+  if (!process.env.RESEND_API_KEY && !missingKeyWarned) {
+    missingKeyWarned = true;
+    console.error(
+      "[notifications] RESEND_API_KEY is not set — lead notification emails will fail silently for every booking, quote, and contact submission until this is configured."
+    );
+  }
+}
 
 /** Verified sending domain (apexchauffeurdubai.com) — internal ops notifications only. */
 const FROM_ADDRESS = "Apex Limo & Chauffeur Dubai <bookings@apexchauffeurdubai.com>";
@@ -46,16 +66,22 @@ export async function sendLeadEmail(payload: LeadPayload): Promise<void> {
   // `next build`'s route analysis and any request through this module
   // before the key is configured. Deferring it here means a missing key
   // only fails this one channel, caught and logged by dispatchLead below.
+  assertResendConfigured();
   const resend = new Resend(process.env.RESEND_API_KEY);
   const timestamp = formatSubmittedAt();
-  const subject =
-    payload.type === "booking"
-      ? `New Booking Request — ${payload.data.vehicle} — ${payload.reference}`
-      : `New Quote Request — ${payload.reference}`;
-  const html =
-    payload.type === "booking"
-      ? bookingEmailHtml(payload.data, payload.reference, timestamp)
-      : quoteEmailHtml(payload.data, payload.reference, timestamp);
+
+  let subject: string;
+  let html: string;
+  if (payload.type === "booking") {
+    subject = `New Booking Request — ${payload.data.vehicle} — ${payload.reference}`;
+    html = bookingEmailHtml(payload.data, payload.reference, timestamp);
+  } else if (payload.type === "quote") {
+    subject = `New Quote Request — ${payload.reference}`;
+    html = quoteEmailHtml(payload.data, payload.reference, timestamp);
+  } else {
+    subject = `New Contact Message — ${payload.reference}`;
+    html = contactEmailHtml(payload.data, payload.reference, timestamp);
+  }
 
   const { error } = await resend.emails.send({
     from: FROM_ADDRESS,
@@ -83,7 +109,7 @@ export async function pushToCRM(payload: LeadPayload): Promise<void> {
 /** Fires all downstream integrations for a new lead. Errors are isolated per-channel so one failure doesn't block the others. */
 export async function dispatchLead(
   type: LeadType,
-  data: BookingFormData | QuoteFormData,
+  data: BookingFormData | QuoteFormData | ContactFormData,
   reference: string
 ): Promise<void> {
   const payload = { type, data, reference } as LeadPayload;

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent } from "rea
 import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
+import CarouselPauseButton from "@/components/shared/CarouselPauseButton";
 import LocationServiceCard from "./LocationServiceCard";
 import type { PlainService } from "@/data/services";
 import { isRtlLocale } from "@/i18n/locale-metadata";
@@ -127,7 +128,7 @@ export default function LocationServicesCarousel({
             type="button"
             onClick={goPrev}
             aria-label={t("previousServices")}
-            className="absolute -start-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A14A]/40 bg-black/70 text-[#C9A14A] backdrop-blur-sm transition-colors duration-200 hover:border-[#C9A14A] hover:bg-black"
+            className="absolute -start-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-black/70 text-gold backdrop-blur-sm transition-colors duration-200 hover:border-gold hover:bg-black"
           >
             <DirectionalIcon icon={ChevronLeft} className="h-4 w-4" strokeWidth={1.75} />
           </button>
@@ -135,12 +136,12 @@ export default function LocationServicesCarousel({
             type="button"
             onClick={goNext}
             aria-label={t("nextServices")}
-            className="absolute -end-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A14A]/40 bg-black/70 text-[#C9A14A] backdrop-blur-sm transition-colors duration-200 hover:border-[#C9A14A] hover:bg-black"
+            className="absolute -end-5 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-black/70 text-gold backdrop-blur-sm transition-colors duration-200 hover:border-gold hover:bg-black"
           >
             <DirectionalIcon icon={ChevronRight} className="h-4 w-4" strokeWidth={1.75} />
           </button>
 
-          <div className="mt-8 flex justify-center gap-2">
+          <div className="mt-8 flex items-center justify-center gap-2">
             {PAGES.map((_, i) => (
               <button
                 key={i}
@@ -152,10 +153,16 @@ export default function LocationServicesCarousel({
                 aria-label={t("goToServicesPageTemplate", { index: i + 1 })}
                 aria-current={i === page ? "true" : undefined}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === page ? "w-6 bg-[#C9A14A]" : "w-1.5 bg-[#C9A14A]/30 hover:bg-[#C9A14A]/50"
+                  i === page ? "w-6 bg-gold" : "w-1.5 bg-gold/30 hover:bg-gold/50"
                 }`}
               />
             ))}
+            <CarouselPauseButton
+              isAutoplaying={autoplayActive}
+              onStop={stopAutoplay}
+              label={t("pauseCarouselAriaLabel")}
+              className="ms-2"
+            />
           </div>
         </>
       ) : null}

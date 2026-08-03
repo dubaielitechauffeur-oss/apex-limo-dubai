@@ -7,6 +7,7 @@ import { Car, ChevronLeft, ChevronRight } from "lucide-react";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import { useInfiniteCarousel } from "@/components/home/useInfiniteCarousel";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
+import CarouselPauseButton from "@/components/shared/CarouselPauseButton";
 import { isRtlLocale } from "@/i18n/locale-metadata";
 
 interface VehicleHeroGalleryProps {
@@ -14,7 +15,11 @@ interface VehicleHeroGalleryProps {
 }
 
 const AUTOPLAY_DELAY_MS = 1000;
-const AUTOPLAY_INTERVAL_MS = 1000;
+// Previously 1000ms — advancing a new photo every second gave visitors no
+// real time to look at each image and made the WCAG 2.2.2 pause control
+// below almost pointless (it would already have moved on by the time
+// someone reacted). 4000ms matches the homepage fleet carousel's pace.
+const AUTOPLAY_INTERVAL_MS = 4000;
 const SWIPE_THRESHOLD_PX = 40;
 
 /**
@@ -45,19 +50,30 @@ export function VehicleGalleryCarousel({
   const rtl = isRtlLocale(useLocale());
   const t = useTranslations("fleet.heroGallery");
   const tCategory = useTranslations("fleet.detail.categories");
+  const tA11y = useTranslations("common.a11y");
   const images = vehicle.images ?? [];
   const hasMultiple = images.length > 1;
   const categoryLabel = tCategory(vehicle.category);
 
-  const { sectionRef, index, instant, activeRealIndex, goNext, goPrev, goToRealIndex, handleTransitionEnd } =
-    useInfiniteCarousel({
-      itemCount: Math.max(images.length, 1),
-      slidesPerView: 1,
-      autoplayDelayMs: AUTOPLAY_DELAY_MS,
-      autoplayIntervalMs: AUTOPLAY_INTERVAL_MS,
-      stopOnInteraction: true,
-      pauseWhenOffscreen: false,
-    });
+  const {
+    sectionRef,
+    index,
+    instant,
+    activeRealIndex,
+    goNext,
+    goPrev,
+    goToRealIndex,
+    handleTransitionEnd,
+    isAutoplaying,
+    stopAutoplay,
+  } = useInfiniteCarousel({
+    itemCount: Math.max(images.length, 1),
+    slidesPerView: 1,
+    autoplayDelayMs: AUTOPLAY_DELAY_MS,
+    autoplayIntervalMs: AUTOPLAY_INTERVAL_MS,
+    stopOnInteraction: true,
+    pauseWhenOffscreen: false,
+  });
 
   const extended = hasMultiple ? [images[images.length - 1], ...images, images[0]] : images;
 
@@ -161,7 +177,7 @@ export function VehicleGalleryCarousel({
         </button>
       </div>
 
-      <div className="mt-4 flex justify-center gap-2">
+      <div className="mt-4 flex items-center justify-center gap-2">
         {images.map((_, i) => (
           <button
             key={i}
@@ -174,6 +190,12 @@ export function VehicleGalleryCarousel({
             }`}
           />
         ))}
+        <CarouselPauseButton
+          isAutoplaying={isAutoplaying}
+          onStop={stopAutoplay}
+          label={tA11y("pauseCarouselAriaLabel")}
+          className="ms-2"
+        />
       </div>
     </div>
   );

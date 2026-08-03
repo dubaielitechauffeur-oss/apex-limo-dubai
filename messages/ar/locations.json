@@ -28,7 +28,8 @@
     "faqTitleTemplate": "الأسئلة الشائعة حول {name}",
     "exploreMoreEyebrow": "اكتشفوا المزيد",
     "otherAreasTitle": "مناطق أخرى نخدمها",
-    "otherAreasSubtitleTemplate": "تتوفر خدمة السائق الخاص أيضًا في وجهات {siteName} القريبة التالية."
+    "otherAreasSubtitleTemplate": "تتوفر خدمة السائق الخاص أيضًا في وجهات {siteName} القريبة التالية.",
+    "relatedVehiclesAnd": "و"
   },
   "showcase": {
     "eyebrow": "أين نعمل",

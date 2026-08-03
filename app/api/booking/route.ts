@@ -3,52 +3,47 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
 import type { BookingFormData } from "@/lib/types";
-import { validateBookingForm, hasErrors, type ValidationMessages } from "@/lib/validation";
+import { buildValidationMessages, validateBookingForm, hasErrors, type ValidationMessages } from "@/lib/validation";
 import { dispatchLead } from "@/lib/notifications";
-
-function generateReference(): string {
-  const stamp = Date.now().toString(36).toUpperCase();
-  const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
-  return `APX-${stamp}-${rand}`;
-}
-
-function resolveLocale(value: unknown): Locale {
-  return routing.locales.includes(value as Locale) ? (value as Locale) : routing.defaultLocale;
-}
+import { resolveLocale, generateReference, readJsonBodyWithLimit } from "@/lib/api-lead-handler";
+import { isRateLimited, isHoneypotTripped } from "@/lib/spam-protection";
 
 export async function POST(request: NextRequest) {
   let locale: Locale = routing.defaultLocale;
-  let body: BookingFormData;
 
-  try {
-    const raw = await request.json();
-    locale = resolveLocale(raw.locale);
-    delete raw.locale;
-    body = raw;
-  } catch {
+  // Rate limit before touching the body at all — a spammer/DoS attempt is
+  // rejected on IP alone, without ever buffering or parsing their payload.
+  if (isRateLimited(request)) {
     const t = await getTranslations({ locale, namespace: "forms.status" });
+    return NextResponse.json({ success: false, message: t("rateLimited") }, { status: 429 });
+  }
+
+  const parsed = await readJsonBodyWithLimit(request);
+  if (!parsed.ok) {
+    const t = await getTranslations({ locale, namespace: "forms.status" });
+    if (parsed.reason === "too_large") {
+      return NextResponse.json({ success: false, message: t("payloadTooLarge") }, { status: 413 });
+    }
+    return NextResponse.json({ success: false, message: t("invalidBody") }, { status: 400 });
+  }
+
+  const raw = parsed.data;
+  locale = resolveLocale(raw.locale);
+  delete raw.locale;
+  const body = raw as unknown as BookingFormData;
+
+  const t = await getTranslations({ locale, namespace: "forms" });
+
+  // Honeypot tripped: pretend success so bots don't adapt, but never
+  // validate, dispatch, or send an email for this submission.
+  if (isHoneypotTripped(raw)) {
     return NextResponse.json(
-      { success: false, message: t("invalidBody") },
-      { status: 400 }
+      { success: true, message: t("booking.successMessageApi"), reference: generateReference("APX-") },
+      { status: 200 }
     );
   }
 
-  const t = await getTranslations({ locale, namespace: "forms" });
-  const validationMessages: ValidationMessages = {
-    fullNameRequired: t("validation.fullNameRequired"),
-    phoneInvalid: t("validation.phoneInvalid"),
-    emailInvalid: t("validation.emailInvalid"),
-    pickupRequired: t("validation.pickupRequired"),
-    dropoffRequired: t("validation.dropoffRequired"),
-    pickupDateRequired: t("validation.pickupDateRequired"),
-    pickupDatePast: t("validation.pickupDatePast"),
-    datePast: t("validation.datePast"),
-    timeRequired: t("validation.timeRequired"),
-    vehicleRequired: t("validation.vehicleRequired"),
-    passengersMin: t("validation.passengersMin"),
-    passengersMax: t("validation.passengersMax"),
-    serviceRequired: t("validation.serviceRequired"),
-  };
+  const validationMessages: ValidationMessages = buildValidationMessages(t);
 
   const errors = validateBookingForm(body, validationMessages);
   if (hasErrors(errors)) {
@@ -58,7 +53,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const reference = generateReference();
+  const reference = generateReference("APX-");
 
   try {
     // Fire-and-forget style: we don't want a slow downstream provider to

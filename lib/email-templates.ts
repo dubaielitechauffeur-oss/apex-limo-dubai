@@ -1,4 +1,4 @@
-import type { BookingFormData, QuoteFormData } from "./types";
+import type { BookingFormData, QuoteFormData, ContactFormData } from "./types";
 
 /** Escapes user-submitted text before it's interpolated into HTML email markup. */
 function escapeHtml(value: string): string {
@@ -93,4 +93,16 @@ export function quoteEmailHtml(data: QuoteFormData, reference: string, timestamp
   ].join("");
 
   return emailShell({ heading: "New Quote Request", rowsHtml, reference, timestamp });
+}
+
+export function contactEmailHtml(data: ContactFormData, reference: string, timestamp: string): string {
+  const rowsHtml = [
+    row({ label: "Name", value: data.fullName }),
+    row({ label: "Email", value: data.email }),
+    row({ label: "Phone", value: data.phone }),
+    row({ label: "Subject", value: data.subject }),
+    row({ label: "Message", value: data.message }),
+  ].join("");
+
+  return emailShell({ heading: "New Contact Message", rowsHtml, reference, timestamp });
 }

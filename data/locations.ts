@@ -19,6 +19,11 @@ export interface LocationImage {
   alt: Localized;
 }
 
+export interface LocationGeo {
+  latitude: number;
+  longitude: number;
+}
+
 export interface Location {
   slug: string;
   /** Proper noun — kept in Latin script across all locales by design. */
@@ -50,11 +55,21 @@ export interface Location {
   heroObjectPosition?: string;
   /** Short 2-3 word chips shown on the homepage location card (not full sentences). */
   tags: Localized<string[]>;
+  /** Public, well-documented approximate district-center coordinates —
+   *  used for the LocalBusiness `geo` JSON-LD field on this location's
+   *  detail page (see app/[locale]/locations/[location]/page.tsx). Not
+   *  business-specific data (unlike a street address), so safe to include
+   *  directly here rather than requiring real business input. Optional so
+   *  a newly-added location without coordinates yet degrades gracefully
+   *  (the `geo` field is simply omitted from JSON-LD) instead of the page
+   *  crashing or silently pointing at the wrong place. */
+  geo?: LocationGeo;
 }
 
 export const LOCATIONS: Location[] = [
   {
     slug: "dubai-marina",
+    geo: { latitude: 25.0805, longitude: 55.1403 },
     name: "Dubai Marina",
     tags: {
       en: ["Luxury Hotels", "Private Transfers", "VIP Pickups"],
@@ -381,6 +396,7 @@ export const LOCATIONS: Location[] = [
   },
   {
     slug: "palm-jumeirah",
+    geo: { latitude: 25.1124, longitude: 55.139 },
     name: "Palm Jumeirah",
     tags: {
       en: ["Resorts", "Luxury Villas", "Airport Transfers"],
@@ -703,6 +719,7 @@ export const LOCATIONS: Location[] = [
   },
   {
     slug: "downtown-dubai",
+    geo: { latitude: 25.1972, longitude: 55.2744 },
     name: "Downtown Dubai",
     tags: {
       en: ["Burj Khalifa", "Dubai Mall", "Executive Travel"],
@@ -1054,6 +1071,7 @@ export const LOCATIONS: Location[] = [
   },
   {
     slug: "business-bay",
+    geo: { latitude: 25.1857, longitude: 55.2762 },
     name: "Business Bay",
     tags: {
       en: ["Corporate Travel", "Business Meetings", "Executive Chauffeurs"],
@@ -1412,6 +1430,7 @@ export const LOCATIONS: Location[] = [
   },
   {
     slug: "jbr",
+    geo: { latitude: 25.0785, longitude: 55.133 },
     name: "JBR",
     tags: {
       en: ["Luxury Residences", "VIP Transportation", "Leisure Travel"],
@@ -1775,6 +1794,7 @@ export const LOCATIONS: Location[] = [
   },
   {
     slug: "dubai-international-airport-dxb",
+    geo: { latitude: 25.2532, longitude: 55.3657 },
     name: "Dubai International Airport (DXB)",
     tags: {
       en: ["Meet & Greet", "Flight Tracking", "Executive Pickup"],
@@ -2123,6 +2143,7 @@ export interface PlainLocation {
   heroMobileImage?: PlainLocationImage;
   heroObjectPosition?: string;
   tags: string[];
+  geo?: LocationGeo;
 }
 
 export function localizeLocation(location: Location, locale: Locale): PlainLocation {
@@ -2154,6 +2175,7 @@ export function localizeLocation(location: Location, locale: Locale): PlainLocat
       : undefined,
     heroObjectPosition: location.heroObjectPosition,
     tags: pick(location.tags, locale),
+    geo: location.geo,
   };
 }
 

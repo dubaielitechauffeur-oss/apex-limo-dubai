@@ -6,49 +6,82 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
 import { getWhatsAppLink } from "@/lib/constants";
 
-/** Matches the fleet listing ("/fleet") and every vehicle detail page
- *  ("/fleet/[vehicle]") — locale-stripped, since usePathname() from
- *  i18n/navigation already excludes the locale segment. */
-const FLEET_PATH_PATTERN = /^\/fleet(\/.*)?$/;
+/** localStorage key marking that this visitor has already dismissed the
+ *  notice — once set, it never shows again for them (any page, any tab). */
+const DISMISSED_KEY = "apex-construction-notice-dismissed";
+
+/** High-intent conversion pages — the notice never interrupts these, since
+ *  a returning/paid-traffic visitor here is already mid-booking. */
+const EXCLUDED_PATH_PATTERN = /^\/(booking|quote)(\/.*)?$/;
+
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
 /**
- * Welcome / pricing notice — shown on every fresh page load (no
- * persistence, unlike a typical one-time dismissal), and re-shown
- * whenever the visitor navigates to the fleet listing or a vehicle
- * detail page, since that's where demo pricing is displayed. Renders
- * nothing during SSR/first paint to avoid a hydration mismatch; the
- * open state is only ever set client-side.
+ * One-time welcome notice — shown at most once per visitor (persisted via
+ * localStorage), never on /booking or /quote, and fully keyboard-trapped
+ * while open so Tab/Shift+Tab can't escape into the page behind it.
+ * Renders nothing during SSR/first paint to avoid a hydration mismatch;
+ * the open state is only ever set client-side.
  */
 export default function ConstructionNoticeModal() {
   const t = useTranslations("common.constructionNotice");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ctaRef = useRef<HTMLButtonElement>(null);
-  const previousPathname = useRef(pathname);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
-  // Every time the site loads (first visit, reload, or direct link), show it.
   useEffect(() => {
-    setOpen(true);
-  }, []);
-
-  // Re-show it on client-side navigation into the fleet listing or any
-  // vehicle detail page, even if it was already dismissed earlier.
-  useEffect(() => {
-    if (previousPathname.current === pathname) return;
-    previousPathname.current = pathname;
-    if (FLEET_PATH_PATTERN.test(pathname)) {
-      setOpen(true);
+    if (EXCLUDED_PATH_PATTERN.test(pathname)) return;
+    try {
+      if (window.localStorage.getItem(DISMISSED_KEY)) return;
+    } catch {
+      // localStorage unavailable (private browsing, etc.) — fall through
+      // and show the notice; dismiss() below is wrapped the same way.
     }
-  }, [pathname]);
+    setOpen(true);
+    // Only ever evaluated once on mount — a same-session route change to
+    // /booking or /quote shouldn't retroactively open/close an already
+    // decided notice.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!open) return;
     ctaRef.current?.focus();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") dismiss();
+      if (e.key === "Escape") {
+        dismiss();
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+      ).filter((el) => el.offsetParent !== null);
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      } else if (!dialogRef.current.contains(active)) {
+        // Focus escaped the dialog (shouldn't normally happen since this
+        // is the only keydown handler cycling Tab) — pull it back in.
+        e.preventDefault();
+        first.focus();
+      }
     }
+
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
@@ -59,6 +92,11 @@ export default function ConstructionNoticeModal() {
 
   function dismiss() {
     setOpen(false);
+    try {
+      window.localStorage.setItem(DISMISSED_KEY, "1");
+    } catch {
+      // Ignore — worst case the notice reappears next visit.
+    }
   }
 
   if (!open) return null;
@@ -77,7 +115,10 @@ export default function ConstructionNoticeModal() {
         className="absolute inset-0 animate-fade-in bg-obsidian/80 backdrop-blur-sm"
       />
 
-      <div className="relative w-full max-w-md animate-fade-in-up rounded-2xl border border-gold/25 bg-obsidian p-8 text-center shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] sm:p-10">
+      <div
+        ref={dialogRef}
+        className="relative w-full max-w-md animate-fade-in-up rounded-2xl border border-gold/25 bg-obsidian p-8 text-center shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] sm:p-10"
+      >
         <button
           type="button"
           onClick={dismiss}

@@ -12,10 +12,9 @@ import type { Locale } from "@/i18n/routing";
 /**
  * "What We Offer" — a luxury editorial services showcase: large 4:5
  * portrait photo cards with a dark gradient overlay, white typography, and
- * a scoped gold accent (#C9A14A, distinct from the site's shared `gold`
- * token so this redesign stays isolated to this section). Desktop shows 3
- * per row, tablet 2, and mobile falls back to a native horizontal
- * scroll-snap swipe row — all from the same markup, no JS carousel needed.
+ * the shared `gold` design-system accent. Desktop shows 3 per row, tablet
+ * 2, and mobile falls back to a native horizontal scroll-snap swipe row —
+ * all from the same markup, no JS carousel needed.
  */
 export default async function ServicesGrid() {
   const locale = (await getLocale()) as Locale;
@@ -67,14 +66,14 @@ export default async function ServicesGrid() {
                   {service.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-[#C9A14A]/50 bg-black/30 px-3 py-1 text-[11px] uppercase tracking-wide text-white/90 backdrop-blur-sm"
+                      className="rounded-full border border-gold/50 bg-black/30 px-3 py-1 text-[11px] uppercase tracking-wide text-white/90 backdrop-blur-sm"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[#C9A14A] transition-colors duration-200 group-hover:text-[#e0bd6b]">
+                <span className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold transition-colors duration-200 group-hover:text-gold-pale">
                   {t("learnMore")}
                   <DirectionalIcon
                     icon={ArrowRight}

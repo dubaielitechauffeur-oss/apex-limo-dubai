@@ -26,7 +26,7 @@ export default async function FleetHero() {
   ];
 
   return (
-    <section className="relative isolate flex min-h-[560px] items-center overflow-hidden bg-[#0A0A0A] py-20 sm:min-h-[80vh] lg:min-h-[85vh]">
+    <section className="relative isolate flex min-h-[560px] items-center overflow-hidden bg-obsidian py-20 sm:min-h-[80vh] lg:min-h-[85vh]">
       <picture>
         <source media="(max-width: 767px)" srcSet="/images/cta/cta-mobile.webp" />
         <img
@@ -56,7 +56,7 @@ export default async function FleetHero() {
 
       <Container className="relative z-10">
         <div className="max-w-2xl">
-          <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-[#C9A14A] sm:text-sm">
+          <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
             {tHero("eyebrow")}
           </span>
 
@@ -64,7 +64,7 @@ export default async function FleetHero() {
             {tHero("titleTemplate", { count: FLEET_SIZE })}
           </h1>
 
-          <p className="mt-7 max-w-lg animate-fade-in text-base leading-relaxed text-[#B8B8B8] [animation-delay:200ms] sm:text-lg">
+          <p className="mt-7 max-w-lg animate-fade-in text-base leading-relaxed text-smoke [animation-delay:200ms] sm:text-lg">
             {tHero("subtitle")}
           </p>
 
@@ -76,7 +76,7 @@ export default async function FleetHero() {
                   <Star
                     key={i}
                     className={`h-4 w-4 ${
-                      i < filledStars ? "fill-[#C9A14A] text-[#C9A14A]" : "fill-transparent text-[#C9A14A]/30"
+                      i < filledStars ? "fill-gold text-gold" : "fill-transparent text-gold/30"
                     }`}
                     strokeWidth={1.5}
                   />
@@ -88,8 +88,8 @@ export default async function FleetHero() {
             {TRUST_ITEMS.map((item) => (
               <div key={item.label} className="flex items-center gap-2">
                 <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
-                <item.icon className="h-4 w-4 text-[#C9A14A]" strokeWidth={1.5} aria-hidden="true" />
-                <span className="text-sm text-[#B8B8B8]"><Ltr>{item.label}</Ltr></span>
+                <item.icon className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
+                <span className="text-sm text-smoke"><Ltr>{item.label}</Ltr></span>
               </div>
             ))}
           </div>
@@ -97,13 +97,13 @@ export default async function FleetHero() {
           <div className="mt-10 flex animate-fade-in flex-col gap-4 [animation-delay:500ms] sm:flex-row">
             <a
               href="#fleet-listings"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A14A] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-[#b8903f]"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-gold-deep"
             >
               {tHero("viewFleet")}
             </a>
             <Link
               href={PRIMARY_CTA.quote.href}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-[#C9A14A] hover:text-[#C9A14A]"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-gold hover:text-gold"
             >
               {t("getInstantQuote")}
             </Link>

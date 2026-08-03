@@ -59,14 +59,17 @@
     "vehicleRequired": "Wählen Sie ein Fahrzeug.",
     "passengersMin": "Geben Sie mindestens 1 Passagier an.",
     "passengersMax": "Für Gruppen über 14 Personen schreiben Sie uns bitte direkt per WhatsApp.",
-    "serviceRequired": "Wählen Sie den benötigten Service."
+    "serviceRequired": "Wählen Sie den benötigten Service.",
+    "messageRequired": "Geben Sie eine Nachricht ein."
   },
   "status": {
     "correctFields": "Bitte korrigieren Sie die hervorgehobenen Felder und versuchen Sie es erneut.",
     "genericError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut oder schreiben Sie uns per WhatsApp.",
     "networkError": "Wir konnten unseren Server nicht erreichen. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt per WhatsApp.",
     "invalidBody": "Ungültiger Anfrageinhalt.",
-    "correctFieldsApi": "Bitte korrigieren Sie die hervorgehobenen Felder."
+    "correctFieldsApi": "Bitte korrigieren Sie die hervorgehobenen Felder.",
+    "rateLimited": "Zu viele Anfragen. Bitte warten Sie einige Minuten und versuchen Sie es erneut, oder kontaktieren Sie uns direkt.",
+    "payloadTooLarge": "Die Anfrage ist zu groß."
   },
   "quote": {
     "sending": "Wird gesendet…",
@@ -116,7 +119,21 @@
       "step1": "Anfrage erhalten",
       "step2": "Concierge prüft die Details",
       "step3": "Angebot wird schnell versendet",
-      "step4": "Buchung bestätigt"
+      "step4": "Buchung bestätigt",
+      "panelHeading": "Warum bei Apex Limo buchen"
     }
+  },
+  "contact": {
+    "sending": "Wird gesendet…",
+    "submit": "Nachricht senden",
+    "thankYou": "Vielen Dank!",
+    "thankYouName": "Vielen Dank, {name}!",
+    "successBody": "Ihre Nachricht wurde erfolgreich gesendet. Unser Team wird sich in Kürze bei Ihnen melden.",
+    "successMessageApi": "Danke — Ihre Nachricht wurde gesendet. Wir melden uns in Kürze.",
+    "referenceLabel": "Ihre Referenznummer lautet",
+    "followUpWhatsapp": "Per WhatsApp nachfragen",
+    "followUpMessageTemplate": "Hallo Apex Limo, ich habe gerade eine Nachricht über Ihre Website gesendet{refPart} und wollte nachfragen.",
+    "refPartTemplate": " (Ref: {reference})",
+    "sendAnother": "Weitere Nachricht senden"
   }
 }

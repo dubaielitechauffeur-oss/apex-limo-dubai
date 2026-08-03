@@ -27,7 +27,7 @@ import RichParagraph from "@/components/services/RichParagraph";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
-import { SITE, getWhatsAppLink } from "@/lib/constants";
+import { SITE, PRICE_RANGE, getWhatsAppLink } from "@/lib/constants";
 import { LOCATIONS, getAllLocations, getLocationBySlug, type PlainLocation } from "@/data/locations";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForLocation } from "@/lib/cross-links";
@@ -51,6 +51,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: t("notFoundTitle"),
       description: t("notFoundDescription"),
       path: `/locations/${slug}`,
+      robots: { index: false, follow: false },
     });
   }
 
@@ -72,8 +73,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  * (the review data on the homepage's LocalBusiness node was getting merged
  * with these conflicting redeclarations). `parentOrganization` links back
  * to the root business (see lib/seo.ts) without conflating the two nodes.
+ * Coordinates come from `location.geo` (data/locations.ts) rather than a
+ * lookup map colocated with this page, so adding a new location and its
+ * coordinates is a single edit in the data model, not two files kept in
+ * sync by hand.
  */
 function locationJsonLd(location: PlainLocation, locale: Locale) {
+  const geo = location.geo;
+
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -98,7 +105,32 @@ function locationJsonLd(location: PlainLocation, locale: Locale) {
       addressRegion: "Dubai",
       addressCountry: "AE",
     },
-    priceRange: "$$$",
+    ...(geo
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: geo.latitude,
+            longitude: geo.longitude,
+          },
+        }
+      : {}),
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "00:00",
+        closes: "23:59",
+      },
+    ],
+    priceRange: PRICE_RANGE,
   };
 }
 
@@ -119,10 +151,12 @@ export default async function LocationDetailPage({ params }: PageProps) {
     .slice(0, 3);
   const whatsappMessage = t("detail.whatsappMessage", { name: location.name });
 
-  const relatedVehicleSlug = vehiclesForLocation(location.slug)[0];
-  const relatedVehicle = relatedVehicleSlug
-    ? FLEET.find((v) => v.slug === relatedVehicleSlug)
-    : undefined;
+  // Up to 3 related vehicles (previously only the first match rendered) —
+  // stronger internal linking without turning this into a full grid.
+  const relatedVehicleSlugs = vehiclesForLocation(location.slug).slice(0, 3);
+  const relatedVehicles = relatedVehicleSlugs
+    .map((slug) => FLEET.find((v) => v.slug === slug))
+    .filter((v): v is (typeof FLEET)[number] => Boolean(v));
 
   return (
     <div>
@@ -226,15 +260,22 @@ export default async function LocationDetailPage({ params }: PageProps) {
               </CTAButton>
             </div>
 
-            {relatedVehicle ? (
+            {relatedVehicles.length > 0 ? (
               <p className="mt-6 text-sm text-smoke">
                 {t("detail.popularChoicePrefix", { name: location.name })}{" "}
-                <Link
-                  href={`/fleet/${relatedVehicle.slug}`}
-                  className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
-                >
-                  {relatedVehicle.name}
-                </Link>
+                {relatedVehicles.map((vehicle, index) => (
+                  <span key={vehicle.slug}>
+                    <Link
+                      href={`/fleet/${vehicle.slug}`}
+                      className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
+                    >
+                      {vehicle.name}
+                    </Link>
+                    {index < relatedVehicles.length - 1 ? (
+                      index === relatedVehicles.length - 2 ? ` ${t("detail.relatedVehiclesAnd")} ` : ", "
+                    ) : ""}
+                  </span>
+                ))}
                 .
               </p>
             ) : null}
@@ -297,8 +338,8 @@ export default async function LocationDetailPage({ params }: PageProps) {
       </Section>
 
       {/* Common Journeys — black luxury theme matching the FAQ Hub / Contact
-          page color system (#0A0A0A / #111111 / #C9A14A). */}
-      <section className="border-t border-[rgba(201,161,74,0.15)] bg-[#0A0A0A] py-20 sm:py-24">
+          page color system (obsidian / ink / gold design tokens). */}
+      <section className="border-t border-gold/15 bg-obsidian py-20 sm:py-24">
         <Container>
           <Reveal>
             <span className="label-eyebrow">{t("detail.popularRoutesEyebrow")}</span>
@@ -312,18 +353,18 @@ export default async function LocationDetailPage({ params }: PageProps) {
               <Reveal
                 key={`${route.from}-${route.to}`}
                 delay={Math.min(index * 70, 280)}
-                className="flex items-center justify-between gap-4 rounded-xl border border-[rgba(201,161,74,0.15)] bg-[#121212] p-6 transition-colors duration-300 hover:bg-[#171717]"
+                className="flex items-center justify-between gap-4 rounded-xl border border-gold/15 bg-obsidian-light p-6 transition-colors duration-300 hover:bg-obsidian-light"
               >
                 <div className="flex items-center gap-2.5 text-sm text-white sm:text-base">
                   <span>{route.from}</span>
                   <DirectionalIcon
                     icon={ArrowRight}
-                    className="h-3.5 w-3.5 shrink-0 text-[#C9A14A]"
+                    className="h-3.5 w-3.5 shrink-0 text-gold"
                     strokeWidth={2}
                   />
                   <span>{route.to}</span>
                 </div>
-                <span className="shrink-0 rounded-full border border-[rgba(201,161,74,0.25)] bg-[#151515] px-3 py-1 text-xs uppercase tracking-wide text-[#B8B8B8]">
+                <span className="shrink-0 rounded-full border border-gold/25 bg-obsidian-light px-3 py-1 text-xs uppercase tracking-wide text-smoke">
                   {route.duration}
                 </span>
               </Reveal>
@@ -335,7 +376,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
       {/* FAQ — black luxury theme with a visible background photo (this
           location's own hero image) behind a moderate scrim, matching the
           FAQ Hub's accordion card styling on top. */}
-      <section className="relative isolate overflow-hidden border-t border-[rgba(201,161,74,0.15)] bg-[#111111] py-20 sm:py-24">
+      <section className="relative isolate overflow-hidden border-t border-gold/15 bg-ink py-20 sm:py-24">
         <div className="absolute inset-0">
           <Image
             src={location.image.src}
@@ -346,10 +387,10 @@ export default async function LocationDetailPage({ params }: PageProps) {
             className="object-cover"
           />
         </div>
-        <div aria-hidden="true" className="absolute inset-0 bg-[#0A0A0A]/60" />
+        <div aria-hidden="true" className="absolute inset-0 bg-obsidian/60" />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/40 via-[#0A0A0A]/75 to-[#0A0A0A]/50"
+          className="absolute inset-0 bg-gradient-to-b from-obsidian/40 via-obsidian/75 to-obsidian/50"
         />
 
         <Container className="relative">
@@ -368,16 +409,16 @@ export default async function LocationDetailPage({ params }: PageProps) {
               {location.faqs.map((faq, index) => (
                 <Reveal key={faq.question} delay={Math.min(index * 60, 300)}>
                 <details
-                  className="group rounded-xl border border-[rgba(201,161,74,0.15)] bg-[#121212]/90 px-6 py-5 backdrop-blur-sm transition-colors duration-300 open:bg-[#171717]/90"
+                  className="group rounded-xl border border-gold/15 bg-obsidian-light/90 px-6 py-5 backdrop-blur-sm transition-colors duration-300 open:bg-obsidian-light/90"
                 >
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-start font-display text-base text-white marker:content-none sm:text-lg [&::-webkit-details-marker]:hidden">
                     {faq.question}
                     <ChevronDown
-                      className="h-5 w-5 shrink-0 text-[#C9A14A] transition-transform duration-200 group-open:rotate-180"
+                      className="h-5 w-5 shrink-0 text-gold transition-transform duration-200 group-open:rotate-180"
                       strokeWidth={1.5}
                     />
                   </summary>
-                  <p className="mt-4 text-sm leading-relaxed text-[#B8B8B8] sm:text-base">
+                  <p className="mt-4 text-sm leading-relaxed text-smoke sm:text-base">
                     {faq.answer}
                   </p>
                 </details>

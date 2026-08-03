@@ -59,14 +59,17 @@
     "vehicleRequired": "Sélectionnez un véhicule.",
     "passengersMin": "Indiquez au moins 1 passager.",
     "passengersMax": "Pour les groupes de plus de 14 personnes, contactez-nous directement sur WhatsApp.",
-    "serviceRequired": "Sélectionnez le service dont vous avez besoin."
+    "serviceRequired": "Sélectionnez le service dont vous avez besoin.",
+    "messageRequired": "Saisissez un message."
   },
   "status": {
     "correctFields": "Veuillez corriger les champs surlignés et réessayer.",
     "genericError": "Une erreur s'est produite. Veuillez réessayer ou nous contacter sur WhatsApp.",
     "networkError": "Nous n'avons pas pu joindre notre serveur. Veuillez réessayer ou nous contacter directement sur WhatsApp.",
     "invalidBody": "Corps de requête invalide.",
-    "correctFieldsApi": "Veuillez corriger les champs surlignés."
+    "correctFieldsApi": "Veuillez corriger les champs surlignés.",
+    "rateLimited": "Trop de demandes. Veuillez patienter quelques minutes et réessayer, ou nous contacter directement.",
+    "payloadTooLarge": "Le contenu de la requête est trop volumineux."
   },
   "quote": {
     "sending": "Envoi en cours…",
@@ -116,7 +119,21 @@
       "step1": "Demande reçue",
       "step2": "Le concierge examine les détails",
       "step3": "Devis envoyé rapidement",
-      "step4": "Réservation confirmée"
+      "step4": "Réservation confirmée",
+      "panelHeading": "Pourquoi réserver avec Apex Limo"
     }
+  },
+  "contact": {
+    "sending": "Envoi en cours…",
+    "submit": "Envoyer le message",
+    "thankYou": "Merci !",
+    "thankYouName": "Merci, {name} !",
+    "successBody": "Votre message a été envoyé avec succès. Notre équipe vous recontactera sous peu.",
+    "successMessageApi": "Merci — votre message a été envoyé. Nous vous recontacterons sous peu.",
+    "referenceLabel": "Votre référence est",
+    "followUpWhatsapp": "Relancer sur WhatsApp",
+    "followUpMessageTemplate": "Bonjour Apex Limo, je viens d'envoyer un message via votre site{refPart} et je souhaite faire un suivi.",
+    "refPartTemplate": " (réf. : {reference})",
+    "sendAnother": "Envoyer un autre message"
   }
 }

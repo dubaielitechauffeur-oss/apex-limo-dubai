@@ -68,8 +68,8 @@
     "eyebrow": "来自 Apex Limo 的提示",
     "heading": "我们正在完善您的体验",
     "body": "我们的网站仍在持续优化中，未来几天您可能会看到一些细节上的调整。所有预订与报价请求均已全面开通，并由我们的团队亲自处理。",
-    "priceNotice": "网站上显示的车辆价格目前为<b>演示价格</b>，并非最终价格。如需预订，请<whatsappLink>通过 WhatsApp 与我们联系</whatsappLink>。",
-    "priceNoticeWhatsappMessage": "您好 Apex Limo，我看到网站上的价格是演示价格——能否告知实际价格并协助我预订？",
+    "priceNotice": "所有司机接送价格均由我们的团队在预订前亲自确认——请<whatsappLink>通过WhatsApp联系我们</whatsappLink>或申请报价以获取准确价格。",
+    "priceNoticeWhatsappMessage": "您好 Apex Limo,我想了解我行程的准确价格——能帮我一下吗?",
     "cta": "继续浏览网站",
     "closeAriaLabel": "关闭提示"
   },
@@ -88,6 +88,14 @@
     "ourServicesRegion": "我们的服务",
     "previousServices": "上一组服务",
     "nextServices": "下一组服务",
-    "goToServicesPageTemplate": "跳转至服务页面{index}"
+    "goToServicesPageTemplate": "跳转至服务页面{index}",
+    "skipToContent": "跳至内容",
+    "pauseCarouselAriaLabel": "暂停自动播放"
+  },
+  "errorPage": {
+    "title": "出现了一些问题",
+    "description": "加载此页面时发生意外错误。请重试,或返回首页。",
+    "tryAgain": "重试",
+    "backToHome": "返回首页"
   }
 }

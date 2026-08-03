@@ -36,7 +36,8 @@ const config: Config = {
         heading: "#F5F5F5", // heading text on dark backgrounds
         champagne: {
           DEFAULT: "#C9A96E", // primary button background
-          bright: "#D3B988", // primary button hover
+          bright: "#D3B988", // primary button hover (lighter — used on light-section CTAs)
+          dark: "#B8935A", // primary button hover (darker — used on the black header's CTA)
         },
       },
       fontFamily: {

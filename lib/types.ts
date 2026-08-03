@@ -23,7 +23,15 @@ export interface QuoteFormData {
   message: string;
 }
 
-export type LeadType = "booking" | "quote";
+export interface ContactFormData {
+  fullName: string;
+  phone: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+export type LeadType = "booking" | "quote" | "contact";
 
 export interface LeadSubmissionResult {
   success: boolean;

@@ -48,7 +48,8 @@
     "faqEyebrow": "Частые вопросы",
     "faqTitleTemplate": "Вопросы об услуге «{name}»",
     "faqSubtitle": "Ответы на вопросы, которые мы слышим об этой услуге чаще всего.",
-    "viewAllFaqs": "Смотреть все вопросы"
+    "viewAllFaqs": "Смотреть все вопросы",
+    "relatedVehiclesAnd": "и"
   },
   "finalCta": {
     "eyebrow": "Мы готовы, когда готовы вы",

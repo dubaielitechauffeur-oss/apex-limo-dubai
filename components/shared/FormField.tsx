@@ -31,7 +31,12 @@ export default function FormField({
         className="mb-2 block text-xs font-semibold uppercase tracking-wide text-smoke"
       >
         {label}
-        {required ? <span className="ms-1 text-gold">*</span> : null}
+        {required ? (
+          <>
+            <span className="ms-1 text-gold" aria-hidden="true">*</span>
+            <span className="sr-only"> (required)</span>
+          </>
+        ) : null}
       </label>
       {children}
       {hint && !error ? (

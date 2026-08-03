@@ -48,7 +48,8 @@
     "faqEyebrow": "Häufige Fragen",
     "faqTitleTemplate": "Häufige Fragen zu {name}",
     "faqSubtitle": "Antworten auf die Fragen, die wir zu diesem Service am häufigsten hören.",
-    "viewAllFaqs": "Alle FAQs ansehen"
+    "viewAllFaqs": "Alle FAQs ansehen",
+    "relatedVehiclesAnd": "und"
   },
   "finalCta": {
     "eyebrow": "Wir sind bereit, wenn Sie es sind",

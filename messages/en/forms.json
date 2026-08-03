@@ -59,14 +59,17 @@
     "vehicleRequired": "Select a vehicle.",
     "passengersMin": "Enter at least 1 passenger.",
     "passengersMax": "For groups over 14, WhatsApp us directly.",
-    "serviceRequired": "Select the service you need."
+    "serviceRequired": "Select the service you need.",
+    "messageRequired": "Enter a message."
   },
   "status": {
     "correctFields": "Please correct the highlighted fields and try again.",
     "genericError": "Something went wrong. Please try again or WhatsApp us.",
     "networkError": "We couldn't reach our server. Please try again or WhatsApp us directly.",
     "invalidBody": "Invalid request body.",
-    "correctFieldsApi": "Please correct the highlighted fields."
+    "correctFieldsApi": "Please correct the highlighted fields.",
+    "rateLimited": "Too many requests. Please wait a few minutes and try again, or contact us directly.",
+    "payloadTooLarge": "Request body is too large."
   },
   "quote": {
     "sending": "Sending…",
@@ -116,7 +119,21 @@
       "step1": "Request received",
       "step2": "Concierge reviews details",
       "step3": "Quote sent quickly",
-      "step4": "Booking confirmed"
+      "step4": "Booking confirmed",
+      "panelHeading": "Why Book With Apex Limo"
     }
+  },
+  "contact": {
+    "sending": "Sending…",
+    "submit": "Send Message",
+    "thankYou": "Thank You!",
+    "thankYouName": "Thank you, {name}!",
+    "successBody": "Your message has been sent successfully. Our team will get back to you shortly.",
+    "successMessageApi": "Thanks — your message has been sent. We'll be in touch shortly.",
+    "referenceLabel": "Your reference is",
+    "followUpWhatsapp": "Follow Up on WhatsApp",
+    "followUpMessageTemplate": "Hello Apex Limo, I just sent a message via your website{refPart} and wanted to follow up.",
+    "refPartTemplate": " (ref: {reference})",
+    "sendAnother": "Send Another Message"
   }
 }

@@ -16,6 +16,7 @@ export default async function FleetCarousel() {
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("fleet.carousel");
   const tCard = await getTranslations("fleet.card");
+  const tA11y = await getTranslations("common.a11y");
   const vehicles = getAllVehicles(locale);
 
   // Resolved server-side (rather than passed as a function prop) — Server
@@ -34,6 +35,7 @@ export default async function FleetCarousel() {
         fiveHours: tCard("fiveHours"),
         oneHour: tCard("oneHour"),
         airport: tCard("airport"),
+        priceOnRequest: tCard("priceOnRequest"),
         viewCar: tCard("viewCar"),
         whatsapp: tCard("whatsapp"),
         contactUs: tCard("contactUs"),
@@ -47,6 +49,7 @@ export default async function FleetCarousel() {
       nextAriaLabel={t("nextAriaLabel")}
       vehicleAriaLabels={vehicleAriaLabels}
       viewFullFleet={t("viewFullFleet")}
+      pauseAriaLabel={tA11y("pauseCarouselAriaLabel")}
     />
   );
 }

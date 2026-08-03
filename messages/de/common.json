@@ -68,8 +68,8 @@
     "eyebrow": "Ein Hinweis von Apex Limo",
     "heading": "Wir feilen an Ihrem Erlebnis",
     "body": "Unsere Website wird noch weiter verfeinert, daher werden Sie in den kommenden Tagen möglicherweise einige Anpassungen bemerken. Alle Buchungs- und Angebotsanfragen sind voll funktionsfähig und werden persönlich von unserem Team bearbeitet.",
-    "priceNotice": "Die angezeigten Fahrzeugpreise sind derzeit <b>Demopreise</b> und nicht endgültig. Zum Buchen kontaktieren Sie uns bitte <whatsappLink>über WhatsApp</whatsappLink>.",
-    "priceNoticeWhatsappMessage": "Hallo Apex Limo, ich habe die Demopreise auf Ihrer Website gesehen — könnten Sie mir den tatsächlichen Preis mitteilen und mir bei der Buchung helfen?",
+    "priceNotice": "Alle Chauffeurpreise werden von unserem Team persönlich bestätigt, bevor Sie buchen — <whatsappLink>kontaktieren Sie uns per WhatsApp</whatsappLink> oder fordern Sie ein Angebot für den genauen Preis an.",
+    "priceNoticeWhatsappMessage": "Hallo Apex Limo, ich möchte den genauen Preis für meine Fahrt erfahren — können Sie mir helfen?",
     "cta": "Weiter zur Website",
     "closeAriaLabel": "Hinweis schließen"
   },
@@ -88,6 +88,14 @@
     "ourServicesRegion": "Unsere Services",
     "previousServices": "Vorherige Services",
     "nextServices": "Nächste Services",
-    "goToServicesPageTemplate": "Zur Serviceseite {index} wechseln"
+    "goToServicesPageTemplate": "Zur Serviceseite {index} wechseln",
+    "skipToContent": "Zum Inhalt springen",
+    "pauseCarouselAriaLabel": "Automatische Wiedergabe pausieren"
+  },
+  "errorPage": {
+    "title": "Etwas ist schiefgelaufen",
+    "description": "Beim Laden dieser Seite ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut oder kehren Sie zur Startseite zurück.",
+    "tryAgain": "Erneut versuchen",
+    "backToHome": "Zurück zur Startseite"
   }
 }

@@ -87,8 +87,11 @@
 
   /* Shared control style for text inputs, selects, and textareas across
      the booking and quote forms. */
+  /* No `focus:outline-none` here — the border-color change is additive to
+     (not a replacement for) the global `:focus-visible` outline rule above,
+     so keyboard users still get the full-strength outline on every field. */
   .field-input {
-    @apply w-full border border-gold/20 bg-obsidian px-4 py-3 text-sm text-ivory placeholder:text-smoke/50 transition-colors duration-150 focus:border-gold focus:outline-none;
+    @apply w-full border border-gold/20 bg-obsidian px-4 py-3 text-sm text-ivory placeholder:text-smoke/50 transition-colors duration-150 focus:border-gold;
   }
 
   .field-input-error {
@@ -109,8 +112,13 @@
     @apply border-red-400/60;
   }
 
+  /* No `focus:outline-none` here either (see the .field-input comment
+     above) — this is the actual <input> inside the phone widget used by
+     every booking/quote/contact form, so it needs the same global
+     `:focus-visible` outline as every other field, not a silently weaker
+     focus indicator on one of the most-used fields in the form. */
   .phone-field .PhoneInputInput {
-    @apply bg-transparent text-sm text-ivory placeholder:text-smoke/50 focus:outline-none;
+    @apply bg-transparent text-sm text-ivory placeholder:text-smoke/50;
   }
 
   .phone-field .PhoneInputCountry {

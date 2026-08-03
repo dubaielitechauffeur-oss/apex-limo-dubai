@@ -5,12 +5,12 @@ import { useTranslations, useLocale } from "next-intl";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import FormField from "@/components/shared/FormField";
 import PhoneInputField from "@/components/shared/PhoneInputField";
+import HoneypotField from "@/components/shared/HoneypotField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
-import { formatAed } from "@/lib/format";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import type { QuoteFormData } from "@/lib/types";
-import { validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
+import { buildValidationMessages, validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
 interface VehicleHeroQuoteFormProps {
   vehicle: PlainFleetVehicle;
@@ -38,10 +38,10 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
   const locale = useLocale();
 
   const durationOptions = [
-    { label: `${tDetail("oneHour")} — ${formatAed(vehicle.rates.oneHour)}`, value: "1 Hour" },
-    { label: `${tDetail("airportTransfer")} — ${formatAed(vehicle.rates.airport)}`, value: "Airport Transfer" },
-    { label: `${tDetail("fiveHours")} — ${formatAed(vehicle.rates.fiveHours)}`, value: "5 Hours" },
-    { label: `${tDetail("tenHours")} — ${formatAed(vehicle.rates.tenHours)}`, value: "10 Hours" },
+    { label: tDetail("oneHour"), value: "1 Hour" },
+    { label: tDetail("airportTransfer"), value: "Airport Transfer" },
+    { label: tDetail("fiveHours"), value: "5 Hours" },
+    { label: tDetail("tenHours"), value: "10 Hours" },
   ];
 
   const [fullName, setFullName] = useState("");
@@ -56,23 +56,9 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
   const [reference, setReference] = useState("");
   const todayISO = new Date().toISOString().split("T")[0];
 
-  const validationMessages: ValidationMessages = {
-    fullNameRequired: tForms("validation.fullNameRequired"),
-    phoneInvalid: tForms("validation.phoneInvalid"),
-    emailInvalid: tForms("validation.emailInvalid"),
-    pickupRequired: tForms("validation.pickupRequired"),
-    dropoffRequired: tForms("validation.dropoffRequired"),
-    pickupDateRequired: tForms("validation.pickupDateRequired"),
-    pickupDatePast: tForms("validation.pickupDatePast"),
-    datePast: tForms("validation.datePast"),
-    timeRequired: tForms("validation.timeRequired"),
-    vehicleRequired: tForms("validation.vehicleRequired"),
-    passengersMin: tForms("validation.passengersMin"),
-    passengersMax: tForms("validation.passengersMax"),
-    serviceRequired: tForms("validation.serviceRequired"),
-  };
+  const validationMessages: ValidationMessages = buildValidationMessages(tForms);
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const payload: QuoteFormData = {
@@ -97,11 +83,13 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
     setStatus("submitting");
     setServerMessage("");
 
+    const honeypot = (new FormData(e.currentTarget).get("company") as string) ?? "";
+
     try {
       const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, locale }),
+        body: JSON.stringify({ ...payload, company: honeypot, locale }),
       });
       const data = await res.json();
 
@@ -156,13 +144,8 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
 
   return (
     <div className="rounded-2xl border border-gold/20 bg-charcoal p-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] xl:p-8">
-      <p className="text-[11px] uppercase tracking-wide text-smoke">{t("startingFrom")}</p>
-      <p className="mt-1 font-display text-2xl text-gold">
-        {formatAed(vehicle.rates.oneHour)}
-        <span className="ms-1 text-sm font-normal text-smoke">{t("perHourInDubai")}</span>
-      </p>
-
-      <h3 className="mt-5 font-display text-xl text-heading">{t("requestQuote")}</h3>
+      <p className="text-[11px] uppercase tracking-wide text-smoke">{tDetail("priceOnRequest")}</p>
+      <h3 className="mt-1 font-display text-xl text-heading">{t("requestQuote")}</h3>
       <p className="mt-1 text-xs text-smoke">{t("approxRouteNote")}</p>
 
       <form onSubmit={handleSubmit} noValidate className="mt-5 space-y-4">
@@ -172,6 +155,8 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
             <p>{serverMessage}</p>
           </div>
         ) : null}
+
+        <HoneypotField />
 
         <FormField id="hq-fullName" label={tForms("fields.fullName")} required error={errors.fullName}>
           <input
