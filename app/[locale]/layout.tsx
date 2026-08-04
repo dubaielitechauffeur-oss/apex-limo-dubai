@@ -83,7 +83,9 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           </a>
           <ConstructionNoticeModal />
           <Header />
-          <main id="main-content" className="flex-1 pt-[117px]">{children}</main>
+          {/* No padding offset needed — Header is `sticky`, so it reserves
+              its own space in normal flow (see components/layout/Header.tsx). */}
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer />
           <ConditionalFloatButtons>
             <WhatsAppFloatButton />

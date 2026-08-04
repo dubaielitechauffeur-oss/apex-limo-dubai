@@ -14,6 +14,7 @@ import {
   SITE,
   getPhoneLink,
 } from "@/lib/constants";
+import { isConversionPath } from "@/lib/layout";
 
 /** Desktop nav order for the luxury header redesign — pulled from the
  *  shared NAV_LINKS source of truth so hrefs/children stay in sync. */
@@ -27,6 +28,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const showPromoBar = !isConversionPath(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -44,17 +46,27 @@ export default function Header() {
   }, [mobileOpen]);
 
   return (
+    // `sticky` rather than `fixed`: a fixed header sits outside normal flow,
+    // which previously forced <main> to carry a hardcoded `pt-[117px]`
+    // matching this header's exact height — two numbers with nothing keeping
+    // them in sync, so any header height change silently clipped page
+    // content. Sticky keeps the identical pinned-to-top behaviour while
+    // staying in flow, so the header reserves its own space and the offset
+    // problem disappears entirely (including when the promo bar below is
+    // conditionally hidden).
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b border-charcoal bg-black transition-shadow duration-300 ${
+      className={`sticky top-0 z-50 border-b border-charcoal bg-black transition-shadow duration-300 ${
         scrolled ? "shadow-[0_8px_30px_rgba(0,0,0,0.55)]" : ""
       }`}
     >
-      {/* Promotional bar */}
-      <div className="flex h-9 items-center justify-center border-b border-charcoal bg-black px-4">
-        <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-white sm:text-[11px] sm:tracking-[0.25em]">
-          {t("header.promoBar")}
-        </p>
-      </div>
+      {/* Promotional bar — hidden on conversion routes, see lib/layout.ts */}
+      {showPromoBar ? (
+        <div className="flex h-9 items-center justify-center border-b border-charcoal bg-black px-4">
+          <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-white sm:text-[11px] sm:tracking-[0.25em]">
+            {t("header.promoBar")}
+          </p>
+        </div>
+      ) : null}
 
       {/* Main nav row — a header-scoped wrapper mirrors Container's padding
           at sm/md so tablet is untouched, but uses tighter lg+ padding to
