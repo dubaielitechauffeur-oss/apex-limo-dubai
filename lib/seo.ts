@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE, PRICE_RANGE } from "./constants";
+import { SITE, PRICE_RANGE, SAME_AS_URLS, SOCIAL_PROFILES } from "./constants";
 import { routing, type Locale } from "@/i18n/routing";
 import { TESTIMONIALS } from "@/data/testimonials";
 import { LOCATIONS } from "@/data/locations";
@@ -247,10 +247,11 @@ export function organizationJsonLd(locale: Locale = routing.defaultLocale) {
       },
     ],
     priceRange: PRICE_RANGE,
-    // Populate once real, verified profile URLs (Google Business Profile,
-    // Instagram, Facebook, LinkedIn, etc.) are available — deliberately
-    // left empty rather than filled with placeholder/guessed URLs.
-    sameAs: [] as string[],
+    // Owner-verified public profiles — see SOCIAL_PROFILES in
+    // lib/constants.ts. These are what let Google reconcile this site with
+    // the Google Business Profile listing as one entity rather than two.
+    sameAs: SAME_AS_URLS,
+    hasMap: SOCIAL_PROFILES.googleBusiness,
     ...aggregateRatingFields(),
   };
 }
