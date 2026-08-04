@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SITE, PRICE_RANGE } from "./constants";
 import { routing, type Locale } from "@/i18n/routing";
 import { TESTIMONIALS } from "@/data/testimonials";
+import { LOCATIONS } from "@/data/locations";
 
 /** Open Graph locale tags per site locale (BCP-47-ish, underscore form OG expects). */
 const OG_LOCALE_MAP: Record<Locale, string> = {
@@ -189,13 +190,40 @@ export function organizationJsonLd(locale: Locale = routing.defaultLocale) {
     telephone: SITE.phone,
     email: SITE.email,
     inLanguage: locale,
-    areaServed: {
-      "@type": "City",
-      name: "Dubai",
-    },
+    // Service-area business: coverage is declared through areaServed rather
+    // than a storefront address. Dubai city + the wider UAE is the honest
+    // top-level claim; the per-district entries are derived from
+    // data/locations.ts so adding a new location page automatically extends
+    // this list instead of silently leaving it stale.
+    areaServed: [
+      { "@type": "City", name: "Dubai" },
+      { "@type": "Country", name: "United Arab Emirates" },
+      ...LOCATIONS.map((location) => ({
+        "@type": "Place" as const,
+        name: location.name,
+        ...(location.geo
+          ? {
+              geo: {
+                "@type": "GeoCoordinates" as const,
+                latitude: location.geo.latitude,
+                longitude: location.geo.longitude,
+              },
+            }
+          : {}),
+      })),
+    ],
+    // ⚠️ Intentionally NO `streetAddress`/`postalCode`. Apex is a
+    // service-area business (SAB) — chauffeurs travel to the client, and no
+    // customers are served at a physical office. Google's own guidance is
+    // that an SAB must hide its address (both in Google Business Profile and
+    // in structured data); publishing a street address here would contradict
+    // the GBP listing and risks a mismatch/suspension. City + country is the
+    // correct, complete shape for this business model — do not "fix" this by
+    // adding an address.
     address: {
       "@type": "PostalAddress",
       addressLocality: "Dubai",
+      addressRegion: "Dubai",
       addressCountry: "AE",
     },
     // Chauffeur service operates 24/7; the office/support line keeps
