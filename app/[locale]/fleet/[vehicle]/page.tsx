@@ -516,16 +516,15 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
           {/* Desktop package grid — 2 columns x 2 rows, 4 tiers (Additional
               Hour / Additional City dropped), 2 Hours instead of 1 Hour, 5
-              Hours called out as Most Popular. Column tracks are sized to
-              their own content (max-content) rather than stretched 1fr
-              tracks, so the grid — and every card in it — is exactly as
-              wide as it needs to be, with no leftover blank space inside
-              a card or a gap between columns. */}
-          <div className="mt-6 hidden lg:grid lg:grid-cols-[max-content_max-content] lg:gap-4">
+              Hours called out as Most Popular. Cards are a fixed, larger
+              size (w-72, p-6) rather than shrink-wrapped to their text, so
+              the grid reads as a deliberate block instead of a cluster of
+              undersized tiles. */}
+          <div className="mt-6 hidden lg:grid lg:grid-cols-[max-content_max-content] lg:gap-5">
             {priceTiersDesktop.map((tier) => (
               <div
                 key={tier.label}
-                className={`relative flex flex-col gap-1 rounded-xl border p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] ${
+                className={`relative flex w-72 flex-col justify-center gap-1.5 rounded-xl border p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] ${
                   tier.highlight
                     ? "border-gold bg-charcoal"
                     : "border-gold/15 bg-charcoal hover:border-gold/35"
@@ -539,7 +538,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
                   {tier.label}
                 </span>
-                <span className="font-display text-lg font-bold text-gold">
+                <span className="font-display text-xl font-bold text-gold">
                   {t("priceOnRequest")}
                 </span>
               </div>
