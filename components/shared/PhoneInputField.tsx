@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import PhoneInput, { type Labels } from "react-phone-number-input";
+import flags from "react-phone-number-input/flags";
 import "react-phone-number-input/style.css";
 
 interface PhoneInputFieldProps {
@@ -41,6 +42,13 @@ async function loadCountryLabels(locale: string): Promise<Labels | undefined> {
  * the UAE, with automatic formatting as the user types. Wraps
  * react-phone-number-input, scoped via the `.phone-field` class in
  * globals.css so its styling never leaks into unrelated inputs.
+ *
+ * `flags` is passed explicitly (bundled inline SVGs from `country-flag-icons`,
+ * re-exported via `react-phone-number-input/flags`) rather than left to the
+ * library's default, which fetches each flag as an `<img>` from
+ * `purecatamphetamine.github.io` — a third-party host outside the site's
+ * `img-src` CSP allowlist, so every flag silently failed to load (broken
+ * icon, CSP violation in the console) with the default.
  */
 export default function PhoneInputField({
   id,
@@ -75,6 +83,7 @@ export default function PhoneInputField({
         aria-invalid={error}
         placeholder={t("phonePlaceholder")}
         labels={labels}
+        flags={flags}
       />
     </div>
   );

@@ -98,6 +98,26 @@
     @apply border-red-400/60;
   }
 
+  /* Chrome/Safari/Edge force autofilled inputs onto a pale yellow/white
+     background with black text (via the UA's own internal styles), which
+     `color`/`background-color` can't override — it takes the
+     `-webkit-autofill` pseudo-class plus a `-webkit-text-fill-color` and an
+     inset `box-shadow` large enough to fully paint over the UA background.
+     Without this, every autofilled field (name, email, phone) breaks the
+     dark theme the instant the browser fills it in. The long transition
+     delay is the standard trick to stop the yellow flashing briefly before
+     the box-shadow paints over it. */
+  .field-input:-webkit-autofill,
+  .field-input:-webkit-autofill:hover,
+  .field-input:-webkit-autofill:focus,
+  .field-input:-webkit-autofill:active {
+    -webkit-text-fill-color: #ffffff;
+    -webkit-box-shadow: 0 0 0 1000px #0a0a0a inset;
+    box-shadow: 0 0 0 1000px #0a0a0a inset;
+    caret-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
   /* International phone input (react-phone-number-input), scoped so its
      bundled stylesheet never affects other inputs on the site. */
   .phone-field .PhoneInput {
@@ -119,6 +139,19 @@
      focus indicator on one of the most-used fields in the form. */
   .phone-field .PhoneInputInput {
     @apply bg-transparent text-sm text-ivory placeholder:text-smoke/50;
+  }
+
+  /* Same UA-autofill override as .field-input above — the phone number
+     input is just as susceptible to the browser's own autofill styling. */
+  .phone-field .PhoneInputInput:-webkit-autofill,
+  .phone-field .PhoneInputInput:-webkit-autofill:hover,
+  .phone-field .PhoneInputInput:-webkit-autofill:focus,
+  .phone-field .PhoneInputInput:-webkit-autofill:active {
+    -webkit-text-fill-color: #ffffff;
+    -webkit-box-shadow: 0 0 0 1000px #0a0a0a inset;
+    box-shadow: 0 0 0 1000px #0a0a0a inset;
+    caret-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
   }
 
   .phone-field .PhoneInputCountry {
