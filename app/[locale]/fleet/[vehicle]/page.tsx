@@ -205,6 +205,22 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     { label: t("quickFacts.bestFor"), value: vehicle.idealFor, icon: Compass },
   ];
 
+  // Desktop-only "Features & Amenities" grid — merges the former Quick
+  // Facts strip (4 cards) with the feature list (typically 6 cards) into
+  // one 10-card grid directly under the hero. Every card uses the same
+  // single-line icon + white-text template (no separate label line) so
+  // all 10 are visually identical in height/size, not just visually
+  // similar. Mobile is untouched: it never showed Quick Facts as its own
+  // grid (already folded into the hero meta row), and keeps the separate
+  // Features & Amenities section further down the page exactly as before.
+  const specCards: { icon: LucideIcon; text: string }[] = [
+    ...quickFacts.map((fact) => ({ icon: fact.icon, text: fact.value })),
+    ...vehicle.features.map((feature, index) => ({
+      icon: amenityIcon(englishFeatures[index] ?? feature),
+      text: feature,
+    })),
+  ];
+
   const priceTierLabels = [
     t("oneHour"),
     t("airportTransfer"),
@@ -212,6 +228,17 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     t("tenHours"),
     t("additionalHour"),
     t("additionalCity"),
+  ];
+
+  // Desktop-only package grid — 4 tiers only (Additional Hour/Additional
+  // City dropped), 2 Hours instead of 1 Hour, 5 Hours called out as "Most
+  // Popular". Mobile keeps the original 6-tier, oneHour-first array and
+  // plain (non-highlighted) card styling above, untouched.
+  const priceTiersDesktop = [
+    { label: t("twoHours"), highlight: false },
+    { label: t("airportTransfer"), highlight: false },
+    { label: t("fiveHours"), highlight: true },
+    { label: t("tenHours"), highlight: false },
   ];
 
   return (
@@ -295,9 +322,9 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
           {/* Mobile-only — description, meta row, related cross-link. CTA
               buttons live only in the pricing card further down the page
-              (Book Now / Get Quote / Enquire on WhatsApp), not duplicated
-              here. Desktop's equivalent content now lives in the
-              two-column block below instead. */}
+              (Book Now / Enquire on WhatsApp), not duplicated here.
+              Desktop's equivalent content now lives in the two-column
+              block below instead. */}
           <div className="mt-8 lg:hidden">
             <p className="text-sm leading-relaxed text-smoke sm:text-base">
               {vehicle.description}
@@ -415,31 +442,39 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      {/* Specs zone, part 1 — Quick Facts + Pricing. Split into two Sections
-          around the trust stats band below (desktop only) so its order
-          matches "At a Glance -> Packages -> trust stats -> Features" flow;
-          mobile never sees the stats band regardless of this split. */}
+      {/* Specs zone, part 1 — Features & Amenities (desktop) + Pricing.
+          Split into two Sections around the trust stats band below
+          (desktop only) so its order matches "Features -> Packages ->
+          trust stats" flow; mobile never sees the stats band regardless
+          of this split. */}
       <Section tone="obsidian" className="!pt-8 lg:!pt-24">
       <Container className="flex flex-col gap-16 sm:gap-20">
-        {/* Quick Facts — desktop only, unchanged from before (avoids
-            duplicating the passengers/luggage/Best For already shown in
-            the hero meta row on mobile). */}
-        <div className="hidden lg:grid lg:grid-cols-4 lg:gap-5">
-          {quickFacts.map((fact, index) => (
-            <Reveal key={fact.label} delay={index * 80}>
-            <Card
+        {/* Features & Amenities — desktop only. Merges the former Quick
+            Facts strip with the feature list into a single 10-card grid,
+            right under the hero. Every card is the same single-line icon
+            + white-text template — no separate label line — so all 10
+            cards are exactly the same size, not just similarly sized.
+            Mobile's separate, unmerged Features & Amenities section
+            further down the page is untouched. */}
+        <div className="hidden lg:block">
+          <Reveal>
+            <SectionHeading
+              eyebrow={t("onboardEyebrow")}
+              title={t("featuresTitle")}
+              align="left"
               tone="dark"
-              interactive
-              className="p-6 transition-all duration-200 hover:-translate-y-0.5"
-            >
-              <fact.icon className="h-5 w-5 text-gold" strokeWidth={1.5} />
-              <p className="mt-3 text-[10px] uppercase tracking-wide text-smoke">
-                {fact.label}
-              </p>
-              <p className="mt-1 font-display text-lg text-heading">{fact.value}</p>
-            </Card>
-            </Reveal>
-          ))}
+            />
+          </Reveal>
+          <div className="mt-10 grid grid-cols-3 gap-4">
+            {specCards.map((card, index) => (
+              <Reveal key={index} delay={Math.min(index * 60, 400)}>
+                <div className="flex items-center gap-3 rounded-xl border border-gold/15 bg-charcoal p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/35 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]">
+                  <card.icon className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+                  <span className="text-sm text-white">{card.text}</span>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
 
         {/* Pricing */}
@@ -450,12 +485,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
             {t("packagesSubtitle")}
           </p>
-          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:mt-6 lg:gap-4 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+
+          {/* Mobile package grid — unchanged from before (1 Hour first,
+              no highlight, original spacing). */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:hidden">
             {priceTierLabels.map((label) => (
-              <div
-                key={label}
-                className="flex flex-col gap-1 lg:gap-2 lg:rounded-xl lg:border lg:border-gold/15 lg:bg-charcoal lg:p-5 lg:transition-all lg:duration-200 lg:hover:-translate-y-0.5 lg:hover:border-gold/35 lg:hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]"
-              >
+              <div key={label} className="flex flex-col gap-1">
                 <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
                   {label}
                 </span>
@@ -465,6 +500,38 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               </div>
             ))}
           </div>
+
+          {/* Desktop package grid — 2 columns x 2 rows, 4 tiers (Additional
+              Hour / Additional City dropped), 2 Hours instead of 1 Hour, 5
+              Hours called out as Most Popular. Cards are a fixed, larger
+              size (w-72, p-6) rather than shrink-wrapped to their text, so
+              the grid reads as a deliberate block instead of a cluster of
+              undersized tiles. */}
+          <div className="mt-6 hidden lg:grid lg:grid-cols-[max-content_max-content] lg:gap-5">
+            {priceTiersDesktop.map((tier) => (
+              <div
+                key={tier.label}
+                className={`relative flex w-72 flex-col justify-center gap-1.5 rounded-xl border p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] ${
+                  tier.highlight
+                    ? "border-gold bg-charcoal"
+                    : "border-gold/15 bg-charcoal hover:border-gold/35"
+                }`}
+              >
+                {tier.highlight ? (
+                  <span className="absolute -top-3 start-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-obsidian">
+                    {t("mostPopular")}
+                  </span>
+                ) : null}
+                <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
+                  {tier.label}
+                </span>
+                <span className="font-display text-xl font-bold text-gold">
+                  {t("priceOnRequest")}
+                </span>
+              </div>
+            ))}
+          </div>
+
           <p className="mt-2 text-xs italic text-smoke lg:mt-3">
             {t("includesNote")}
           </p>
@@ -473,18 +540,27 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           </p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row lg:mt-6">
             <CTAButton href={`/booking?vehicle=${vehicle.slug}`}>{t("bookNow")}</CTAButton>
-            <CTAButton
-              href={`/quote?vehicle=${vehicle.slug}`}
-              variant="outline"
-              className="hidden lg:inline-flex"
-            >
-              {t("getQuote")}
-            </CTAButton>
+            {/* Mobile-only — moved here from the hero block above (see the
+                CTA cleanup that removed the duplicate hero buttons). */}
             <a
               href={getWhatsAppLink(whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:hidden"
+            >
+              <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 shrink-0 fill-white">
+                <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.902 6.47L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.457-1.507l-.392-.232-4.58 1.107 1.128-4.462-.256-.406A9.77 9.77 0 0 1 5.182 15c0-5.964 4.855-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818zm5.965-8.14c-.327-.164-1.936-.955-2.237-1.064-.3-.109-.518-.164-.737.164-.218.327-.845 1.064-1.036 1.282-.19.218-.382.246-.709.082-.327-.164-1.38-.508-2.629-1.62-.972-.867-1.628-1.937-1.819-2.264-.19-.327-.02-.504.144-.667.148-.147.327-.382.49-.573.164-.19.218-.327.327-.545.109-.218.055-.41-.027-.573-.082-.164-.737-1.777-1.01-2.434-.266-.64-.537-.553-.737-.563l-.628-.011c-.218 0-.573.082-.873.41-.3.327-1.145 1.12-1.145 2.73 0 1.61 1.172 3.165 1.336 3.383.164.218 2.308 3.524 5.593 4.942.782.338 1.392.54 1.868.69.785.25 1.5.215 2.065.13.63-.094 1.936-.79 2.21-1.554.273-.764.273-1.418.19-1.555-.081-.136-.3-.218-.627-.382z" />
+              </svg>
+              {t("enquireWhatsapp")}
+            </a>
+            {/* Desktop-only — replaces the old Get Quote button. Get Quote
+                was already lg:inline-flex only, so removing it doesn't
+                change mobile at all. */}
+            <a
+              href={getWhatsAppLink(whatsappMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:inline-flex"
             >
               <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 shrink-0 fill-white">
                 <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.902 6.47L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.457-1.507l-.392-.232-4.58 1.107 1.128-4.462-.256-.406A9.77 9.77 0 0 1 5.182 15c0-5.964 4.855-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818zm5.965-8.14c-.327-.164-1.936-.955-2.237-1.064-.3-.109-.518-.164-.737.164-.218.327-.845 1.064-1.036 1.282-.19.218-.382.246-.709.082-.327-.164-1.38-.508-2.629-1.62-.972-.867-1.628-1.937-1.819-2.264-.19-.327-.02-.504.144-.667.148-.147.327-.382.49-.573.164-.19.218-.327.327-.545.109-.218.055-.41-.027-.573-.082-.164-.737-1.777-1.01-2.434-.266-.64-.537-.553-.737-.563l-.628-.011c-.218 0-.573.082-.873.41-.3.327-1.145 1.12-1.145 2.73 0 1.61 1.172 3.165 1.336 3.383.164.218 2.308 3.524 5.593 4.942.782.338 1.392.54 1.868.69.785.25 1.5.215 2.065.13.63-.094 1.936-.79 2.21-1.554.273-.764.273-1.418.19-1.555-.081-.136-.3-.218-.627-.382z" />
@@ -500,17 +576,23 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Section>
 
       {/* Trust stats band — desktop only, reuses the Fleet page's stats
-          component as-is; sits between Packages and Features so the flow
-          matches "At a Glance -> Packages -> trust stats -> Features". */}
+          component as-is; sits right after Packages, matching the
+          desktop flow "Features -> Packages -> trust stats -> Why
+          Choose". */}
       <div className="hidden lg:block">
         <FleetTrustSection />
       </div>
 
-      {/* Specs zone, part 2 — Features, Why Choose, How It Works. */}
+      {/* Specs zone, part 2 — Features (mobile only), Why Choose, How It
+          Works. */}
       <Section tone="obsidian">
       <Container className="flex flex-col gap-16 sm:gap-20">
-        {/* Features & Amenities */}
-        <div>
+        {/* Features & Amenities — mobile only now; desktop shows the
+            merged 10-card Features & Amenities grid directly under the
+            hero instead (see Specs zone, part 1), so this original
+            section is hidden at lg to avoid showing the feature list
+            twice on desktop. */}
+        <div className="lg:hidden">
           <Reveal>
             <SectionHeading
               eyebrow={t("onboardEyebrow")}
