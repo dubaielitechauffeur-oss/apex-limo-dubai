@@ -207,17 +207,15 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
   // Desktop-only "Features & Amenities" grid — merges the former Quick
   // Facts strip (4 cards) with the feature list (typically 6 cards) into
-  // one 10-card grid directly under the hero. Mobile is untouched: it
-  // never showed Quick Facts as its own grid (already folded into the
-  // hero meta row), and keeps the separate Features & Amenities section
-  // further down the page exactly as before.
-  type SpecCard =
-    | { kind: "fact"; label: string; value: string }
-    | { kind: "feature"; icon: LucideIcon; text: string };
-  const specCards: SpecCard[] = [
-    ...quickFacts.map((fact): SpecCard => ({ kind: "fact", label: fact.label, value: fact.value })),
-    ...vehicle.features.map((feature, index): SpecCard => ({
-      kind: "feature",
+  // one 10-card grid directly under the hero. Every card uses the same
+  // single-line icon + white-text template (no separate label line) so
+  // all 10 are visually identical in height/size, not just visually
+  // similar. Mobile is untouched: it never showed Quick Facts as its own
+  // grid (already folded into the hero meta row), and keeps the separate
+  // Features & Amenities section further down the page exactly as before.
+  const specCards: { icon: LucideIcon; text: string }[] = [
+    ...quickFacts.map((fact) => ({ icon: fact.icon, text: fact.value })),
+    ...vehicle.features.map((feature, index) => ({
       icon: amenityIcon(englishFeatures[index] ?? feature),
       text: feature,
     })),
@@ -232,17 +230,15 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     t("additionalCity"),
   ];
 
-  // Desktop-only package grid — same 6 tiers, reordered for nothing but
-  // relabeled (2 Hours instead of 1 Hour) and with the 5-hour tier called
-  // out as "Most Popular". Mobile keeps the original oneHour-first array
-  // and plain (non-highlighted) card styling above, untouched.
+  // Desktop-only package grid — 4 tiers only (Additional Hour/Additional
+  // City dropped), 2 Hours instead of 1 Hour, 5 Hours called out as "Most
+  // Popular". Mobile keeps the original 6-tier, oneHour-first array and
+  // plain (non-highlighted) card styling above, untouched.
   const priceTiersDesktop = [
     { label: t("twoHours"), highlight: false },
     { label: t("airportTransfer"), highlight: false },
     { label: t("fiveHours"), highlight: true },
     { label: t("tenHours"), highlight: false },
-    { label: t("additionalHour"), highlight: false },
-    { label: t("additionalCity"), highlight: false },
   ];
 
   return (
@@ -468,10 +464,11 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       <Container className="flex flex-col gap-16 sm:gap-20">
         {/* Features & Amenities — desktop only. Merges the former Quick
             Facts strip with the feature list into a single 10-card grid,
-            styled like the pricing tier cards below (bordered box, small
-            uppercase label, bold value), right under the hero. Mobile's
-            separate, unmerged Features & Amenities section further down
-            the page is untouched. */}
+            right under the hero. Every card is the same single-line icon
+            + white-text template — no separate label line — so all 10
+            cards are exactly the same size, not just similarly sized.
+            Mobile's separate, unmerged Features & Amenities section
+            further down the page is untouched. */}
         <div className="hidden lg:block">
           <Reveal>
             <SectionHeading
@@ -484,20 +481,9 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <div className="mt-10 grid grid-cols-3 gap-4">
             {specCards.map((card, index) => (
               <Reveal key={index} delay={Math.min(index * 60, 400)}>
-                <div className="flex flex-col justify-center gap-1.5 rounded-xl border border-gold/15 bg-charcoal p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/35 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]">
-                  {card.kind === "fact" ? (
-                    <>
-                      <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
-                        {card.label}
-                      </span>
-                      <span className="font-display text-lg font-bold text-gold">{card.value}</span>
-                    </>
-                  ) : (
-                    <div className="flex items-center gap-3">
-                      <card.icon className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
-                      <span className="text-sm text-smoke">{card.text}</span>
-                    </div>
-                  )}
+                <div className="flex items-center gap-3 rounded-xl border border-gold/15 bg-charcoal p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/35 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]">
+                  <card.icon className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+                  <span className="text-sm text-white">{card.text}</span>
                 </div>
               </Reveal>
             ))}
@@ -528,10 +514,14 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             ))}
           </div>
 
-          {/* Desktop package grid — 3 columns x 2 rows, 2 Hours instead of
-              1 Hour, 5 Hours called out as Most Popular, tight padding
-              sized to content rather than the old lg:p-5 card. */}
-          <div className="mt-6 hidden lg:grid lg:grid-cols-3 lg:gap-4">
+          {/* Desktop package grid — 2 columns x 2 rows, 4 tiers (Additional
+              Hour / Additional City dropped), 2 Hours instead of 1 Hour, 5
+              Hours called out as Most Popular. Column tracks are sized to
+              their own content (max-content) rather than stretched 1fr
+              tracks, so the grid — and every card in it — is exactly as
+              wide as it needs to be, with no leftover blank space inside
+              a card or a gap between columns. */}
+          <div className="mt-6 hidden lg:grid lg:grid-cols-[max-content_max-content] lg:gap-4">
             {priceTiersDesktop.map((tier) => (
               <div
                 key={tier.label}
@@ -564,13 +554,20 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           </p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row lg:mt-6">
             <CTAButton href={`/booking?vehicle=${vehicle.slug}`}>{t("bookNow")}</CTAButton>
-            <CTAButton
-              href={`/quote?vehicle=${vehicle.slug}`}
-              variant="outline"
-              className="hidden lg:inline-flex"
+            {/* Desktop-only — replaces the old Get Quote button. Mobile
+                never showed Get Quote here (it was already lg:inline-flex
+                only), so removing it doesn't change mobile at all. */}
+            <a
+              href={getWhatsAppLink(whatsappMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:inline-flex"
             >
-              {t("getQuote")}
-            </CTAButton>
+              <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 shrink-0 fill-white">
+                <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.902 6.47L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.457-1.507l-.392-.232-4.58 1.107 1.128-4.462-.256-.406A9.77 9.77 0 0 1 5.182 15c0-5.964 4.855-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818zm5.965-8.14c-.327-.164-1.936-.955-2.237-1.064-.3-.109-.518-.164-.737.164-.218.327-.845 1.064-1.036 1.282-.19.218-.382.246-.709.082-.327-.164-1.38-.508-2.629-1.62-.972-.867-1.628-1.937-1.819-2.264-.19-.327-.02-.504.144-.667.148-.147.327-.382.49-.573.164-.19.218-.327.327-.545.109-.218.055-.41-.027-.573-.082-.164-.737-1.777-1.01-2.434-.266-.64-.537-.553-.737-.563l-.628-.011c-.218 0-.573.082-.873.41-.3.327-1.145 1.12-1.145 2.73 0 1.61 1.172 3.165 1.336 3.383.164.218 2.308 3.524 5.593 4.942.782.338 1.392.54 1.868.69.785.25 1.5.215 2.065.13.63-.094 1.936-.79 2.21-1.554.273-.764.273-1.418.19-1.555-.081-.136-.3-.218-.627-.382z" />
+              </svg>
+              {t("enquireWhatsapp")}
+            </a>
           </div>
           <p className="mt-4 text-xs uppercase tracking-wide text-white lg:text-gold/80">
             {t("trustNote")}
