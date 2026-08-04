@@ -205,6 +205,24 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     { label: t("quickFacts.bestFor"), value: vehicle.idealFor, icon: Compass },
   ];
 
+  // Desktop-only "Features & Amenities" grid — merges the former Quick
+  // Facts strip (4 cards) with the feature list (typically 6 cards) into
+  // one 10-card grid directly under the hero. Mobile is untouched: it
+  // never showed Quick Facts as its own grid (already folded into the
+  // hero meta row), and keeps the separate Features & Amenities section
+  // further down the page exactly as before.
+  type SpecCard =
+    | { kind: "fact"; label: string; value: string }
+    | { kind: "feature"; icon: LucideIcon; text: string };
+  const specCards: SpecCard[] = [
+    ...quickFacts.map((fact): SpecCard => ({ kind: "fact", label: fact.label, value: fact.value })),
+    ...vehicle.features.map((feature, index): SpecCard => ({
+      kind: "feature",
+      icon: amenityIcon(englishFeatures[index] ?? feature),
+      text: feature,
+    })),
+  ];
+
   const priceTierLabels = [
     t("oneHour"),
     t("airportTransfer"),
@@ -212,6 +230,19 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     t("tenHours"),
     t("additionalHour"),
     t("additionalCity"),
+  ];
+
+  // Desktop-only package grid — same 6 tiers, reordered for nothing but
+  // relabeled (2 Hours instead of 1 Hour) and with the 5-hour tier called
+  // out as "Most Popular". Mobile keeps the original oneHour-first array
+  // and plain (non-highlighted) card styling above, untouched.
+  const priceTiersDesktop = [
+    { label: t("twoHours"), highlight: false },
+    { label: t("airportTransfer"), highlight: false },
+    { label: t("fiveHours"), highlight: true },
+    { label: t("tenHours"), highlight: false },
+    { label: t("additionalHour"), highlight: false },
+    { label: t("additionalCity"), highlight: false },
   ];
 
   return (
@@ -428,31 +459,49 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Container>
       </Section>
 
-      {/* Specs zone, part 1 — Quick Facts + Pricing. Split into two Sections
-          around the trust stats band below (desktop only) so its order
-          matches "At a Glance -> Packages -> trust stats -> Features" flow;
-          mobile never sees the stats band regardless of this split. */}
+      {/* Specs zone, part 1 — Features & Amenities (desktop) + Pricing.
+          Split into two Sections around the trust stats band below
+          (desktop only) so its order matches "Features -> Packages ->
+          trust stats" flow; mobile never sees the stats band regardless
+          of this split. */}
       <Section tone="obsidian" className="!pt-8 lg:!pt-24">
       <Container className="flex flex-col gap-16 sm:gap-20">
-        {/* Quick Facts — desktop only, unchanged from before (avoids
-            duplicating the passengers/luggage/Best For already shown in
-            the hero meta row on mobile). */}
-        <div className="hidden lg:grid lg:grid-cols-4 lg:gap-5">
-          {quickFacts.map((fact, index) => (
-            <Reveal key={fact.label} delay={index * 80}>
-            <Card
+        {/* Features & Amenities — desktop only. Merges the former Quick
+            Facts strip with the feature list into a single 10-card grid,
+            styled like the pricing tier cards below (bordered box, small
+            uppercase label, bold value), right under the hero. Mobile's
+            separate, unmerged Features & Amenities section further down
+            the page is untouched. */}
+        <div className="hidden lg:block">
+          <Reveal>
+            <SectionHeading
+              eyebrow={t("onboardEyebrow")}
+              title={t("featuresTitle")}
+              align="left"
               tone="dark"
-              interactive
-              className="p-6 transition-all duration-200 hover:-translate-y-0.5"
-            >
-              <fact.icon className="h-5 w-5 text-gold" strokeWidth={1.5} />
-              <p className="mt-3 text-[10px] uppercase tracking-wide text-smoke">
-                {fact.label}
-              </p>
-              <p className="mt-1 font-display text-lg text-heading">{fact.value}</p>
-            </Card>
-            </Reveal>
-          ))}
+            />
+          </Reveal>
+          <div className="mt-10 grid grid-cols-3 gap-4">
+            {specCards.map((card, index) => (
+              <Reveal key={index} delay={Math.min(index * 60, 400)}>
+                <div className="flex flex-col justify-center gap-1.5 rounded-xl border border-gold/15 bg-charcoal p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/35 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]">
+                  {card.kind === "fact" ? (
+                    <>
+                      <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
+                        {card.label}
+                      </span>
+                      <span className="font-display text-lg font-bold text-gold">{card.value}</span>
+                    </>
+                  ) : (
+                    <div className="flex items-center gap-3">
+                      <card.icon className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+                      <span className="text-sm text-smoke">{card.text}</span>
+                    </div>
+                  )}
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
 
         {/* Pricing */}
@@ -463,12 +512,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
             {t("packagesSubtitle")}
           </p>
-          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:mt-6 lg:gap-4 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+
+          {/* Mobile package grid — unchanged from before (1 Hour first,
+              no highlight, original spacing). */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:hidden">
             {priceTierLabels.map((label) => (
-              <div
-                key={label}
-                className="flex flex-col gap-1 lg:gap-2 lg:rounded-xl lg:border lg:border-gold/15 lg:bg-charcoal lg:p-5 lg:transition-all lg:duration-200 lg:hover:-translate-y-0.5 lg:hover:border-gold/35 lg:hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]"
-              >
+              <div key={label} className="flex flex-col gap-1">
                 <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
                   {label}
                 </span>
@@ -478,6 +527,35 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               </div>
             ))}
           </div>
+
+          {/* Desktop package grid — 3 columns x 2 rows, 2 Hours instead of
+              1 Hour, 5 Hours called out as Most Popular, tight padding
+              sized to content rather than the old lg:p-5 card. */}
+          <div className="mt-6 hidden lg:grid lg:grid-cols-3 lg:gap-4">
+            {priceTiersDesktop.map((tier) => (
+              <div
+                key={tier.label}
+                className={`relative flex flex-col gap-1 rounded-xl border p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] ${
+                  tier.highlight
+                    ? "border-gold bg-charcoal"
+                    : "border-gold/15 bg-charcoal hover:border-gold/35"
+                }`}
+              >
+                {tier.highlight ? (
+                  <span className="absolute -top-3 start-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-obsidian">
+                    {t("mostPopular")}
+                  </span>
+                ) : null}
+                <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
+                  {tier.label}
+                </span>
+                <span className="font-display text-lg font-bold text-gold">
+                  {t("priceOnRequest")}
+                </span>
+              </div>
+            ))}
+          </div>
+
           <p className="mt-2 text-xs italic text-smoke lg:mt-3">
             {t("includesNote")}
           </p>
@@ -502,17 +580,23 @@ export default async function VehicleDetailPage({ params }: PageProps) {
       </Section>
 
       {/* Trust stats band — desktop only, reuses the Fleet page's stats
-          component as-is; sits between Packages and Features so the flow
-          matches "At a Glance -> Packages -> trust stats -> Features". */}
+          component as-is; sits right after Packages, matching the
+          desktop flow "Features -> Packages -> trust stats -> Why
+          Choose". */}
       <div className="hidden lg:block">
         <FleetTrustSection />
       </div>
 
-      {/* Specs zone, part 2 — Features, Why Choose, How It Works. */}
+      {/* Specs zone, part 2 — Features (mobile only), Why Choose, How It
+          Works. */}
       <Section tone="obsidian">
       <Container className="flex flex-col gap-16 sm:gap-20">
-        {/* Features & Amenities */}
-        <div>
+        {/* Features & Amenities — mobile only now; desktop shows the
+            merged 10-card Features & Amenities grid directly under the
+            hero instead (see Specs zone, part 1), so this original
+            section is hidden at lg to avoid showing the feature list
+            twice on desktop. */}
+        <div className="lg:hidden">
           <Reveal>
             <SectionHeading
               eyebrow={t("onboardEyebrow")}
