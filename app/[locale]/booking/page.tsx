@@ -38,7 +38,7 @@ export default async function BookingPage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd([{ name: t("booking.breadcrumbLabel"), path: "/booking" }], locale as Locale, tNav("home"))

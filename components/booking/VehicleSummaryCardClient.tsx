@@ -1,25 +1,50 @@
+"use client";
+
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { useSearchParams } from "next/navigation";
 import { Users, Briefcase, BadgeCheck, Car } from "lucide-react";
 import Reveal from "@/components/shared/Reveal";
-import type { PlainFleetVehicle } from "@/data/fleet";
 
-interface VehicleSummaryCardProps {
-  vehicle: PlainFleetVehicle;
+export interface VehicleSummaryOption {
+  slug: string;
+  name: string;
+  brand: string;
+  description: string;
+  passengers: number;
+  luggage: number;
+  cover?: { src: string; alt: string };
 }
 
-/** Luxury vehicle summary shown above the quote form when arriving via ?vehicle=. */
-export default async function VehicleSummaryCard({ vehicle }: VehicleSummaryCardProps) {
-  const t = await getTranslations("fleet.summaryCard");
-  const cover = vehicle.images?.[0];
+interface VehicleSummaryCardClientProps {
+  vehicles: VehicleSummaryOption[];
+  labels: { passengers: string; luggage: string; chauffeurIncluded: string };
+}
+
+/**
+ * Client-side twin of VehicleSummaryCard, reading `?vehicle=` via
+ * useSearchParams instead of an awaited server-side searchParams prop —
+ * that server-side await is what forced the whole /quote route dynamic
+ * under Next 16 (see the comment on QuotePage). `vehicles` is a slim,
+ * already-localized subset (no long descriptions/FAQs/full gallery) built
+ * at the page level, mirroring the ServiceOption/LocationOption/
+ * VehicleOption trimming QuoteForm already does for the same bundle-size
+ * reason. Must be rendered inside a <Suspense> boundary by its caller,
+ * same requirement as useSearchParams anywhere else in this app.
+ */
+export default function VehicleSummaryCardClient({ vehicles, labels }: VehicleSummaryCardClientProps) {
+  const searchParams = useSearchParams();
+  const vehicleSlug = searchParams.get("vehicle");
+  const vehicle = vehicleSlug ? vehicles.find((v) => v.slug === vehicleSlug) : undefined;
+
+  if (!vehicle) return null;
 
   return (
     <Reveal className="mb-8 flex flex-col gap-5 rounded-2xl border border-gold/20 bg-ink p-5 sm:flex-row sm:items-center sm:p-6">
       <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-800 sm:w-48">
-        {cover ? (
+        {vehicle.cover ? (
           <Image
-            src={cover.src}
-            alt={cover.alt}
+            src={vehicle.cover.src}
+            alt={vehicle.cover.alt}
             fill
             sizes="192px"
             className="object-cover"
@@ -43,15 +68,15 @@ export default async function VehicleSummaryCard({ vehicle }: VehicleSummaryCard
         <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
           <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-smoke">
             <Users className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
-            {vehicle.passengers} {t("passengers")}
+            {vehicle.passengers} {labels.passengers}
           </span>
           <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-smoke">
             <Briefcase className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
-            {vehicle.luggage} {t("luggage")}
+            {vehicle.luggage} {labels.luggage}
           </span>
           <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-smoke">
             <BadgeCheck className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
-            {t("chauffeurIncluded")}
+            {labels.chauffeurIncluded}
           </span>
         </div>
       </div>

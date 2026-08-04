@@ -97,7 +97,7 @@ export default async function AboutPage({ params }: PageProps) {
     <div>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd([{ name: tNav("about"), path: "/about" }], locale as Locale, tNav("home"))

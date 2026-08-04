@@ -81,12 +81,12 @@ export default async function ContactPage({ params }: PageProps) {
     <div>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(contactFaqs, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd([{ name: tNav("contact"), path: "/contact" }], locale as Locale, tNav("home"))

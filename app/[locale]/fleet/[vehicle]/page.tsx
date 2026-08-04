@@ -218,17 +218,17 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     <div>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleJsonLd(vehicle, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(vehicle.faqs, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd(

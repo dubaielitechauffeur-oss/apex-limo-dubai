@@ -39,10 +39,17 @@ export default function ConstructionNoticeModal() {
       // localStorage unavailable (private browsing, etc.) — fall through
       // and show the notice; dismiss() below is wrapped the same way.
     }
+    // react-hooks/set-state-in-effect is correct as a general rule, but this
+    // is the case it can't express: the decision to open depends on
+    // localStorage, which doesn't exist during SSR. Reading it in a useState
+    // initializer would make the client's first render disagree with the
+    // server's HTML — a hydration mismatch — so the read has to happen after
+    // mount. The one resulting re-render is the intended cost.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpen(true);
     // Only ever evaluated once on mount — a same-session route change to
     // /booking or /quote shouldn't retroactively open/close an already
-    // decided notice.
+    // decided notice, so `pathname` is deliberately excluded from deps.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -87,7 +94,7 @@ export default function ConstructionNoticeModal() {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", onKeyDown);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [open]);
 
   function dismiss() {
