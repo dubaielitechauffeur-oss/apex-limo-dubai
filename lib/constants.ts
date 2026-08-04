@@ -24,6 +24,27 @@ export const SITE = {
  */
 export const RATING = "4.9";
 
+/**
+ * Verified public profiles for this business, used as the `sameAs` entity
+ * links in the LocalBusiness JSON-LD (lib/seo.ts) and available for reuse
+ * in UI (footer social row, contact page, etc.).
+ *
+ * These are the real, owner-supplied profiles — not guesses. Keep them
+ * canonical: no tracking/referral query strings (e.g. Instagram's `?igsh=`
+ * share parameter), since `sameAs` is an identity assertion and a URL that
+ * varies per share breaks that. `googleBusiness` is Google's own short
+ * link for the Business Profile listing, which is stable and also serves
+ * as the schema `hasMap` target.
+ */
+export const SOCIAL_PROFILES = {
+  googleBusiness: "https://maps.app.goo.gl/FMu7LYvqYaMbzFuo6",
+  instagram: "https://www.instagram.com/apex_limo__chauffeur_dubai",
+  facebook: "https://www.facebook.com/share/1EcESQGzDM/",
+} as const;
+
+/** Every verified profile URL, in the shape schema.org's `sameAs` expects. */
+export const SAME_AS_URLS: string[] = Object.values(SOCIAL_PROFILES);
+
 /** Shared schema.org `priceRange` value — quoted in both the root organization
  *  and each per-location LocalBusiness JSON-LD node (lib/seo.ts, and
  *  app/[locale]/locations/[location]/page.tsx). */
