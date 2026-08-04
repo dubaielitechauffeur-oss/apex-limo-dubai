@@ -63,8 +63,6 @@ export default async function FleetListingCard({ vehicle }: FleetListingCardProp
     t("airportTransfer"),
     t("fiveHours"),
     t("tenHours"),
-    t("additionalHour"),
-    t("additionalCity"),
   ];
 
   return (
