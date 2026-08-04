@@ -226,8 +226,6 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     t("airportTransfer"),
     t("fiveHours"),
     t("tenHours"),
-    t("additionalHour"),
-    t("additionalCity"),
   ];
 
   // Desktop-only package grid — 4 tiers only (Additional Hour/Additional
