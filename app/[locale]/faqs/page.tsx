@@ -32,12 +32,12 @@ export default async function FaqsPage({ params }: PageProps) {
     <div>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd([{ name: tNav("faqs"), path: "/faqs" }], locale as Locale, tNav("home"))

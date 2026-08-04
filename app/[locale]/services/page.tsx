@@ -89,14 +89,14 @@ export default async function ServicesPage({ params }: PageProps) {
     <div>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(servicesJsonLd(locale as Locale, services)),
         }}
       />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd([{ name: tNav("services"), path: "/services" }], locale as Locale, tNav("home"))

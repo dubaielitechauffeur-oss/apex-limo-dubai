@@ -61,12 +61,12 @@ export default async function BlogPage({ params }: PageProps) {
     <div>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd(posts, locale as Locale)) }}
       />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd([{ name: tNav("blog"), path: "/blog" }], locale as Locale, tNav("home"))

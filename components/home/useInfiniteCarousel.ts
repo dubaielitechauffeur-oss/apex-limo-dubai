@@ -84,7 +84,16 @@ export function useInfiniteCarousel({
 
   // Reset to the first real item whenever the visible-slide count changes
   // (e.g. a resize crosses a breakpoint and the clone buffer is rebuilt).
+  //
+  // react-hooks/set-state-in-effect flags this, and for ordinary derived
+  // state it would be right — but `index` isn't derived from slidesPerView,
+  // it's independent carousel position that the user also drives via
+  // arrows/dots/swipe. A breakpoint change invalidates that position because
+  // the clone buffer is rebuilt around it, so this is a genuine reset of
+  // independent state in response to an external (viewport) change, not a
+  // value that could be computed during render.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIndex(slidesPerView);
   }, [slidesPerView]);
 

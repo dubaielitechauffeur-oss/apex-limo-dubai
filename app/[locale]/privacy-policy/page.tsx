@@ -36,7 +36,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd([{ name: breadcrumbLabel, path: "/privacy-policy" }], locale as Locale, tNav("home"))

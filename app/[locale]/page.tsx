@@ -37,7 +37,7 @@ export default async function Home({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(getFaqs(locale as Locale))) }}
       />
       <Hero />

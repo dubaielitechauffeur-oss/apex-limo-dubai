@@ -73,7 +73,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     <div>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             articleJsonLd({
@@ -90,13 +90,13 @@ export default async function BlogPostPage({ params }: PageProps) {
       {faqBlock && faqBlock.type === "faq" ? (
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
+
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqBlock.items, locale as Locale)) }}
         />
       ) : null}
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd(
