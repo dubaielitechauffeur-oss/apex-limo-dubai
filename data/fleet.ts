@@ -3071,9 +3071,9 @@ export function getVehicleBySlug(slug: string, locale: Locale): PlainFleetVehicl
  * `FleetCategory` value. "Ultra-Luxury" has no listing page of its own —
  * those vehicles remain visible only on the main /fleet page.
  */
-export type FleetCategorySlug = "sedan" | "suv" | "van" | "electric";
+export type FleetCategorySlug = "sedan" | "suv" | "van" | "ultra-luxury" | "electric";
 
-export const FLEET_CATEGORY_SLUGS: FleetCategorySlug[] = ["sedan", "suv", "van", "electric"];
+export const FLEET_CATEGORY_SLUGS: FleetCategorySlug[] = ["sedan", "suv", "van", "ultra-luxury", "electric"];
 
 // Fails the build immediately if a vehicle's slug ever collides with a
 // reserved category slug — such a vehicle would be permanently
@@ -3095,6 +3095,7 @@ const CATEGORY_SLUG_TO_CATEGORY: Record<Exclude<FleetCategorySlug, "electric">, 
   sedan: "Sedan",
   suv: "SUV",
   van: "Van",
+  "ultra-luxury": "Ultra-Luxury",
 };
 
 export function isFleetCategorySlug(value: string): value is FleetCategorySlug {

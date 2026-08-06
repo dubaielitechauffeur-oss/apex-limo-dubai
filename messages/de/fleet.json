@@ -204,13 +204,15 @@
       "sedan": "Limousine",
       "suv": "SUV",
       "van": "Van",
+      "ultra-luxury": "Ultra-Luxus",
       "electric": "Elektro"
     },
     "subtitle": {
       "sedan": "Executive-Limousinen für Flughafentransfers, Geschäftsreisen und stilvolle Fahrten quer durch Dubai. Jede Limousine unserer Flotte verbindet ein modernes Interieur mit einem uniformierten, professionellen Chauffeur, Flugverfolgung bei Flughafenfahrten und transparenten Stunden- oder Punkt-zu-Punkt-Tarifen — buchen Sie online oder per WhatsApp in wenigen Minuten.",
       "suv": "Geräumige, erhöhte SUVs für Familienreisen, Gruppentransfers und eine souveräne Präsenz auf Dubais Straßen. Jeder SUV wird mit einem professionellen Chauffeur, großzügigem Gepäckraum und flexiblen Stunden-, Halbtags- oder Flughafenpaketen passend zu Ihrer Reiseroute gestellt.",
       "van": "Premium-Vans für Gruppen, Familien und Veranstaltungstransporte, mit großzügigem Platz für Passagiere und Gepäck bei jeder chauffeurgefahrenen Fahrt. Ideal für größere Gruppen, die dennoch einen luxuriösen Standard erwarten — Klimakomfort, zuvorkommender Service und pünktliche Ankunft bei jeder Fahrt.",
-      "electric": "Leise, moderne Elektrofahrzeuge für umweltbewusstes Reisen in Dubai — mit demselben professionellen Chauffeur-Standard und Premium-Komfort wie der Rest unserer Flotte, ganz ohne Abgasemissionen. Eine stilvolle, nachhaltige Wahl für Flughafentransfers, Geschäftsreisen und Fahrten in der Stadt."
+      "electric": "Leise, moderne Elektrofahrzeuge für umweltbewusstes Reisen in Dubai — mit demselben professionellen Chauffeur-Standard und Premium-Komfort wie der Rest unserer Flotte, ganz ohne Abgasemissionen. Eine stilvolle, nachhaltige Wahl für Flughafentransfers, Geschäftsreisen und Fahrten in der Stadt.",
+      "ultra-luxury": "Ultra-Luxusfahrzeuge für VIP-Anlässe, besondere Meilensteine und Ankünfte, die Eindruck hinterlassen. Rolls-Royce Phantom und Mercedes-Maybach S-Klasse Limousinen mit weißem Handschuhen, massgeschneiderte Dienstleistungen und kompromissloses Augenmerk auf jedes Detail — die ultimative Wahl, wenn nur das Beste gut genug ist."
     },
     "vehicleCountTemplate": "{count} Verfügbar",
     "listingEyebrow": "Jetzt Verfügbar",
