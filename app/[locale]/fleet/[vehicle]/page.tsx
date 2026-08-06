@@ -25,6 +25,8 @@ import {
   MessageCircle,
   ClipboardCheck,
   Car,
+  UserCheck,
+  MapPin,
   type LucideIcon,
 } from "lucide-react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -35,6 +37,7 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
 import Reveal from "@/components/shared/Reveal";
+import Ltr from "@/components/shared/Ltr";
 import VehicleHeroGallery, { VehicleGalleryCarousel } from "@/components/fleet/VehicleHeroGallery";
 import VehicleHeroQuoteForm from "@/components/fleet/VehicleHeroQuoteForm";
 import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
@@ -213,8 +216,17 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
   setRequestLocale(locale);
   const vehicles = getVehiclesByCategorySlug(category, locale);
   const t = await getTranslations("fleet.categoryPage");
+  const tHero = await getTranslations("fleet.hero");
   const tNav = await getTranslations("common.nav");
+  const tA11y = await getTranslations("common.a11y");
   const categoryLabel = t(`labels.${category}`);
+  const filledStars = Math.round(parseFloat(RATING));
+
+  const TRUST_ITEMS = [
+    { icon: Car, label: t("vehicleCountTemplate", { count: vehicles.length }) },
+    { icon: UserCheck, label: tHero("professionalChauffeurs") },
+    { icon: MapPin, label: tHero("availableAcross") },
+  ];
 
   return (
     <div>
@@ -238,27 +250,76 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
         }}
       />
 
-      <Section tone="obsidian" padding="sm" className="!pt-10 !pb-10 sm:!pt-14 sm:!pb-14">
+      {/* Hero — sized and animated to match the /fleet page's FleetHero
+          (min-height + fade/slide-in stagger), centered content and a
+          trust-indicators row instead of that hero's photograph, since
+          there's no single image representing a filtered category. */}
+      <Section
+        tone="obsidian"
+        separator={false}
+        className="relative flex min-h-[420px] items-center overflow-hidden !py-16 sm:min-h-[520px] sm:!py-20 lg:min-h-[560px]"
+      >
         <Container>
-          <nav aria-label={t("breadcrumbAriaLabel")} className="flex items-center gap-1 text-xs uppercase text-smoke">
-            <Link href="/" className="transition-colors hover:text-gold">
-              {tNav("home")}
-            </Link>
-            <span className="text-smoke/40">/</span>
-            <Link href="/fleet" className="transition-colors hover:text-gold">
-              {tNav("fleet")}
-            </Link>
-            <span className="text-smoke/40">/</span>
-            <span className="text-gold">{categoryLabel}</span>
-          </nav>
+          <div className="mx-auto max-w-2xl text-center">
+            <nav
+              aria-label={t("breadcrumbAriaLabel")}
+              className="flex animate-fade-in items-center justify-center gap-1 text-xs uppercase text-smoke"
+            >
+              <Link href="/" className="transition-colors hover:text-gold">
+                {tNav("home")}
+              </Link>
+              <span className="text-smoke/40">/</span>
+              <Link href="/fleet" className="transition-colors hover:text-gold">
+                {tNav("fleet")}
+              </Link>
+              <span className="text-smoke/40">/</span>
+              <span className="text-gold">{categoryLabel}</span>
+            </nav>
 
-          <span className="mt-6 block label-eyebrow">{t("eyebrow")}</span>
-          <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
-            {t("titleTemplate", { category: categoryLabel })}
-          </h1>
-          <p className="mt-5 max-w-2xl text-sm leading-relaxed text-smoke sm:text-base">
-            {t(`subtitle.${category}`)}
-          </p>
+            <span className="mt-8 block animate-fade-in label-eyebrow [animation-delay:100ms]">
+              {t("eyebrow")}
+            </span>
+            <h1 className="mt-4 animate-slide-in-left font-display text-4xl leading-[1.05] text-heading [animation-delay:150ms] sm:text-6xl">
+              {t("titleTemplate", { category: categoryLabel })}
+            </h1>
+            <p className="mx-auto mt-6 max-w-xl animate-fade-in text-base leading-relaxed text-smoke [animation-delay:300ms] sm:text-lg">
+              {t(`subtitle.${category}`)}
+            </p>
+
+            {/* Trust indicators — same rating-stars + stat-row pattern as
+                FleetHero on /fleet, with a category-specific vehicle count
+                in place of the site-wide fleet size. */}
+            <div className="mt-9 flex animate-fade-in flex-wrap items-center justify-center gap-x-6 gap-y-3 [animation-delay:450ms]">
+              <div className="flex items-center gap-2">
+                <div
+                  className="flex gap-0.5"
+                  role="img"
+                  aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}
+                >
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-4 w-4 ${i < filledStars ? "fill-gold text-gold" : "fill-transparent text-gold/30"}`}
+                      strokeWidth={1.5}
+                    />
+                  ))}
+                </div>
+                <span className="text-sm font-semibold text-heading">
+                  <Ltr>{tHero("ratingTemplate", { rating: RATING })}</Ltr>
+                </span>
+              </div>
+
+              {TRUST_ITEMS.map((item) => (
+                <div key={item.label} className="flex items-center gap-2">
+                  <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
+                  <item.icon className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
+                  <span className="text-sm text-smoke">
+                    <Ltr>{item.label}</Ltr>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </Container>
       </Section>
 
