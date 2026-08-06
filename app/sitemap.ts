@@ -2,11 +2,10 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/constants";
 import { localizedPath } from "@/lib/seo";
 import { routing } from "@/i18n/routing";
-import { FLEET } from "@/data/fleet";
+import { FLEET, FLEET_CATEGORY_SLUGS } from "@/data/fleet";
 import { SERVICES } from "@/data/services";
 import { LOCATIONS } from "@/data/locations";
 import { BLOG_POSTS } from "@/data/blog";
-import { FLEET_CATEGORY_SLUGS } from "@/data/fleet";
 
 type ChangeFrequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 

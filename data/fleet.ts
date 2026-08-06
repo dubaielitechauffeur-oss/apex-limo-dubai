@@ -3075,6 +3075,22 @@ export type FleetCategorySlug = "sedan" | "suv" | "van" | "electric";
 
 export const FLEET_CATEGORY_SLUGS: FleetCategorySlug[] = ["sedan", "suv", "van", "electric"];
 
+// Fails the build immediately if a vehicle's slug ever collides with a
+// reserved category slug — such a vehicle would be permanently
+// unreachable at /fleet/[vehicle], silently shadowed by the category
+// listing at that same URL. Runs once at module load (negligible cost,
+// FLEET.length is small); never touches a request path.
+const reservedSlugCollision = FLEET.find((vehicle) =>
+  (FLEET_CATEGORY_SLUGS as string[]).includes(vehicle.slug)
+);
+if (reservedSlugCollision) {
+  throw new Error(
+    `Vehicle slug "${reservedSlugCollision.slug}" collides with a reserved fleet category slug ` +
+      `(${FLEET_CATEGORY_SLUGS.join(", ")}). Rename this vehicle's slug in data/fleet.ts — as-is, ` +
+      `it would be unreachable at /fleet/${reservedSlugCollision.slug}, shadowed by the category page.`
+  );
+}
+
 const CATEGORY_SLUG_TO_CATEGORY: Record<Exclude<FleetCategorySlug, "electric">, FleetCategory> = {
   sedan: "Sedan",
   suv: "SUV",
