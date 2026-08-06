@@ -1,0 +1,763 @@
+// Apex Limo & Chauffeur Dubai — Enterprise Database Schema
+// Phase 2B: Database Foundation
+// Follows approved DATABASE_ARCHITECTURE.md
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum PublishStatus {
+  draft
+  published
+  archived
+}
+
+enum BookingStatus {
+  pending
+  confirmed
+  in_progress
+  completed
+  cancelled
+  no_show
+}
+
+enum BookingSource {
+  website
+  whatsapp
+  phone
+  email
+  admin
+  crm
+}
+
+enum PaymentStatus {
+  pending
+  partial
+  paid
+  refunded
+}
+
+enum QuoteStatus {
+  pending
+  sent
+  viewed
+  accepted
+  rejected
+  expired
+  converted
+}
+
+enum ContactSubmissionStatus {
+  new_submission
+  read
+  replied
+  archived
+}
+
+enum MediaType {
+  image
+  video
+  document
+}
+
+enum ImageVariant {
+  original
+  desktop
+  mobile
+  thumbnail
+  og
+}
+
+enum StorageProvider {
+  local
+  s3
+  r2
+}
+
+enum AuditAction {
+  create
+  update
+  delete
+  publish
+  unpublish
+  archive
+  restore
+  login
+  logout
+  settings_change
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTH & ACCESS CONTROL
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String   @default("")
+  permissions String[]
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
+
+  @@map("roles")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  avatarUrl String?
+  roleId    String
+  isActive  Boolean   @default(true)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  role     Role      @relation(fields: [roleId], references: [id])
+  accounts Account[]
+  sessions Session[]
+
+  uploadedMedia MediaItem[] @relation("UploadedBy")
+  auditLogs     AuditLog[]
+
+  @@index([roleId])
+  @@index([email])
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MEDIA
+// ─────────────────────────────────────────────────────────────────────────────
+
+model MediaFolder {
+  id        String   @id @default(cuid())
+  name      String
+  parentId  String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parent   MediaFolder?  @relation("FolderTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children MediaFolder[] @relation("FolderTree")
+  items    MediaItem[]
+
+  @@index([parentId])
+  @@map("media_folders")
+}
+
+model MediaItem {
+  id               String          @id @default(cuid())
+  filename         String
+  originalFilename String
+  mimeType         String
+  sizeBytes        Int
+  width            Int?
+  height           Int?
+  alt              Json
+  caption          Json?
+  folderId         String?
+  type             MediaType
+  variant          ImageVariant?
+  storageProvider  StorageProvider @default(local)
+  storagePath      String
+  url              String
+  blurhash         String?
+  uploadedById     String?
+  deletedAt        DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  folder     MediaFolder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  uploadedBy User?        @relation("UploadedBy", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  vehicleImages VehicleImage[]
+
+  heroSlidesDesktop HeroSlide[] @relation("HeroDesktopImage")
+  heroSlidesMobile  HeroSlide[] @relation("HeroMobileImage")
+
+  blogPostsFeatured BlogPost[] @relation("BlogFeaturedImage")
+
+  brandsLogo Brand[] @relation("BrandLogo")
+
+  settingsLogo    GlobalSettings[] @relation("SettingsLogo")
+  settingsFavicon GlobalSettings[] @relation("SettingsFavicon")
+
+  @@index([folderId, createdAt(sort: Desc)])
+  @@index([type, createdAt(sort: Desc)])
+  @@index([uploadedById])
+  @@map("media_items")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SETTINGS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model GlobalSettings {
+  id                String   @id @default(cuid())
+  companyName       String
+  shortName         String
+  phone             String
+  phoneDisplay      String
+  whatsapp          String
+  email             String
+  address           Json
+  defaultCurrency   String   @default("AED")
+  timezone          String   @default("Asia/Dubai")
+  fleetSizeDisplay  String   @default("50+")
+  ratingDisplay     String   @default("4.9")
+  socialLinks       Json
+  businessHours     Json?
+  footer            Json
+  defaultSeo        Json
+  logoId            String?
+  faviconId         String?
+  notificationEmail String
+  whatsappGreeting  Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  logo    MediaItem? @relation("SettingsLogo", fields: [logoId], references: [id], onDelete: SetNull)
+  favicon MediaItem? @relation("SettingsFavicon", fields: [faviconId], references: [id], onDelete: SetNull)
+
+  @@map("global_settings")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FLEET
+// ─────────────────────────────────────────────────────────────────────────────
+
+model VehicleCategory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        Json
+  description Json?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vehicles Vehicle[]
+
+  @@map("vehicle_categories")
+}
+
+model Vehicle {
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  name            String
+  brand           String
+  model           String
+  categoryId      String
+  isElectric      Boolean       @default(false)
+  passengers      Int
+  luggage         Int
+  tagline         Json
+  description     Json
+  longDescription Json
+  idealFor        Json
+  features        Json
+  whyChoose       Json
+  badge           Json?
+  isPlaceholder   Boolean       @default(false)
+  isFeatured      Boolean       @default(false)
+  rates           Json
+  seo             Json
+  status          PublishStatus @default(draft)
+  publishedAt     DateTime?
+  sortOrder       Int           @default(0)
+  deletedAt       DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  category VehicleCategory @relation(fields: [categoryId], references: [id])
+  images   VehicleImage[]
+  faqs     Faq[]
+
+  bookings Booking[]
+  quotes   Quote[]
+
+  serviceLinks  VehicleServiceLink[]
+  locationLinks VehicleLocationLink[]
+
+  @@index([status, categoryId, sortOrder])
+  @@index([status, isElectric, sortOrder])
+  @@index([categoryId])
+  @@map("vehicles")
+}
+
+model VehicleImage {
+  id        String   @id @default(cuid())
+  vehicleId String
+  mediaId   String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  vehicle Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  media   MediaItem @relation(fields: [mediaId], references: [id])
+
+  @@index([vehicleId, sortOrder])
+  @@index([mediaId])
+  @@map("vehicle_images")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// OPERATIONS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Booking {
+  id              String        @id @default(cuid())
+  reference       String        @unique
+  status          BookingStatus @default(pending)
+  source          BookingSource @default(website)
+  fullName        String
+  phone           String
+  email           String
+  pickupLocation  String
+  dropoffLocation String
+  date            DateTime
+  time            String
+  vehicleId       String?
+  vehicleLabel    String
+  passengers      Int
+  hours           String
+  specialRequests String        @default("")
+  totalAmount     Decimal?
+  currency        String        @default("AED")
+  paymentStatus   PaymentStatus @default(pending)
+  driverId        String?
+  customerId      String?
+  internalNotes   String        @default("")
+  locale          String
+  ipAddress       String?
+  deletedAt       DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  vehicle        Vehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  convertedQuote Quote?   @relation("QuoteToBooking")
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([email])
+  @@index([vehicleId])
+  @@index([driverId])
+  @@index([date])
+  @@map("bookings")
+}
+
+model Quote {
+  id              String      @id @default(cuid())
+  reference       String      @unique
+  status          QuoteStatus @default(pending)
+  source          BookingSource @default(website)
+  fullName        String
+  phone           String
+  email           String
+  pickupLocation  String
+  dropoffLocation String
+  date            DateTime
+  time            String
+  vehicleId       String?
+  vehicleLabel    String
+  passengers      Int
+  hours           String
+  specialRequests String      @default("")
+  estimatedAmount Decimal?
+  currency        String      @default("AED")
+  internalNotes   String      @default("")
+  locale          String
+  ipAddress       String?
+  expiresAt       DateTime?
+  convertedBookingId String?  @unique
+  deletedAt       DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  vehicle          Vehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  convertedBooking Booking? @relation("QuoteToBooking", fields: [convertedBookingId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([email])
+  @@map("quotes")
+}
+
+model ContactSubmission {
+  id        String                  @id @default(cuid())
+  reference String                  @unique
+  fullName  String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    ContactSubmissionStatus @default(new_submission)
+  locale    String
+  ipAddress String?
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+
+  @@index([createdAt(sort: Desc)])
+  @@index([status])
+  @@map("contact_submissions")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTENT — SERVICES
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Service {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  name             Json
+  tagline          Json
+  heroSubtitle     Json?
+  shortDescription Json
+  longDescription  Json
+  benefits         Json?
+  whyChoose        Json?
+  tags             Json?
+  ratingMetric     Json?
+  imageUrl         String?
+  imageAlt         Json?
+  seo              Json
+  status           PublishStatus @default(draft)
+  publishedAt      DateTime?
+  sortOrder        Int           @default(0)
+  deletedAt        DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  faqs         Faq[]
+  vehicleLinks VehicleServiceLink[]
+
+  @@index([status, sortOrder])
+  @@map("services")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTENT — LOCATIONS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Location {
+  id                  String        @id @default(cuid())
+  slug                String        @unique
+  name                String
+  tagline             Json
+  heroSubtitle        Json?
+  shortDescription    Json
+  longDescription     Json
+  isAirport           Boolean       @default(false)
+  landmarks           Json?
+  whyChoose           Json?
+  tags                Json?
+  geo                 Json?
+  imageUrl            String?
+  imageAlt            Json?
+  heroDesktopImageUrl String?
+  heroMobileImageUrl  String?
+  heroObjectPosition  String?
+  seo                 Json
+  status              PublishStatus @default(draft)
+  publishedAt         DateTime?
+  sortOrder           Int           @default(0)
+  deletedAt           DateTime?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  popularRoutes LocationPopularRoute[]
+  faqs          Faq[]
+  vehicleLinks  VehicleLocationLink[]
+
+  @@index([status, sortOrder])
+  @@map("locations")
+}
+
+model LocationPopularRoute {
+  id         String   @id @default(cuid())
+  locationId String
+  from       Json
+  to         Json
+  duration   Json
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([locationId, sortOrder])
+  @@map("location_popular_routes")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTENT — BLOG
+// ─────────────────────────────────────────────────────────────────────────────
+
+model BlogCategory {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      Json
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts BlogPost[]
+
+  @@map("blog_categories")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+
+  blogPosts BlogPostTag[]
+
+  @@map("tags")
+}
+
+model BlogPost {
+  id                 String        @id @default(cuid())
+  slug               String        @unique
+  title              Json
+  excerpt            Json
+  content            Json
+  author             Json
+  categoryId         String?
+  featuredImageId    String?
+  seo                Json
+  readingTimeMinutes Int           @default(5)
+  status             PublishStatus @default(draft)
+  publishedAt        DateTime?
+  sortOrder          Int           @default(0)
+  deletedAt          DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  category      BlogCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  featuredImage MediaItem?    @relation("BlogFeaturedImage", fields: [featuredImageId], references: [id], onDelete: SetNull)
+  tags          BlogPostTag[]
+
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([categoryId, status])
+  @@map("blog_posts")
+}
+
+model BlogPostTag {
+  blogPostId String
+  tagId      String
+
+  blogPost BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  tag      Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([blogPostId, tagId])
+  @@index([tagId])
+  @@map("blog_post_tags")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTENT — FAQS (Unified)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model FaqCategory {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  name      Json
+  showChip  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  faqs Faq[]
+
+  @@map("faq_categories")
+}
+
+model Faq {
+  id         String   @id @default(cuid())
+  categoryId String?
+  vehicleId  String?
+  serviceId  String?
+  locationId String?
+  question   Json
+  answer     Json
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category FaqCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  vehicle  Vehicle?     @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  service  Service?     @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  location Location?    @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, sortOrder])
+  @@index([serviceId, sortOrder])
+  @@index([locationId, sortOrder])
+  @@index([categoryId, sortOrder])
+  @@map("faqs")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTENT — HOMEPAGE
+// ─────────────────────────────────────────────────────────────────────────────
+
+model HeroSlide {
+  id             String        @id @default(cuid())
+  title          Json
+  subtitle       Json?
+  desktopImageId String?
+  mobileImageId  String?
+  ctas           Json?
+  status         PublishStatus @default(draft)
+  sortOrder      Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  desktopImage MediaItem? @relation("HeroDesktopImage", fields: [desktopImageId], references: [id], onDelete: SetNull)
+  mobileImage  MediaItem? @relation("HeroMobileImage", fields: [mobileImageId], references: [id], onDelete: SetNull)
+
+  @@index([status, sortOrder])
+  @@map("hero_slides")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTENT — SOCIAL PROOF
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Testimonial {
+  id             String   @id @default(cuid())
+  name           String
+  rating         Int
+  text           String
+  serviceUsed    String
+  location       String
+  date           String
+  source         String   @default("direct")
+  avatarInitials String
+  profileUrl     String?
+  isFeatured     Boolean  @default(false)
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([isFeatured, sortOrder])
+  @@map("testimonials")
+}
+
+model Brand {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  logoId    String?
+  logoUrl   String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  logo MediaItem? @relation("BrandLogo", fields: [logoId], references: [id], onDelete: SetNull)
+
+  @@map("brands")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CROSS-REFERENCES
+// ─────────────────────────────────────────────────────────────────────────────
+
+model VehicleServiceLink {
+  vehicleId String
+  serviceId String
+  createdAt DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([vehicleId, serviceId])
+  @@index([serviceId])
+  @@map("vehicle_service_links")
+}
+
+model VehicleLocationLink {
+  vehicleId  String
+  locationId String
+  createdAt  DateTime @default(now())
+
+  vehicle  Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@id([vehicleId, locationId])
+  @@index([locationId])
+  @@map("vehicle_location_links")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUDIT
+// ─────────────────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  action     AuditAction
+  entityType String
+  entityId   String
+  userId     String?
+  userName   String      @default("System")
+  changes    Json
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime    @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@map("audit_logs")
+}
