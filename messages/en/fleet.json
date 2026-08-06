@@ -218,6 +218,15 @@
     "listingEyebrow": "Available Now",
     "listingTitleTemplate": "{category} Vehicles",
     "viewFullFleet": "View Full Fleet",
-    "emptyState": "No vehicles are currently listed in this category. Explore our full fleet instead."
+    "emptyState": "No vehicles are currently listed in this category. Explore our full fleet instead.",
+    "whyChooseEyebrow": "Why Choose Us",
+    "whyChooseTitleTemplate": "Why Choose Our {category} Rental Service?",
+    "occasionsEyebrow": "Perfect For",
+    "occasionsTitleTemplate": "{category}s for Every Occasion",
+    "howToBookTitleTemplate": "Easy {category} Booking",
+    "faqEyebrow": "Common Questions",
+    "faqTitleTemplate": "{category} FAQs",
+    "faqSubtitle": "Answers to the questions we hear most about this category.",
+    "viewAllFaqs": "View All FAQs"
   }
 }

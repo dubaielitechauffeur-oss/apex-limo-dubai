@@ -218,6 +218,15 @@
     "listingEyebrow": "现已提供",
     "listingTitleTemplate": "{category}车型",
     "viewFullFleet": "查看全部车队",
-    "emptyState": "该类别下暂无车型,请浏览我们的完整车队。"
+    "emptyState": "该类别下暂无车型,请浏览我们的完整车队。",
+    "whyChooseEyebrow": "为何选择我们",
+    "whyChooseTitleTemplate": "为何选择我们的{category}租赁服务?",
+    "occasionsEyebrow": "适用场合",
+    "occasionsTitleTemplate": "{category},适合各种场合",
+    "howToBookTitleTemplate": "轻松预订{category}",
+    "faqEyebrow": "常见问题",
+    "faqTitleTemplate": "{category}常见问题",
+    "faqSubtitle": "关于此车型类别,您最常问到的问题解答。",
+    "viewAllFaqs": "查看全部常见问题"
   }
 }

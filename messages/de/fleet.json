@@ -218,6 +218,15 @@
     "listingEyebrow": "Jetzt Verfügbar",
     "listingTitleTemplate": "{category}-Fahrzeuge",
     "viewFullFleet": "Gesamte Flotte Ansehen",
-    "emptyState": "Derzeit sind keine Fahrzeuge in dieser Kategorie gelistet. Entdecken Sie stattdessen unsere gesamte Flotte."
+    "emptyState": "Derzeit sind keine Fahrzeuge in dieser Kategorie gelistet. Entdecken Sie stattdessen unsere gesamte Flotte.",
+    "whyChooseEyebrow": "Warum Uns Wählen",
+    "whyChooseTitleTemplate": "Warum unseren {category}-Mietservice wählen?",
+    "occasionsEyebrow": "Perfekt Für",
+    "occasionsTitleTemplate": "{category} für jeden Anlass",
+    "howToBookTitleTemplate": "Einfache {category}-Buchung",
+    "faqEyebrow": "Häufige Fragen",
+    "faqTitleTemplate": "Häufige Fragen zu {category}",
+    "faqSubtitle": "Antworten auf die häufigsten Fragen zu dieser Kategorie.",
+    "viewAllFaqs": "Alle FAQs ansehen"
   }
 }

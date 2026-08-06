@@ -218,6 +218,15 @@
     "listingEyebrow": "Disponibles Maintenant",
     "listingTitleTemplate": "Véhicules {category}",
     "viewFullFleet": "Voir Toute la Flotte",
-    "emptyState": "Aucun véhicule n'est actuellement répertorié dans cette catégorie. Découvrez plutôt notre flotte complète."
+    "emptyState": "Aucun véhicule n'est actuellement répertorié dans cette catégorie. Découvrez plutôt notre flotte complète.",
+    "whyChooseEyebrow": "Pourquoi Nous Choisir",
+    "whyChooseTitleTemplate": "Pourquoi choisir notre service de location {category} ?",
+    "occasionsEyebrow": "Idéal Pour",
+    "occasionsTitleTemplate": "{category} pour toutes les occasions",
+    "howToBookTitleTemplate": "Réservation {category} facile",
+    "faqEyebrow": "Questions courantes",
+    "faqTitleTemplate": "FAQ {category}",
+    "faqSubtitle": "Réponses aux questions les plus fréquentes sur cette catégorie.",
+    "viewAllFaqs": "Voir toutes les FAQ"
   }
 }

@@ -218,6 +218,15 @@
     "listingEyebrow": "Доступны сейчас",
     "listingTitleTemplate": "Автомобили: {category}",
     "viewFullFleet": "Смотреть весь автопарк",
-    "emptyState": "В этой категории пока нет автомобилей. Ознакомьтесь с нашим полным автопарком."
+    "emptyState": "В этой категории пока нет автомобилей. Ознакомьтесь с нашим полным автопарком.",
+    "whyChooseEyebrow": "Почему мы",
+    "whyChooseTitleTemplate": "Почему стоит выбрать нашу услугу аренды {category}?",
+    "occasionsEyebrow": "Идеально для",
+    "occasionsTitleTemplate": "{category} для любого случая",
+    "howToBookTitleTemplate": "Лёгкое бронирование {category}",
+    "faqEyebrow": "Частые вопросы",
+    "faqTitleTemplate": "Часто задаваемые вопросы о {category}",
+    "faqSubtitle": "Ответы на самые частые вопросы об этой категории.",
+    "viewAllFaqs": "Смотреть все вопросы"
   }
 }

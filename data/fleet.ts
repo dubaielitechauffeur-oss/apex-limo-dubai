@@ -3064,12 +3064,11 @@ export function getVehicleBySlug(slug: string, locale: Locale): PlainFleetVehicl
 
 /**
  * Fleet category listing pages (/fleet/sedan, /fleet/suv, /fleet/van,
- * /fleet/electric) — filters of the same FLEET array above, not a
- * separate data source. "electric" filters on `isElectric` rather than
- * `category` since it cuts across body styles (e.g. the Tesla Model Y is
- * both "SUV" and electric); the other three map directly onto an existing
- * `FleetCategory` value. "Ultra-Luxury" has no listing page of its own —
- * those vehicles remain visible only on the main /fleet page.
+ * /fleet/ultra-luxury, /fleet/electric) — filters of the same FLEET array
+ * above, not a separate data source. "electric" filters on `isElectric`
+ * rather than `category` since it cuts across body styles (e.g. a Tesla
+ * would be both "SUV" and electric); the other four map directly onto an
+ * existing `FleetCategory` value.
  */
 export type FleetCategorySlug = "sedan" | "suv" | "van" | "ultra-luxury" | "electric";
 
@@ -3111,4 +3110,993 @@ export function getVehiclesByCategorySlug(
     return vehicles.filter((vehicle) => vehicle.isElectric);
   }
   return vehicles.filter((vehicle) => vehicle.category === CATEGORY_SLUG_TO_CATEGORY[categorySlug]);
+}
+
+export interface FleetCategoryOccasion {
+  title: Localized;
+  blurb: Localized;
+}
+
+export interface FleetCategoryContent {
+  whyChoose: Localized<string[]>;
+  occasions: FleetCategoryOccasion[];
+  faqs: VehicleFAQ[];
+}
+
+/**
+ * Editorial content for each /fleet/[category] listing page — "Why Choose",
+ * "Occasions", and category-level FAQs — distinct from the per-vehicle
+ * whyChoose/faqs above (those describe one vehicle; this describes the
+ * category as a whole, e.g. "What SUVs are available in your fleet?").
+ */
+export const FLEET_CATEGORY_CONTENT: Record<FleetCategorySlug, FleetCategoryContent> = {
+  sedan: {
+    whyChoose: {
+      en: [
+        "Refined, late-model interiors for a smooth, quiet ride",
+        "Professional, uniformed chauffeurs on every booking",
+        "Flexible hourly, half-day, and airport-transfer packages",
+        "Trusted for business travel, meetings, and corporate arrivals",
+      ],
+      ar: [
+        "تصميم داخلي أنيق وطراز حديث لرحلة سلسة وهادئة",
+        "سائقون محترفون بزي رسمي في كل حجز",
+        "باقات مرنة بالساعة ونصف اليوم ونقل المطار",
+        "موثوقة للسفر التجاري والاجتماعات والوصولات الرسمية",
+      ],
+      ru: [
+        "Изысканный салон последней модели для плавной, тихой поездки",
+        "Профессиональные водители в форме при каждом бронировании",
+        "Гибкие пакеты — почасовые, на полдня и трансфер из аэропорта",
+        "Надёжный выбор для деловых поездок, встреч и представительских прибытий",
+      ],
+      zh: [
+        "精致的新款车型内饰,带来平顺静谧的乘坐体验",
+        "每次预订均配备身着制服的专业司机",
+        "灵活的按小时、半天及机场接送套餐",
+        "深受信赖,适用于商务出行、会议及企业接待",
+      ],
+      fr: [
+        "Un intérieur raffiné et récent pour un trajet fluide et silencieux",
+        "Un chauffeur professionnel en tenue à chaque réservation",
+        "Des forfaits flexibles à l'heure, à la demi-journée et pour l'aéroport",
+        "Une valeur sûre pour les voyages d'affaires, réunions et arrivées d'entreprise",
+      ],
+      de: [
+        "Elegantes, aktuelles Interieur für eine ruhige, komfortable Fahrt",
+        "Professionelle, uniformierte Chauffeure bei jeder Buchung",
+        "Flexible Stunden-, Halbtags- und Flughafentransfer-Pakete",
+        "Bewährt für Geschäftsreisen, Meetings und geschäftliche Ankünfte",
+      ],
+    },
+    occasions: [
+      {
+        title: {
+          en: "Business & Corporate Travel",
+          ar: "السفر التجاري والشركات",
+          ru: "Деловые и корпоративные поездки",
+          zh: "商务与企业出行",
+          fr: "Voyages d'affaires et entreprise",
+          de: "Geschäftsreisen & Unternehmen",
+        },
+        blurb: {
+          en: "Client pickups, roadshows, and back-to-back meetings with a chauffeur on standby.",
+          ar: "استقبال العملاء والجولات الترويجية والاجتماعات المتتالية مع سائق جاهز للانتظار.",
+          ru: "Встречи клиентов, road-show и последовательные встречи с водителем в режиме готовности.",
+          zh: "客户接送、路演及连续会议,配备随时待命的司机。",
+          fr: "Prise en charge de clients, roadshows et réunions enchaînées avec un chauffeur en attente.",
+          de: "Kundenabholungen, Roadshows und aufeinanderfolgende Meetings mit einem Chauffeur in Bereitschaft.",
+        },
+      },
+      {
+        title: {
+          en: "Airport Transfers",
+          ar: "نقل المطار",
+          ru: "Трансфер из аэропорта",
+          zh: "机场接送",
+          fr: "Transferts aéroport",
+          de: "Flughafentransfers",
+        },
+        blurb: {
+          en: "Flight tracking and meet-and-greet as standard, so pickup adjusts to your landing time.",
+          ar: "تتبع الرحلات والاستقبال الشخصي كمعيار أساسي، بحيث يتكيف الاستلام مع وقت هبوط طائرتكم.",
+          ru: "Отслеживание рейса и персональная встреча как стандарт — время подачи подстраивается под ваш прилёт.",
+          zh: "标配航班追踪与专人接机服务,接机时间根据您的降落时间灵活调整。",
+          fr: "Suivi de vol et accueil personnalisé en standard, la prise en charge s'ajuste à votre heure d'atterrissage.",
+          de: "Flugverfolgung und persönlicher Empfang als Standard — die Abholung passt sich Ihrer Landezeit an.",
+        },
+      },
+      {
+        title: {
+          en: "City & Leisure Rides",
+          ar: "التنقل داخل المدينة والترفيه",
+          ru: "Городские и досуговые поездки",
+          zh: "市内与休闲出行",
+          fr: "Trajets urbains et loisirs",
+          de: "Stadt- und Freizeitfahrten",
+        },
+        blurb: {
+          en: "Refined point-to-point travel across Dubai for dinners, shopping, and appointments.",
+          ar: "تنقل راقٍ من نقطة إلى أخرى في أنحاء دبي لتناول العشاء والتسوق والمواعيد.",
+          ru: "Элегантные поездки по Дубаю от точки до точки — ужины, шопинг и встречи.",
+          zh: "在迪拜市内进行优雅的点对点出行,适用于晚餐、购物及各类约会。",
+          fr: "Des trajets raffinés point à point dans tout Dubaï pour dîners, shopping et rendez-vous.",
+          de: "Stilvolle Punkt-zu-Punkt-Fahrten durch Dubai für Abendessen, Einkäufe und Termine.",
+        },
+      },
+      {
+        title: {
+          en: "Special Occasions",
+          ar: "المناسبات الخاصة",
+          ru: "Особые случаи",
+          zh: "特殊场合",
+          fr: "Occasions spéciales",
+          de: "Besondere Anlässe",
+        },
+        blurb: {
+          en: "A polished, understated presence for anniversaries, proposals, and celebrations.",
+          ar: "حضور أنيق وغير مبالغ فيه للذكرى السنوية وطلبات الزواج والاحتفالات.",
+          ru: "Сдержанный, элегантный образ для годовщин, предложений руки и сердца и торжеств.",
+          zh: "低调而优雅的气场,适用于周年纪念、求婚及各类庆典。",
+          fr: "Une présence élégante et discrète pour anniversaires, demandes en mariage et célébrations.",
+          de: "Ein dezenter, eleganter Auftritt für Jubiläen, Heiratsanträge und Feiern.",
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: {
+          en: "What sedans are available in your fleet?",
+          ar: "ما سيارات السيدان المتوفرة في أسطولكم؟",
+          ru: "Какие седаны есть в вашем автопарке?",
+          zh: "贵车队提供哪些轿车车型?",
+          fr: "Quelles berlines sont disponibles dans votre flotte ?",
+          de: "Welche Limousinen sind in Ihrer Flotte verfügbar?",
+        },
+        answer: {
+          en: "Our sedan lineup includes the Mercedes-Benz S-Class and other executive models, each with a professional chauffeur, premium leather interior, and flexible hourly or point-to-point rates.",
+          ar: "تشمل تشكيلة السيدان لدينا مرسيدس S-Class وطرازات تنفيذية أخرى، وكل منها مزودة بسائق محترف ومقصورة جلدية فاخرة وأسعار مرنة بالساعة أو من نقطة إلى أخرى.",
+          ru: "В нашу линейку седанов входит Mercedes S-Class и другие представительские модели, каждая — с профессиональным водителем, premium кожаным салоном и гибкими почасовыми или точечными тарифами.",
+          zh: "我们的轿车阵容包括梅赛德斯S级及其他行政级车型,均配备专业司机、高级真皮内饰,并提供灵活的按小时或点对点收费方式。",
+          fr: "Notre gamme de berlines comprend la Mercedes Classe S et d'autres modèles executive, chacune avec un chauffeur professionnel, un intérieur en cuir premium et des tarifs flexibles à l'heure ou point à point.",
+          de: "Unser Limousinen-Angebot umfasst die Mercedes S-Klasse und weitere Executive-Modelle, jeweils mit professionellem Chauffeur, hochwertigem Lederinterieur und flexiblen Stunden- oder Punkt-zu-Punkt-Tarifen.",
+        },
+      },
+      {
+        question: {
+          en: "How many passengers can a sedan accommodate?",
+          ar: "كم عدد الركاب الذين يمكن أن تستوعبهم سيارة السيدان؟",
+          ru: "Сколько пассажиров вмещает седан?",
+          zh: "一辆轿车可容纳多少乘客?",
+          fr: "Combien de passagers une berline peut-elle accueillir ?",
+          de: "Wie viele Passagiere fasst eine Limousine?",
+        },
+        answer: {
+          en: "Our sedans comfortably seat up to 3 passengers with luggage space for 2 bags, ideal for individual travelers, couples, or small business groups.",
+          ar: "تتسع سياراتنا السيدان بشكل مريح لـ3 ركاب مع مساحة أمتعة لحقيبتين، وهي مثالية للمسافرين الأفراد أو الأزواج أو مجموعات العمل الصغيرة.",
+          ru: "Наши седаны комфортно вмещают до 3 пассажиров с местом для 2 сумок багажа — идеально для отдельных путешественников, пар или небольших бизнес-групп.",
+          zh: "我们的轿车可舒适容纳最多3位乘客,并可存放2件行李,非常适合单人出行、情侣或小型商务团体。",
+          fr: "Nos berlines accueillent confortablement jusqu'à 3 passagers avec de la place pour 2 bagages, idéales pour les voyageurs individuels, les couples ou les petits groupes professionnels.",
+          de: "Unsere Limousinen bieten komfortabel Platz für bis zu 3 Passagiere mit Gepäckraum für 2 Taschen — ideal für Einzelreisende, Paare oder kleine Geschäftsgruppen.",
+        },
+      },
+      {
+        question: {
+          en: "When should I choose a sedan over an SUV?",
+          ar: "متى يجب أن أختار سيارة سيدان بدلاً من سيارة رياضية متعددة الاستخدامات؟",
+          ru: "Когда стоит выбрать седан вместо внедорожника?",
+          zh: "何时应选择轿车而非SUV?",
+          fr: "Quand choisir une berline plutôt qu'un SUV ?",
+          de: "Wann sollte ich eine Limousine statt eines SUV wählen?",
+        },
+        answer: {
+          en: "Sedans suit airport transfers, business travel, and city rides for up to 3 passengers who want a quieter, more refined ride. Choose an SUV for larger groups or extra luggage.",
+          ar: "تناسب سيارات السيدان رحلات المطار والسفر التجاري والتنقل داخل المدينة لما يصل إلى 3 ركاب يرغبون في رحلة أكثر هدوءًا ورقيًا. اختاروا سيارة رياضية متعددة الاستخدامات للمجموعات الأكبر أو الأمتعة الإضافية.",
+          ru: "Седаны подходят для трансферов из аэропорта, деловых поездок и городских поездок для до 3 пассажиров, которые хотят более тихую и элегантную поездку. Для больших групп или дополнительного багажа выбирайте внедорожник.",
+          zh: "轿车适合机场接送、商务出行及市内出行,适用于最多3位追求更安静、更精致乘坐体验的乘客。若人数较多或行李较多,请选择SUV。",
+          fr: "Les berlines conviennent aux transferts aéroport, voyages d'affaires et trajets urbains pour jusqu'à 3 passagers recherchant un trajet plus silencieux et raffiné. Optez pour un SUV pour des groupes plus grands ou plus de bagages.",
+          de: "Limousinen eignen sich für Flughafentransfers, Geschäftsreisen und Stadtfahrten für bis zu 3 Passagiere, die eine ruhigere, elegantere Fahrt wünschen. Für größere Gruppen oder mehr Gepäck wählen Sie einen SUV.",
+        },
+      },
+      {
+        question: {
+          en: "Can a sedan be booked for multiple stops?",
+          ar: "هل يمكن حجز سيارة سيدان لعدة توقفات؟",
+          ru: "Можно ли забронировать седан для нескольких остановок?",
+          zh: "轿车可以预订多个停靠点吗?",
+          fr: "Une berline peut-elle être réservée pour plusieurs arrêts ?",
+          de: "Kann eine Limousine für mehrere Stopps gebucht werden?",
+        },
+        answer: {
+          en: "Yes — sedans can be booked hourly or for half/full-day hire with multiple stops included, ideal for meetings across the city or a day of appointments.",
+          ar: "نعم — يمكن حجز سيارات السيدان بالساعة أو لنصف يوم أو يوم كامل مع عدة توقفات مشمولة، وهي مثالية للاجتماعات في أنحاء المدينة أو يوم حافل بالمواعيد.",
+          ru: "Да — седаны можно забронировать почасово или на полдня/полный день с несколькими остановками, что идеально для встреч по всему городу или насыщенного дня с делами.",
+          zh: "可以——轿车可按小时或半天/全天预订,并可包含多个停靠点,非常适合在市内往返多场会议或安排满满一天的行程。",
+          fr: "Oui — les berlines peuvent être réservées à l'heure ou à la demi/journée complète avec plusieurs arrêts inclus, idéal pour des réunions à travers la ville ou une journée chargée en rendez-vous.",
+          de: "Ja — Limousinen können stundenweise oder für eine Halbtags-/Ganztagesmiete mit mehreren Stopps gebucht werden, ideal für Meetings quer durch die Stadt oder einen Tag voller Termine.",
+        },
+      },
+    ],
+  },
+  suv: {
+    whyChoose: {
+      en: [
+        "Spacious, elevated interiors with generous luggage space",
+        "Professional chauffeurs for every family or group transfer",
+        "Flexible rental options — hourly, half-day, or airport transfer",
+        "A commanding presence on Dubai's roads without compromising comfort",
+      ],
+      ar: [
+        "مقصورة فسيحة ومرتفعة مع مساحة واسعة للأمتعة",
+        "سائقون محترفون لكل نقل عائلي أو جماعي",
+        "خيارات استئجار مرنة — بالساعة أو نصف اليوم أو نقل المطار",
+        "حضور مهيب على طرقات دبي دون التضحية بالراحة",
+      ],
+      ru: [
+        "Просторный, высокий салон с щедрым багажным отделением",
+        "Профессиональные водители для каждой семейной или групповой поездки",
+        "Гибкие варианты аренды — почасово, на полдня или трансфер из аэропорта",
+        "Уверенное присутствие на дорогах Дубая без ущерба комфорту",
+      ],
+      zh: [
+        "宽敞挑高的座舱,配备充裕的行李空间",
+        "每次家庭或团体接送均配备专业司机",
+        "灵活的租用方式——按小时、半天或机场接送",
+        "在迪拜街头彰显气场,同时不失舒适",
+      ],
+      fr: [
+        "Intérieur spacieux et surélevé avec un généreux espace bagages",
+        "Chauffeur professionnel pour chaque transfert familial ou de groupe",
+        "Options de location flexibles — à l'heure, à la demi-journée ou transfert aéroport",
+        "Une présence imposante sur les routes de Dubaï sans sacrifier le confort",
+      ],
+      de: [
+        "Geräumiges, erhöhtes Interieur mit großzügigem Gepäckraum",
+        "Professionelle Chauffeure für jeden Familien- oder Gruppentransfer",
+        "Flexible Mietoptionen — stundenweise, halbtags oder Flughafentransfer",
+        "Souveräne Präsenz auf Dubais Straßen ohne Komfortverlust",
+      ],
+    },
+    occasions: [
+      {
+        title: {
+          en: "Family & Group Travel",
+          ar: "سفر العائلة والمجموعات",
+          ru: "Семейные и групповые поездки",
+          zh: "家庭与团体出行",
+          fr: "Voyages en famille et en groupe",
+          de: "Familien- und Gruppenreisen",
+        },
+        blurb: {
+          en: "Room for passengers and luggage on family trips or reunions.",
+          ar: "مساحة للركاب والأمتعة في رحلات العائلة أو لقاءات الشمل.",
+          ru: "Достаточно места для пассажиров и багажа в семейных поездках или на встречах.",
+          zh: "为家庭旅行或团聚活动提供充裕的乘客与行李空间。",
+          fr: "De la place pour les passagers et les bagages lors de voyages en famille ou de retrouvailles.",
+          de: "Platz für Passagiere und Gepäck bei Familienausflügen oder Wiedersehensfeiern.",
+        },
+      },
+      {
+        title: {
+          en: "Airport Transfers",
+          ar: "نقل المطار",
+          ru: "Трансфер из аэропорта",
+          zh: "机场接送",
+          fr: "Transferts aéroport",
+          de: "Flughafentransfers",
+        },
+        blurb: {
+          en: "Hassle-free pickups with luggage space for the whole group.",
+          ar: "استلام سلس مع مساحة أمتعة تكفي المجموعة بأكملها.",
+          ru: "Беспроблемная встреча с местом для багажа всей группы.",
+          zh: "轻松接机,并为整个团队提供充裕的行李空间。",
+          fr: "Prise en charge sans tracas avec de l'espace bagages pour tout le groupe.",
+          de: "Unkomplizierte Abholung mit Gepäckraum für die ganze Gruppe.",
+        },
+      },
+      {
+        title: {
+          en: "Corporate & Executive Travel",
+          ar: "السفر التنفيذي والشركات",
+          ru: "Деловые и представительские поездки",
+          zh: "商务与行政出行",
+          fr: "Voyages d'entreprise et executive",
+          de: "Geschäftsreisen & Executive",
+        },
+        blurb: {
+          en: "Impress clients with comfortable, professional group transport.",
+          ar: "أبهروا عملاءكم بنقل جماعي مريح ومحترف.",
+          ru: "Впечатлите клиентов комфортным профессиональным групповым транспортом.",
+          zh: "以舒适专业的团体用车给客户留下深刻印象。",
+          fr: "Impressionnez vos clients avec un transport de groupe confortable et professionnel.",
+          de: "Beeindrucken Sie Kunden mit komfortablem, professionellem Gruppentransport.",
+        },
+      },
+      {
+        title: {
+          en: "Event & VIP Transport",
+          ar: "الفعاليات ونقل كبار الشخصيات",
+          ru: "Мероприятия и VIP-транспорт",
+          zh: "活动与贵宾用车",
+          fr: "Événements et transport VIP",
+          de: "Veranstaltungen & VIP-Transport",
+        },
+        blurb: {
+          en: "Arrive together in comfort for weddings, galas, and private events.",
+          ar: "صلوا معًا براحة إلى حفلات الزفاف والحفلات الخاصة والمناسبات.",
+          ru: "Приезжайте вместе с комфортом на свадьбы, гала-вечера и частные мероприятия.",
+          zh: "舒适地共同抵达婚礼、晚宴及私人活动现场。",
+          fr: "Arrivez ensemble dans le confort pour mariages, galas et événements privés.",
+          de: "Kommen Sie gemeinsam komfortabel zu Hochzeiten, Galas und privaten Events.",
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: {
+          en: "What SUVs are available in your fleet?",
+          ar: "ما السيارات الرياضية متعددة الاستخدامات المتوفرة في أسطولكم؟",
+          ru: "Какие внедорожники есть в вашем автопарке?",
+          zh: "贵车队提供哪些SUV车型?",
+          fr: "Quels SUV sont disponibles dans votre flotte ?",
+          de: "Welche SUVs sind in Ihrer Flotte verfügbar?",
+        },
+        answer: {
+          en: "Our SUV fleet features spacious, late-model vehicles with professional chauffeurs, generous luggage capacity, and flexible hourly or transfer packages.",
+          ar: "يضم أسطول السيارات الرياضية متعددة الاستخدامات لدينا مركبات فسيحة بأحدث الطرازات مع سائقين محترفين وسعة أمتعة واسعة وباقات مرنة بالساعة أو للنقل.",
+          ru: "Наш парк внедорожников включает просторные автомобили последних моделей с профессиональными водителями, щедрой вместимостью багажа и гибкими почасовыми или трансферными пакетами.",
+          zh: "我们的SUV车队配备宽敞的新款车型,均配有专业司机、充裕的行李容量,以及灵活的按小时或接送套餐。",
+          fr: "Notre flotte de SUV comprend des véhicules spacieux et récents avec chauffeurs professionnels, une généreuse capacité de bagages et des forfaits flexibles à l'heure ou pour transfert.",
+          de: "Unsere SUV-Flotte umfasst geräumige, aktuelle Fahrzeuge mit professionellen Chauffeuren, großzügigem Gepäckraum und flexiblen Stunden- oder Transferpaketen.",
+        },
+      },
+      {
+        question: {
+          en: "How many passengers can an SUV accommodate?",
+          ar: "كم عدد الركاب الذين يمكن أن تستوعبهم السيارة الرياضية متعددة الاستخدامات؟",
+          ru: "Сколько пассажиров вмещает внедорожник?",
+          zh: "一辆SUV可容纳多少乘客?",
+          fr: "Combien de passagers un SUV peut-il accueillir ?",
+          de: "Wie viele Passagiere fasst ein SUV?",
+        },
+        answer: {
+          en: "Most SUVs in our fleet seat up to 6 passengers comfortably, with ample space for luggage — ideal for families or small groups.",
+          ar: "تتسع معظم سياراتنا الرياضية متعددة الاستخدامات بشكل مريح لـ6 ركاب، مع مساحة واسعة للأمتعة — مثالية للعائلات أو المجموعات الصغيرة.",
+          ru: "Большинство наших внедорожников комфортно вмещают до 6 пассажиров с достаточным местом для багажа — идеально для семей или небольших групп.",
+          zh: "我们大多数SUV可舒适容纳最多6位乘客,并配有充裕的行李空间——非常适合家庭或小型团体。",
+          fr: "La plupart de nos SUV accueillent confortablement jusqu'à 6 passagers, avec beaucoup d'espace pour les bagages — idéal pour les familles ou petits groupes.",
+          de: "Die meisten unserer SUVs bieten komfortabel Platz für bis zu 6 Passagiere mit reichlich Gepäckraum — ideal für Familien oder kleine Gruppen.",
+        },
+      },
+      {
+        question: {
+          en: "Are SUVs suitable for longer journeys?",
+          ar: "هل السيارات الرياضية متعددة الاستخدامات مناسبة للرحلات الطويلة؟",
+          ru: "Подходят ли внедорожники для дальних поездок?",
+          zh: "SUV适合长途旅行吗?",
+          fr: "Les SUV conviennent-ils aux longs trajets ?",
+          de: "Sind SUVs für längere Fahrten geeignet?",
+        },
+        answer: {
+          en: "Yes — SUVs are a comfortable choice for longer trips, offering more legroom, luggage space, and climate comfort than a sedan.",
+          ar: "نعم — تُعد السيارات الرياضية متعددة الاستخدامات خيارًا مريحًا للرحلات الطويلة، إذ توفر مساحة أرجل أكبر ومساحة أمتعة وراحة مناخية أكثر من السيدان.",
+          ru: "Да — внедорожники являются комфортным выбором для дальних поездок, предлагая больше места для ног, багажа и климатического комфорта, чем седан.",
+          zh: "是的——SUV是长途旅行的舒适之选,相比轿车提供更多腿部空间、行李空间及空调舒适度。",
+          fr: "Oui — les SUV sont un choix confortable pour les longs trajets, offrant plus d'espace pour les jambes, de bagages et de confort climatique qu'une berline.",
+          de: "Ja — SUVs sind eine komfortable Wahl für längere Fahrten und bieten mehr Beinfreiheit, Gepäckraum und Klimakomfort als eine Limousine.",
+        },
+      },
+      {
+        question: {
+          en: "Can SUVs be used for multiple stops or day tours?",
+          ar: "هل يمكن استخدام السيارات الرياضية متعددة الاستخدامات لعدة توقفات أو جولات يومية؟",
+          ru: "Можно ли использовать внедорожники для нескольких остановок или экскурсий?",
+          zh: "SUV可用于多个停靠点或一日游吗?",
+          fr: "Les SUV peuvent-ils être utilisés pour plusieurs arrêts ou circuits journaliers ?",
+          de: "Können SUVs für mehrere Stopps oder Tagestouren genutzt werden?",
+        },
+        answer: {
+          en: "Yes — SUVs can be booked hourly, half-day, or full-day with multiple stops, well suited to shopping trips, city tours, or day excursions.",
+          ar: "نعم — يمكن حجز السيارات الرياضية متعددة الاستخدامات بالساعة أو لنصف يوم أو يوم كامل مع عدة توقفات، وهي مناسبة تمامًا لرحلات التسوق أو جولات المدينة أو الرحلات اليومية.",
+          ru: "Да — внедорожники можно забронировать почасово, на полдня или полный день с несколькими остановками, что отлично подходит для шопинга, экскурсий по городу или однодневных поездок.",
+          zh: "可以——SUV可按小时、半天或全天预订,并可包含多个停靠点,非常适合购物行程、城市游览或一日游。",
+          fr: "Oui — les SUV peuvent être réservés à l'heure, à la demi-journée ou à la journée avec plusieurs arrêts, parfaitement adaptés au shopping, aux visites de la ville ou aux excursions journalières.",
+          de: "Ja — SUVs können stundenweise, halbtags oder ganztags mit mehreren Stopps gebucht werden, ideal für Einkaufstouren, Stadtrundfahrten oder Tagesausflüge.",
+        },
+      },
+    ],
+  },
+  van: {
+    whyChoose: {
+      en: [
+        "Spacious, luxury interiors with generous seating and legroom",
+        "Professional chauffeurs for every journey, no exceptions",
+        "Flexible rental options — hourly, half-day, full-day, or point-to-point",
+        "VIP treatment and attentive service, no matter the occasion",
+      ],
+      ar: [
+        "مقصورة فاخرة وواسعة مع مساحة سعة للجلوس والأرجل",
+        "سائقون محترفون في كل رحلة، دون استثناء",
+        "خيارات استئجار مرنة — بالساعة أو نصف اليوم أو اليوم الكامل أو من نقطة إلى أخرى",
+        "معاملة كبار الشخصيات وخدمة متميزة أيًا كانت المناسبة",
+      ],
+      ru: [
+        "Просторный роскошный салон с щедрой посадкой и местом для ног",
+        "Профессиональные водители в каждой поездке без исключений",
+        "Гибкие варианты аренды — почасово, на полдня, полный день или точка-точка",
+        "VIP-обслуживание и внимательный сервис независимо от повода",
+      ],
+      zh: [
+        "宽敞豪华的内饰,座位与腿部空间充裕",
+        "每一趟行程均配备专业司机,绝无例外",
+        "灵活的租用方式——按小时、半天、全天或点对点",
+        "无论何种场合,均提供贵宾级礼遇与周到服务",
+      ],
+      fr: [
+        "Intérieur spacieux et luxueux avec une généreuse assise et de l'espace pour les jambes",
+        "Chauffeur professionnel à chaque trajet, sans exception",
+        "Options de location flexibles — à l'heure, à la demi-journée, à la journée ou point à point",
+        "Un traitement VIP et un service attentionné, quelle que soit l'occasion",
+      ],
+      de: [
+        "Geräumiges, luxuriöses Interieur mit großzügiger Bestuhlung und Beinfreiheit",
+        "Professioneller Chauffeur bei jeder Fahrt, ohne Ausnahme",
+        "Flexible Mietoptionen — stundenweise, halbtags, ganztags oder punktuell",
+        "VIP-Behandlung und aufmerksamer Service, ganz gleich zu welchem Anlass",
+      ],
+    },
+    occasions: [
+      {
+        title: {
+          en: "Business & Corporate Travel",
+          ar: "السفر التجاري والشركات",
+          ru: "Деловые и корпоративные поездки",
+          zh: "商务与企业出行",
+          fr: "Voyages d'affaires et entreprise",
+          de: "Geschäftsreisen & Unternehmen",
+        },
+        blurb: {
+          en: "Impress clients and colleagues with comfortable, professional group transport.",
+          ar: "أبهروا العملاء والزملاء بنقل جماعي مريح ومحترف.",
+          ru: "Впечатлите клиентов и коллег комфортным профессиональным групповым транспортом.",
+          zh: "以舒适专业的团体用车给客户与同事留下深刻印象。",
+          fr: "Impressionnez clients et collègues avec un transport de groupe confortable et professionnel.",
+          de: "Beeindrucken Sie Kunden und Kollegen mit komfortablem, professionellem Gruppentransport.",
+        },
+      },
+      {
+        title: {
+          en: "Family & Group Transport",
+          ar: "نقل العائلة والمجموعات",
+          ru: "Семейный и групповой транспорт",
+          zh: "家庭与团体出行",
+          fr: "Transport familial et de groupe",
+          de: "Familien- und Gruppentransport",
+        },
+        blurb: {
+          en: "Perfect for families or small groups traveling together in comfort.",
+          ar: "مثالية للعائلات أو المجموعات الصغيرة التي تسافر معًا براحة.",
+          ru: "Идеально для семей или небольших групп, путешествующих вместе с комфортом.",
+          zh: "非常适合家庭或小型团体舒适地结伴出行。",
+          fr: "Parfait pour les familles ou petits groupes voyageant ensemble dans le confort.",
+          de: "Perfekt für Familien oder kleine Gruppen, die gemeinsam komfortabel reisen.",
+        },
+      },
+      {
+        title: {
+          en: "Airport Transfers",
+          ar: "نقل المطار",
+          ru: "Трансфер из аэропорта",
+          zh: "机场接送",
+          fr: "Transferts aéroport",
+          de: "Flughafentransfers",
+        },
+        blurb: {
+          en: "Hassle-free pickups and drop-offs, with luggage space for everyone.",
+          ar: "استلام وإيصال سلس، مع مساحة أمتعة تكفي الجميع.",
+          ru: "Беспроблемная встреча и высадка, с местом для багажа каждого.",
+          zh: "轻松接送,为每位乘客提供充裕的行李空间。",
+          fr: "Prise en charge et dépose sans tracas, avec de l'espace bagages pour tous.",
+          de: "Unkomplizierte Abholung und Ablieferung, mit Gepäckraum für alle.",
+        },
+      },
+      {
+        title: {
+          en: "Event & VIP Transport",
+          ar: "الفعاليات ونقل كبار الشخصيات",
+          ru: "Мероприятия и VIP-транспорт",
+          zh: "活动与贵宾用车",
+          fr: "Événements et transport VIP",
+          de: "Veranstaltungen & VIP-Transport",
+        },
+        blurb: {
+          en: "Arrive in style at weddings, corporate events, and celebrations.",
+          ar: "صلوا بأناقة إلى حفلات الزفاف وفعاليات الشركات والاحتفالات.",
+          ru: "Прибывайте со стилем на свадьбы, корпоративные мероприятия и торжества.",
+          zh: "以优雅姿态抵达婚礼、企业活动及庆典现场。",
+          fr: "Arrivez avec style aux mariages, événements d'entreprise et célébrations.",
+          de: "Kommen Sie stilvoll zu Hochzeiten, Firmenevents und Feiern an.",
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: {
+          en: "What vans are available in your fleet?",
+          ar: "ما سيارات الفان المتوفرة في أسطولكم؟",
+          ru: "Какие минивэны есть в вашем автопарке?",
+          zh: "贵车队提供哪些商务车车型?",
+          fr: "Quels vans sont disponibles dans votre flotte ?",
+          de: "Welche Vans sind in Ihrer Flotte verfügbar?",
+        },
+        answer: {
+          en: "We offer premium vans such as the Mercedes-Benz V-Class and VIP Sprinter, each with a professional chauffeur, generous luggage space, and flexible hourly or transfer packages.",
+          ar: "نقدم فانات فاخرة مثل مرسيدس V-Class وفان VIP سبرينتر، وكل منها مزودة بسائق محترف ومساحة أمتعة واسعة وباقات مرنة بالساعة أو للنقل.",
+          ru: "Мы предлагаем премиальные минивэны, такие как Mercedes V-Class и VIP Sprinter, каждый — с профессиональным водителем, щедрым багажным пространством и гибкими почасовыми или трансферными пакетами.",
+          zh: "我们提供高级商务车,如梅赛德斯V-Class及VIP版斯宾特,均配备专业司机、充裕的行李空间,以及灵活的按小时或接送套餐。",
+          fr: "Nous proposons des vans premium tels que la Mercedes Classe V et le VIP Sprinter, chacun avec un chauffeur professionnel, un généreux espace bagages et des forfaits flexibles à l'heure ou pour transfert.",
+          de: "Wir bieten Premium-Vans wie die Mercedes V-Klasse und den VIP Sprinter, jeweils mit professionellem Chauffeur, großzügigem Gepäckraum und flexiblen Stunden- oder Transferpaketen.",
+        },
+      },
+      {
+        question: {
+          en: "How many people can a van accommodate?",
+          ar: "كم عدد الأشخاص الذين يمكن أن تستوعبهم سيارة الفان؟",
+          ru: "Сколько человек вмещает минивэн?",
+          zh: "一辆商务车可容纳多少人?",
+          fr: "Combien de personnes un van peut-il accueillir ?",
+          de: "Wie viele Personen fasst ein Van?",
+        },
+        answer: {
+          en: "Our vans comfortably seat up to 7 passengers with room for luggage, making them ideal for families, groups, and corporate travel.",
+          ar: "تتسع فاناتنا بشكل مريح لـ7 ركاب مع مساحة للأمتعة، مما يجعلها مثالية للعائلات والمجموعات والسفر التجاري.",
+          ru: "Наши минивэны комфортно вмещают до 7 пассажиров с местом для багажа, что делает их идеальными для семей, групп и деловых поездок.",
+          zh: "我们的商务车可舒适容纳最多7位乘客,并配有行李空间,非常适合家庭、团体及商务出行。",
+          fr: "Nos vans accueillent confortablement jusqu'à 7 passagers avec de la place pour les bagages, les rendant idéaux pour les familles, les groupes et les voyages d'affaires.",
+          de: "Unsere Vans bieten komfortabel Platz für bis zu 7 Passagiere mit Gepäckraum und eignen sich damit ideal für Familien, Gruppen und Geschäftsreisen.",
+        },
+      },
+      {
+        question: {
+          en: "When should I choose a van over other vehicles?",
+          ar: "متى يجب أن أختار الفان بدلاً من المركبات الأخرى؟",
+          ru: "Когда стоит выбрать минивэн вместо других автомобилей?",
+          zh: "何时应选择商务车而非其他车型?",
+          fr: "Quand choisir un van plutôt qu'un autre véhicule ?",
+          de: "Wann sollte ich einen Van statt eines anderen Fahrzeugs wählen?",
+        },
+        answer: {
+          en: "Vans are the best choice for larger groups traveling together, whether for airport transfers, corporate outings, or family trips, without needing to split into multiple cars.",
+          ar: "الفان هو الخيار الأفضل للمجموعات الأكبر التي تسافر معًا، سواء لرحلات المطار أو الرحلات الترفيهية للشركات أو رحلات العائلة، دون الحاجة إلى تقسيم الركاب على عدة سيارات.",
+          ru: "Минивэн — лучший выбор для больших групп, путешествующих вместе, будь то трансфер из аэропорта, корпоративные мероприятия или семейные поездки, без необходимости делиться на несколько машин.",
+          zh: "商务车是较大团体结伴出行的最佳选择,无论是机场接送、企业活动还是家庭旅行,都无需分乘多辆车。",
+          fr: "Le van est le meilleur choix pour les grands groupes voyageant ensemble, que ce soit pour des transferts aéroport, des sorties d'entreprise ou des voyages en famille, sans avoir à se répartir dans plusieurs véhicules.",
+          de: "Ein Van ist die beste Wahl für größere Gruppen, die gemeinsam reisen — ob für Flughafentransfers, Firmenausflüge oder Familienreisen — ohne sich auf mehrere Fahrzeuge aufteilen zu müssen.",
+        },
+      },
+      {
+        question: {
+          en: "Can vans be booked for multiple stops?",
+          ar: "هل يمكن حجز الفان لعدة توقفات؟",
+          ru: "Можно ли забронировать минивэн для нескольких остановок?",
+          zh: "商务车可以预订多个停靠点吗?",
+          fr: "Un van peut-il être réservé pour plusieurs arrêts ?",
+          de: "Kann ein Van für mehrere Stopps gebucht werden?",
+        },
+        answer: {
+          en: "Yes — our vans can be booked hourly or for full/half-day hire with multiple stops included, ideal for city tours, shopping trips, or event logistics.",
+          ar: "نعم — يمكن حجز فاناتنا بالساعة أو لاستئجار نصف يوم أو يوم كامل مع عدة توقفات مشمولة، وهي مثالية لجولات المدينة أو رحلات التسوق أو تنظيم الفعاليات.",
+          ru: "Да — наши минивэны можно забронировать почасово или на полный/полдня с несколькими остановками, что идеально для экскурсий по городу, шопинга или логистики мероприятий.",
+          zh: "可以——我们的商务车可按小时或全天/半天预订,并可包含多个停靠点,非常适合城市游览、购物行程或活动接送安排。",
+          fr: "Oui — nos vans peuvent être réservés à l'heure ou pour une location à la journée/demi-journée avec plusieurs arrêts inclus, idéal pour les visites de la ville, le shopping ou la logistique d'événements.",
+          de: "Ja — unsere Vans können stundenweise oder für eine Ganztags-/Halbtagesmiete mit mehreren Stopps gebucht werden, ideal für Stadtrundfahrten, Einkaufstouren oder Veranstaltungslogistik.",
+        },
+      },
+    ],
+  },
+  "ultra-luxury": {
+    whyChoose: {
+      en: [
+        "The most exclusive vehicles in our fleet — Rolls-Royce and Mercedes-Maybach",
+        "White-glove chauffeur service with bespoke amenities on every trip",
+        "Reserved for weddings, milestone occasions, and VIP arrivals",
+        "Uncompromising attention to every detail, from welcome to arrival",
+      ],
+      ar: [
+        "أكثر المركبات تميزًا في أسطولنا — رولز رويس ومرسيدس مايباخ",
+        "خدمة سائق راقية بمعايير رفيعة مع وسائل راحة مخصصة في كل رحلة",
+        "مخصصة لحفلات الزفاف والمناسبات المميزة ووصولات كبار الشخصيات",
+        "اهتمام لا يقبل المساومة بكل تفصيل، من الترحيب وحتى الوصول",
+      ],
+      ru: [
+        "Самые эксклюзивные автомобили в нашем автопарке — Rolls-Royce и Mercedes-Maybach",
+        "Безупречный сервис шофёра с индивидуальными удобствами в каждой поездке",
+        "Зарезервированы для свадеб, знаковых событий и VIP-прибытий",
+        "Безкомпромиссное внимание к каждой детали — от встречи до прибытия",
+      ],
+      zh: [
+        "车队中最尊贵的车型——劳斯莱斯与梅赛德斯迈巴赫",
+        "每趟行程均提供白手套级司机服务及定制礼遇",
+        "专为婚礼、重要庆典及贵宾抵达而设",
+        "从迎宾到抵达,对每个细节都精益求精",
+      ],
+      fr: [
+        "Les véhicules les plus exclusifs de notre flotte — Rolls-Royce et Mercedes-Maybach",
+        "Un service chauffeur d'exception avec des attentions sur mesure à chaque trajet",
+        "Réservés aux mariages, occasions marquantes et arrivées VIP",
+        "Une attention sans compromis à chaque détail, de l'accueil à l'arrivée",
+      ],
+      de: [
+        "Die exklusivsten Fahrzeuge unserer Flotte — Rolls-Royce und Mercedes-Maybach",
+        "Erstklassiger Chauffeurservice mit maßgeschneiderten Annehmlichkeiten bei jeder Fahrt",
+        "Vorbehalten Hochzeiten, besonderen Anlässen und VIP-Ankünften",
+        "Kompromisslose Aufmerksamkeit für jedes Detail, vom Empfang bis zur Ankunft",
+      ],
+    },
+    occasions: [
+      {
+        title: {
+          en: "Weddings & Ceremonies",
+          ar: "حفلات الزفاف والاحتفالات",
+          ru: "Свадьбы и церемонии",
+          zh: "婚礼与仪式",
+          fr: "Mariages et cérémonies",
+          de: "Hochzeiten & Zeremonien",
+        },
+        blurb: {
+          en: "Arrive in the Rolls-Royce Phantom with red carpet service available.",
+          ar: "صلوا في رولز رويس فانتوم مع خدمة السجادة الحمراء المتاحة.",
+          ru: "Прибудьте на Rolls-Royce Phantom с доступной услугой красной ковровой дорожки.",
+          zh: "乘坐劳斯莱斯幻影抵达,并可提供红毯礼遇服务。",
+          fr: "Arrivez à bord de la Rolls-Royce Phantom avec service tapis rouge disponible.",
+          de: "Kommen Sie im Rolls-Royce Phantom an — Roter-Teppich-Service verfügbar.",
+        },
+      },
+      {
+        title: {
+          en: "VIP & Executive Arrivals",
+          ar: "وصولات كبار الشخصيات والتنفيذيين",
+          ru: "VIP и представительские прибытия",
+          zh: "贵宾与行政抵达",
+          fr: "Arrivées VIP et executive",
+          de: "VIP- & Executive-Ankünfte",
+        },
+        blurb: {
+          en: "Make an unforgettable first impression for high-profile guests.",
+          ar: "اتركوا انطباعًا أول لا يُنسى لدى الضيوف البارزين.",
+          ru: "Произведите незабываемое первое впечатление на важных гостей.",
+          zh: "为重要嘉宾留下难忘的第一印象。",
+          fr: "Faites une première impression inoubliable auprès de vos invités de marque.",
+          de: "Hinterlassen Sie bei hochkarätigen Gästen einen unvergesslichen ersten Eindruck.",
+        },
+      },
+      {
+        title: {
+          en: "Milestone Celebrations",
+          ar: "احتفالات المناسبات المهمة",
+          ru: "Знаковые торжества",
+          zh: "重要庆典",
+          fr: "Célébrations marquantes",
+          de: "Besondere Feiern",
+        },
+        blurb: {
+          en: "Mark anniversaries, birthdays, and achievements in signature style.",
+          ar: "احتفلوا بالذكرى السنوية وأعياد الميلاد والإنجازات بأسلوب مميز.",
+          ru: "Отметьте годовщины, дни рождения и достижения в фирменном стиле.",
+          zh: "以标志性风范纪念周年、生日及各类成就。",
+          fr: "Marquez anniversaires, fêtes et réussites avec un style signature.",
+          de: "Feiern Sie Jubiläen, Geburtstage und Erfolge im charakteristischen Stil.",
+        },
+      },
+      {
+        title: {
+          en: "Photography & Media",
+          ar: "التصوير والإعلام",
+          ru: "Фото и медиа",
+          zh: "摄影与媒体",
+          fr: "Photographie et médias",
+          de: "Fotografie & Medien",
+        },
+        blurb: {
+          en: "A striking backdrop for photoshoots, films, and brand campaigns.",
+          ar: "خلفية مميزة لجلسات التصوير والأفلام والحملات الإعلانية.",
+          ru: "Эффектный фон для фотосессий, съёмок и брендовых кампаний.",
+          zh: "为拍摄、影片及品牌宣传活动提供醒目的背景。",
+          fr: "Une toile de fond saisissante pour séances photo, films et campagnes de marque.",
+          de: "Eine eindrucksvolle Kulisse für Fotoshootings, Filme und Markenkampagnen.",
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: {
+          en: "What ultra-luxury vehicles are available?",
+          ar: "ما المركبات الفائقة الفخامة المتوفرة؟",
+          ru: "Какие ультра-люксовые автомобили доступны?",
+          zh: "有哪些顶级豪华车型可供选择?",
+          fr: "Quels véhicules ultra-luxe sont disponibles ?",
+          de: "Welche Ultra-Luxusfahrzeuge sind verfügbar?",
+        },
+        answer: {
+          en: "Our ultra-luxury fleet includes the Rolls-Royce Phantom and Mercedes-Maybach S-Class, each with a dedicated chauffeur, bespoke amenities, and white-glove service.",
+          ar: "يضم أسطولنا الفائق الفخامة رولز رويس فانتوم ومرسيدس مايباخ S-Class، وكل منها مزودة بسائق مخصص ووسائل راحة مصممة خصيصًا وخدمة راقية.",
+          ru: "Наш ультра-люксовый автопарк включает Rolls-Royce Phantom и Mercedes-Maybach S-Class, каждый — с личным шофёром, индивидуальными удобствами и безупречным сервисом.",
+          zh: "我们的顶级豪华车队包括劳斯莱斯幻影与梅赛德斯迈巴赫S级,均配备专属司机、定制礼遇及白手套级服务。",
+          fr: "Notre flotte ultra-luxe comprend la Rolls-Royce Phantom et la Mercedes-Maybach Classe S, chacune avec un chauffeur dédié, des attentions sur mesure et un service d'exception.",
+          de: "Unsere Ultra-Luxusflotte umfasst den Rolls-Royce Phantom und die Mercedes-Maybach S-Klasse, jeweils mit einem dedizierten Chauffeur, maßgeschneiderten Annehmlichkeiten und erstklassigem Service.",
+        },
+      },
+      {
+        question: {
+          en: "How far in advance should I book an ultra-luxury vehicle?",
+          ar: "قبل كم من الوقت يجب حجز مركبة فائقة الفخامة؟",
+          ru: "За сколько времени нужно бронировать ультра-люксовый автомобиль?",
+          zh: "顶级豪华车型应提前多久预订?",
+          fr: "Combien de temps à l'avance dois-je réserver un véhicule ultra-luxe ?",
+          de: "Wie weit im Voraus sollte ich ein Ultra-Luxusfahrzeug buchen?",
+        },
+        answer: {
+          en: "These vehicles are our most requested for weddings and peak dates, so we recommend booking at least 1–2 weeks ahead to guarantee availability.",
+          ar: "هذه المركبات هي الأكثر طلبًا لدينا لحفلات الزفاف والمواعيد المزدحمة، لذا نوصي بالحجز قبل أسبوع إلى أسبوعين على الأقل لضمان التوفر.",
+          ru: "Эти автомобили наиболее востребованы для свадеб и пиковых дат, поэтому мы рекомендуем бронировать как минимум за 1–2 недели, чтобы гарантировать наличие.",
+          zh: "这些车型是婚礼及热门日期最受欢迎的选择,建议至少提前1至2周预订以确保车辆可用。",
+          fr: "Ces véhicules sont les plus demandés pour les mariages et dates très prisées ; nous recommandons de réserver au moins 1 à 2 semaines à l'avance pour garantir la disponibilité.",
+          de: "Diese Fahrzeuge sind für Hochzeiten und stark nachgefragte Termine am gefragtesten, daher empfehlen wir eine Buchung mindestens 1–2 Wochen im Voraus, um die Verfügbarkeit zu garantieren.",
+        },
+      },
+      {
+        question: {
+          en: "Is red carpet service available?",
+          ar: "هل خدمة السجادة الحمراء متاحة؟",
+          ru: "Доступна ли услуга красной ковровой дорожки?",
+          zh: "是否提供红毯礼遇服务?",
+          fr: "Le service tapis rouge est-il disponible ?",
+          de: "Ist Roter-Teppich-Service verfügbar?",
+        },
+        answer: {
+          en: "Yes, red carpet service is available on request for weddings, ceremonies, and arrivals where presentation matters most.",
+          ar: "نعم، خدمة السجادة الحمراء متاحة عند الطلب لحفلات الزفاف والاحتفالات والوصولات التي يهم فيها المظهر بشكل خاص.",
+          ru: "Да, услуга красной ковровой дорожки доступна по запросу для свадеб, церемоний и прибытий, где презентация особенно важна.",
+          zh: "可以,红毯礼遇服务可应要求提供,适用于婚礼、仪式及尤其注重礼仪的抵达场合。",
+          fr: "Oui, le service tapis rouge est disponible sur demande pour les mariages, cérémonies et arrivées où la présentation compte le plus.",
+          de: "Ja, der Roter-Teppich-Service ist auf Anfrage für Hochzeiten, Zeremonien und Ankünfte verfügbar, bei denen die Präsentation am wichtigsten ist.",
+        },
+      },
+      {
+        question: {
+          en: "Can ultra-luxury vehicles be booked hourly?",
+          ar: "هل يمكن حجز المركبات الفائقة الفخامة بالساعة؟",
+          ru: "Можно ли забронировать ультра-люксовый автомобиль почасово?",
+          zh: "顶级豪华车型可以按小时预订吗?",
+          fr: "Un véhicule ultra-luxe peut-il être réservé à l'heure ?",
+          de: "Können Ultra-Luxusfahrzeuge stundenweise gebucht werden?",
+        },
+        answer: {
+          en: "Yes — our ultra-luxury vehicles can be booked hourly for ceremonies and photo sessions, in addition to half-day and full-day hire.",
+          ar: "نعم — يمكن حجز مركباتنا الفائقة الفخامة بالساعة للحفلات وجلسات التصوير، بالإضافة إلى استئجار نصف يوم أو يوم كامل.",
+          ru: "Да — наши ультра-люксовые автомобили можно забронировать почасово для церемоний и фотосессий, помимо аренды на полдня и полный день.",
+          zh: "可以——我们的顶级豪华车型除半天及全天租用外,还可按小时预订,适用于仪式及拍摄环节。",
+          fr: "Oui — nos véhicules ultra-luxe peuvent être réservés à l'heure pour des cérémonies et séances photo, en plus de la location à la demi-journée ou à la journée.",
+          de: "Ja — unsere Ultra-Luxusfahrzeuge können neben der Halbtags- und Ganztagesmiete auch stundenweise für Zeremonien und Fotoshootings gebucht werden.",
+        },
+      },
+    ],
+  },
+  electric: {
+    whyChoose: {
+      en: [
+        "Quiet, modern electric vehicles with zero tailpipe emissions",
+        "The same professional chauffeur standard as the rest of our fleet",
+        "A sustainable choice without compromising on comfort",
+        "Flexible hourly, transfer, and full-day packages",
+      ],
+      ar: [
+        "مركبات كهربائية هادئة وعصرية بدون أي انبعاثات من العادم",
+        "نفس معيار السائق المحترف المعتمد في باقي أسطولنا",
+        "خيار مستدام دون التضحية بالراحة",
+        "باقات مرنة بالساعة والنقل واليوم الكامل",
+      ],
+      ru: [
+        "Тихие, современные электромобили с нулевым уровнем выхлопных выбросов",
+        "Тот же стандарт профессионального шофёра, что и в остальном автопарке",
+        "Экологичный выбор без ущерба комфорту",
+        "Гибкие почасовые, трансферные и полнодневные пакеты",
+      ],
+      zh: [
+        "静谧现代的电动车型,零尾气排放",
+        "与车队其他车型相同的专业司机标准",
+        "兼具可持续性与舒适性的理想之选",
+        "灵活的按小时、接送及全天套餐",
+      ],
+      fr: [
+        "Des véhicules électriques silencieux et modernes, sans aucune émission à l'échappement",
+        "Le même niveau de chauffeur professionnel que le reste de notre flotte",
+        "Un choix durable sans compromis sur le confort",
+        "Des forfaits flexibles à l'heure, pour transfert et à la journée",
+      ],
+      de: [
+        "Leise, moderne Elektrofahrzeuge ganz ohne Abgasemissionen",
+        "Derselbe professionelle Chauffeur-Standard wie im Rest unserer Flotte",
+        "Eine nachhaltige Wahl ohne Komfortverlust",
+        "Flexible Stunden-, Transfer- und Ganztagespakete",
+      ],
+    },
+    occasions: [
+      {
+        title: {
+          en: "Eco-Conscious Travel",
+          ar: "السفر الصديق للبيئة",
+          ru: "Экологичные поездки",
+          zh: "环保出行",
+          fr: "Voyages écoresponsables",
+          de: "Umweltbewusstes Reisen",
+        },
+        blurb: {
+          en: "A sustainable choice for clients who care about their footprint.",
+          ar: "خيار مستدام للعملاء المهتمين ببصمتهم البيئية.",
+          ru: "Устойчивый выбор для клиентов, заботящихся о своём экослед.",
+          zh: "适合注重环保足迹的客户的可持续之选。",
+          fr: "Un choix durable pour les clients soucieux de leur empreinte.",
+          de: "Eine nachhaltige Wahl für Kunden, denen ihr ökologischer Fußabdruck wichtig ist.",
+        },
+      },
+      {
+        title: {
+          en: "Airport Transfers",
+          ar: "نقل المطار",
+          ru: "Трансфер из аэропорта",
+          zh: "机场接送",
+          fr: "Transferts aéroport",
+          de: "Flughafentransfers",
+        },
+        blurb: {
+          en: "Quiet, comfortable transfers with zero emissions.",
+          ar: "نقل هادئ ومريح بدون أي انبعاثات.",
+          ru: "Тихий, комфортный трансфер с нулевыми выбросами.",
+          zh: "安静舒适的接送体验,零排放。",
+          fr: "Des transferts silencieux et confortables, sans émissions.",
+          de: "Leise, komfortable Transfers ganz ohne Emissionen.",
+        },
+      },
+      {
+        title: {
+          en: "Corporate Travel",
+          ar: "السفر التجاري",
+          ru: "Деловые поездки",
+          zh: "商务出行",
+          fr: "Voyages d'affaires",
+          de: "Geschäftsreisen",
+        },
+        blurb: {
+          en: "A modern, responsible choice for business trips and client pickups.",
+          ar: "خيار عصري ومسؤول لرحلات العمل واستقبال العملاء.",
+          ru: "Современный, ответственный выбор для бизнес-поездок и встреч клиентов.",
+          zh: "适用于商务出行及客户接送的现代、负责任之选。",
+          fr: "Un choix moderne et responsable pour les déplacements professionnels et l'accueil de clients.",
+          de: "Eine moderne, verantwortungsvolle Wahl für Geschäftsreisen und Kundenabholungen.",
+        },
+      },
+      {
+        title: {
+          en: "City Journeys",
+          ar: "التنقل داخل المدينة",
+          ru: "Городские поездки",
+          zh: "市内出行",
+          fr: "Trajets urbains",
+          de: "Stadtfahrten",
+        },
+        blurb: {
+          en: "Smooth, silent rides across Dubai for everyday travel.",
+          ar: "رحلات سلسة وهادئة في أنحاء دبي للتنقلات اليومية.",
+          ru: "Плавные, бесшумные поездки по Дубаю для повседневных нужд.",
+          zh: "平顺静谧地穿梭于迪拜市内,满足日常出行需求。",
+          fr: "Des trajets fluides et silencieux à travers Dubaï pour le quotidien.",
+          de: "Ruhige, geräuschlose Fahrten durch Dubai für den Alltag.",
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: {
+          en: "What electric vehicles are available in your fleet?",
+          ar: "ما المركبات الكهربائية المتوفرة في أسطولكم؟",
+          ru: "Какие электромобили есть в вашем автопарке?",
+          zh: "贵车队提供哪些电动车型?",
+          fr: "Quels véhicules électriques sont disponibles dans votre flotte ?",
+          de: "Welche Elektrofahrzeuge sind in Ihrer Flotte verfügbar?",
+        },
+        answer: {
+          en: "Our electric lineup features quiet, modern vehicles with the same professional chauffeur standard and premium comfort as the rest of our fleet.",
+          ar: "تضم تشكيلتنا الكهربائية مركبات هادئة وعصرية بنفس معيار السائق المحترف والراحة الفاخرة المتوفرة في باقي أسطولنا.",
+          ru: "Наша электрическая линейка включает тихие, современные автомобили с тем же стандартом профессионального шофёра и премиальным комфортом, что и остальной автопарк.",
+          zh: "我们的电动车阵容配备静谧现代的车型,享有与车队其他车型相同的专业司机标准及高级舒适度。",
+          fr: "Notre gamme électrique propose des véhicules silencieux et modernes avec le même niveau de chauffeur professionnel et le même confort premium que le reste de notre flotte.",
+          de: "Unser Elektro-Angebot umfasst leise, moderne Fahrzeuge mit demselben professionellen Chauffeur-Standard und Premium-Komfort wie der Rest unserer Flotte.",
+        },
+      },
+      {
+        question: {
+          en: "Are electric vehicles as comfortable as petrol models?",
+          ar: "هل المركبات الكهربائية مريحة بقدر الطرازات التقليدية؟",
+          ru: "Так же ли комфортны электромобили, как бензиновые модели?",
+          zh: "电动车是否与燃油车型一样舒适?",
+          fr: "Les véhicules électriques sont-ils aussi confortables que les modèles à essence ?",
+          de: "Sind Elektrofahrzeuge genauso komfortabel wie Benzinmodelle?",
+        },
+        answer: {
+          en: "Yes — our electric vehicles offer the same premium interiors, climate comfort, and amenities as our other vehicles, with a smoother, quieter ride.",
+          ar: "نعم — توفر مركباتنا الكهربائية نفس المقصورات الفاخرة والراحة المناخية ووسائل الراحة كباقي مركباتنا، مع رحلة أكثر سلاسة وهدوءًا.",
+          ru: "Да — наши электромобили предлагают тот же премиальный салон, климатический комфорт и удобства, что и остальные автомобили, с более плавной и тихой поездкой.",
+          zh: "是的——我们的电动车型提供与其他车型相同的高级内饰、空调舒适度及配套礼遇,且乘坐体验更平顺、更安静。",
+          fr: "Oui — nos véhicules électriques offrent les mêmes intérieurs premium, confort climatique et prestations que nos autres véhicules, avec un trajet plus fluide et plus silencieux.",
+          de: "Ja — unsere Elektrofahrzeuge bieten dieselben hochwertigen Interieurs, denselben Klimakomfort und dieselben Annehmlichkeiten wie unsere anderen Fahrzeuge, mit einer noch ruhigeren, leiseren Fahrt.",
+        },
+      },
+      {
+        question: {
+          en: "Can electric vehicles be booked for airport transfers?",
+          ar: "هل يمكن حجز المركبات الكهربائية لرحلات المطار؟",
+          ru: "Можно ли забронировать электромобиль для трансфера из аэропорта?",
+          zh: "电动车可以预订用于机场接送吗?",
+          fr: "Les véhicules électriques peuvent-ils être réservés pour des transferts aéroport ?",
+          de: "Können Elektrofahrzeuge für Flughafentransfers gebucht werden?",
+        },
+        answer: {
+          en: "Yes, with the same flight tracking and meet-and-greet service as the rest of our fleet.",
+          ar: "نعم، مع نفس خدمة تتبع الرحلات والاستقبال الشخصي المتوفرة في باقي الأسطول.",
+          ru: "Да, с тем же отслеживанием рейса и персональной встречей, что и для остального автопарка.",
+          zh: "可以,并享有与车队其他车型相同的航班追踪与专人接机服务。",
+          fr: "Oui, avec le même suivi de vol et service d'accueil personnalisé que le reste de notre flotte.",
+          de: "Ja, mit derselben Flugverfolgung und demselben Meet-and-Greet-Service wie der Rest unserer Flotte.",
+        },
+      },
+      {
+        question: {
+          en: "Is there a range limitation for longer trips?",
+          ar: "هل هناك قيود على المسافة للرحلات الطويلة؟",
+          ru: "Есть ли ограничение по запасу хода для дальних поездок?",
+          zh: "长途行程是否存在续航限制?",
+          fr: "Y a-t-il une limitation d'autonomie pour les longs trajets ?",
+          de: "Gibt es eine Reichweitenbeschränkung für längere Fahrten?",
+        },
+        answer: {
+          en: "Our chauffeurs plan routes and charging around your itinerary, so range is never a concern for your journey.",
+          ar: "يخطط سائقونا للمسارات والشحن وفقًا لبرنامج رحلتكم، لذا فإن المسافة ليست مصدر قلق أبدًا لرحلتكم.",
+          ru: "Наши шофёры планируют маршруты и подзарядку с учётом вашего маршрута, поэтому запас хода никогда не станет проблемой для вашей поездки.",
+          zh: "我们的司机会根据您的行程规划路线与充电安排,因此续航里程不会成为您行程中的困扰。",
+          fr: "Nos chauffeurs planifient les itinéraires et la recharge en fonction de votre programme, l'autonomie n'est donc jamais un souci pour votre trajet.",
+          de: "Unsere Chauffeure planen Routen und Ladestopps passend zu Ihrem Reiseplan, sodass die Reichweite für Ihre Fahrt nie ein Problem darstellt.",
+        },
+      },
+    ],
+  },
+};
+
+export interface PlainFleetCategoryOccasion {
+  title: string;
+  blurb: string;
+}
+
+export interface PlainFleetCategoryContent {
+  whyChoose: string[];
+  occasions: PlainFleetCategoryOccasion[];
+  faqs: { question: string; answer: string }[];
+}
+
+export function getFleetCategoryContent(
+  category: FleetCategorySlug,
+  locale: Locale
+): PlainFleetCategoryContent {
+  const content = FLEET_CATEGORY_CONTENT[category];
+  return {
+    whyChoose: pick(content.whyChoose, locale),
+    occasions: content.occasions.map((occasion) => ({
+      title: pick(occasion.title, locale),
+      blurb: pick(occasion.blurb, locale),
+    })),
+    faqs: content.faqs.map((faq) => ({
+      question: pick(faq.question, locale),
+      answer: pick(faq.answer, locale),
+    })),
+  };
 }

@@ -27,6 +27,7 @@ import {
   Car,
   UserCheck,
   MapPin,
+  Check,
   type LucideIcon,
 } from "lucide-react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -41,6 +42,7 @@ import Ltr from "@/components/shared/Ltr";
 import VehicleHeroGallery, { VehicleGalleryCarousel } from "@/components/fleet/VehicleHeroGallery";
 import VehicleHeroQuoteForm from "@/components/fleet/VehicleHeroQuoteForm";
 import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
+import ServiceFaqSection from "@/components/services/ServiceFaqSection";
 import FleetTrustSection from "@/components/fleet/FleetTrustSection";
 import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import FleetListingCard from "@/components/fleet/FleetListingCard";
@@ -55,6 +57,7 @@ import {
   FLEET_CATEGORY_SLUGS,
   isFleetCategorySlug,
   getVehiclesByCategorySlug,
+  getFleetCategoryContent,
   type PlainFleetVehicle,
   type FleetCategorySlug,
 } from "@/data/fleet";
@@ -217,10 +220,12 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
   const vehicles = getVehiclesByCategorySlug(category, locale);
   const t = await getTranslations("fleet.categoryPage");
   const tHero = await getTranslations("fleet.hero");
+  const tDetail = await getTranslations("fleet.detail");
   const tNav = await getTranslations("common.nav");
   const tA11y = await getTranslations("common.a11y");
   const categoryLabel = t(`labels.${category}`);
   const filledStars = Math.round(parseFloat(RATING));
+  const categoryContent = getFleetCategoryContent(category, locale);
 
   const TRUST_ITEMS = [
     { icon: Car, label: t("vehicleCountTemplate", { count: vehicles.length }) },
@@ -228,11 +233,24 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
     { icon: MapPin, label: tHero("availableAcross") },
   ];
 
+  // Reuses the vehicle detail page's generic, category-agnostic booking
+  // steps (already translated in all 6 locales) rather than duplicating
+  // near-identical copy per category.
+  const HOW_TO_BOOK = [
+    { icon: MessageCircle, title: tDetail("step1Title"), description: tDetail("step1Description") },
+    { icon: ClipboardCheck, title: tDetail("step2Title"), description: tDetail("step2Description") },
+    { icon: Car, title: tDetail("step3Title"), description: tDetail("step3Description") },
+  ];
+
   return (
     <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryJsonLd(locale, category, categoryLabel, vehicles)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(categoryContent.faqs, locale)) }}
       />
       <script
         type="application/ld+json"
@@ -358,7 +376,107 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
       </Section>
 
       <FleetTrustSection />
+
+      {/* Why Choose Our [Category] Rental Service? — checklist, matching the
+          same Check-icon list pattern used on /services/[service]. */}
+      <Section tone="ivory">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow={t("whyChooseEyebrow")}
+              title={t("whyChooseTitleTemplate", { category: categoryLabel })}
+              align="left"
+              tone="light"
+            />
+          </Reveal>
+          <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+            {categoryContent.whyChoose.map((reason, index) => (
+              <Reveal
+                key={reason}
+                as="li"
+                delay={Math.min(index * 60, 300)}
+                className="flex items-start gap-2.5 text-sm text-graphite"
+              >
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" strokeWidth={2} />
+                {reason}
+              </Reveal>
+            ))}
+          </ul>
+        </Container>
+      </Section>
+
+      {/* [Category]s for Every Occasion — icon-free title+blurb cards. */}
+      <Section tone="obsidian">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow={t("occasionsEyebrow")}
+              title={t("occasionsTitleTemplate", { category: categoryLabel })}
+              align="left"
+              tone="dark"
+            />
+          </Reveal>
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {categoryContent.occasions.map((occasion, index) => (
+              <Reveal key={occasion.title} delay={Math.min(index * 80, 320)}>
+                <Card
+                  tone="dark"
+                  interactive
+                  className="flex h-full flex-col gap-2 rounded-xl p-6 transition-all duration-200 hover:-translate-y-0.5"
+                >
+                  <h3 className="font-display text-lg text-heading">{occasion.title}</h3>
+                  <p className="text-sm leading-relaxed text-smoke">{occasion.blurb}</p>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* How to book — reuses the vehicle detail page's generic 3-step flow. */}
+      <Section tone="ivory">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow={tDetail("howItWorksEyebrow")}
+              title={t("howToBookTitleTemplate", { category: categoryLabel })}
+              align="left"
+              tone="light"
+            />
+          </Reveal>
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {HOW_TO_BOOK.map((step, index) => (
+              <Reveal key={step.title} delay={index * 100}>
+                <Card
+                  tone="light"
+                  interactive
+                  className="rounded-xl p-8 text-center transition-all duration-200 hover:-translate-y-0.5"
+                >
+                  <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-gold-deep/30 font-display text-base text-gold-deep">
+                    {index + 1}
+                  </span>
+                  <step.icon className="mx-auto mt-5 h-6 w-6 text-gold-deep" strokeWidth={1.5} />
+                  <h3 className="mt-4 font-display text-xl text-charcoal">{step.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-graphite">{step.description}</p>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
       <CoverageBlock />
+
+      {/* FAQ — category-level questions, reusing the same premium dark
+          accordion presentation as /services/[service]. */}
+      <ServiceFaqSection
+        faqs={categoryContent.faqs}
+        eyebrow={t("faqEyebrow")}
+        title={t("faqTitleTemplate", { category: categoryLabel })}
+        subtitle={t("faqSubtitle")}
+        viewAllLabel={t("viewAllFaqs")}
+      />
+
       <BookingCTA />
     </div>
   );

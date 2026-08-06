@@ -218,6 +218,15 @@
     "listingEyebrow": "متوفرة الآن",
     "listingTitleTemplate": "سيارات {category}",
     "viewFullFleet": "عرض كامل الأسطول",
-    "emptyState": "لا توجد سيارات مدرجة حاليًا ضمن هذه الفئة. تصفحوا أسطولنا الكامل بدلاً من ذلك."
+    "emptyState": "لا توجد سيارات مدرجة حاليًا ضمن هذه الفئة. تصفحوا أسطولنا الكامل بدلاً من ذلك.",
+    "whyChooseEyebrow": "لماذا تختاروننا",
+    "whyChooseTitleTemplate": "لماذا تختارون خدمة تأجير {category} لدينا؟",
+    "occasionsEyebrow": "مثالية لـ",
+    "occasionsTitleTemplate": "{category} لكل مناسبة",
+    "howToBookTitleTemplate": "حجز {category} سهل",
+    "faqEyebrow": "أسئلة شائعة",
+    "faqTitleTemplate": "الأسئلة الشائعة حول {category}",
+    "faqSubtitle": "إجابات عن الأسئلة الأكثر شيوعًا حول هذه الفئة.",
+    "viewAllFaqs": "عرض جميع الأسئلة الشائعة"
   }
 }
