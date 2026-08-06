@@ -90,7 +90,6 @@ export default async function AboutPage({ params }: PageProps) {
     priceOnRequest: tCard("priceOnRequest"),
     viewCar: tCard("viewCar"),
     whatsapp: tCard("whatsapp"),
-    contactUs: tCard("contactUs"),
     whatsappMessageTemplate: tCard("whatsappMessageTemplate"),
   };
   return (

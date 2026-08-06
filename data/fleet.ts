@@ -168,7 +168,6 @@ export const FLEET: FleetVehicle[] = [
         "Extended rear legroom",
         "Burmester premium sound system",
         "Rear-seat climate control",
-        "Privacy glass with rear curtains",
         "Bespoke welcome amenities",
       ],
       ar: [
@@ -176,7 +175,6 @@ export const FLEET: FleetVehicle[] = [
         "مساحة إضافية للأرجل في المقاعد الخلفية",
         "نظام صوت Burmester الفاخر",
         "تحكم بدرجة حرارة المقاعد الخلفية",
-        "زجاج للخصوصية مع ستائر خلفية",
         "وسائل ترحيب مخصصة",
       ],
       ru: [
@@ -184,7 +182,6 @@ export const FLEET: FleetVehicle[] = [
         "Увеличенное пространство для ног сзади",
         "Премиальная акустическая система Burmester",
         "Климат-контроль задних сидений",
-        "Тонированные стёкла со шторками приватности сзади",
         "Индивидуальные приветственные подарки",
       ],
       zh: [
@@ -192,7 +189,6 @@ export const FLEET: FleetVehicle[] = [
         "后排腿部空间加长",
         "柏林之声(Burmester)高级音响系统",
         "后排座椅独立温控",
-        "隐私玻璃配后排窗帘",
         "定制欢迎礼遇",
       ],
       fr: [
@@ -200,7 +196,6 @@ export const FLEET: FleetVehicle[] = [
         "Espace pour les jambes à l'arrière accru",
         "Système audio premium Burmester",
         "Climatisation des sièges arrière",
-        "Vitres teintées avec rideaux arrière",
         "Attentions de bienvenue sur mesure",
       ],
       de: [
@@ -208,7 +203,6 @@ export const FLEET: FleetVehicle[] = [
         "Zusätzlicher Beinraum im Fond",
         "Premium-Soundsystem von Burmester",
         "Klimatisierung der Rücksitze",
-        "Sichtschutzverglasung mit Fondvorhängen",
         "Maßgeschneiderte Willkommensaufmerksamkeiten",
       ],
     },
@@ -640,7 +634,6 @@ export const FLEET: FleetVehicle[] = [
         "Rear-seat climate control",
         "Ambient interior lighting",
         "Onboard Wi-Fi",
-        "Privacy glass",
         "Bottled water & amenities",
       ],
       ar: [
@@ -648,7 +641,6 @@ export const FLEET: FleetVehicle[] = [
         "تحكم بدرجة حرارة المقاعد الخلفية",
         "إضاءة داخلية محيطية",
         "شبكة واي فاي على متن السيارة",
-        "زجاج للخصوصية",
         "مياه معبأة ووسائل راحة",
       ],
       ru: [
@@ -656,7 +648,6 @@ export const FLEET: FleetVehicle[] = [
         "Климат-контроль задних сидений",
         "Атмосферная внутренняя подсветка",
         "Wi-Fi в салоне",
-        "Тонированные стёкла",
         "Бутилированная вода и удобства",
       ],
       zh: [
@@ -664,7 +655,6 @@ export const FLEET: FleetVehicle[] = [
         "后排座椅独立温控",
         "车内氛围灯光",
         "车载WiFi",
-        "隐私玻璃",
         "瓶装水及便利用品",
       ],
       fr: [
@@ -672,7 +662,6 @@ export const FLEET: FleetVehicle[] = [
         "Climatisation des sièges arrière",
         "Éclairage d'ambiance intérieur",
         "Wi-Fi embarqué",
-        "Vitres teintées",
         "Eau en bouteille & attentions",
       ],
       de: [
@@ -680,7 +669,6 @@ export const FLEET: FleetVehicle[] = [
         "Klimatisierung der Rücksitze",
         "Ambientebeleuchtung im Innenraum",
         "WLAN an Bord",
-        "Sichtschutzverglasung",
         "Wasser in Flaschen & Annehmlichkeiten",
       ],
     },
@@ -1114,7 +1102,6 @@ export const FLEET: FleetVehicle[] = [
         "Elevated ride height",
         "Premium sound system",
         "Ample luggage space",
-        "Tinted privacy windows",
         "Child seat available on request",
       ],
       ar: [
@@ -1122,7 +1109,6 @@ export const FLEET: FleetVehicle[] = [
         "ارتفاع مرتفع للسيارة",
         "نظام صوت فاخر",
         "مساحة أمتعة واسعة",
-        "نوافذ خصوصية داكنة",
         "مقعد أطفال متاح عند الطلب",
       ],
       ru: [
@@ -1130,7 +1116,6 @@ export const FLEET: FleetVehicle[] = [
         "Приподнятая посадка",
         "Премиальная акустическая система",
         "Просторное багажное отделение",
-        "Тонированные окна приватности",
         "Детское кресло по запросу",
       ],
       zh: [
@@ -1138,7 +1123,6 @@ export const FLEET: FleetVehicle[] = [
         "较高车身高度",
         "高级音响系统",
         "充裕行李空间",
-        "深色隐私车窗",
         "可应要求配备儿童安全座椅",
       ],
       fr: [
@@ -1146,7 +1130,6 @@ export const FLEET: FleetVehicle[] = [
         "Garde au sol élevée",
         "Système audio premium",
         "Grand espace de rangement",
-        "Vitres teintées d'intimité",
         "Siège enfant disponible sur demande",
       ],
       de: [
@@ -1154,7 +1137,6 @@ export const FLEET: FleetVehicle[] = [
         "Erhöhte Sitzposition",
         "Premium-Soundsystem",
         "Großzügiger Gepäckraum",
-        "Getönte Sichtschutzscheiben",
         "Kindersitz auf Anfrage erhältlich",
       ],
     },
@@ -1585,7 +1567,6 @@ export const FLEET: FleetVehicle[] = [
         "Panoramic sky lounge roof",
         "Premium sound system",
         "Rear-seat entertainment",
-        "Privacy glass",
         "Onboard Wi-Fi",
       ],
       ar: [
@@ -1593,7 +1574,6 @@ export const FLEET: FleetVehicle[] = [
         "سقف صالة سماوية بانورامي",
         "نظام صوت فاخر",
         "نظام ترفيه للمقاعد الخلفية",
-        "زجاج للخصوصية",
         "شبكة واي فاي على متن السيارة",
       ],
       ru: [
@@ -1601,7 +1581,6 @@ export const FLEET: FleetVehicle[] = [
         "Панорамная крыша sky lounge",
         "Премиальная акустическая система",
         "Развлекательная система для задних сидений",
-        "Тонированные стёкла",
         "Wi-Fi в салоне",
       ],
       zh: [
@@ -1609,7 +1588,6 @@ export const FLEET: FleetVehicle[] = [
         "全景天幕式天窗",
         "高级音响系统",
         "后排娱乐系统",
-        "隐私玻璃",
         "车载WiFi",
       ],
       fr: [
@@ -1617,7 +1595,6 @@ export const FLEET: FleetVehicle[] = [
         "Toit panoramique sky lounge",
         "Système audio premium",
         "Divertissement aux places arrière",
-        "Vitres teintées",
         "Wi-Fi embarqué",
       ],
       de: [
@@ -1625,7 +1602,6 @@ export const FLEET: FleetVehicle[] = [
         "Panorama-Sky-Lounge-Dach",
         "Premium-Soundsystem",
         "Fondunterhaltung",
-        "Sichtschutzverglasung",
         "WLAN an Bord",
       ],
     },
@@ -1807,7 +1783,6 @@ export const FLEET: FleetVehicle[] = [
         "Leather executive seating",
         "Rear-seat climate control",
         "Onboard Wi-Fi",
-        "Privacy glass",
         "Bottled water & amenities",
       ],
       ar: [
@@ -1815,7 +1790,6 @@ export const FLEET: FleetVehicle[] = [
         "مقاعد تنفيذية جلدية",
         "تحكم بدرجة حرارة المقاعد الخلفية",
         "شبكة واي فاي على متن السيارة",
-        "زجاج للخصوصية",
         "مياه معبأة ووسائل راحة",
       ],
       ru: [
@@ -1823,7 +1797,6 @@ export const FLEET: FleetVehicle[] = [
         "Кожаные представительские сиденья",
         "Климат-контроль задних сидений",
         "Wi-Fi в салоне",
-        "Тонированные стёкла",
         "Бутилированная вода и удобства",
       ],
       zh: [
@@ -1831,7 +1804,6 @@ export const FLEET: FleetVehicle[] = [
         "真皮行政座椅",
         "后排座椅独立温控",
         "车载WiFi",
-        "隐私玻璃",
         "瓶装水及便利用品",
       ],
       fr: [
@@ -1839,7 +1811,6 @@ export const FLEET: FleetVehicle[] = [
         "Sièges executive en cuir",
         "Climatisation des sièges arrière",
         "Wi-Fi embarqué",
-        "Vitres teintées",
         "Eau en bouteille & attentions",
       ],
       de: [
@@ -1847,7 +1818,6 @@ export const FLEET: FleetVehicle[] = [
         "Ledersitze im Executive-Stil",
         "Klimatisierung der Rücksitze",
         "WLAN an Bord",
-        "Sichtschutzverglasung",
         "Wasser in Flaschen & Annehmlichkeiten",
       ],
     },
@@ -2030,7 +2000,6 @@ export const FLEET: FleetVehicle[] = [
         "Starlight headliner",
         "Rear-seat climate control",
         "Premium sound system",
-        "Privacy glass",
       ],
       ar: [
         "مقصورة جلدية مصنوعة يدويًا",
@@ -2038,7 +2007,6 @@ export const FLEET: FleetVehicle[] = [
         "سقف النجوم",
         "تحكم بدرجة حرارة المقاعد الخلفية",
         "نظام صوت فاخر",
-        "زجاج للخصوصية",
       ],
       ru: [
         "Салон из кожи ручной выделки",
@@ -2046,7 +2014,6 @@ export const FLEET: FleetVehicle[] = [
         "Звёздный потолок",
         "Климат-контроль задних сидений",
         "Премиальная акустическая система",
-        "Тонированные стёкла",
       ],
       zh: [
         "手工打造真皮座舱",
@@ -2054,7 +2021,6 @@ export const FLEET: FleetVehicle[] = [
         "星空顶棚",
         "后排座椅独立温控",
         "高级音响系统",
-        "隐私玻璃",
       ],
       fr: [
         "Habitacle en cuir fait à la main",
@@ -2062,7 +2028,6 @@ export const FLEET: FleetVehicle[] = [
         "Ciel étoilé",
         "Climatisation des sièges arrière",
         "Système audio premium",
-        "Vitres teintées",
       ],
       de: [
         "Handgefertigtes Lederinterieur",
@@ -2070,7 +2035,6 @@ export const FLEET: FleetVehicle[] = [
         "Sternenhimmel-Dachhimmel",
         "Klimatisierung der Rücksitze",
         "Premium-Soundsystem",
-        "Sichtschutzverglasung",
       ],
     },
     whyChoose: {
@@ -2474,7 +2438,6 @@ export const FLEET: FleetVehicle[] = [
         "Premium sound system",
         "Ample luggage space",
         "Climate-controlled cabin",
-        "Tinted privacy windows",
       ],
       ar: [
         "مقاعد بثلاثة صفوف",
@@ -2482,7 +2445,6 @@ export const FLEET: FleetVehicle[] = [
         "نظام صوت فاخر",
         "مساحة أمتعة واسعة",
         "مقصورة مكيفة",
-        "نوافذ خصوصية داكنة",
       ],
       ru: [
         "Трёхрядная посадка",
@@ -2490,7 +2452,6 @@ export const FLEET: FleetVehicle[] = [
         "Премиальная акустическая система",
         "Просторное багажное отделение",
         "Салон с климат-контролем",
-        "Тонированные окна приватности",
       ],
       zh: [
         "三排座椅",
@@ -2498,7 +2459,6 @@ export const FLEET: FleetVehicle[] = [
         "高级音响系统",
         "充裕行李空间",
         "座舱恒温控制",
-        "深色隐私车窗",
       ],
       fr: [
         "Sièges sur trois rangées",
@@ -2506,7 +2466,6 @@ export const FLEET: FleetVehicle[] = [
         "Système audio premium",
         "Grand espace de rangement",
         "Habitacle climatisé",
-        "Vitres teintées d'intimité",
       ],
       de: [
         "Dreireihige Bestuhlung",
@@ -2514,7 +2473,6 @@ export const FLEET: FleetVehicle[] = [
         "Premium-Soundsystem",
         "Großzügiger Gepäckraum",
         "Klimatisierte Kabine",
-        "Getönte Sichtschutzscheiben",
       ],
     },
     whyChoose: {
@@ -2696,7 +2654,6 @@ export const FLEET: FleetVehicle[] = [
         "Premium sound system",
         "Climate-controlled cabin",
         "Onboard Wi-Fi",
-        "Privacy glass",
       ],
       ar: [
         "نظام دفع كهربائي بالكامل",
@@ -2704,7 +2661,6 @@ export const FLEET: FleetVehicle[] = [
         "نظام صوت فاخر",
         "مقصورة مكيفة",
         "شبكة واي فاي على متن السيارة",
-        "زجاج للخصوصية",
       ],
       ru: [
         "Полностью электрический привод",
@@ -2712,7 +2668,6 @@ export const FLEET: FleetVehicle[] = [
         "Премиальная акустическая система",
         "Салон с климат-контролем",
         "Wi-Fi в салоне",
-        "Тонированные стёкла",
       ],
       zh: [
         "纯电动力系统",
@@ -2720,7 +2675,6 @@ export const FLEET: FleetVehicle[] = [
         "高级音响系统",
         "座舱恒温控制",
         "车载WiFi",
-        "隐私玻璃",
       ],
       fr: [
         "Motorisation 100 % électrique",
@@ -2728,7 +2682,6 @@ export const FLEET: FleetVehicle[] = [
         "Système audio premium",
         "Habitacle climatisé",
         "Wi-Fi embarqué",
-        "Vitres teintées",
       ],
       de: [
         "Rein elektrischer Antrieb",
@@ -2736,7 +2689,6 @@ export const FLEET: FleetVehicle[] = [
         "Premium-Soundsystem",
         "Klimatisierte Kabine",
         "WLAN an Bord",
-        "Sichtschutzverglasung",
       ],
     },
     whyChoose: {
@@ -2901,7 +2853,6 @@ export const FLEET: FleetVehicle[] = [
         "Rear-seat climate control",
         "Premium sound system",
         "Onboard Wi-Fi",
-        "Privacy glass",
       ],
       ar: [
         "نظام دفع كهربائي بالكامل",
@@ -2909,7 +2860,6 @@ export const FLEET: FleetVehicle[] = [
         "تحكم بدرجة حرارة المقاعد الخلفية",
         "نظام صوت فاخر",
         "شبكة واي فاي على متن السيارة",
-        "زجاج للخصوصية",
       ],
       ru: [
         "Полностью электрический привод",
@@ -2917,7 +2867,6 @@ export const FLEET: FleetVehicle[] = [
         "Климат-контроль задних сидений",
         "Премиальная акустическая система",
         "Wi-Fi в салоне",
-        "Тонированные стёкла",
       ],
       zh: [
         "纯电动力系统",
@@ -2925,7 +2874,6 @@ export const FLEET: FleetVehicle[] = [
         "后排座椅独立温控",
         "高级音响系统",
         "车载WiFi",
-        "隐私玻璃",
       ],
       fr: [
         "Motorisation 100 % électrique",
@@ -2933,7 +2881,6 @@ export const FLEET: FleetVehicle[] = [
         "Climatisation des sièges arrière",
         "Système audio premium",
         "Wi-Fi embarqué",
-        "Vitres teintées",
       ],
       de: [
         "Rein elektrischer Antrieb",
@@ -2941,7 +2888,6 @@ export const FLEET: FleetVehicle[] = [
         "Klimatisierung der Rücksitze",
         "Premium-Soundsystem",
         "WLAN an Bord",
-        "Sichtschutzverglasung",
       ],
     },
     whyChoose: {

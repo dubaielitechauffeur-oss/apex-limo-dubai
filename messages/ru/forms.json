@@ -43,7 +43,8 @@
     "twoHours": "2 часа",
     "fourHours": "4 часа",
     "sixHours": "6 часов",
-    "eightHours": "8 часов (полный день)",
+    "eightHours": "8 часов",
+    "tenHours": "10 часов (полный день)",
     "custom": "Индивидуально — укажите в примечаниях"
   },
   "validation": {

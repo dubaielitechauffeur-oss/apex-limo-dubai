@@ -43,7 +43,8 @@
     "twoHours": "2 Stunden",
     "fourHours": "4 Stunden",
     "sixHours": "6 Stunden",
-    "eightHours": "8 Stunden (Ganztag)",
+    "eightHours": "8 Stunden",
+    "tenHours": "10 Stunden (Ganztag)",
     "custom": "Individuell — bitte in den Anmerkungen angeben"
   },
   "validation": {
