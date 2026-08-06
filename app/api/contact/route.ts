@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
-import type { ContactFormData } from "@/lib/types";
-import { buildValidationMessages, validateContactForm, hasErrors, type ValidationMessages } from "@/lib/validation";
+import { buildValidationMessages, validateContactForm, hasErrors, contactBodySchema, type ValidationMessages } from "@/lib/validation";
 import { dispatchLead } from "@/lib/notifications";
 import { resolveLocale, generateReference, readJsonBodyWithLimit } from "@/lib/api-lead-handler";
 import { isRateLimited, isHoneypotTripped } from "@/lib/spam-protection";
@@ -27,17 +26,19 @@ export async function POST(request: NextRequest) {
 
   const raw = parsed.data;
   locale = resolveLocale(raw.locale);
-  delete raw.locale;
-  const body = raw as unknown as ContactFormData;
 
   const t = await getTranslations({ locale, namespace: "forms" });
 
+  // Honeypot checked on the raw body, before the schema strips `company`.
   if (isHoneypotTripped(raw)) {
     return NextResponse.json(
       { success: true, message: t("contact.successMessageApi"), reference: generateReference("APX-C-") },
       { status: 200 }
     );
   }
+
+  // Runtime-validated, type-coerced body — replaces the previous unchecked cast.
+  const body = contactBodySchema.parse(raw);
 
   const validationMessages: ValidationMessages = buildValidationMessages(t);
 
