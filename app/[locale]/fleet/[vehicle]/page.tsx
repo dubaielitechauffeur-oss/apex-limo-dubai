@@ -232,7 +232,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   // Popular". Mobile keeps the original 6-tier, oneHour-first array and
   // plain (non-highlighted) card styling above, untouched.
   const priceTiersDesktop = [
-    { label: t("twoHours"), highlight: false },
+    { label: t("oneWayTransfer"), suffix: t("withinDubaiSuffix"), highlight: false },
     { label: t("airportTransfer"), highlight: false },
     { label: t("fiveHours"), suffix: t("halfDaySuffix"), highlight: true },
     { label: t("tenHours"), suffix: t("fullDaySuffix"), highlight: false },
