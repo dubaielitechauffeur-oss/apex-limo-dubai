@@ -13,6 +13,7 @@
       "sedan": "Sedan",
       "suv": "SUV",
       "van": "Van",
+      "ultraLuxury": "Ultra-Luxury",
       "electric": "Electric"
     },
     "servicesChildren": {

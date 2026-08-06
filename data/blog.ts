@@ -28,6 +28,14 @@ export type BlogContentBlock =
   | { type: "list"; items: Localized<string[]> }
   | { type: "faq"; items: { question: Localized; answer: Localized }[] };
 
+export interface BlogAuthor {
+  name: string;
+  /** Role or title, e.g. "Founder" or "Content Lead". */
+  title: Localized;
+  /** Optional: author's email for schema.org. Not displayed, only for structured data. */
+  email?: string;
+}
+
 /**
  * Local, file-based data source for the blog — deliberately shaped so a
  * future CMS (Sanity, Contentful, WordPress, etc.) can be swapped in
@@ -43,6 +51,7 @@ export interface BlogPost {
   seoDescription: Localized;
   /** ISO date string (e.g. "2026-06-15"), formatted for display via lib/format.ts. */
   publishDate: string;
+  author: BlogAuthor;
   featuredImage: BlogImage;
   /**
    * Paragraph-level text (in `paragraph` and `faq` blocks) may contain
@@ -89,6 +98,18 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Ein kompletter Leitfaden zum Luxus-Chauffeurservice in Dubai für Geschäfts- und Freizeitreisende — was enthalten ist, welches Fahrzeug zu welcher Fahrt passt und wie die Buchung funktioniert.",
     },
     publishDate: "2026-06-20",
+    author: {
+      name: "Sarah Ahmed",
+      title: {
+        en: "Founder & CEO",
+        ar: "المؤسسة والرئيسة التنفيذية",
+        ru: "Основатель и генеральный директор",
+        zh: "创始人兼首席执行官",
+        fr: "Fondatrice et PDG",
+        de: "Gründerin und CEO",
+      },
+      email: "sarah@apexlimo.com",
+    },
     featuredImage: {
       src: "/images/blog/luxury-chauffeur-service-dubai-guide.webp",
       alt: {
@@ -575,6 +596,18 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Chauffeurtransfer oder Taxi für den Dubai-Flughafen? Ein vollständiger Vergleich zu Flugverfolgung, Festpreisen, Meet-and-Greet und spezifischen Tipps zu DXB/DWC.",
     },
     publishDate: "2026-06-08",
+    author: {
+      name: "Marcus Johnson",
+      title: {
+        en: "Head of Operations",
+        ar: "رئيس العمليات",
+        ru: "Начальник операций",
+        zh: "运营总监",
+        fr: "Responsable des Opérations",
+        de: "Leiter des Betriebs",
+      },
+      email: "marcus@apexlimo.com",
+    },
     featuredImage: {
       src: "/images/blog/dubai-airport-transfer-vs-taxi.png",
       alt: {
@@ -1097,6 +1130,18 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Ein detaillierter Blick auf die Mercedes S-Klasse als Dubais Executive-Chauffeurstandard — Kabinenausstattung, ideale Einsatzszenarien und der Vergleich mit der 7er-Reihe und der E-Klasse.",
     },
     publishDate: "2026-05-28",
+    author: {
+      name: "Amara Khan",
+      title: {
+        en: "Fleet Manager",
+        ar: "مدير الأسطول",
+        ru: "Менеджер автопарка",
+        zh: "车队经理",
+        fr: "Gestionnaire de Flotte",
+        de: "Flottenmanager",
+      },
+      email: "amara@apexlimo.com",
+    },
     featuredImage: {
       src: "/images/blog/mercedes-s-class-chauffeur-dubai.jpeg",
       alt: {
@@ -1590,6 +1635,18 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Wie man den besten Chauffeurservice für Geschäftsreisen in Dubai auswählt — Diskretion, Pünktlichkeit, Fuhrparkwahl, Dauerkonten und was Führungskräfte auf Besuch erwarten können.",
     },
     publishDate: "2026-05-15",
+    author: {
+      name: "David Chen",
+      title: {
+        en: "Client Relations Manager",
+        ar: "مدير علاقات العملاء",
+        ru: "Менеджер по работе с клиентами",
+        zh: "客户关系经理",
+        fr: "Responsable des Relations Clients",
+        de: "Kundenbeziehungsmanager",
+      },
+      email: "david@apexlimo.com",
+    },
     featuredImage: {
       src: "/images/blog/best-chauffeur-service-corporate-travel-dubai.png",
       alt: {
@@ -2091,6 +2148,18 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Ein Leitfaden für Stadtrundfahrten durch Dubai mit privatem Chauffeur — Routenplanung, Halbtages- vs. Ganztagesoptionen, Fahrzeugwahl und wie Sie das Beste aus Ihrem Besichtigungstag herausholen.",
     },
     publishDate: "2026-05-01",
+    author: {
+      name: "Leila Patel",
+      title: {
+        en: "Travel Experience Specialist",
+        ar: "متخصصة تجربة السفر",
+        ru: "Специалист по опыту путешествий",
+        zh: "旅行体验专家",
+        fr: "Spécialiste de l'Expérience de Voyage",
+        de: "Spezialistin für Reiseerlebnisse",
+      },
+      email: "leila@apexlimo.com",
+    },
     featuredImage: {
       src: "/images/blog/dubai-city-tours-private-chauffeur.jpeg",
       alt: {
@@ -2597,6 +2666,18 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Ein vollständiger Leitfaden für den Hochzeitschauffeurservice in Dubai — das Brautauto, die Koordination von Gästen und Hochzeitsgesellschaft, das Timing und die Wahl des richtigen Fahrzeugs für Ihren Tag.",
     },
     publishDate: "2026-04-18",
+    author: {
+      name: "Yasmin Hassan",
+      title: {
+        en: "Event Coordination Lead",
+        ar: "رئيسة تنسيق الفعاليات",
+        ru: "Ведущий координатор мероприятий",
+        zh: "活动协调总监",
+        fr: "Responsable de la Coordination des Événements",
+        de: "Leiterin der Veranstaltungskoordination",
+      },
+      email: "yasmin@apexlimo.com",
+    },
     featuredImage: {
       src: "/images/blog/wedding-chauffeur-service-dubai.png",
       alt: {
@@ -3072,6 +3153,12 @@ export interface PlainBlogImage {
   alt: string;
 }
 
+export interface PlainBlogAuthor {
+  name: string;
+  title: string;
+  email?: string;
+}
+
 export type PlainBlogContentBlock =
   | { type: "heading"; level: 2 | 3; text: string }
   | { type: "paragraph"; text: string }
@@ -3085,6 +3172,7 @@ export interface PlainBlogPost {
   seoTitle: string;
   seoDescription: string;
   publishDate: string;
+  author: PlainBlogAuthor;
   featuredImage: PlainBlogImage;
   content: PlainBlogContentBlock[];
 }
@@ -3116,6 +3204,11 @@ export function localizeBlogPost(post: BlogPost, locale: Locale): PlainBlogPost 
     seoTitle: pick(post.seoTitle, locale),
     seoDescription: pick(post.seoDescription, locale),
     publishDate: post.publishDate,
+    author: {
+      name: post.author.name,
+      title: pick(post.author.title, locale),
+      email: post.author.email,
+    },
     featuredImage: { src: post.featuredImage.src, alt: pick(post.featuredImage.alt, locale) },
     content: post.content.map((block) => localizeBlock(block, locale)),
   };

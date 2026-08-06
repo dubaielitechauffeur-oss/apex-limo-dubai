@@ -83,6 +83,8 @@ export default async function BlogPostPage({ params }: PageProps) {
               image: post.featuredImage.src,
               publishDate: post.publishDate,
               path: `/blog/${post.slug}`,
+              authorName: post.author.name,
+              authorEmail: post.author.email,
             })
           ),
         }}
@@ -142,6 +144,20 @@ export default async function BlogPostPage({ params }: PageProps) {
             </time>
             <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-5xl">{post.title}</h1>
             <p className="mt-5 text-sm leading-relaxed text-graphite sm:text-base">{post.excerpt}</p>
+
+            {/* Author byline */}
+            <div className="mt-8 border-t border-gold/15 pt-6">
+              <p className="text-xs uppercase tracking-wide text-graphite">
+                {t("byAuthor")}
+              </p>
+              <div className="mt-2 flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-gold to-gold-deep opacity-30" />
+                <div>
+                  <p className="font-medium text-obsidian">{post.author.name}</p>
+                  <p className="text-xs text-graphite">{post.author.title}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </Container>
       </Section>

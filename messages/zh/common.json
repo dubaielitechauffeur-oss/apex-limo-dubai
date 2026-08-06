@@ -13,6 +13,7 @@
       "sedan": "轿车",
       "suv": "SUV",
       "van": "商务车",
+      "ultraLuxury": "顶级豪华",
       "electric": "电动"
     },
     "servicesChildren": {

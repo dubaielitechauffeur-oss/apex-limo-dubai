@@ -13,6 +13,7 @@
       "sedan": "Седан",
       "suv": "Внедорожник",
       "van": "Минивэн",
+      "ultraLuxury": "Ультра-люкс",
       "electric": "Электро"
     },
     "servicesChildren": {
