@@ -301,11 +301,22 @@ interface ArticleJsonLdInput {
   image: string;
   publishDate: string;
   path: string;
+  authorName?: string;
+  authorEmail?: string;
 }
 
-/** Article JSON-LD for a blog post, reusing the same organization node as publisher/author. */
-export function articleJsonLd({ locale, title, description, image, publishDate, path }: ArticleJsonLdInput) {
+/** Article JSON-LD for a blog post with optional author information. */
+export function articleJsonLd({ locale, title, description, image, publishDate, path, authorName, authorEmail }: ArticleJsonLdInput) {
   const url = `${SITE.url}${localizedPath(locale, path)}`;
+  const author = authorName ? {
+    "@type": "Person",
+    name: authorName,
+    ...(authorEmail && { email: authorEmail }),
+  } : {
+    "@type": "Organization",
+    "@id": organizationId(),
+    name: SITE.name,
+  };
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -317,11 +328,7 @@ export function articleJsonLd({ locale, title, description, image, publishDate, 
     mainEntityOfPage: url,
     url,
     inLanguage: locale,
-    author: {
-      "@type": "Organization",
-      "@id": organizationId(),
-      name: SITE.name,
-    },
+    author,
     publisher: {
       "@type": "Organization",
       "@id": organizationId(),
