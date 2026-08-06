@@ -68,7 +68,17 @@ export const getPhoneLink = () => `tel:${SITE.phone}`;
  */
 export const NAV_LINKS = [
   { key: "home", href: "/" },
-  { key: "fleet", href: "/fleet" },
+  {
+    key: "fleet",
+    href: "/fleet",
+    children: [
+      { key: "allFleet", href: "/fleet" },
+      { key: "sedan", href: "/fleet/sedan" },
+      { key: "suv", href: "/fleet/suv" },
+      { key: "van", href: "/fleet/van" },
+      { key: "electric", href: "/fleet/electric" },
+    ],
+  },
   {
     key: "services",
     href: "/services",

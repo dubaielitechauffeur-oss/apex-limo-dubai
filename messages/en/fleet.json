@@ -194,5 +194,28 @@
       "question": "How far in advance should I book {name}?",
       "answer": "Same-day and next-day bookings are often possible, but we recommend booking at least 24–48 hours ahead where you can, and further in advance for weddings, events, or peak dates."
     }
+  },
+  "categoryPage": {
+    "breadcrumbAriaLabel": "Breadcrumb",
+    "eyebrow": "The Fleet",
+    "titleTemplate": "{category} Fleet",
+    "browseByCategory": "Browse by Category",
+    "labels": {
+      "sedan": "Sedan",
+      "suv": "SUV",
+      "van": "Van",
+      "electric": "Electric"
+    },
+    "subtitle": {
+      "sedan": "Executive sedans for airport transfers, corporate travel, and refined city rides across Dubai. Each Sedan in our fleet pairs a late-model interior with a professional, uniformed chauffeur, flight tracking on airport runs, and transparent hourly or point-to-point rates — book online or on WhatsApp in minutes.",
+      "suv": "Spacious, elevated SUVs built for family travel, group transfers, and a commanding presence on Dubai's roads. Every SUV comes with a professional chauffeur, generous luggage space, and flexible hourly, half-day, or airport-transfer packages tailored to your itinerary.",
+      "van": "Premium vans engineered for groups, families, and event transportation, with generous space for passengers and luggage on every chauffeur-driven journey. Ideal for larger parties who still expect a luxury standard — climate comfort, courteous service, and on-time arrivals every trip.",
+      "electric": "Quiet, modern electric vehicles for eco-conscious travel across Dubai — the same professional chauffeur standard and premium comfort as the rest of our fleet, with zero tailpipe emissions. A refined, sustainable choice for airport transfers, corporate travel, and city journeys."
+    },
+    "vehicleCountTemplate": "{count} Available",
+    "listingEyebrow": "Available Now",
+    "listingTitleTemplate": "{category} Vehicles",
+    "viewFullFleet": "View Full Fleet",
+    "emptyState": "No vehicles are currently listed in this category. Explore our full fleet instead."
   }
 }

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/constants";
 import { localizedPath } from "@/lib/seo";
 import { routing } from "@/i18n/routing";
-import { FLEET } from "@/data/fleet";
+import { FLEET, FLEET_CATEGORY_SLUGS } from "@/data/fleet";
 import { SERVICES } from "@/data/services";
 import { LOCATIONS } from "@/data/locations";
 import { BLOG_POSTS } from "@/data/blog";
@@ -58,6 +58,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     localizedEntries(`/fleet/${vehicle.slug}`, now, "monthly", 0.7)
   );
 
+  const fleetCategoryRoutes = FLEET_CATEGORY_SLUGS.flatMap((category) =>
+    localizedEntries(`/fleet/${category}`, now, "weekly", 0.75)
+  );
+
   const serviceRoutes = SERVICES.flatMap((service) =>
     localizedEntries(`/services/${service.slug}`, now, "monthly", 0.7)
   );
@@ -70,5 +74,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     localizedEntries(`/blog/${post.slug}`, new Date(post.publishDate), "monthly", 0.6)
   );
 
-  return [...staticRoutes, ...fleetRoutes, ...serviceRoutes, ...locationRoutes, ...blogRoutes];
+  return [
+    ...staticRoutes,
+    ...fleetRoutes,
+    ...fleetCategoryRoutes,
+    ...serviceRoutes,
+    ...locationRoutes,
+    ...blogRoutes,
+  ];
 }

@@ -194,5 +194,28 @@
       "question": "Combien de temps à l'avance dois-je réserver la {name} ?",
       "answer": "Les réservations le jour même ou le lendemain sont souvent possibles, mais nous recommandons de réserver au moins 24 à 48 heures à l'avance lorsque c'est possible, et davantage pour les mariages, événements ou dates de forte affluence."
     }
+  },
+  "categoryPage": {
+    "breadcrumbAriaLabel": "Fil d'Ariane",
+    "eyebrow": "La Flotte",
+    "titleTemplate": "Flotte {category}",
+    "browseByCategory": "Parcourir par Catégorie",
+    "labels": {
+      "sedan": "Berline",
+      "suv": "SUV",
+      "van": "Van",
+      "electric": "Électrique"
+    },
+    "subtitle": {
+      "sedan": "Des berlines executive pour les transferts aéroport, les voyages d'affaires et des trajets urbains raffinés à travers Dubaï. Chaque berline de notre flotte associe un intérieur récent à un chauffeur professionnel en tenue, un suivi de vol pour les trajets aéroport, et des tarifs transparents à l'heure ou point à point — réservez en ligne ou sur WhatsApp en quelques minutes.",
+      "suv": "Des SUV spacieux et surélevés conçus pour les voyages en famille, les transferts de groupe et une présence assurée sur les routes de Dubaï. Chaque SUV est fourni avec un chauffeur professionnel, un espace bagages généreux et des forfaits flexibles à l'heure, à la demi-journée ou pour l'aéroport, adaptés à votre itinéraire.",
+      "van": "Des vans premium conçus pour les groupes, les familles et le transport événementiel, avec un espace généreux pour les passagers et les bagages à chaque trajet avec chauffeur. Idéaux pour les groupes plus importants qui attendent tout de même un niveau de luxe — confort climatique, service courtois et arrivées ponctuelles à chaque trajet.",
+      "electric": "Des véhicules électriques silencieux et modernes pour des déplacements écoresponsables à Dubaï — le même niveau de chauffeur professionnel et le même confort premium que le reste de notre flotte, sans aucune émission à l'échappement. Un choix raffiné et durable pour les transferts aéroport, les voyages d'affaires et les trajets urbains."
+    },
+    "vehicleCountTemplate": "{count} Disponibles",
+    "listingEyebrow": "Disponibles Maintenant",
+    "listingTitleTemplate": "Véhicules {category}",
+    "viewFullFleet": "Voir Toute la Flotte",
+    "emptyState": "Aucun véhicule n'est actuellement répertorié dans cette catégorie. Découvrez plutôt notre flotte complète."
   }
 }

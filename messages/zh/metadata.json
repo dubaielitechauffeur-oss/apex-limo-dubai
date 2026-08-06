@@ -13,6 +13,12 @@
     "notFoundTitle": "未找到该车型",
     "notFoundDescription": "在Apex Limo车队中未找到该车型。"
   },
+  "fleetCategory": {
+    "titleTemplate": "{category}车队 | 迪拜专属司机租车服务",
+    "descriptionTemplate": "探索Apex Limo在迪拜的{category}车队——配备专属司机,适用于机场接送、商务出行及各类活动。立即在线预订或获取即时报价。",
+    "notFoundTitle": "未找到该类别",
+    "notFoundDescription": "未找到该车队类别。"
+  },
   "services": {
     "title": "迪拜专属司机服务",
     "description": "涵盖迪拜及阿联酋全境的机场接送、企业专车、豪华专属司机、VIP专车服务、活动用车及婚礼专车服务。"

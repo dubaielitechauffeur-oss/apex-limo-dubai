@@ -194,5 +194,28 @@
       "question": "Wie weit im Voraus sollte ich den {name} buchen?",
       "answer": "Buchungen am selben Tag oder am Folgetag sind oft möglich, wir empfehlen jedoch, wo möglich mindestens 24–48 Stunden im Voraus zu buchen — und für Hochzeiten, Veranstaltungen oder Spitzentermine noch früher."
     }
+  },
+  "categoryPage": {
+    "breadcrumbAriaLabel": "Brotkrümelnavigation",
+    "eyebrow": "Die Flotte",
+    "titleTemplate": "{category}-Flotte",
+    "browseByCategory": "Nach Kategorie Durchsuchen",
+    "labels": {
+      "sedan": "Limousine",
+      "suv": "SUV",
+      "van": "Van",
+      "electric": "Elektro"
+    },
+    "subtitle": {
+      "sedan": "Executive-Limousinen für Flughafentransfers, Geschäftsreisen und stilvolle Fahrten quer durch Dubai. Jede Limousine unserer Flotte verbindet ein modernes Interieur mit einem uniformierten, professionellen Chauffeur, Flugverfolgung bei Flughafenfahrten und transparenten Stunden- oder Punkt-zu-Punkt-Tarifen — buchen Sie online oder per WhatsApp in wenigen Minuten.",
+      "suv": "Geräumige, erhöhte SUVs für Familienreisen, Gruppentransfers und eine souveräne Präsenz auf Dubais Straßen. Jeder SUV wird mit einem professionellen Chauffeur, großzügigem Gepäckraum und flexiblen Stunden-, Halbtags- oder Flughafenpaketen passend zu Ihrer Reiseroute gestellt.",
+      "van": "Premium-Vans für Gruppen, Familien und Veranstaltungstransporte, mit großzügigem Platz für Passagiere und Gepäck bei jeder chauffeurgefahrenen Fahrt. Ideal für größere Gruppen, die dennoch einen luxuriösen Standard erwarten — Klimakomfort, zuvorkommender Service und pünktliche Ankunft bei jeder Fahrt.",
+      "electric": "Leise, moderne Elektrofahrzeuge für umweltbewusstes Reisen in Dubai — mit demselben professionellen Chauffeur-Standard und Premium-Komfort wie der Rest unserer Flotte, ganz ohne Abgasemissionen. Eine stilvolle, nachhaltige Wahl für Flughafentransfers, Geschäftsreisen und Fahrten in der Stadt."
+    },
+    "vehicleCountTemplate": "{count} Verfügbar",
+    "listingEyebrow": "Jetzt Verfügbar",
+    "listingTitleTemplate": "{category}-Fahrzeuge",
+    "viewFullFleet": "Gesamte Flotte Ansehen",
+    "emptyState": "Derzeit sind keine Fahrzeuge in dieser Kategorie gelistet. Entdecken Sie stattdessen unsere gesamte Flotte."
   }
 }

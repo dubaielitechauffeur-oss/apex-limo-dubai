@@ -8,6 +8,13 @@
     "faqs": "Fragen",
     "blog": "Journal",
     "contact": "Kontakt",
+    "fleetChildren": {
+      "allFleet": "Gesamte Flotte",
+      "sedan": "Limousine",
+      "suv": "SUV",
+      "van": "Van",
+      "electric": "Elektro"
+    },
     "servicesChildren": {
       "airportTransfers": "Flughafentransfer",
       "corporateChauffeur": "Firmenchauffeur",

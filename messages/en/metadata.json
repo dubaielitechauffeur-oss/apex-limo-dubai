@@ -13,6 +13,12 @@
     "notFoundTitle": "Vehicle Not Found",
     "notFoundDescription": "This vehicle could not be found in the Apex Limo fleet."
   },
+  "fleetCategory": {
+    "titleTemplate": "{category} Fleet | Chauffeur-Driven Hire in Dubai",
+    "descriptionTemplate": "Explore Apex Limo's {category} fleet in Dubai — chauffeur-driven vehicles for airport transfers, corporate travel, and events. Book online or get an instant quote.",
+    "notFoundTitle": "Category Not Found",
+    "notFoundDescription": "This fleet category could not be found."
+  },
   "services": {
     "title": "Chauffeur Services in Dubai",
     "description": "Airport transfers, corporate chauffeur, luxury chauffeur, VIP transportation, event transportation, and wedding chauffeur service across Dubai and the UAE."

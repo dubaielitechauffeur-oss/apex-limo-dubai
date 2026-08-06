@@ -8,6 +8,13 @@
     "faqs": "الأسئلة",
     "blog": "المدونة",
     "contact": "تواصلوا معنا",
+    "fleetChildren": {
+      "allFleet": "كامل الأسطول",
+      "sedan": "سيدان",
+      "suv": "سيارة رياضية متعددة الاستخدامات",
+      "van": "فان",
+      "electric": "كهربائية"
+    },
     "servicesChildren": {
       "airportTransfers": "نقل المطار",
       "corporateChauffeur": "سائق الشركات",

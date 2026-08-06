@@ -13,6 +13,12 @@
     "notFoundTitle": "Véhicule introuvable",
     "notFoundDescription": "Ce véhicule est introuvable dans la flotte Apex Limo."
   },
+  "fleetCategory": {
+    "titleTemplate": "Flotte {category} | Location avec Chauffeur à Dubaï",
+    "descriptionTemplate": "Découvrez la flotte {category} d'Apex Limo à Dubaï — des véhicules avec chauffeur pour les transferts aéroport, les voyages d'affaires et les événements. Réservez en ligne ou obtenez un devis instantané.",
+    "notFoundTitle": "Catégorie Introuvable",
+    "notFoundDescription": "Cette catégorie de flotte est introuvable."
+  },
   "services": {
     "title": "Services de chauffeur à Dubaï",
     "description": "Transferts aéroport, chauffeur d'entreprise, chauffeur de luxe, transport VIP, transport événementiel et chauffeur de mariage à travers Dubaï et les Émirats."

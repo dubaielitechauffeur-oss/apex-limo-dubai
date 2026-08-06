@@ -25,6 +25,8 @@ import {
   MessageCircle,
   ClipboardCheck,
   Car,
+  UserCheck,
+  MapPin,
   type LucideIcon,
 } from "lucide-react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -35,29 +37,53 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import CTAButton from "@/components/shared/CTAButton";
 import Card from "@/components/shared/Card";
 import Reveal from "@/components/shared/Reveal";
+import Ltr from "@/components/shared/Ltr";
 import VehicleHeroGallery, { VehicleGalleryCarousel } from "@/components/fleet/VehicleHeroGallery";
 import VehicleHeroQuoteForm from "@/components/fleet/VehicleHeroQuoteForm";
 import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
 import FleetTrustSection from "@/components/fleet/FleetTrustSection";
 import FleetCarouselCard from "@/components/home/FleetCarouselCard";
+import FleetListingCard from "@/components/fleet/FleetListingCard";
+import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
-import { FLEET, getAllVehicles, getVehicleBySlug, type PlainFleetVehicle } from "@/data/fleet";
+import {
+  FLEET,
+  getAllVehicles,
+  getVehicleBySlug,
+  FLEET_CATEGORY_SLUGS,
+  isFleetCategorySlug,
+  getVehiclesByCategorySlug,
+  type PlainFleetVehicle,
+  type FleetCategorySlug,
+} from "@/data/fleet";
 import { getServiceBySlug } from "@/data/services";
 import { getLocationBySlug } from "@/data/locations";
 import { VEHICLE_CROSS_LINKS } from "@/lib/cross-links";
 
 interface PageProps {
+  // "vehicle" also carries a fleet category slug (sedan/suv/van/electric) —
+  // Next.js requires the same dynamic segment name at a given route
+  // position, so /fleet/[vehicle] serves both the vehicle detail page and
+  // the category listing pages rather than introducing a sibling
+  // /fleet/[category] segment.
   params: Promise<{ locale: string; vehicle: string }>;
 }
 
 export async function generateStaticParams() {
-  return FLEET.map((vehicle) => ({ vehicle: vehicle.slug }));
+  const vehicleParams = FLEET.map((vehicle) => ({ vehicle: vehicle.slug }));
+  const categoryParams = FLEET_CATEGORY_SLUGS.map((category) => ({ vehicle: category }));
+  return [...vehicleParams, ...categoryParams];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, vehicle: slug } = await params;
+
+  if (isFleetCategorySlug(slug)) {
+    return generateCategoryMetadata(locale as Locale, slug);
+  }
+
   const vehicle = getVehicleBySlug(slug, locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata.fleetVehicle" });
 
@@ -76,6 +102,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: t("titleTemplate", { name: vehicle.name, category: vehicle.category }),
     description: t("descriptionTemplate", { name: vehicle.name, description: vehicle.description }),
     path: `/fleet/${vehicle.slug}`,
+  });
+}
+
+async function generateCategoryMetadata(locale: Locale, category: FleetCategorySlug): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: "metadata.fleetCategory" });
+  const tLabel = await getTranslations({ locale, namespace: "fleet.categoryPage" });
+  const categoryLabel = tLabel(`labels.${category}`);
+
+  return buildMetadata({
+    locale,
+    title: t("titleTemplate", { category: categoryLabel }),
+    description: t("descriptionTemplate", { category: categoryLabel }),
+    path: `/fleet/${category}`,
   });
 }
 
@@ -140,8 +179,198 @@ function amenityIcon(feature: string): LucideIcon {
   return CheckCircle2;
 }
 
+/** ItemList JSON-LD for a fleet category listing page. */
+function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLabel: string, vehicles: PlainFleetVehicle[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    inLanguage: locale,
+    name: `${SITE.name} ${categoryLabel} Fleet`,
+    url: `${SITE.url}${localizedPath(locale, `/fleet/${category}`)}`,
+    itemListElement: vehicles.map((vehicle, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Car",
+        name: vehicle.name,
+        description: vehicle.description,
+        vehicleSeatingCapacity: vehicle.passengers,
+        provider: {
+          "@type": "LocalBusiness",
+          "additionalType": "https://schema.org/LimousineService",
+          "@id": organizationId(),
+          name: SITE.name,
+        },
+      },
+    })),
+  };
+}
+
+/**
+ * Fleet category listing (/fleet/sedan, /fleet/suv, /fleet/van,
+ * /fleet/electric) — the same FLEET data and FleetListingCard used on the
+ * main /fleet page, filtered to one category. No new card component, no
+ * duplicated vehicle data.
+ */
+async function FleetCategoryListing({ locale, category }: { locale: Locale; category: FleetCategorySlug }) {
+  setRequestLocale(locale);
+  const vehicles = getVehiclesByCategorySlug(category, locale);
+  const t = await getTranslations("fleet.categoryPage");
+  const tHero = await getTranslations("fleet.hero");
+  const tNav = await getTranslations("common.nav");
+  const tA11y = await getTranslations("common.a11y");
+  const categoryLabel = t(`labels.${category}`);
+  const filledStars = Math.round(parseFloat(RATING));
+
+  const TRUST_ITEMS = [
+    { icon: Car, label: t("vehicleCountTemplate", { count: vehicles.length }) },
+    { icon: UserCheck, label: tHero("professionalChauffeurs") },
+    { icon: MapPin, label: tHero("availableAcross") },
+  ];
+
+  return (
+    <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryJsonLd(locale, category, categoryLabel, vehicles)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              [
+                { name: tNav("fleet"), path: "/fleet" },
+                { name: categoryLabel, path: `/fleet/${category}` },
+              ],
+              locale,
+              tNav("home")
+            )
+          ),
+        }}
+      />
+
+      {/* Hero — sized and animated to match the /fleet page's FleetHero
+          (min-height + fade/slide-in stagger), centered content and a
+          trust-indicators row instead of that hero's photograph, since
+          there's no single image representing a filtered category. */}
+      <Section
+        tone="obsidian"
+        separator={false}
+        className="relative flex min-h-[420px] items-center overflow-hidden !py-16 sm:min-h-[520px] sm:!py-20 lg:min-h-[560px]"
+      >
+        <Container>
+          <div className="mx-auto max-w-2xl text-center">
+            <nav
+              aria-label={t("breadcrumbAriaLabel")}
+              className="flex animate-fade-in items-center justify-center gap-1 text-xs uppercase text-smoke"
+            >
+              <Link href="/" className="transition-colors hover:text-gold">
+                {tNav("home")}
+              </Link>
+              <span className="text-smoke/40">/</span>
+              <Link href="/fleet" className="transition-colors hover:text-gold">
+                {tNav("fleet")}
+              </Link>
+              <span className="text-smoke/40">/</span>
+              <span className="text-gold">{categoryLabel}</span>
+            </nav>
+
+            <span className="mt-8 block animate-fade-in label-eyebrow [animation-delay:100ms]">
+              {t("eyebrow")}
+            </span>
+            <h1 className="mt-4 animate-slide-in-left font-display text-4xl leading-[1.05] text-heading [animation-delay:150ms] sm:text-6xl">
+              {t("titleTemplate", { category: categoryLabel })}
+            </h1>
+            <p className="mx-auto mt-6 max-w-xl animate-fade-in text-base leading-relaxed text-smoke [animation-delay:300ms] sm:text-lg">
+              {t(`subtitle.${category}`)}
+            </p>
+
+            {/* Trust indicators — same rating-stars + stat-row pattern as
+                FleetHero on /fleet, with a category-specific vehicle count
+                in place of the site-wide fleet size. */}
+            <div className="mt-9 flex animate-fade-in flex-wrap items-center justify-center gap-x-6 gap-y-3 [animation-delay:450ms]">
+              <div className="flex items-center gap-2">
+                <div
+                  className="flex gap-0.5"
+                  role="img"
+                  aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}
+                >
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-4 w-4 ${i < filledStars ? "fill-gold text-gold" : "fill-transparent text-gold/30"}`}
+                      strokeWidth={1.5}
+                    />
+                  ))}
+                </div>
+                <span className="text-sm font-semibold text-heading">
+                  <Ltr>{tHero("ratingTemplate", { rating: RATING })}</Ltr>
+                </span>
+              </div>
+
+              {TRUST_ITEMS.map((item) => (
+                <div key={item.label} className="flex items-center gap-2">
+                  <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
+                  <item.icon className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
+                  <span className="text-sm text-smoke">
+                    <Ltr>{item.label}</Ltr>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="fleet-category-listings" tone="ivory">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow={t("listingEyebrow")}
+              title={t("listingTitleTemplate", { category: categoryLabel })}
+              align="left"
+              tone="light"
+            />
+          </Reveal>
+
+          {vehicles.length > 0 ? (
+            <div className="mt-10 flex flex-col gap-8">
+              {vehicles.map((vehicle, index) => (
+                <Reveal key={vehicle.slug} delay={Math.min(index * 60, 300)}>
+                  <FleetListingCard vehicle={vehicle} />
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-10 text-sm text-graphite">{t("emptyState")}</p>
+          )}
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/fleet"
+              className="inline-flex items-center justify-center rounded-lg border border-gold-deep/40 px-6 py-3 text-xs font-bold uppercase tracking-wide text-gold-deep transition-colors duration-200 hover:bg-gold/10"
+            >
+              {t("viewFullFleet")}
+            </Link>
+          </div>
+        </Container>
+      </Section>
+
+      <FleetTrustSection />
+      <CoverageBlock />
+      <BookingCTA />
+    </div>
+  );
+}
+
 export default async function VehicleDetailPage({ params }: PageProps) {
   const { locale, vehicle: slug } = await params;
+
+  if (isFleetCategorySlug(slug)) {
+    return <FleetCategoryListing locale={locale as Locale} category={slug} />;
+  }
+
   setRequestLocale(locale as Locale);
   const vehicle = getVehicleBySlug(slug, locale as Locale);
 
