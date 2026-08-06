@@ -194,5 +194,27 @@
       "question": "Wie weit im Voraus sollte ich den {name} buchen?",
       "answer": "Buchungen am selben Tag oder am Folgetag sind oft möglich, wir empfehlen jedoch, wo möglich mindestens 24–48 Stunden im Voraus zu buchen — und für Hochzeiten, Veranstaltungen oder Spitzentermine noch früher."
     }
+  },
+  "categoryPage": {
+    "breadcrumbAriaLabel": "Brotkrümelnavigation",
+    "eyebrow": "Die Flotte",
+    "titleTemplate": "{category}-Flotte",
+    "browseByCategory": "Nach Kategorie Durchsuchen",
+    "labels": {
+      "sedan": "Limousine",
+      "suv": "SUV",
+      "van": "Van",
+      "electric": "Elektro"
+    },
+    "subtitle": {
+      "sedan": "Executive-Limousinen für Flughafentransfers, Geschäftsreisen und stilvolle Fahrten in der Stadt — jede Buchung schließt einen professionellen Chauffeur ein.",
+      "suv": "Geräumige, erhöhte SUVs für Familienreisen, Gruppentransfers und eine souveräne Präsenz auf Dubais Straßen, mit Chauffeur.",
+      "van": "Premium-Vans für Gruppen und Familien, mit großzügigem Platz für Passagiere und Gepäck bei jeder chauffeurgefahrenen Fahrt.",
+      "electric": "Leise, moderne Elektrofahrzeuge für umweltbewusstes Reisen in Dubai — derselbe Chauffeur-Standard, ohne Abgasemissionen."
+    },
+    "listingEyebrow": "Jetzt Verfügbar",
+    "listingTitleTemplate": "{category}-Fahrzeuge",
+    "viewFullFleet": "Gesamte Flotte Ansehen",
+    "emptyState": "Derzeit sind keine Fahrzeuge in dieser Kategorie gelistet. Entdecken Sie stattdessen unsere gesamte Flotte."
   }
 }

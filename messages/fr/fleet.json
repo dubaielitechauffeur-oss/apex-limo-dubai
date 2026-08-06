@@ -194,5 +194,27 @@
       "question": "Combien de temps à l'avance dois-je réserver la {name} ?",
       "answer": "Les réservations le jour même ou le lendemain sont souvent possibles, mais nous recommandons de réserver au moins 24 à 48 heures à l'avance lorsque c'est possible, et davantage pour les mariages, événements ou dates de forte affluence."
     }
+  },
+  "categoryPage": {
+    "breadcrumbAriaLabel": "Fil d'Ariane",
+    "eyebrow": "La Flotte",
+    "titleTemplate": "Flotte {category}",
+    "browseByCategory": "Parcourir par Catégorie",
+    "labels": {
+      "sedan": "Berline",
+      "suv": "SUV",
+      "van": "Van",
+      "electric": "Électrique"
+    },
+    "subtitle": {
+      "sedan": "Des berlines executive pour les transferts aéroport, les voyages d'affaires et des trajets urbains raffinés — chaque réservation inclut un chauffeur professionnel.",
+      "suv": "Des SUV spacieux et surélevés pour les voyages en famille, les transferts de groupe et une présence assurée sur les routes de Dubaï, chauffeur inclus.",
+      "van": "Des vans premium conçus pour les groupes et les familles, avec un espace généreux pour les passagers et les bagages à chaque trajet avec chauffeur.",
+      "electric": "Des véhicules électriques silencieux et modernes pour des déplacements écoresponsables à Dubaï — le même niveau de chauffeur, zéro émission à l'échappement."
+    },
+    "listingEyebrow": "Disponibles Maintenant",
+    "listingTitleTemplate": "Véhicules {category}",
+    "viewFullFleet": "Voir Toute la Flotte",
+    "emptyState": "Aucun véhicule n'est actuellement répertorié dans cette catégorie. Découvrez plutôt notre flotte complète."
   }
 }

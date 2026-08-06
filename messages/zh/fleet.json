@@ -194,5 +194,27 @@
       "question": "应提前多久预订{name}?",
       "answer": "通常可支持当日或次日预订,但我们建议尽可能提前24至48小时预订;若用于婚礼、活动或旺季出行,建议提前更长时间预订。"
     }
+  },
+  "categoryPage": {
+    "breadcrumbAriaLabel": "面包屑导航",
+    "eyebrow": "车队",
+    "titleTemplate": "{category}车队",
+    "browseByCategory": "按类别浏览",
+    "labels": {
+      "sedan": "轿车",
+      "suv": "SUV",
+      "van": "商务车",
+      "electric": "电动"
+    },
+    "subtitle": {
+      "sedan": "行政轿车,专为机场接送、商务出行及城市内的精致出行而设——每次预订均配备专业司机。",
+      "suv": "宽敞、车身较高的SUV,适合家庭出行、团体接送,在迪拜街头彰显不凡气场,并配备专属司机。",
+      "van": "为团体与家庭打造的高级商务车,为乘客与行李提供充裕空间,每次出行均由专属司机驾驶。",
+      "electric": "静谧、现代的电动车型,为您在迪拜提供环保出行体验——同样的专业司机标准,零尾气排放。"
+    },
+    "listingEyebrow": "现已提供",
+    "listingTitleTemplate": "{category}车型",
+    "viewFullFleet": "查看全部车队",
+    "emptyState": "该类别下暂无车型,请浏览我们的完整车队。"
   }
 }

@@ -8,6 +8,13 @@
     "faqs": "Вопросы",
     "blog": "Блог",
     "contact": "Контакты",
+    "fleetChildren": {
+      "allFleet": "Весь автопарк",
+      "sedan": "Седан",
+      "suv": "Внедорожник",
+      "van": "Минивэн",
+      "electric": "Электро"
+    },
     "servicesChildren": {
       "airportTransfers": "Трансфер из аэропорта",
       "corporateChauffeur": "Корпоративный шофёр",

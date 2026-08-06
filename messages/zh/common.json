@@ -8,6 +8,13 @@
     "faqs": "常见问题",
     "blog": "资讯",
     "contact": "联系我们",
+    "fleetChildren": {
+      "allFleet": "全部车队",
+      "sedan": "轿车",
+      "suv": "SUV",
+      "van": "商务车",
+      "electric": "电动"
+    },
     "servicesChildren": {
       "airportTransfers": "机场接送",
       "corporateChauffeur": "企业专车",

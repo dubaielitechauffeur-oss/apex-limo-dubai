@@ -57,6 +57,10 @@ export interface FleetVehicle {
   /** See VehicleRates — currently PLACEHOLDER sample figures. */
   rates: VehicleRates;
   category: FleetCategory;
+  /** Marks a fully electric vehicle — orthogonal to `category` (a Tesla is
+   *  still a "SUV" or "Sedan" body style), used only to power the
+   *  /fleet/electric category listing. */
+  isElectric?: boolean;
   tagline: Localized;
   description: Localized;
   longDescription: Localized;
@@ -2175,6 +2179,7 @@ export const FLEET: FleetVehicle[] = [
     ],
     name: "Tesla Model Y",
     category: "SUV",
+    isElectric: true,
     tagline: {
       en: "Modern, sustainable, effortless",
       ar: "عصرية ومستدامة وسلسة",
@@ -2613,6 +2618,7 @@ export const FLEET: FleetVehicle[] = [
     ],
     name: "Tesla Model 3",
     category: "Sedan",
+    isElectric: true,
     tagline: {
       en: "Quiet, efficient, modern",
       ar: "هادئة وموفرة وعصرية",
@@ -2812,6 +2818,7 @@ export const FLEET: FleetVehicle[] = [
     ],
     name: "BYD Han",
     category: "Sedan",
+    isElectric: true,
     tagline: {
       en: "Refined electric performance",
       ar: "أداء كهربائي راقٍ",
@@ -3004,6 +3011,7 @@ export interface PlainFleetVehicle {
   model: string;
   rates: VehicleRates;
   category: FleetCategory;
+  isElectric?: boolean;
   tagline: string;
   description: string;
   longDescription: string;
@@ -3026,6 +3034,7 @@ export function localizeVehicle(vehicle: FleetVehicle, locale: Locale): PlainFle
     model: vehicle.model,
     rates: vehicle.rates,
     category: vehicle.category,
+    isElectric: vehicle.isElectric,
     tagline: pick(vehicle.tagline, locale),
     description: pick(vehicle.description, locale),
     longDescription: pick(vehicle.longDescription, locale),
@@ -3051,4 +3060,38 @@ export function getAllVehicles(locale: Locale): PlainFleetVehicle[] {
 export function getVehicleBySlug(slug: string, locale: Locale): PlainFleetVehicle | undefined {
   const vehicle = FLEET.find((v) => v.slug === slug);
   return vehicle ? localizeVehicle(vehicle, locale) : undefined;
+}
+
+/**
+ * Fleet category listing pages (/fleet/sedan, /fleet/suv, /fleet/van,
+ * /fleet/electric) — filters of the same FLEET array above, not a
+ * separate data source. "electric" filters on `isElectric` rather than
+ * `category` since it cuts across body styles (e.g. the Tesla Model Y is
+ * both "SUV" and electric); the other three map directly onto an existing
+ * `FleetCategory` value. "Ultra-Luxury" has no listing page of its own —
+ * those vehicles remain visible only on the main /fleet page.
+ */
+export type FleetCategorySlug = "sedan" | "suv" | "van" | "electric";
+
+export const FLEET_CATEGORY_SLUGS: FleetCategorySlug[] = ["sedan", "suv", "van", "electric"];
+
+const CATEGORY_SLUG_TO_CATEGORY: Record<Exclude<FleetCategorySlug, "electric">, FleetCategory> = {
+  sedan: "Sedan",
+  suv: "SUV",
+  van: "Van",
+};
+
+export function isFleetCategorySlug(value: string): value is FleetCategorySlug {
+  return (FLEET_CATEGORY_SLUGS as string[]).includes(value);
+}
+
+export function getVehiclesByCategorySlug(
+  categorySlug: FleetCategorySlug,
+  locale: Locale
+): PlainFleetVehicle[] {
+  const vehicles = getAllVehicles(locale);
+  if (categorySlug === "electric") {
+    return vehicles.filter((vehicle) => vehicle.isElectric);
+  }
+  return vehicles.filter((vehicle) => vehicle.category === CATEGORY_SLUG_TO_CATEGORY[categorySlug]);
 }

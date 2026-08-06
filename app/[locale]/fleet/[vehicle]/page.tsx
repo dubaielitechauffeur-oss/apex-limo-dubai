@@ -40,24 +40,47 @@ import VehicleHeroQuoteForm from "@/components/fleet/VehicleHeroQuoteForm";
 import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
 import FleetTrustSection from "@/components/fleet/FleetTrustSection";
 import FleetCarouselCard from "@/components/home/FleetCarouselCard";
+import FleetListingCard from "@/components/fleet/FleetListingCard";
+import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
-import { FLEET, getAllVehicles, getVehicleBySlug, type PlainFleetVehicle } from "@/data/fleet";
+import {
+  FLEET,
+  getAllVehicles,
+  getVehicleBySlug,
+  FLEET_CATEGORY_SLUGS,
+  isFleetCategorySlug,
+  getVehiclesByCategorySlug,
+  type PlainFleetVehicle,
+  type FleetCategorySlug,
+} from "@/data/fleet";
 import { getServiceBySlug } from "@/data/services";
 import { getLocationBySlug } from "@/data/locations";
 import { VEHICLE_CROSS_LINKS } from "@/lib/cross-links";
 
 interface PageProps {
+  // "vehicle" also carries a fleet category slug (sedan/suv/van/electric) —
+  // Next.js requires the same dynamic segment name at a given route
+  // position, so /fleet/[vehicle] serves both the vehicle detail page and
+  // the category listing pages rather than introducing a sibling
+  // /fleet/[category] segment.
   params: Promise<{ locale: string; vehicle: string }>;
 }
 
 export async function generateStaticParams() {
-  return FLEET.map((vehicle) => ({ vehicle: vehicle.slug }));
+  const vehicleParams = FLEET.map((vehicle) => ({ vehicle: vehicle.slug }));
+  const categoryParams = FLEET_CATEGORY_SLUGS.map((category) => ({ vehicle: category }));
+  return [...vehicleParams, ...categoryParams];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, vehicle: slug } = await params;
+
+  if (isFleetCategorySlug(slug)) {
+    return generateCategoryMetadata(locale as Locale, slug);
+  }
+
   const vehicle = getVehicleBySlug(slug, locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata.fleetVehicle" });
 
@@ -76,6 +99,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: t("titleTemplate", { name: vehicle.name, category: vehicle.category }),
     description: t("descriptionTemplate", { name: vehicle.name, description: vehicle.description }),
     path: `/fleet/${vehicle.slug}`,
+  });
+}
+
+async function generateCategoryMetadata(locale: Locale, category: FleetCategorySlug): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: "metadata.fleetCategory" });
+  const tLabel = await getTranslations({ locale, namespace: "fleet.categoryPage" });
+  const categoryLabel = tLabel(`labels.${category}`);
+
+  return buildMetadata({
+    locale,
+    title: t("titleTemplate", { category: categoryLabel }),
+    description: t("descriptionTemplate", { category: categoryLabel }),
+    path: `/fleet/${category}`,
   });
 }
 
@@ -140,8 +176,140 @@ function amenityIcon(feature: string): LucideIcon {
   return CheckCircle2;
 }
 
+/** ItemList JSON-LD for a fleet category listing page. */
+function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLabel: string, vehicles: PlainFleetVehicle[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    inLanguage: locale,
+    name: `${SITE.name} ${categoryLabel} Fleet`,
+    url: `${SITE.url}${localizedPath(locale, `/fleet/${category}`)}`,
+    itemListElement: vehicles.map((vehicle, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Car",
+        name: vehicle.name,
+        description: vehicle.description,
+        vehicleSeatingCapacity: vehicle.passengers,
+        provider: {
+          "@type": "LocalBusiness",
+          "additionalType": "https://schema.org/LimousineService",
+          "@id": organizationId(),
+          name: SITE.name,
+        },
+      },
+    })),
+  };
+}
+
+/**
+ * Fleet category listing (/fleet/sedan, /fleet/suv, /fleet/van,
+ * /fleet/electric) — the same FLEET data and FleetListingCard used on the
+ * main /fleet page, filtered to one category. No new card component, no
+ * duplicated vehicle data.
+ */
+async function FleetCategoryListing({ locale, category }: { locale: Locale; category: FleetCategorySlug }) {
+  setRequestLocale(locale);
+  const vehicles = getVehiclesByCategorySlug(category, locale);
+  const t = await getTranslations("fleet.categoryPage");
+  const tNav = await getTranslations("common.nav");
+  const categoryLabel = t(`labels.${category}`);
+
+  return (
+    <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryJsonLd(locale, category, categoryLabel, vehicles)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              [
+                { name: tNav("fleet"), path: "/fleet" },
+                { name: categoryLabel, path: `/fleet/${category}` },
+              ],
+              locale,
+              tNav("home")
+            )
+          ),
+        }}
+      />
+
+      <Section tone="obsidian" padding="sm" className="!pt-10 !pb-10 sm:!pt-14 sm:!pb-14">
+        <Container>
+          <nav aria-label={t("breadcrumbAriaLabel")} className="flex items-center gap-1 text-xs uppercase text-smoke">
+            <Link href="/" className="transition-colors hover:text-gold">
+              {tNav("home")}
+            </Link>
+            <span className="text-smoke/40">/</span>
+            <Link href="/fleet" className="transition-colors hover:text-gold">
+              {tNav("fleet")}
+            </Link>
+            <span className="text-smoke/40">/</span>
+            <span className="text-gold">{categoryLabel}</span>
+          </nav>
+
+          <span className="mt-6 block label-eyebrow">{t("eyebrow")}</span>
+          <h1 className="mt-4 font-display text-3xl text-heading sm:text-5xl">
+            {t("titleTemplate", { category: categoryLabel })}
+          </h1>
+          <p className="mt-5 max-w-2xl text-sm leading-relaxed text-smoke sm:text-base">
+            {t(`subtitle.${category}`)}
+          </p>
+        </Container>
+      </Section>
+
+      <Section id="fleet-category-listings" tone="ivory">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow={t("listingEyebrow")}
+              title={t("listingTitleTemplate", { category: categoryLabel })}
+              align="left"
+              tone="light"
+            />
+          </Reveal>
+
+          {vehicles.length > 0 ? (
+            <div className="mt-10 flex flex-col gap-8">
+              {vehicles.map((vehicle, index) => (
+                <Reveal key={vehicle.slug} delay={Math.min(index * 60, 300)}>
+                  <FleetListingCard vehicle={vehicle} />
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-10 text-sm text-graphite">{t("emptyState")}</p>
+          )}
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/fleet"
+              className="inline-flex items-center justify-center rounded-lg border border-gold-deep/40 px-6 py-3 text-xs font-bold uppercase tracking-wide text-gold-deep transition-colors duration-200 hover:bg-gold/10"
+            >
+              {t("viewFullFleet")}
+            </Link>
+          </div>
+        </Container>
+      </Section>
+
+      <FleetTrustSection />
+      <CoverageBlock />
+      <BookingCTA />
+    </div>
+  );
+}
+
 export default async function VehicleDetailPage({ params }: PageProps) {
   const { locale, vehicle: slug } = await params;
+
+  if (isFleetCategorySlug(slug)) {
+    return <FleetCategoryListing locale={locale as Locale} category={slug} />;
+  }
+
   setRequestLocale(locale as Locale);
   const vehicle = getVehicleBySlug(slug, locale as Locale);
 
