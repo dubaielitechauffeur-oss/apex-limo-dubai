@@ -1,7 +1,62 @@
+import { z } from "zod";
 import type { BookingFormData, QuoteFormData, ContactFormData } from "./types";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^\+?[\d\s-]{7,16}$/;
+
+/**
+ * Runtime schema layer for the public lead API routes. This is the type-safe
+ * gate that replaces the previous unchecked `raw as unknown as FormData`
+ * cast: it guarantees every field is the type the rest of the pipeline
+ * (validators, email templates) assumes, and strips any unknown keys the
+ * client sent (e.g. the honeypot `company` and the `locale` marker, both
+ * read off the raw body before this runs).
+ *
+ * Every field is lenient by design — a non-string coerces to "" and a
+ * non-numeric passenger count coerces to 0 — so a normal browser submission
+ * (which always sends the right shapes) is unchanged, and the existing
+ * translated, business-rule validators below (`validateBookingForm` et al.)
+ * remain the single source of user-facing "required"/"too long"/"date in
+ * the past" errors. The schema only hardens the boundary against
+ * hand-crafted payloads sending wrong JSON types (e.g. `fullName: 123` or
+ * `passengers: "abc"`), which previously flowed straight into the outbound
+ * email.
+ */
+const leadText = z.string().catch("");
+const leadCount = z.coerce.number().catch(0);
+
+export const bookingBodySchema = z.object({
+  fullName: leadText,
+  phone: leadText,
+  email: leadText,
+  pickupLocation: leadText,
+  dropoffLocation: leadText,
+  date: leadText,
+  time: leadText,
+  vehicle: leadText,
+  passengers: leadCount,
+  hours: leadText,
+  specialRequests: leadText,
+});
+
+export const quoteBodySchema = z.object({
+  fullName: leadText,
+  phone: leadText,
+  email: leadText,
+  serviceType: leadText,
+  pickupLocation: leadText,
+  date: leadText,
+  vehicle: leadText,
+  message: leadText,
+});
+
+export const contactBodySchema = z.object({
+  fullName: leadText,
+  phone: leadText,
+  email: leadText,
+  subject: leadText,
+  message: leadText,
+});
 
 /**
  * Upper bounds on free-text fields — every lead ends up interpolated into

@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
-import type { BookingFormData } from "@/lib/types";
-import { buildValidationMessages, validateBookingForm, hasErrors, type ValidationMessages } from "@/lib/validation";
+import { buildValidationMessages, validateBookingForm, hasErrors, bookingBodySchema, type ValidationMessages } from "@/lib/validation";
 import { dispatchLead } from "@/lib/notifications";
 import { resolveLocale, generateReference, readJsonBodyWithLimit } from "@/lib/api-lead-handler";
 import { isRateLimited, isHoneypotTripped } from "@/lib/spam-protection";
@@ -29,19 +28,22 @@ export async function POST(request: NextRequest) {
 
   const raw = parsed.data;
   locale = resolveLocale(raw.locale);
-  delete raw.locale;
-  const body = raw as unknown as BookingFormData;
 
   const t = await getTranslations({ locale, namespace: "forms" });
 
   // Honeypot tripped: pretend success so bots don't adapt, but never
-  // validate, dispatch, or send an email for this submission.
+  // validate, dispatch, or send an email for this submission. Checked on the
+  // raw body, before the schema strips the `company` field.
   if (isHoneypotTripped(raw)) {
     return NextResponse.json(
       { success: true, message: t("booking.successMessageApi"), reference: generateReference("APX-") },
       { status: 200 }
     );
   }
+
+  // Runtime-validated, type-coerced body — replaces the previous unchecked
+  // cast so wrong JSON types can't reach the validators or the email.
+  const body = bookingBodySchema.parse(raw);
 
   const validationMessages: ValidationMessages = buildValidationMessages(t);
 

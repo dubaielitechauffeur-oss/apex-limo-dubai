@@ -177,7 +177,10 @@ export function organizationId(): string {
  * specific categorization is preserved via `additionalType` instead of
  * being removed.
  */
-export function organizationJsonLd(locale: Locale = routing.defaultLocale) {
+export function organizationJsonLd(
+  locale: Locale = routing.defaultLocale,
+  { includeReviews = false }: { includeReviews?: boolean } = {}
+) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -252,7 +255,31 @@ export function organizationJsonLd(locale: Locale = routing.defaultLocale) {
     // the Google Business Profile listing as one entity rather than two.
     sameAs: SAME_AS_URLS,
     hasMap: SOCIAL_PROFILES.googleBusiness,
-    ...aggregateRatingFields(),
+    // Reviews are intentionally scoped out of the site-wide node — see the
+    // `includeReviews` note above and `organizationReviewsJsonLd`.
+    ...(includeReviews ? aggregateRatingFields() : {}),
+  };
+}
+
+/**
+ * aggregateRating + review as a standalone node reusing the organization's
+ * `@id`, so Google merges these reviews onto the single business entity.
+ * Emitted only on the homepage (the page that renders the matching
+ * testimonial cards), keeping self-published review markup off pages that
+ * don't display those reviews — legal pages, 404s, deep detail pages, etc.
+ * Returns null when there are no testimonials to publish.
+ */
+export function organizationReviewsJsonLd(locale: Locale = routing.defaultLocale) {
+  const fields = aggregateRatingFields();
+  if (Object.keys(fields).length === 0) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "additionalType": "https://schema.org/LimousineService",
+    "@id": organizationId(),
+    inLanguage: locale,
+    ...fields,
   };
 }
 

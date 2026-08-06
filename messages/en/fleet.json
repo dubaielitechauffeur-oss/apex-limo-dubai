@@ -204,14 +204,14 @@
       "sedan": "Sedan",
       "suv": "SUV",
       "van": "Van",
-      "ultraLuxury": "Ultra-Luxury",
+      "ultra-luxury": "Ultra-Luxury",
       "electric": "Electric"
     },
     "subtitle": {
       "sedan": "Executive sedans for airport transfers, corporate travel, and refined city rides across Dubai. Each Sedan in our fleet pairs a late-model interior with a professional, uniformed chauffeur, flight tracking on airport runs, and transparent hourly or point-to-point rates — book online or on WhatsApp in minutes.",
       "suv": "Spacious, elevated SUVs built for family travel, group transfers, and a commanding presence on Dubai's roads. Every SUV comes with a professional chauffeur, generous luggage space, and flexible hourly, half-day, or airport-transfer packages tailored to your itinerary.",
       "van": "Premium vans engineered for groups, families, and event transportation, with generous space for passengers and luggage on every chauffeur-driven journey. Ideal for larger parties who still expect a luxury standard — climate comfort, courteous service, and on-time arrivals every trip.",
-      "ultraLuxury": "Ultra-luxury vehicles for VIP occasions, milestone celebrations, and arrivals meant to impress. Rolls-Royce Phantoms and Mercedes-Maybach S-Class sedans with white-glove service, bespoke amenities, and uncompromising attention to every detail — the ultimate choice when only the finest will do.",
+      "ultra-luxury": "Ultra-luxury vehicles for VIP occasions, milestone celebrations, and arrivals meant to impress. Rolls-Royce Phantoms and Mercedes-Maybach S-Class sedans with white-glove service, bespoke amenities, and uncompromising attention to every detail — the ultimate choice when only the finest will do.",
       "electric": "Quiet, modern electric vehicles for eco-conscious travel across Dubai — the same professional chauffeur standard and premium comfort as the rest of our fleet, with zero tailpipe emissions. A refined, sustainable choice for airport transfers, corporate travel, and city journeys."
     },
     "vehicleCountTemplate": "{count} Available",

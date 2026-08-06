@@ -76,6 +76,7 @@ export const NAV_LINKS = [
       { key: "sedan", href: "/fleet/sedan" },
       { key: "suv", href: "/fleet/suv" },
       { key: "van", href: "/fleet/van" },
+      { key: "ultraLuxury", href: "/fleet/ultra-luxury" },
       { key: "electric", href: "/fleet/electric" },
     ],
   },

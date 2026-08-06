@@ -12,7 +12,7 @@ import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Testimonials from "@/components/home/Testimonials";
 import FAQSection from "@/components/home/FAQSection";
 import BookingCTA from "@/components/home/BookingCTA";
-import { buildMetadata, faqJsonLd } from "@/lib/seo";
+import { buildMetadata, faqJsonLd, organizationReviewsJsonLd } from "@/lib/seo";
 import { getFaqs } from "@/data/faqs";
 
 interface PageProps {
@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function Home({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  const reviewsJsonLd = organizationReviewsJsonLd(locale as Locale);
   return (
     <>
       <script
@@ -40,6 +41,12 @@ export default async function Home({ params }: PageProps) {
 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(getFaqs(locale as Locale))) }}
       />
+      {reviewsJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsJsonLd) }}
+        />
+      ) : null}
       <Hero />
       <FeatureStrip />
       <FleetCarousel />
