@@ -3053,8 +3053,24 @@ export function localizeVehicle(vehicle: FleetVehicle, locale: Locale): PlainFle
   };
 }
 
+/**
+ * Display order for vehicle listings — most exclusive tier first, down to
+ * the most everyday. Used by getAllVehicles() so every page that lists the
+ * fleet (full /fleet page, homepage carousel, "similar vehicles", JSON-LD)
+ * shows Ultra-Luxury vehicles (Rolls-Royce, Mercedes-Maybach) up top rather
+ * than scattered in FLEET's authoring order.
+ */
+const CATEGORY_DISPLAY_RANK: Record<FleetCategory, number> = {
+  "Ultra-Luxury": 0,
+  Sedan: 1,
+  SUV: 2,
+  Van: 3,
+};
+
 export function getAllVehicles(locale: Locale): PlainFleetVehicle[] {
-  return FLEET.map((vehicle) => localizeVehicle(vehicle, locale));
+  return FLEET.map((vehicle) => localizeVehicle(vehicle, locale)).sort(
+    (a, b) => CATEGORY_DISPLAY_RANK[a.category] - CATEGORY_DISPLAY_RANK[b.category]
+  );
 }
 
 export function getVehicleBySlug(slug: string, locale: Locale): PlainFleetVehicle | undefined {
