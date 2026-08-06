@@ -38,7 +38,6 @@ export default async function FleetCarousel() {
         priceOnRequest: tCard("priceOnRequest"),
         viewCar: tCard("viewCar"),
         whatsapp: tCard("whatsapp"),
-        contactUs: tCard("contactUs"),
         whatsappMessageTemplate: tCard("whatsappMessageTemplate"),
       }}
       eyebrow={t("eyebrow")}

@@ -105,7 +105,7 @@ export const NAV_LINKS = [
  * the actual vehicle data array that drives real listings/carousels — so
  * the two can vary independently.
  */
-export const FLEET_SIZE = 13;
+export const FLEET_SIZE = "50+";
 
 /** `key` resolves a label via the "cta" namespace in messages/*.json. */
 export const PRIMARY_CTA = {

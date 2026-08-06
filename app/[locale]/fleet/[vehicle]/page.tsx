@@ -162,7 +162,6 @@ export default async function VehicleDetailPage({ params }: PageProps) {
     priceOnRequest: tCard("priceOnRequest"),
     viewCar: tCard("viewCar"),
     whatsapp: tCard("whatsapp"),
-    contactUs: tCard("contactUs"),
     whatsappMessageTemplate: tCard("whatsappMessageTemplate"),
   };
 
@@ -222,10 +221,10 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   ];
 
   const priceTierLabels = [
-    t("oneHour"),
-    t("airportTransfer"),
-    t("fiveHours"),
-    t("tenHours"),
+    { label: t("oneHour"), suffix: t("withinDubaiSuffix") },
+    { label: t("airportTransfer") },
+    { label: t("fiveHours"), suffix: t("halfDaySuffix") },
+    { label: t("tenHours"), suffix: t("fullDaySuffix") },
   ];
 
   // Desktop-only package grid — 4 tiers only (Additional Hour/Additional
@@ -235,8 +234,8 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   const priceTiersDesktop = [
     { label: t("twoHours"), highlight: false },
     { label: t("airportTransfer"), highlight: false },
-    { label: t("fiveHours"), highlight: true },
-    { label: t("tenHours"), highlight: false },
+    { label: t("fiveHours"), suffix: t("halfDaySuffix"), highlight: true },
+    { label: t("tenHours"), suffix: t("fullDaySuffix"), highlight: false },
   ];
 
   return (
@@ -487,10 +486,13 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           {/* Mobile package grid — unchanged from before (1 Hour first,
               no highlight, original spacing). */}
           <div className="grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-gold/15 bg-charcoal px-6 py-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] sm:grid-cols-3 lg:hidden">
-            {priceTierLabels.map((label) => (
-              <div key={label} className="flex flex-col gap-1">
+            {priceTierLabels.map((tier) => (
+              <div key={tier.label} className="flex flex-col gap-1">
                 <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
-                  {label}
+                  {tier.label}
+                  {tier.suffix ? (
+                    <span className="ms-1 text-[9px] normal-case text-smoke/70">{tier.suffix}</span>
+                  ) : null}
                 </span>
                 <span className="font-display text-lg font-bold text-gold">
                   {t("priceOnRequest")}
@@ -522,6 +524,9 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 ) : null}
                 <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
                   {tier.label}
+                  {tier.suffix ? (
+                    <span className="ms-1 text-[9px] normal-case text-smoke/70">{tier.suffix}</span>
+                  ) : null}
                 </span>
                 <span className="font-display text-xl font-bold text-gold">
                   {t("priceOnRequest")}
@@ -711,7 +716,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {similarVehicles.map((related, index) => (
             <Reveal key={related.slug} delay={index * 100}>
-              <FleetCarouselCard vehicle={related} labels={cardLabels} whatsapp tone="dark" />
+              <FleetCarouselCard vehicle={related} labels={cardLabels} tone="dark" />
             </Reveal>
           ))}
         </div>

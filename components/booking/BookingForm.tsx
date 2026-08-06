@@ -121,6 +121,7 @@ function BookingFormFields({
     t("hourOptions.fourHours"),
     t("hourOptions.sixHours"),
     t("hourOptions.eightHours"),
+    t("hourOptions.tenHours"),
     t("hourOptions.custom"),
   ];
 

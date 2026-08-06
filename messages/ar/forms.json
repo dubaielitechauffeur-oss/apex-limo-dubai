@@ -43,7 +43,8 @@
     "twoHours": "ساعتان",
     "fourHours": "4 ساعات",
     "sixHours": "6 ساعات",
-    "eightHours": "8 ساعات (يوم كامل)",
+    "eightHours": "8 ساعات",
+    "tenHours": "10 ساعات (يوم كامل)",
     "custom": "مخصص — حدده في الملاحظات"
   },
   "validation": {

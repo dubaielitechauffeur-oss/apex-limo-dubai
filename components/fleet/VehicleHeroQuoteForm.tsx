@@ -38,7 +38,7 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
   const locale = useLocale();
 
   const durationOptions = [
-    { label: tDetail("oneHour"), value: "1 Hour" },
+    { label: tDetail("oneHour"), value: "One Way" },
     { label: tDetail("airportTransfer"), value: "Airport Transfer" },
     { label: tDetail("fiveHours"), value: "5 Hours" },
     { label: tDetail("tenHours"), value: "10 Hours" },
