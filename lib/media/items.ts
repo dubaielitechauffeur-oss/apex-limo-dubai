@@ -316,7 +316,18 @@ export async function findMediaUsage(id: string): Promise<MediaUsageRef[]> {
   const gate = await requireMediaPermission(PERMISSIONS.MEDIA_READ);
   if (!gate.success) return [];
 
-  const [vehicleImages, blogPosts, heroDesktop, heroMobile, brands, settingsLogo, settingsFavicon] = await Promise.all([
+  const [
+    vehicleImages,
+    blogPosts,
+    heroDesktop,
+    heroMobile,
+    brands,
+    settingsLogo,
+    settingsFavicon,
+    serviceImages,
+    locationHeroDesktop,
+    locationHeroMobile,
+  ] = await Promise.all([
     prisma.vehicleImage.findMany({ where: { mediaId: id }, select: { vehicleId: true } }),
     prisma.blogPost.findMany({ where: { featuredImageId: id }, select: { id: true } }),
     prisma.heroSlide.findMany({ where: { desktopImageId: id }, select: { id: true } }),
@@ -324,6 +335,9 @@ export async function findMediaUsage(id: string): Promise<MediaUsageRef[]> {
     prisma.brand.findMany({ where: { logoId: id }, select: { id: true, name: true } }),
     prisma.globalSettings.findMany({ where: { logoId: id }, select: { id: true } }),
     prisma.globalSettings.findMany({ where: { faviconId: id }, select: { id: true } }),
+    prisma.service.findMany({ where: { imageId: id }, select: { id: true, slug: true } }),
+    prisma.location.findMany({ where: { heroDesktopImageId: id }, select: { id: true, slug: true } }),
+    prisma.location.findMany({ where: { heroMobileImageId: id }, select: { id: true, slug: true } }),
   ]);
 
   return [
@@ -334,6 +348,9 @@ export async function findMediaUsage(id: string): Promise<MediaUsageRef[]> {
     ...brands.map((r) => ({ source: "brand_logo", entityId: r.id, label: `Brand logo (${r.name})` })),
     ...settingsLogo.map((r) => ({ source: "settings_logo", entityId: r.id, label: "Site logo (Settings)" })),
     ...settingsFavicon.map((r) => ({ source: "settings_favicon", entityId: r.id, label: "Site favicon (Settings)" })),
+    ...serviceImages.map((r) => ({ source: "service_image", entityId: r.id, label: `Service image (${r.slug})` })),
+    ...locationHeroDesktop.map((r) => ({ source: "location_hero_desktop", entityId: r.id, label: `Location hero desktop (${r.slug})` })),
+    ...locationHeroMobile.map((r) => ({ source: "location_hero_mobile", entityId: r.id, label: `Location hero mobile (${r.slug})` })),
   ];
 }
 

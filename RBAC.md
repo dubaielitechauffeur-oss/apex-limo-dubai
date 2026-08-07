@@ -61,7 +61,7 @@ didn't change it, only centralized where it's defined (see §4).
 
 ## 3. Permissions
 
-**53 permissions total**, one array entry per resource+action combination
+**57 permissions total** (53 through Phase 4, plus 4 faq:* added in Phase 7), one array entry per resource+action combination
 the Phase 2B seed already used. Full catalog in
 `lib/permissions/catalog.ts`:
 
@@ -262,7 +262,7 @@ rule, but fully working and tested:
 
 - **`listRoles()`** — every role with its permission count. Requires
   `users:read`.
-- **`listPermissionCatalog()`** — the full 53-permission catalog grouped
+- **`listPermissionCatalog()`** — the full 57-permission catalog grouped
   by resource, for a future "what does this role grant" screen. Requires
   `users:read`.
 - **`assignUserRole(targetUserId, newRoleId)`** — the actual role-change
@@ -455,7 +455,7 @@ consistently.
 
 ```
 lib/permissions/
-  catalog.ts             53-permission catalog, Permission/Resource types
+  catalog.ts             57-permission catalog, Permission/Resource types
   roles.ts                 SYSTEM_ROLES, ROLE_PERMISSIONS, ROLE_DESCRIPTIONS
   context.ts                 getAuthzContext (DB-fresh), isSuperAdmin, hasPermission
   guard.ts                     requirePermission / requireAnyPermission /

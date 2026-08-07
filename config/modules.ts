@@ -66,6 +66,14 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
     phase: 2,
   },
   {
+    id: "faq",
+    name: "FAQ CMS",
+    description: "FAQ categories and entries, optionally scoped to a vehicle/service/location",
+    featurePath: "features/faq",
+    dependencies: [],
+    phase: 2,
+  },
+  {
     id: "media",
     name: "Media Library",
     description: "Image upload, folders, desktop/mobile variants, search",

@@ -108,7 +108,7 @@ components/admin/
                          dependency; mounted once by AdminShell
     DashboardCard.tsx, ModulePlaceholder.tsx
   users/
-    PermissionView.tsx   53-permission catalog grouped by resource, with a
+    PermissionView.tsx   57-permission catalog grouped by resource, with a
                          check/muted state per permission (see below)
     RoleChangeForm.tsx, UserStatusToggle.tsx, SendPasswordResetButton.tsx
   audit/

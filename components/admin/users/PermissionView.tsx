@@ -6,7 +6,7 @@ export interface CatalogEntry {
 }
 
 /**
- * Read-only display of the 53-permission catalog grouped by resource, with
+ * Read-only display of the 57-permission catalog grouped by resource, with
  * a checkmark for whichever subset `granted` contains. Used to show what a
  * role currently grants (Users & Roles detail) — this phase only *displays*
  * permissions; it never lets anyone hand-pick individual permissions

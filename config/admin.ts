@@ -106,6 +106,13 @@ export const ADMIN_NAV: AdminNavSection[] = [
         moduleId: "blog",
       },
       {
+        id: "faq",
+        label: "FAQs",
+        href: "/admin/faq",
+        icon: "HelpCircle",
+        moduleId: "faq",
+      },
+      {
         id: "media",
         label: "Media Library",
         href: "/admin/media",

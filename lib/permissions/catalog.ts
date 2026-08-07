@@ -24,6 +24,7 @@ export const RESOURCES = [
   "blog",
   "services",
   "locations",
+  "faq",
   "media",
   "settings",
   "seo",
@@ -80,6 +81,17 @@ export const PERMISSIONS = {
   LOCATIONS_UPDATE: "locations:update",
   LOCATIONS_DELETE: "locations:delete",
   LOCATIONS_PUBLISH: "locations:publish",
+
+  // Added Phase 7 — FAQs (categories + entries) were always part of
+  // content_manager's intended scope (see its ROLE_DESCRIPTIONS entry,
+  // written back in Phase 4) but had no dedicated resource until the FAQ
+  // CMS existed to need one. No other resource cleanly covers it — FAQs
+  // attach to vehicle/service/location or stand alone, not owned by any
+  // one of those.
+  FAQ_CREATE: "faq:create",
+  FAQ_READ: "faq:read",
+  FAQ_UPDATE: "faq:update",
+  FAQ_DELETE: "faq:delete",
 
   MEDIA_CREATE: "media:create",
   MEDIA_READ: "media:read",

@@ -253,6 +253,11 @@ model MediaItem {
 
   blogPostsFeatured BlogPost[] @relation("BlogFeaturedImage")
 
+  servicesImage Service[] @relation("ServiceImage")
+
+  locationsHeroDesktop Location[] @relation("LocationHeroDesktopImage")
+  locationsHeroMobile  Location[] @relation("LocationHeroMobileImage")
+
   brandsLogo Brand[] @relation("BrandLogo")
 
   settingsLogo    GlobalSettings[] @relation("SettingsLogo")
@@ -492,6 +497,11 @@ model Service {
   ratingMetric     Json?
   imageUrl         String?
   imageAlt         Json?
+  // Phase 7: proper MediaItem integration, added alongside the legacy
+  // `imageUrl` string per DATABASE_ARCHITECTURE.md §7 ("MediaItem ... used
+  // for ... service images") — see CMS.md for the migration rationale.
+  // `imageUrl` is kept for backward compatibility, unused by the CMS form.
+  imageId          String?
   seo              Json
   status           PublishStatus @default(draft)
   publishedAt      DateTime?
@@ -500,6 +510,7 @@ model Service {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
+  image        MediaItem?            @relation("ServiceImage", fields: [imageId], references: [id], onDelete: SetNull)
   faqs         Faq[]
   vehicleLinks VehicleServiceLink[]
 
@@ -529,6 +540,12 @@ model Location {
   heroDesktopImageUrl String?
   heroMobileImageUrl  String?
   heroObjectPosition  String?
+  // Phase 7: proper MediaItem integration for hero media, added alongside
+  // the legacy `heroDesktop/MobileImageUrl` strings per
+  // DATABASE_ARCHITECTURE.md §7 ("MediaItem ... used for ... location hero
+  // images") — see CMS.md. Legacy fields kept for backward compatibility.
+  heroDesktopImageId  String?
+  heroMobileImageId   String?
   seo                 Json
   status              PublishStatus @default(draft)
   publishedAt         DateTime?
@@ -537,9 +554,11 @@ model Location {
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
 
-  popularRoutes LocationPopularRoute[]
-  faqs          Faq[]
-  vehicleLinks  VehicleLocationLink[]
+  heroDesktopImage MediaItem?             @relation("LocationHeroDesktopImage", fields: [heroDesktopImageId], references: [id], onDelete: SetNull)
+  heroMobileImage  MediaItem?             @relation("LocationHeroMobileImage", fields: [heroMobileImageId], references: [id], onDelete: SetNull)
+  popularRoutes    LocationPopularRoute[]
+  faqs             Faq[]
+  vehicleLinks     VehicleLocationLink[]
 
   @@index([status, sortOrder])
   @@map("locations")

@@ -77,7 +77,7 @@ describe("listRoles / listPermissionCatalog — permission-gated read access", (
     const result = await listPermissionCatalog();
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.length).toBe(53);
+      expect(result.data.length).toBe(57); // 53 (Phase 2B) + 4 faq:* (Phase 7)
       expect(result.data.every((p) => typeof p.resource === "string")).toBe(true);
     }
   });
