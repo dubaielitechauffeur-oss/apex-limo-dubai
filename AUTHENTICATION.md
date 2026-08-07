@@ -90,8 +90,8 @@ app/admin/
   change-password/page.tsx          Change-password screen (authenticated)
 
 components/admin/
-  AdminTopBar.tsx           Authenticated shell header (name, change-password link, sign out)
-  LogoutButton.tsx            Sign-out form
+  LogoutButton.tsx             Sign-out form (reused by the Phase 5 admin dashboard shell's UserMenu)
+  layout/                      Phase 5 dashboard shell — AdminShell, AdminHeader, UserMenu, SidebarNav (see ADMIN_PANEL.md)
   auth/
     AuthCard.tsx               Shared card shell for login/forgot/reset screens
     PasswordInput.tsx            Show/hide password toggle
