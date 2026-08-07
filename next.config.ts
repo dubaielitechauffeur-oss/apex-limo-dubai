@@ -53,6 +53,16 @@ const nextConfig: NextConfig = {
     remotePatterns: IMAGE_REMOTE_PATTERNS,
   },
   compress: true,
+  experimental: {
+    serverActions: {
+      // Next's default Server Action body limit (1 MB) is well under
+      // lib/media/validation.ts's MAX_UPLOAD_BYTES (10 MB) — without this,
+      // the admin media upload action would reject a legitimate 2–10 MB
+      // photo before it ever reached that validation. A small margin above
+      // 10 MB accounts for multipart form overhead around the file bytes.
+      bodySizeLimit: "12mb",
+    },
+  },
   async headers() {
     return [
       {

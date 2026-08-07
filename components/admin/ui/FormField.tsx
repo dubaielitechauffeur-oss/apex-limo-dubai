@@ -35,28 +35,33 @@ export function FormField({
 export const ADMIN_INPUT_CLASSES =
   "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500";
 
+/** Controlled when `onChange` is passed (drives a live preview/derived UI
+ *  elsewhere, e.g. RoleChangeForm's permission preview); otherwise a plain
+ *  uncontrolled field via `defaultValue`, submitted with the rest of its
+ *  `<form>`. Passing `value` without `onChange` would make React log a
+ *  read-only-field warning and silently ignore user input, so the two
+ *  modes use different React props rather than trying to share one. */
 export function SelectField({
   id,
   value,
+  defaultValue,
   onChange,
   disabled,
   children,
 }: {
   id: string;
   value?: string;
+  defaultValue?: string;
   onChange?: (value: string) => void;
   disabled?: boolean;
   children: ReactNode;
 }) {
+  const controlledProps = onChange
+    ? { value, onChange: (event: React.ChangeEvent<HTMLSelectElement>) => onChange(event.target.value) }
+    : { defaultValue };
+
   return (
-    <select
-      id={id}
-      name={id}
-      value={value}
-      disabled={disabled}
-      onChange={onChange ? (event) => onChange(event.target.value) : undefined}
-      className={ADMIN_INPUT_CLASSES}
-    >
+    <select id={id} name={id} disabled={disabled} className={ADMIN_INPUT_CLASSES} {...controlledProps}>
       {children}
     </select>
   );

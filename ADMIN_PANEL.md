@@ -14,9 +14,10 @@ Settings foundation, and "Coming Soon" placeholders for every module not yet
 implemented.
 
 Not built (explicit phase boundary — future phases): CRUD for Vehicles,
-Pricing, Blog, Locations, Services, Homepage, Media Library, SEO, Translations,
-Analytics. Their placeholder routes exist, are permission-gated, and are ready
-to be replaced module-by-module without touching the shell.
+Pricing, Blog, Locations, Services, Homepage, SEO, Translations, Analytics.
+Their placeholder routes exist, are permission-gated, and are ready to be
+replaced module-by-module without touching the shell. The Media Library
+(`/admin/media`) is real as of Phase 6 — see `MEDIA_LIBRARY.md`.
 
 ## Route structure
 
@@ -35,9 +36,11 @@ app/admin/
     users/[id]/                User detail + role/status/reset actions
     audit/                     Audit log viewer
     settings/                  Settings foundation (read-only)
+    media/                     Media Library (Phase 6 — see MEDIA_LIBRARY.md)
+    media/[id]/                Media details/edit
     bookings/, quotes/, homepage/, fleet/, fleet/vehicles/,
     fleet/categories/, pricing/, services/, locations/, blog/,
-    media/, seo/, translations/, analytics/
+    seo/, translations/, analytics/
                                 "Coming Soon" placeholders, one per module
 ```
 

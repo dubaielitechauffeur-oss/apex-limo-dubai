@@ -29,3 +29,8 @@ next-env.d.ts
 *.tsbuildinfo
 
 /lib/generated/prisma
+
+# uploaded media (local storage driver) — never committed; production
+# deployments configure the S3/R2 driver instead (see MEDIA_LIBRARY.md)
+/storage/media/*
+!/storage/media/.gitkeep
