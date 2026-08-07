@@ -12,7 +12,9 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@next/third-parties": "^16.3.0",
@@ -43,6 +45,7 @@
     "prisma": "^7.9.1",
     "tailwindcss": "^3.4.4",
     "tsx": "^4.19.4",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.2",
+    "vitest": "^4.1.10"
   }
 }

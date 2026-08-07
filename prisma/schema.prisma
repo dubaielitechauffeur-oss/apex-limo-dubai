@@ -94,6 +94,7 @@ enum AuditAction {
   login
   logout
   settings_change
+  unauthorized_access
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
