@@ -106,3 +106,48 @@ export function contactEmailHtml(data: ContactFormData, reference: string, times
 
   return emailShell({ heading: "New Contact Message", rowsHtml, reference, timestamp });
 }
+
+/**
+ * Password reset link for the admin panel — deliberately a simpler shell
+ * than the lead-notification emails above (no reference/row table; the
+ * only content that matters is the button and the expiry notice), sent to
+ * the account holder rather than internal ops.
+ */
+export function resetPasswordEmailHtml(resetUrl: string, timestamp: string): string {
+  const safeUrl = escapeHtml(resetUrl);
+  return `
+<div style="background:#f6f4ef;padding:32px 16px;font-family:Arial,Helvetica,sans-serif;">
+  <table role="presentation" width="100%" style="max-width:560px;margin:0 auto;background:#ffffff;border-collapse:collapse;">
+    <tr>
+      <td style="background:#0a0a0a;padding:28px 32px;">
+        <span style="color:#d4af37;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:bold;">
+          Apex Limo &amp; Chauffeur Dubai — Admin
+        </span>
+        <h1 style="color:#ffffff;font-size:20px;line-height:1.3;margin:10px 0 0;font-family:Georgia,'Times New Roman',serif;font-weight:normal;">
+          Reset your password
+        </h1>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:28px 32px;">
+        <p style="margin:0 0 20px;color:#0a0a0a;font-size:14px;line-height:1.6;">
+          A password reset was requested for this admin account. Click the button below to choose a new password. If you didn't request this, you can safely ignore this email.
+        </p>
+        <a href="${safeUrl}" style="display:inline-block;background:#c9a96e;color:#1a1a1a;font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;padding:14px 28px;border-radius:6px;">
+          Reset Password
+        </a>
+        <p style="margin:24px 0 0;color:#57534e;font-size:12px;line-height:1.6;">
+          This link expires one hour after it was requested (${escapeHtml(timestamp)}) and can only be used once.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:16px 32px;background:#faf8f3;border-top:2px solid #e9d68a;">
+        <span style="font-size:11px;color:#8a8680;word-break:break-all;">
+          If the button doesn't work, copy this link: ${safeUrl}
+        </span>
+      </td>
+    </tr>
+  </table>
+</div>`;
+}

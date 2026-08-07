@@ -36,10 +36,10 @@ export function assertResendConfigured(): void {
 }
 
 /** Verified sending domain (apexchauffeurdubai.com) — internal ops notifications only. */
-const FROM_ADDRESS = "Apex Limo & Chauffeur Dubai <bookings@apexchauffeurdubai.com>";
+export const FROM_ADDRESS = "Apex Limo & Chauffeur Dubai <bookings@apexchauffeurdubai.com>";
 
 /** Dubai has no DST, so a fixed-offset "en-AE" format is reliable regardless of server timezone. */
-function formatSubmittedAt(): string {
+export function formatSubmittedAt(): string {
   return new Intl.DateTimeFormat("en-AE", {
     dateStyle: "medium",
     timeStyle: "short",

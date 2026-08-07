@@ -1,6 +1,7 @@
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../lib/generated/prisma/client";
+import { hashPassword } from "../lib/auth/password";
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
@@ -318,6 +319,39 @@ async function main() {
       create: cat,
     });
     console.log(`  + ${cat.slug}`);
+  }
+
+  // ── Admin User (bootstrap) ────────────────────────────────────────────
+  // Optional — only runs when both env vars are set, so seeding a fresh
+  // environment never silently creates a default/guessable admin account.
+  // Re-running seed does not touch the password of an already-created
+  // account (`update: {}`), so this is safe to leave in .env long-term
+  // without it clobbering a since-rotated password on every `db:seed`.
+  console.log("\nCreating initial admin user...");
+  const adminEmail = process.env.ADMIN_SEED_EMAIL?.trim().toLowerCase();
+  const adminPassword = process.env.ADMIN_SEED_PASSWORD;
+
+  if (adminEmail && adminPassword) {
+    const superAdminRole = await prisma.role.findUnique({ where: { name: "super_admin" } });
+    if (!superAdminRole) {
+      throw new Error("super_admin role must be seeded before the admin user.");
+    }
+
+    const passwordHash = await hashPassword(adminPassword);
+    await prisma.user.upsert({
+      where: { email: adminEmail },
+      update: {},
+      create: {
+        email: adminEmail,
+        name: process.env.ADMIN_SEED_NAME ?? "Administrator",
+        roleId: superAdminRole.id,
+        passwordHash,
+        emailVerified: new Date(),
+      },
+    });
+    console.log(`  + ${adminEmail}`);
+  } else {
+    console.log("  (skipped — set ADMIN_SEED_EMAIL and ADMIN_SEED_PASSWORD to bootstrap an admin user)");
   }
 
   console.log("\nSeed complete!");

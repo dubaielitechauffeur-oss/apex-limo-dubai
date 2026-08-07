@@ -115,26 +115,47 @@ model Role {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  name      String
-  avatarUrl String?
-  roleId    String
-  isActive  Boolean   @default(true)
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  name                String
+  avatarUrl           String?
+  roleId              String
+  isActive            Boolean   @default(true)
+  passwordHash        String?
+  emailVerified       DateTime?
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  deletedAt           DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 
   role     Role      @relation(fields: [roleId], references: [id])
   accounts Account[]
   sessions Session[]
 
-  uploadedMedia MediaItem[] @relation("UploadedBy")
-  auditLogs     AuditLog[]
+  uploadedMedia       MediaItem[]           @relation("UploadedBy")
+  auditLogs           AuditLog[]
+  passwordResetTokens PasswordResetToken[]
 
   @@index([roleId])
   @@index([email])
   @@map("users")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
 }
 
 model Account {

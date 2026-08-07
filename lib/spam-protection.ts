@@ -53,13 +53,18 @@ function pruneOld(now: number) {
  * it (rare) would need a different mechanism entirely, since nothing in
  * the HTTP request itself can be trusted in that shape of deployment.
  */
-function getClientIp(request: NextRequest): string {
-  const vercelForwardedFor = request.headers.get("x-vercel-forwarded-for");
+/** Takes a plain `Headers` (`Request#headers` or `next/headers`'s `headers()`
+ *  both satisfy this) so callers outside Next.js middleware/route-handler
+ *  contexts — e.g. NextAuth's `authorize`, or a Server Action that only has
+ *  `await headers()` and no `Request` at all — can reuse the same
+ *  spoof-resistant IP resolution. */
+export function getClientIp(headers: Headers): string {
+  const vercelForwardedFor = headers.get("x-vercel-forwarded-for");
   if (vercelForwardedFor) {
     return vercelForwardedFor.split(",")[0].trim();
   }
 
-  const forwardedFor = request.headers.get("x-forwarded-for");
+  const forwardedFor = headers.get("x-forwarded-for");
   if (forwardedFor) {
     const hops = forwardedFor.split(",").map((hop) => hop.trim()).filter(Boolean);
     if (hops.length > 0) {
@@ -67,12 +72,12 @@ function getClientIp(request: NextRequest): string {
     }
   }
 
-  return request.headers.get("x-real-ip") ?? "unknown";
+  return headers.get("x-real-ip") ?? "unknown";
 }
 
 /** Returns true if this request should be rejected as rate-limit abuse. */
 export function isRateLimited(request: NextRequest): boolean {
-  const ip = getClientIp(request);
+  const ip = getClientIp(request.headers);
   const now = Date.now();
 
   if (hits.size > 5000) {
