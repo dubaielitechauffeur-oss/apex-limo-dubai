@@ -7,8 +7,12 @@ import {
   getBlogPostBySlug,
   getFeaturedTestimonials,
   getBrands,
+  getAllVehicles,
+  getVehicleBySlug,
+  getVehiclesByCategorySlug,
 } from "@/lib/public/cms-content";
 import { BLOG_POSTS } from "@/data/blog";
+import { FLEET } from "@/data/fleet";
 
 /**
  * Verifies the real, already-migrated content (prisma/migrate-public-content.ts)
@@ -83,5 +87,38 @@ describe("migrated content — homepage Testimonials/Brands", () => {
     const brands = await getBrands();
     expect(brands.length).toBe(7);
     expect(brands.every((b) => b.logo.length > 0)).toBe(true);
+  });
+});
+
+describe("migrated content — Fleet", () => {
+  it("getAllVehicles returns every migrated vehicle, ordered Ultra-Luxury first", async () => {
+    const vehicles = await getAllVehicles("en");
+    expect(vehicles.length).toBe(FLEET.length);
+    expect(vehicles[0]?.category).toBe("Ultra-Luxury");
+  });
+
+  it("getVehicleBySlug resolves Arabic description and preserves image order (primary first)", async () => {
+    const vehicle = await getVehicleBySlug("mercedes-maybach-s-class", "ar");
+    expect(vehicle).toBeDefined();
+    expect(vehicle?.brand).toBe("Mercedes-Maybach");
+    expect(vehicle?.description.length).toBeGreaterThan(0);
+    expect(vehicle?.images?.length).toBeGreaterThan(0);
+  });
+
+  it("getVehicleBySlug carries chauffeur-hire rates through as a plain object", async () => {
+    const vehicle = await getVehicleBySlug("mercedes-maybach-s-class", "en");
+    expect(vehicle?.rates.tenHours).toBeGreaterThan(0);
+  });
+
+  it("getVehiclesByCategorySlug('electric') filters by isElectric across categories", async () => {
+    const electric = await getVehiclesByCategorySlug("electric", "en");
+    expect(electric.length).toBeGreaterThan(0);
+    expect(electric.every((v) => v.isElectric)).toBe(true);
+  });
+
+  it("getVehiclesByCategorySlug('sedan') only returns Sedan-category vehicles", async () => {
+    const sedans = await getVehiclesByCategorySlug("sedan", "en");
+    expect(sedans.length).toBeGreaterThan(0);
+    expect(sedans.every((v) => v.category === "Sedan")).toBe(true);
   });
 });

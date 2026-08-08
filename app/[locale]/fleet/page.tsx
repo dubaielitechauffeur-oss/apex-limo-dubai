@@ -13,11 +13,15 @@ import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
-import { getAllVehicles, FLEET_CATEGORY_SLUGS } from "@/data/fleet";
+import { getAllVehicles } from "@/lib/public/cms-content";
+import { FLEET_CATEGORY_SLUGS } from "@/data/fleet";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
 }
+
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
@@ -34,14 +38,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  * Structured data for the fleet listing — an ItemList of Car entities,
  * giving search engines machine-readable specs for each vehicle.
  */
-function fleetJsonLd(locale: Locale) {
+function fleetJsonLd(locale: Locale, vehicles: Awaited<ReturnType<typeof getAllVehicles>>) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
     inLanguage: locale,
     name: `${SITE.name} Fleet`,
     url: `${SITE.url}${localizedPath(locale, "/fleet")}`,
-    itemListElement: getAllVehicles(locale).map((vehicle, index) => ({
+    itemListElement: vehicles.map((vehicle, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
@@ -65,13 +69,13 @@ export default async function FleetPage({ params }: PageProps) {
   setRequestLocale(locale as Locale);
   const tNav = await getTranslations("common.nav");
   const tCategory = await getTranslations("fleet.categoryPage");
-  const vehicles = getAllVehicles(locale as Locale);
+  const vehicles = await getAllVehicles(locale as Locale);
   return (
     <div>
       <script
         type="application/ld+json"
 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(fleetJsonLd(locale as Locale)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(fleetJsonLd(locale as Locale, vehicles)) }}
       />
       <script
         type="application/ld+json"

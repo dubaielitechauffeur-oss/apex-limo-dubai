@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { mockService, mockLocation, mockBlogPost, mockFaq, mockTestimonial, mockBrand, mockHeroSlide } = vi.hoisted(
+const { mockService, mockLocation, mockBlogPost, mockFaq, mockTestimonial, mockBrand, mockHeroSlide, mockVehicle } = vi.hoisted(
   () => ({
     mockService: { findMany: vi.fn() },
     mockLocation: { findMany: vi.fn() },
@@ -9,6 +9,7 @@ const { mockService, mockLocation, mockBlogPost, mockFaq, mockTestimonial, mockB
     mockTestimonial: { findMany: vi.fn(), count: vi.fn() },
     mockBrand: { findMany: vi.fn() },
     mockHeroSlide: { findMany: vi.fn() },
+    mockVehicle: { findMany: vi.fn() },
   })
 );
 
@@ -21,6 +22,7 @@ vi.mock("@/lib/db", () => ({
     testimonial: mockTestimonial,
     brand: mockBrand,
     heroSlide: mockHeroSlide,
+    vehicle: mockVehicle,
   },
 }));
 
@@ -35,15 +37,20 @@ import {
   getFeaturedTestimonials,
   getBrands,
   getHeroSlides,
+  getAllVehicles,
+  getVehicleBySlug,
+  getVehiclesByCategorySlug,
   getServiceSitemapEntries,
   getLocationSitemapEntries,
   getBlogPostSitemapEntries,
+  getVehicleSitemapEntries,
 } from "@/lib/public/cms-content";
 import { SERVICES } from "@/data/services";
 import { LOCATIONS } from "@/data/locations";
 import { BLOG_POSTS } from "@/data/blog";
 import { TESTIMONIALS } from "@/data/testimonials";
 import { BRANDS } from "@/data/brands";
+import { FLEET } from "@/data/fleet";
 
 const DB_ERROR = new Error("simulated connection failure");
 
@@ -113,19 +120,41 @@ describe("database failure fallback — every query throws", () => {
     expect(result).toEqual([]);
   });
 
+  it("getAllVehicles falls back to the static fleet list", async () => {
+    mockVehicle.findMany.mockRejectedValue(DB_ERROR);
+    const result = await getAllVehicles("en");
+    expect(result.length).toBe(FLEET.length);
+  });
+
+  it("getVehicleBySlug falls back to the static lookup", async () => {
+    mockVehicle.findMany.mockRejectedValue(DB_ERROR);
+    const result = await getVehicleBySlug(FLEET[0].slug, "en");
+    expect(result?.slug).toBe(FLEET[0].slug);
+  });
+
+  it("getVehiclesByCategorySlug falls back through getAllVehicles's own fallback", async () => {
+    mockVehicle.findMany.mockRejectedValue(DB_ERROR);
+    const result = await getVehiclesByCategorySlug("sedan", "en");
+    expect(result.every((v) => v.category === "Sedan")).toBe(true);
+    expect(result.length).toBeGreaterThan(0);
+  });
+
   it("sitemap helpers fall back to static slug lists", async () => {
     mockService.findMany.mockRejectedValue(DB_ERROR);
     mockLocation.findMany.mockRejectedValue(DB_ERROR);
     mockBlogPost.findMany.mockRejectedValue(DB_ERROR);
+    mockVehicle.findMany.mockRejectedValue(DB_ERROR);
 
-    const [services, locations, posts] = await Promise.all([
+    const [services, locations, posts, vehicles] = await Promise.all([
       getServiceSitemapEntries(),
       getLocationSitemapEntries(),
       getBlogPostSitemapEntries(),
+      getVehicleSitemapEntries(),
     ]);
     expect(services.map((s) => s.slug).sort()).toEqual(SERVICES.map((s) => s.slug).sort());
     expect(locations.map((l) => l.slug).sort()).toEqual(LOCATIONS.map((l) => l.slug).sort());
     expect(posts.map((p) => p.slug).sort()).toEqual(BLOG_POSTS.map((p) => p.slug).sort());
+    expect(vehicles.map((v) => v.slug).sort()).toEqual(FLEET.map((v) => v.slug).sort());
   });
 });
 
@@ -158,5 +187,11 @@ describe("empty CMS table fallback — every query resolves with zero rows", () 
     mockBrand.findMany.mockResolvedValue([]);
     const result = await getBrands();
     expect(result).toEqual(BRANDS);
+  });
+
+  it("getAllVehicles falls back when the table is empty", async () => {
+    mockVehicle.findMany.mockResolvedValue([]);
+    const result = await getAllVehicles("en");
+    expect(result.length).toBe(FLEET.length);
   });
 });

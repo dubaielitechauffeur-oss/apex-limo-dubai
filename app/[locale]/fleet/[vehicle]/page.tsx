@@ -50,13 +50,11 @@ import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
+import { getAllVehicles, getVehicleBySlug, getVehiclesByCategorySlug } from "@/lib/public/cms-content";
 import {
   FLEET,
-  getAllVehicles,
-  getVehicleBySlug,
   FLEET_CATEGORY_SLUGS,
   isFleetCategorySlug,
-  getVehiclesByCategorySlug,
   getFleetCategoryContent,
   type PlainFleetVehicle,
   type FleetCategorySlug,
@@ -74,6 +72,9 @@ interface PageProps {
   params: Promise<{ locale: string; vehicle: string }>;
 }
 
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   const vehicleParams = FLEET.map((vehicle) => ({ vehicle: vehicle.slug }));
   const categoryParams = FLEET_CATEGORY_SLUGS.map((category) => ({ vehicle: category }));
@@ -87,7 +88,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return generateCategoryMetadata(locale as Locale, slug);
   }
 
-  const vehicle = getVehicleBySlug(slug, locale as Locale);
+  const vehicle = await getVehicleBySlug(slug, locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata.fleetVehicle" });
 
   if (!vehicle) {
@@ -217,7 +218,7 @@ function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLab
  */
 async function FleetCategoryListing({ locale, category }: { locale: Locale; category: FleetCategorySlug }) {
   setRequestLocale(locale);
-  const vehicles = getVehiclesByCategorySlug(category, locale);
+  const vehicles = await getVehiclesByCategorySlug(category, locale);
   const t = await getTranslations("fleet.categoryPage");
   const tHero = await getTranslations("fleet.hero");
   const tDetail = await getTranslations("fleet.detail");
@@ -490,7 +491,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   }
 
   setRequestLocale(locale as Locale);
-  const vehicle = getVehicleBySlug(slug, locale as Locale);
+  const vehicle = await getVehicleBySlug(slug, locale as Locale);
 
   if (!vehicle) {
     notFound();
@@ -526,7 +527,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   // "Similar" prioritizes same-category vehicles first, then fills any
   // remaining slots from the rest of the fleet — still existing fleet data,
   // just a more meaningful match than an arbitrary slice.
-  const allVehicles = getAllVehicles(locale as Locale);
+  const allVehicles = await getAllVehicles(locale as Locale);
   const sameCategory = allVehicles.filter((v) => v.slug !== vehicle.slug && v.category === vehicle.category);
   const otherCategory = allVehicles.filter((v) => v.slug !== vehicle.slug && v.category !== vehicle.category);
   const similarVehicles = [...sameCategory, ...otherCategory].slice(0, 3);

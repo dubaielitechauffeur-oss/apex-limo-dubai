@@ -2,11 +2,12 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/constants";
 import { localizedPath } from "@/lib/seo";
 import { routing } from "@/i18n/routing";
-import { FLEET, FLEET_CATEGORY_SLUGS } from "@/data/fleet";
+import { FLEET_CATEGORY_SLUGS } from "@/data/fleet";
 import {
   getServiceSitemapEntries,
   getLocationSitemapEntries,
   getBlogPostSitemapEntries,
+  getVehicleSitemapEntries,
 } from "@/lib/public/cms-content";
 
 // See app/[locale]/services/page.tsx for the revalidation strategy note.
@@ -59,10 +60,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     localizedEntries(path, now, changeFrequency, priority)
   );
 
-  const fleetRoutes = FLEET.flatMap((vehicle) =>
-    localizedEntries(`/fleet/${vehicle.slug}`, now, "monthly", 0.7)
-  );
-
+  // Fleet category listing pages (/fleet/sedan, etc.) are fixed route
+  // segments, not content rows — always present regardless of how many
+  // vehicles currently populate them.
   const fleetCategoryRoutes = FLEET_CATEGORY_SLUGS.flatMap((category) =>
     localizedEntries(`/fleet/${category}`, now, "weekly", 0.75)
   );
@@ -70,10 +70,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Published, non-deleted CMS entries when available, falling back to the
   // static data files (same rule as the public pages themselves — see
   // lib/public/cms-content.ts) so the sitemap never drops a legitimate URL.
-  const [serviceEntries, locationEntries, blogEntries] = await Promise.all([
+  const [serviceEntries, locationEntries, blogEntries, vehicleEntries] = await Promise.all([
     getServiceSitemapEntries(),
     getLocationSitemapEntries(),
     getBlogPostSitemapEntries(),
+    getVehicleSitemapEntries(),
   ]);
 
   const serviceRoutes = serviceEntries.flatMap((service) =>
@@ -86,6 +87,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const blogRoutes = blogEntries.flatMap((post) =>
     localizedEntries(`/blog/${post.slug}`, post.lastModified ?? now, "monthly", 0.6)
+  );
+
+  const fleetRoutes = vehicleEntries.flatMap((vehicle) =>
+    localizedEntries(`/fleet/${vehicle.slug}`, vehicle.lastModified ?? now, "monthly", 0.7)
   );
 
   return [

@@ -1,6 +1,6 @@
 "use server";
 
-import { listMedia, type MediaListItem } from "@/lib/media/items";
+import { listMedia, getMediaItem, type MediaListItem } from "@/lib/media/items";
 
 export interface MediaPickerResult {
   id: string;
@@ -26,4 +26,30 @@ export async function searchMediaForPicker(query: string): Promise<MediaPickerRe
  *  Server Components so the modal isn't empty on first open. */
 export async function getInitialMediaPickerItems(): Promise<MediaPickerResult[]> {
   return searchMediaForPicker("");
+}
+
+/**
+ * Guarantees `alreadyReferencedIds` are present in the returned list, even
+ * when they fall outside `getInitialMediaPickerItems()`'s most-recent page.
+ * Without this, editing a record whose image(s) were uploaded earlier than
+ * the library's newest ~24 items resolves the current selection to nothing
+ * — `MediaPickerField`/`VehicleImagesManager` then render as unselected and
+ * a plain "Save" silently drops the real reference. Call with the record's
+ * own image/OG-image id(s) alongside the default grid.
+ */
+export async function ensureMediaPickerItems(
+  baseItems: MediaPickerResult[],
+  alreadyReferencedIds: (string | null | undefined)[]
+): Promise<MediaPickerResult[]> {
+  const present = new Set(baseItems.map((item) => item.id));
+  const missingIds = [...new Set(alreadyReferencedIds.filter((id): id is string => id != null && id !== "" && !present.has(id)))];
+  if (missingIds.length === 0) return baseItems;
+
+  const fetched = await Promise.all(missingIds.map((id) => getMediaItem(id)));
+  const extra: MediaPickerResult[] = [];
+  for (const result of fetched) {
+    if (result.success) extra.push(toPickerResult(result.data));
+  }
+
+  return [...baseItems, ...extra];
 }

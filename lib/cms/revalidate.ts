@@ -45,3 +45,16 @@ export function revalidatePublicBlog(slug?: string) {
 export function revalidatePublicHomepage() {
   revalidateAllLocales("/");
 }
+
+export function revalidatePublicFleet(slug?: string) {
+  revalidateAllLocales("/fleet");
+  if (slug) revalidateAllLocales(`/fleet/${slug}`);
+  // Category listing pages share the /fleet/[vehicle] route — any vehicle
+  // change can shift which vehicles a category page lists.
+  for (const categorySlug of ["sedan", "suv", "van", "ultra-luxury", "electric"]) {
+    revalidateAllLocales(`/fleet/${categorySlug}`);
+  }
+  revalidatePath("/sitemap.xml");
+  // The homepage fleet carousel also reads vehicle data.
+  revalidateAllLocales("/");
+}

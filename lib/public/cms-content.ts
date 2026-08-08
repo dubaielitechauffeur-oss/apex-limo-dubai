@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { routing, type Locale } from "@/i18n/routing";
+import type { LocalizedText } from "@/lib/cms/localized";
 import {
   getAllServices as staticGetAllServices,
   getServiceBySlug as staticGetServiceBySlug,
@@ -19,6 +20,14 @@ import {
 import { getAllFaqs as staticGetAllFaqs, type PlainFaqHubEntry } from "@/data/faqHub";
 import { TESTIMONIALS, type Testimonial } from "@/data/testimonials";
 import { BRANDS, type Brand } from "@/data/brands";
+import {
+  getAllVehicles as staticGetAllVehicles,
+  getVehicleBySlug as staticGetVehicleBySlug,
+  getVehiclesByCategorySlug as staticGetVehiclesByCategorySlug,
+  type PlainFleetVehicle,
+  type FleetCategory,
+  type FleetCategorySlug,
+} from "@/data/fleet";
 
 /**
  * The central public read layer for CMS-backed content (Phase 8).
@@ -381,6 +390,102 @@ export async function getHeroSlides(locale: Locale): Promise<PublicHeroSlide[]> 
   }
 }
 
+// ── Fleet ────────────────────────────────────────────────────────────────
+// Vehicle.category is a real FK (VehicleCategory), while the static
+// PlainFleetVehicle's `category` field is the closed `FleetCategory`
+// display-string union ("Sedan"/"SUV"/"Van"/"Ultra-Luxury"). The four
+// VehicleCategory rows are seeded with exactly these matching slugs
+// (prisma/seed.ts), so this map is safe for the real data; a category an
+// admin adds beyond these four falls back to its own English name so
+// nothing throws, though it won't participate in the same-ordering rank
+// below — a known, documented limitation (see FLEET_CMS.md).
+const CATEGORY_SLUG_TO_DISPLAY: Record<string, FleetCategory> = {
+  sedan: "Sedan",
+  suv: "SUV",
+  van: "Van",
+  "ultra-luxury": "Ultra-Luxury",
+};
+
+const CATEGORY_DISPLAY_RANK: Record<FleetCategory, number> = {
+  "Ultra-Luxury": 0,
+  Sedan: 1,
+  SUV: 2,
+  Van: 3,
+};
+
+function mapVehicle(row: Awaited<ReturnType<typeof fetchAllVehicleRows>>[number], locale: Locale): PlainFleetVehicle {
+  const badge = row.badge as LocalizedText | null;
+  const category = CATEGORY_SLUG_TO_DISPLAY[row.category.slug] ?? ((row.category.name as LocalizedText | null)?.en as FleetCategory);
+
+  return {
+    slug: row.slug,
+    name: row.name,
+    brand: row.brand,
+    model: row.model,
+    rates: row.rates as unknown as PlainFleetVehicle["rates"],
+    category,
+    isElectric: row.isElectric,
+    tagline: pickText(row.tagline, locale),
+    description: pickText(row.description, locale),
+    longDescription: pickText(row.longDescription, locale),
+    passengers: row.passengers,
+    luggage: row.luggage,
+    idealFor: pickText(row.idealFor, locale),
+    features: pickArray(row.features, locale),
+    whyChoose: pickArray(row.whyChoose, locale),
+    faqs: row.faqs.map((faq) => ({ question: pickText(faq.question, locale), answer: pickText(faq.answer, locale) })),
+    images: row.images.length > 0 ? row.images.map((img) => ({ src: img.media.url, alt: pickText(img.media.alt, locale) })) : undefined,
+    badge: badge ? pickText(badge, locale) || undefined : undefined,
+    isPlaceholder: row.isPlaceholder,
+  };
+}
+
+function fetchAllVehicleRows() {
+  return prisma.vehicle.findMany({
+    where: { status: "published", deletedAt: null },
+    orderBy: { sortOrder: "asc" },
+    include: {
+      category: { select: { slug: true, name: true } },
+      images: { orderBy: { sortOrder: "asc" }, include: { media: { select: { url: true, alt: true } } } },
+      faqs: { orderBy: { sortOrder: "asc" } },
+    },
+  });
+}
+
+/** Same category-rank ordering `getAllVehicles()` in data/fleet.ts applies
+ *  (Ultra-Luxury first, down to Van), so the CMS-backed listing visually
+ *  matches the static one exactly. */
+function sortByCategoryRank(vehicles: PlainFleetVehicle[]): PlainFleetVehicle[] {
+  return [...vehicles].sort((a, b) => (CATEGORY_DISPLAY_RANK[a.category] ?? 99) - (CATEGORY_DISPLAY_RANK[b.category] ?? 99));
+}
+
+export async function getAllVehicles(locale: Locale): Promise<PlainFleetVehicle[]> {
+  return withFallback(
+    async () => sortByCategoryRank((await fetchAllVehicleRows()).map((row) => mapVehicle(row, locale))),
+    (result) => result.length === 0,
+    () => staticGetAllVehicles(locale)
+  );
+}
+
+export async function getVehicleBySlug(slug: string, locale: Locale): Promise<PlainFleetVehicle | undefined> {
+  return withFallback(
+    async () => {
+      const rows = await fetchAllVehicleRows();
+      const row = rows.find((r) => r.slug === slug);
+      return row ? mapVehicle(row, locale) : undefined;
+    },
+    (result) => result === undefined,
+    () => staticGetVehicleBySlug(slug, locale)
+  );
+}
+
+export async function getVehiclesByCategorySlug(categorySlug: FleetCategorySlug, locale: Locale): Promise<PlainFleetVehicle[]> {
+  const all = await getAllVehicles(locale);
+  if (categorySlug === "electric") return all.filter((v) => v.isElectric);
+  const display = CATEGORY_SLUG_TO_DISPLAY[categorySlug];
+  return all.filter((v) => v.category === display);
+}
+
 // ── Sitemap helpers ──────────────────────────────────────────────────────
 
 export interface SitemapEntry {
@@ -428,5 +533,19 @@ export async function getBlogPostSitemapEntries(): Promise<SitemapEntry[]> {
     (result) => result.length === 0,
     () =>
       staticGetAllBlogPosts(routing.defaultLocale).map((p) => ({ slug: p.slug, lastModified: new Date(p.publishDate) }))
+  );
+}
+
+export async function getVehicleSitemapEntries(): Promise<SitemapEntry[]> {
+  return withFallback(
+    async () => {
+      const rows = await prisma.vehicle.findMany({
+        where: { status: "published", deletedAt: null },
+        select: { slug: true, updatedAt: true },
+      });
+      return rows.map((r) => ({ slug: r.slug, lastModified: r.updatedAt }));
+    },
+    (result) => result.length === 0,
+    () => staticGetAllVehicles(routing.defaultLocale).map((v) => ({ slug: v.slug }))
   );
 }

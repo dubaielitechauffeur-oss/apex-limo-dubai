@@ -1,6 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
-import { getAllVehicles } from "@/data/fleet";
+import { getAllVehicles } from "@/lib/public/cms-content";
 import { FLEET_SIZE } from "@/lib/constants";
 import FleetCarouselClient from "./FleetCarouselClient";
 
@@ -17,7 +17,7 @@ export default async function FleetCarousel() {
   const t = await getTranslations("fleet.carousel");
   const tCard = await getTranslations("fleet.card");
   const tA11y = await getTranslations("common.a11y");
-  const vehicles = getAllVehicles(locale);
+  const vehicles = await getAllVehicles(locale);
 
   // Resolved server-side (rather than passed as a function prop) — Server
   // Component props crossing into a Client Component must be plain

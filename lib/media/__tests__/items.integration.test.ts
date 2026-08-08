@@ -193,6 +193,37 @@ describe("findMediaUsage / deleteMedia — reference-aware, soft-delete", () => 
     }
   });
 
+  it("detects usage via a real VehicleImage.mediaId reference (Phase 9 Fleet CMS)", async () => {
+    const mediaId = await uploadFixture("vehicle-gallery.png");
+    const category = await prisma.vehicleCategory.create({
+      data: { slug: `media-vitest-cat-${Math.random().toString(36).slice(2, 8)}`, name: { en: "Vitest", ar: "", ru: "", zh: "", fr: "", de: "" }, sortOrder: 999 },
+    });
+    const vehicle = await prisma.vehicle.create({
+      data: {
+        slug: `media-vitest-vehicle-${Math.random().toString(36).slice(2, 8)}`,
+        name: "Media Vitest Vehicle",
+        brand: "Vitest",
+        model: "Test",
+        categoryId: category.id,
+        passengers: 4,
+        luggage: 2,
+        tagline: {}, description: {}, longDescription: {}, idealFor: {}, features: {}, whyChoose: {},
+        rates: { tenHours: 0, fiveHours: 0, oneHour: 0, airport: 0, extraHour: 0, additionalCity: 0 },
+        seo: { title: {}, description: {}, ogImageId: null, canonical: null, noIndex: false, noFollow: false },
+        images: { create: [{ mediaId, sortOrder: 0 }] },
+      },
+    });
+
+    try {
+      const usage = await findMediaUsage(mediaId);
+      expect(usage.some((u) => u.source === "vehicle_image" && u.entityId === vehicle.id)).toBe(true);
+    } finally {
+      await prisma.vehicleImage.deleteMany({ where: { vehicleId: vehicle.id } });
+      await prisma.vehicle.delete({ where: { id: vehicle.id } });
+      await prisma.vehicleCategory.delete({ where: { id: category.id } });
+    }
+  });
+
   it("soft-deletes: excluded from listMedia afterward, but the row and file still exist", async () => {
     const mediaId = await uploadFixture("to-delete.png");
 

@@ -12,6 +12,7 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:migrate-content": "tsx prisma/migrate-public-content.ts",
+    "db:migrate-fleet-content": "tsx prisma/migrate-fleet-content.ts",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate",
     "test": "vitest run",

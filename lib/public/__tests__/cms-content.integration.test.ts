@@ -7,9 +7,12 @@ import {
   getLocationBySlug,
   getAllBlogPosts,
   getBlogPostBySlug,
+  getAllVehicles,
+  getVehicleBySlug,
   getServiceSitemapEntries,
   getLocationSitemapEntries,
   getBlogPostSitemapEntries,
+  getVehicleSitemapEntries,
 } from "@/lib/public/cms-content";
 import { emptyLocalizedText } from "@/lib/cms/localized";
 import { emptySeoMeta } from "@/lib/cms/seo";
@@ -17,6 +20,8 @@ import { emptySeoMeta } from "@/lib/cms/seo";
 const serviceIds: string[] = [];
 const locationIds: string[] = [];
 const blogPostIds: string[] = [];
+const vehicleIds: string[] = [];
+let vehicleCategoryId: string;
 
 async function makeService(slug: string, status: "draft" | "published" | "archived", deletedAt: Date | null = null) {
   const row = await prisma.service.create({
@@ -75,6 +80,32 @@ async function makeBlogPost(slug: string, status: "draft" | "published" | "archi
   return row.id;
 }
 
+async function makeVehicle(slug: string, status: "draft" | "published" | "archived", deletedAt: Date | null = null) {
+  const row = await prisma.vehicle.create({
+    data: {
+      slug,
+      name: `Vehicle ${slug}`,
+      brand: "Vitest Motors",
+      model: "Vitest Model",
+      categoryId: vehicleCategoryId,
+      passengers: 4,
+      luggage: 2,
+      tagline: emptyLocalizedText(),
+      description: emptyLocalizedText("Description"),
+      longDescription: emptyLocalizedText(),
+      idealFor: emptyLocalizedText(),
+      features: emptyLocalizedText(),
+      whyChoose: emptyLocalizedText(),
+      rates: { tenHours: 0, fiveHours: 0, oneHour: 0, airport: 0, extraHour: 0, additionalCity: 0 },
+      seo: emptySeoMeta() as unknown as object,
+      status,
+      deletedAt,
+    },
+  });
+  vehicleIds.push(row.id);
+  return row.id;
+}
+
 beforeAll(async () => {
   const suffix = Math.random().toString(36).slice(2, 10);
 
@@ -92,12 +123,23 @@ beforeAll(async () => {
   await makeBlogPost(`vitest-pub-post-draft-${suffix}`, "draft");
   await makeBlogPost(`vitest-pub-post-archived-${suffix}`, "archived");
   await makeBlogPost(`vitest-pub-post-deleted-${suffix}`, "published", new Date());
+
+  const category = await prisma.vehicleCategory.create({
+    data: { slug: `vitest-pub-cat-${suffix}`, name: emptyLocalizedText("Vitest Public Category"), sortOrder: 999 },
+  });
+  vehicleCategoryId = category.id;
+  await makeVehicle(`vitest-pub-veh-published-${suffix}`, "published");
+  await makeVehicle(`vitest-pub-veh-draft-${suffix}`, "draft");
+  await makeVehicle(`vitest-pub-veh-archived-${suffix}`, "archived");
+  await makeVehicle(`vitest-pub-veh-deleted-${suffix}`, "published", new Date());
 });
 
 afterAll(async () => {
   await prisma.service.deleteMany({ where: { id: { in: serviceIds } } });
   await prisma.location.deleteMany({ where: { id: { in: locationIds } } });
   await prisma.blogPost.deleteMany({ where: { id: { in: blogPostIds } } });
+  await prisma.vehicle.deleteMany({ where: { id: { in: vehicleIds } } });
+  if (vehicleCategoryId) await prisma.vehicleCategory.delete({ where: { id: vehicleCategoryId } }).catch(() => null);
 });
 
 describe("Public CMS read layer — draft/archived/soft-deleted content never leaks", () => {
@@ -151,6 +193,23 @@ describe("Public CMS read layer — draft/archived/soft-deleted content never le
     const result = await getBlogPostBySlug(deleted!.slug, "en");
     expect(result).toBeUndefined();
   });
+
+  it("getAllVehicles only returns published, non-deleted vehicles", async () => {
+    const results = await getAllVehicles("en");
+    const slugs = results.map((r) => r.slug);
+    expect(slugs.some((s) => s.startsWith("vitest-pub-veh-published-"))).toBe(true);
+    expect(slugs.some((s) => s.startsWith("vitest-pub-veh-draft-"))).toBe(false);
+    expect(slugs.some((s) => s.startsWith("vitest-pub-veh-archived-"))).toBe(false);
+    expect(slugs.some((s) => s.startsWith("vitest-pub-veh-deleted-"))).toBe(false);
+  });
+
+  it("getVehicleBySlug 404s a draft vehicle by direct slug access", async () => {
+    const allDb = await prisma.vehicle.findMany({ where: { id: { in: vehicleIds } }, select: { slug: true, status: true } });
+    const draft = allDb.find((v) => v.status === "draft");
+    expect(draft).toBeDefined();
+    const result = await getVehicleBySlug(draft!.slug, "en");
+    expect(result).toBeUndefined();
+  });
 });
 
 describe("Sitemap entries — draft/archived/soft-deleted never generate a URL", () => {
@@ -178,6 +237,15 @@ describe("Sitemap entries — draft/archived/soft-deleted never generate a URL",
     const entries = await getBlogPostSitemapEntries();
     const slugs = entries.map((e) => e.slug);
     const dbRows = await prisma.blogPost.findMany({ where: { id: { in: blogPostIds } }, select: { slug: true } });
+    const testSlugs = dbRows.map((r) => r.slug);
+    for (const slug of testSlugs.filter((s) => s.includes("-published-"))) expect(slugs).toContain(slug);
+    for (const slug of testSlugs.filter((s) => !s.includes("-published-"))) expect(slugs).not.toContain(slug);
+  });
+
+  it("getVehicleSitemapEntries excludes draft, archived, and soft-deleted vehicles", async () => {
+    const entries = await getVehicleSitemapEntries();
+    const slugs = entries.map((e) => e.slug);
+    const dbRows = await prisma.vehicle.findMany({ where: { id: { in: vehicleIds } }, select: { slug: true } });
     const testSlugs = dbRows.map((r) => r.slug);
     for (const slug of testSlugs.filter((s) => s.includes("-published-"))) expect(slugs).toContain(slug);
     for (const slug of testSlugs.filter((s) => !s.includes("-published-"))) expect(slugs).not.toContain(slug);
