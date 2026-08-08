@@ -1,6 +1,8 @@
 import type { NextRequest } from "next/server";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
+import { prisma } from "@/lib/db";
+import type { BookingFormData, QuoteFormData } from "@/lib/types";
 
 /** Shared helpers for the booking/quote/contact API routes — previously
  *  duplicated near-verbatim across each `route.ts`. */
@@ -83,4 +85,125 @@ export function generateReference(prefix: string): string {
   const stamp = Date.now().toString(36).toUpperCase();
   const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
   return `${prefix}${stamp}-${rand}`;
+}
+
+/** Best-effort link to the `Vehicle` CMS row a lead's free-text vehicle
+ *  label refers to (booking/quote forms still submit `Vehicle.name`, not a
+ *  slug — see data/fleet.ts). Not unique in the schema, so `findFirst`; a
+ *  miss (no match, or the vehicle was renamed/removed since) leaves the FK
+ *  null — `vehicleLabel` is always stored regardless and remains the
+ *  historical source of truth for what the customer saw and picked. */
+async function resolveVehicleId(vehicleName: string): Promise<string | null> {
+  if (!vehicleName) return null;
+  const vehicle = await prisma.vehicle.findFirst({ where: { name: vehicleName, deletedAt: null }, select: { id: true } });
+  return vehicle?.id ?? null;
+}
+
+export interface LeadPersistContext {
+  reference: string;
+  locale: Locale;
+  ipAddress: string | null;
+}
+
+export interface PersistedLead {
+  id: string;
+  reference: string;
+}
+
+/**
+ * Writes a public booking submission into the `Booking` table — the
+ * admin Bookings CMS (Phase 10) reads from this table, not from the
+ * outbound email. Called alongside (not instead of) `dispatchLead`'s
+ * existing best-effort email/WhatsApp/CRM dispatch.
+ *
+ * Deliberately never throws: a persistence failure is logged and `null` is
+ * returned, exactly matching this file's existing tolerance for downstream
+ * failures ("the lead is still considered received" — see the booking/quote
+ * route handlers) — a transient database hiccup must never turn into a
+ * failed submission for the customer, who already has their reference and
+ * confirmation regardless of whether this write succeeds. A reference
+ * collision (astronomically unlikely — millisecond timestamp + 4 random
+ * base-36 characters) is treated the same way: logged, not retried, since a
+ * retry would risk the stored row's reference diverging from the one
+ * already shown to the customer and put in their email.
+ */
+export async function persistBooking(data: BookingFormData, context: LeadPersistContext): Promise<PersistedLead | null> {
+  try {
+    const vehicleId = await resolveVehicleId(data.vehicle);
+    const row = await prisma.booking.create({
+      data: {
+        reference: context.reference,
+        fullName: data.fullName,
+        phone: data.phone,
+        email: data.email,
+        pickupLocation: data.pickupLocation,
+        dropoffLocation: data.dropoffLocation,
+        date: new Date(data.date),
+        time: data.time,
+        vehicleId,
+        vehicleLabel: data.vehicle,
+        passengers: data.passengers,
+        hours: data.hours,
+        specialRequests: data.specialRequests,
+        locale: context.locale,
+        ipAddress: context.ipAddress ?? undefined,
+      },
+      select: { id: true, reference: true },
+    });
+    return row;
+  } catch (err) {
+    console.error("[api-lead-handler] failed to persist booking:", err);
+    return null;
+  }
+}
+
+/**
+ * Writes a public quote submission into the `Quote` table. The public quote
+ * form's fields (`serviceType`, `message`) don't map 1:1 onto `Quote`'s
+ * columns (`dropoffLocation`/`time`/`hours`/`passengers` aren't collected by
+ * the form at all, and `date` is optional there but required on the model)
+ * — deliberately not changing the public form to collect them (see
+ * BOOKING_QUOTE_CMS.md). Instead:
+ * - `serviceType` and any "no date given" note are folded into
+ *   `specialRequests` as readable context for the admin, alongside the
+ *   customer's free-text `message`.
+ * - `dropoffLocation`/`time`/`hours` default to `""`, `passengers` to `1` —
+ *   these are true unknowns until an admin follows up, not lost data.
+ * - `date` defaults to the submission date when the customer left it blank
+ *   ("flexible, no specific date"), which the folded-in note makes explicit
+ *   rather than letting the admin misread it as a firm request for today.
+ */
+export async function persistQuote(data: QuoteFormData, context: LeadPersistContext): Promise<PersistedLead | null> {
+  try {
+    const vehicleId = await resolveVehicleId(data.vehicle);
+    const contextNotes: string[] = [];
+    if (data.serviceType) contextNotes.push(`Service requested: ${data.serviceType}.`);
+    if (!data.date) contextNotes.push("No specific date requested (flexible).");
+    if (data.message?.trim()) contextNotes.push(data.message.trim());
+
+    const row = await prisma.quote.create({
+      data: {
+        reference: context.reference,
+        fullName: data.fullName,
+        phone: data.phone,
+        email: data.email,
+        pickupLocation: data.pickupLocation,
+        dropoffLocation: "",
+        date: data.date ? new Date(data.date) : new Date(),
+        time: "",
+        vehicleId,
+        vehicleLabel: data.vehicle,
+        passengers: 1,
+        hours: "",
+        specialRequests: contextNotes.join(" "),
+        locale: context.locale,
+        ipAddress: context.ipAddress ?? undefined,
+      },
+      select: { id: true, reference: true },
+    });
+    return row;
+  } catch (err) {
+    console.error("[api-lead-handler] failed to persist quote:", err);
+    return null;
+  }
 }

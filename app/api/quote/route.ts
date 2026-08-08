@@ -4,8 +4,8 @@ import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
 import { buildValidationMessages, validateQuoteForm, hasErrors, quoteBodySchema, type ValidationMessages } from "@/lib/validation";
 import { dispatchLead } from "@/lib/notifications";
-import { resolveLocale, generateReference, readJsonBodyWithLimit } from "@/lib/api-lead-handler";
-import { isRateLimited, isHoneypotTripped } from "@/lib/spam-protection";
+import { resolveLocale, generateReference, readJsonBodyWithLimit, persistQuote } from "@/lib/api-lead-handler";
+import { isRateLimited, isHoneypotTripped, getClientIp } from "@/lib/spam-protection";
 
 export async function POST(request: NextRequest) {
   let locale: Locale = routing.defaultLocale;
@@ -51,6 +51,11 @@ export async function POST(request: NextRequest) {
   }
 
   const reference = generateReference("APX-Q-");
+
+  // Persisted first so the admin Quotes CMS (Phase 10) has a durable record
+  // — see persistQuote's own doc comment for the field-mapping decisions
+  // and why a persistence failure never fails the customer's submission.
+  await persistQuote(body, { reference, locale, ipAddress: getClientIp(request.headers) });
 
   try {
     await dispatchLead("quote", body, reference);

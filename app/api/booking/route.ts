@@ -4,8 +4,8 @@ import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
 import { buildValidationMessages, validateBookingForm, hasErrors, bookingBodySchema, type ValidationMessages } from "@/lib/validation";
 import { dispatchLead } from "@/lib/notifications";
-import { resolveLocale, generateReference, readJsonBodyWithLimit } from "@/lib/api-lead-handler";
-import { isRateLimited, isHoneypotTripped } from "@/lib/spam-protection";
+import { resolveLocale, generateReference, readJsonBodyWithLimit, persistBooking } from "@/lib/api-lead-handler";
+import { isRateLimited, isHoneypotTripped, getClientIp } from "@/lib/spam-protection";
 
 export async function POST(request: NextRequest) {
   let locale: Locale = routing.defaultLocale;
@@ -56,6 +56,12 @@ export async function POST(request: NextRequest) {
   }
 
   const reference = generateReference("APX-");
+
+  // Persisted first so the admin Bookings CMS (Phase 10) has a durable
+  // record regardless of whether the downstream email/WhatsApp/CRM dispatch
+  // below succeeds — see persistBooking's own doc comment for why a
+  // persistence failure never fails the customer's submission.
+  await persistBooking(body, { reference, locale, ipAddress: getClientIp(request.headers) });
 
   try {
     // Fire-and-forget style: we don't want a slow downstream provider to
