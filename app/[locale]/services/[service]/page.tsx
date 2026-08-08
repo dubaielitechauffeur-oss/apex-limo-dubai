@@ -35,6 +35,7 @@ import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { getAllServices, getServiceBySlug } from "@/lib/public/cms-content";
+import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 import { SERVICES, type PlainService } from "@/data/services";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForService } from "@/lib/cross-links";
@@ -95,7 +96,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /** Service + FAQPage JSON-LD for this specific service. */
-function serviceJsonLd(service: PlainService, locale: Locale) {
+function serviceJsonLd(service: PlainService, locale: Locale, contact: SiteContact) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -110,7 +111,7 @@ function serviceJsonLd(service: PlainService, locale: Locale) {
       "@id": organizationId(),
       name: SITE.name,
       url: SITE.url,
-      telephone: SITE.phone,
+      telephone: contact.phone,
     },
     areaServed: {
       "@type": "City",
@@ -136,6 +137,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
     .filter((s) => s.slug !== service.slug)
     .slice(0, 3);
   const whatsappMessage = t("detail.whatsappMessage", { name: service.name });
+  const contact = await getSiteContact();
 
   // Up to 3 related vehicles (previously only the first match rendered) —
   // stronger internal linking without turning this into a full grid.
@@ -149,7 +151,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <script
         type="application/ld+json"
 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd(service, locale as Locale)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd(service, locale as Locale, contact)) }}
       />
       <script
         type="application/ld+json"
@@ -219,7 +221,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               <CTAButton href={`/quote?service=${service.slug}`} variant="outline">
                 {t("detail.getQuote")}
               </CTAButton>
-              <CTAButton href={getWhatsAppLink(whatsappMessage)} variant="outline" external>
+              <CTAButton href={getWhatsAppLink(whatsappMessage, contact.whatsapp)} variant="outline" external>
                 {t("detail.whatsappUs")}
               </CTAButton>
             </div>

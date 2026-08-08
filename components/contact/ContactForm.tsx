@@ -8,6 +8,7 @@ import PhoneInputField from "@/components/shared/PhoneInputField";
 import HoneypotField from "@/components/shared/HoneypotField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
+import type { SiteContact } from "@/lib/public/site-contact";
 import type { ContactFormData } from "@/lib/types";
 import { buildValidationMessages, validateContactForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
@@ -28,7 +29,7 @@ type Status = "idle" | "submitting" | "success" | "error";
  * lib/notifications.ts). Previously this page rendered a static form with
  * no submit handler or backing API route.
  */
-export default function ContactForm() {
+export default function ContactForm({ contact }: { contact: SiteContact }) {
   const t = useTranslations("contact.form");
   const tForms = useTranslations("forms");
   const locale = useLocale();
@@ -115,7 +116,8 @@ export default function ContactForm() {
             href={getWhatsAppLink(
               tForms("contact.followUpMessageTemplate", {
                 refPart: reference ? tForms("contact.refPartTemplate", { reference }) : "",
-              })
+              }),
+              contact.whatsapp
             )}
             external
           >

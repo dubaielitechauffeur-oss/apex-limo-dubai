@@ -29,6 +29,7 @@ import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, PRICE_RANGE, getWhatsAppLink } from "@/lib/constants";
 import { getAllLocations, getLocationBySlug } from "@/lib/public/cms-content";
+import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 import { LOCATIONS, type PlainLocation } from "@/data/locations";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForLocation } from "@/lib/cross-links";
@@ -82,7 +83,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  * coordinates is a single edit in the data model, not two files kept in
  * sync by hand.
  */
-function locationJsonLd(location: PlainLocation, locale: Locale) {
+function locationJsonLd(location: PlainLocation, locale: Locale, contact: SiteContact) {
   const geo = location.geo;
 
   return {
@@ -94,7 +95,7 @@ function locationJsonLd(location: PlainLocation, locale: Locale) {
     name: `${SITE.name} — ${location.name}`,
     description: location.shortDescription,
     url: `${SITE.url}${localizedPath(locale, `/locations/${location.slug}`)}`,
-    telephone: SITE.phone,
+    telephone: contact.phone,
     parentOrganization: {
       "@type": "LocalBusiness",
       "@id": organizationId(),
@@ -154,6 +155,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
     .filter((l) => l.slug !== location.slug)
     .slice(0, 3);
   const whatsappMessage = t("detail.whatsappMessage", { name: location.name });
+  const contact = await getSiteContact();
 
   // Up to 3 related vehicles (previously only the first match rendered) —
   // stronger internal linking without turning this into a full grid.
@@ -167,7 +169,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
       <script
         type="application/ld+json"
 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationJsonLd(location, locale as Locale)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationJsonLd(location, locale as Locale, contact)) }}
       />
       <script
         type="application/ld+json"
@@ -259,7 +261,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
               <CTAButton href={`/quote?location=${location.slug}`} variant="outline">
                 {t("detail.getQuote")}
               </CTAButton>
-              <CTAButton href={getWhatsAppLink(whatsappMessage)} variant="outline" external>
+              <CTAButton href={getWhatsAppLink(whatsappMessage, contact.whatsapp)} variant="outline" external>
                 {t("detail.whatsappUs")}
               </CTAButton>
             </div>

@@ -18,8 +18,11 @@ import {
   setVehicleStatus,
   softDeleteVehicle,
   restoreVehicle,
+  listVehicleRates,
+  updateVehicleRates,
   type VehicleInput,
   type VehicleCategoryInput,
+  type VehicleRatesInput,
 } from "@/lib/cms/fleet";
 import { emptyLocalizedText } from "@/lib/cms/localized";
 import { emptySeoMeta } from "@/lib/cms/seo";
@@ -309,5 +312,91 @@ describe("softDeleteVehicle / restoreVehicle", () => {
 
     const row = await prisma.vehicle.findUniqueOrThrow({ where: { id } });
     expect(row.deletedAt).toBeNull();
+  });
+});
+
+describe("listVehicleRates / updateVehicleRates — Pricing module", () => {
+  const RATES: VehicleRatesInput = { tenHours: 5000, fiveHours: 3000, oneHour: 800, airport: 1000, extraHour: 650, additionalCity: 650 };
+
+  it("is denied without a session", async () => {
+    mockSessionFor(null);
+    const result = await listVehicleRates();
+    expect(result.success).toBe(false);
+  });
+
+  it("content_manager lacks pricing:read and is denied", async () => {
+    mockSessionFor(users.content_manager);
+    const result = await listVehicleRates();
+    expect(result.success).toBe(false);
+  });
+
+  it("fleet_manager can list rates and finds a fixture vehicle with its current rates", async () => {
+    const id = await makeVehicle({ rates: RATES });
+    mockSessionFor(users.fleet_manager);
+    const result = await listVehicleRates();
+    expect(result.success).toBe(true);
+    if (result.success) {
+      const row = result.data.find((v) => v.id === id);
+      expect(row).toBeDefined();
+      expect(row?.rates).toEqual(RATES);
+    }
+  });
+
+  it("viewer has pricing:read but not pricing:update", async () => {
+    const id = await makeVehicle({ rates: RATES });
+    mockSessionFor(users.viewer);
+    const listResult = await listVehicleRates();
+    expect(listResult.success).toBe(true);
+
+    const updateResult = await updateVehicleRates(id, { ...RATES, oneHour: 900 });
+    expect(updateResult.success).toBe(false);
+  });
+
+  it("content_manager lacks pricing:update and is denied", async () => {
+    const id = await makeVehicle({ rates: RATES });
+    mockSessionFor(users.content_manager);
+    const result = await updateVehicleRates(id, { ...RATES, oneHour: 900 });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects a negative rate", async () => {
+    const id = await makeVehicle({ rates: RATES });
+    mockSessionFor(users.fleet_manager);
+    const result = await updateVehicleRates(id, { ...RATES, oneHour: -50 });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects a non-finite rate", async () => {
+    const id = await makeVehicle({ rates: RATES });
+    mockSessionFor(users.fleet_manager);
+    const result = await updateVehicleRates(id, { ...RATES, airport: NaN });
+    expect(result.success).toBe(false);
+  });
+
+  it("fleet_manager updates rates — persisted, reflected in listVehicleRates, and audit-logged", async () => {
+    const id = await makeVehicle({ rates: RATES });
+    mockSessionFor(users.fleet_manager);
+    const before = await prisma.auditLog.count({ where: { action: "update", entityType: "vehicle", entityId: id } });
+
+    const newRates: VehicleRatesInput = { ...RATES, oneHour: 950, tenHours: 5500 };
+    const result = await updateVehicleRates(id, newRates);
+    expect(result.success).toBe(true);
+
+    const row = await prisma.vehicle.findUniqueOrThrow({ where: { id } });
+    expect(row.rates).toEqual(newRates);
+
+    const listResult = await listVehicleRates();
+    expect(listResult.success).toBe(true);
+    if (listResult.success) {
+      expect(listResult.data.find((v) => v.id === id)?.rates).toEqual(newRates);
+    }
+
+    expect(await prisma.auditLog.count({ where: { action: "update", entityType: "vehicle", entityId: id } })).toBe(before + 1);
+  });
+
+  it("returns an error for a nonexistent vehicle id", async () => {
+    mockSessionFor(users.fleet_manager);
+    const result = await updateVehicleRates("nonexistent-vehicle-id", RATES);
+    expect(result.success).toBe(false);
   });
 });

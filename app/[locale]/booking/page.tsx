@@ -10,6 +10,7 @@ import { getAllServices } from "@/data/services";
 import { getAllLocations } from "@/data/locations";
 import { getAllVehicles } from "@/data/fleet";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { getSiteContact } from "@/lib/public/site-contact";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -34,6 +35,7 @@ export default async function BookingPage({ params }: PageProps) {
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const locations = getAllLocations(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const vehicles = getAllVehicles(locale as Locale).map(({ slug, name, category }) => ({ slug, name, category }));
+  const contact = await getSiteContact();
   return (
     <>
       <script
@@ -59,7 +61,7 @@ export default async function BookingPage({ params }: PageProps) {
         <Container>
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.7fr_1fr] lg:gap-10">
             <div className="rounded-2xl border border-gold/15 bg-ink p-6 sm:p-8 lg:p-10">
-              <BookingForm services={services} locations={locations} vehicles={vehicles} />
+              <BookingForm services={services} locations={locations} vehicles={vehicles} contact={contact} />
             </div>
 
             <aside>

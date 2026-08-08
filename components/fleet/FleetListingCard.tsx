@@ -4,9 +4,11 @@ import { Link } from "@/i18n/navigation";
 import { Car, Users, Briefcase, Wifi, GlassWater, type LucideIcon } from "lucide-react";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
+import type { SiteContact } from "@/lib/public/site-contact";
 
 interface FleetListingCardProps {
   vehicle: PlainFleetVehicle;
+  contact: SiteContact;
 }
 
 interface SpecItemProps {
@@ -53,7 +55,7 @@ function PriceItem({ label, priceOnRequestLabel }: PriceItemProps) {
  * FleetCarouselCard (homepage carousel and the vehicle detail page's
  * "related vehicles" grid), so this redesign never touches that one.
  */
-export default async function FleetListingCard({ vehicle }: FleetListingCardProps) {
+export default async function FleetListingCard({ vehicle, contact }: FleetListingCardProps) {
   const t = await getTranslations("fleet.listingCard");
   const tSummary = await getTranslations("fleet.summaryCard");
   const cover = vehicle.images?.[0];
@@ -136,7 +138,7 @@ export default async function FleetListingCard({ vehicle }: FleetListingCardProp
             detail page); Enquire on WhatsApp is the secondary action. */}
         <div className="mt-3.5 flex flex-col gap-3 sm:flex-row">
           <a
-            href={getWhatsAppLink(t("whatsappMessage", { name: vehicle.name }))}
+            href={getWhatsAppLink(t("whatsappMessage", { name: vehicle.name }), contact.whatsapp)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#25D366] px-4 py-3 text-xs font-bold uppercase tracking-wide text-white shadow-sm transition-colors duration-200 hover:bg-[#1EBE5A]"

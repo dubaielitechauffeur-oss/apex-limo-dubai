@@ -10,6 +10,7 @@ import PhoneInputField from "@/components/shared/PhoneInputField";
 import HoneypotField from "@/components/shared/HoneypotField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
+import type { SiteContact } from "@/lib/public/site-contact";
 import type { QuoteFormData } from "@/lib/types";
 import { buildValidationMessages, validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
@@ -108,10 +109,12 @@ function QuoteFormFields({
   services,
   locations,
   vehicles,
+  contact,
 }: {
   services: ServiceOption[];
   locations: LocationOption[];
   vehicles: VehicleOption[];
+  contact: SiteContact;
 }) {
   const t = useTranslations("forms");
   const locale = useLocale();
@@ -212,7 +215,8 @@ function QuoteFormFields({
             href={getWhatsAppLink(
               t("quote.followUpMessageTemplate", {
                 refPart: reference ? t("quote.refPartTemplate", { reference }) : "",
-              })
+              }),
+              contact.whatsapp
             )}
             external
           >
@@ -424,14 +428,16 @@ export default function QuoteForm({
   services,
   locations,
   vehicles,
+  contact,
 }: {
   services: ServiceOption[];
   locations: LocationOption[];
   vehicles: VehicleOption[];
+  contact: SiteContact;
 }) {
   return (
     <Suspense fallback={<QuoteFormSkeleton />}>
-      <QuoteFormFields services={services} locations={locations} vehicles={vehicles} />
+      <QuoteFormFields services={services} locations={locations} vehicles={vehicles} contact={contact} />
     </Suspense>
   );
 }

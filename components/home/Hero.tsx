@@ -1,14 +1,23 @@
 // Homepage hero section
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Clock, Car, Languages, Calendar, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import Ltr from "@/components/shared/Ltr";
 import { PRIMARY_CTA, FLEET_SIZE } from "@/lib/constants";
+import { getHeroSlides } from "@/lib/public/cms-content";
+import type { Locale } from "@/i18n/routing";
 
 export default async function Hero() {
   const t = await getTranslations("home.hero");
+  const locale = (await getLocale()) as Locale;
+  const slides = await getHeroSlides(locale);
+  // Only the first published slide (lowest sortOrder) drives the hero — this
+  // section has always been a single static banner, not a slideshow, so an
+  // admin-created slide replaces its image/title/subtitle/CTAs in place
+  // rather than turning this into a carousel. See PUBLIC_CMS_INTEGRATION.md.
+  const slide = slides[0] ?? null;
 
   const TRUST_INDICATORS = [
     { icon: Clock, label: t("trustConcierge") },
@@ -16,20 +25,24 @@ export default async function Hero() {
     { icon: Languages, label: t("trustMultilingual") },
   ];
 
+  const desktopImageSrc = slide?.desktopImageUrl || "/images/home/hero-chauffeur-door-night.webp";
+  const mobileImageSrc = slide?.mobileImageUrl || slide?.desktopImageUrl || "/images/home/hero-mobile-burj-khalifa.webp";
+  const imageAlt = slide?.title || t("imageAlt");
+
   return (
     <section className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-obsidian sm:min-h-[85vh] lg:min-h-[88vh]">
       {/* Full-bleed hero photograph. `<picture>` + `<source media>` swaps the
           file itself (not just the CSS) below 768px, so mobile only ever
-          downloads the portrait shot and never the desktop one. */}
+          downloads the portrait shot and never the desktop one. When an
+          admin publishes a Hero Slide, its desktop/mobile images replace
+          these static defaults — everything else about the section stays
+          the same. */}
       <div className="absolute inset-0">
         <picture>
-          <source
-            media="(max-width: 767px)"
-            srcSet="/images/home/hero-mobile-burj-khalifa.webp"
-          />
+          <source media="(max-width: 767px)" srcSet={mobileImageSrc} />
           <img
-            src="/images/home/hero-chauffeur-door-night.webp"
-            alt={t("imageAlt")}
+            src={desktopImageSrc}
+            alt={imageAlt}
             fetchPriority="high"
             decoding="async"
             className="h-full w-full object-cover object-[center_65%] md:object-[70%_center] lg:object-[65%_center]"
@@ -54,34 +67,73 @@ export default async function Hero() {
             {t("eyebrow")}
           </span>
 
-          <h1 className="mt-6 animate-slide-in-left font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
-            <span className="block">{t("titleLine1")}</span>
-            <span className="block text-heading">
-              {t.rich("titleLine2Template", {
-                brand: (chunks) => <span className="text-gold">{chunks}</span>,
-              })}
-            </span>
-          </h1>
+          {slide ? (
+            <h1 className="mt-6 animate-slide-in-left font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
+              {slide.title}
+            </h1>
+          ) : (
+            <h1 className="mt-6 animate-slide-in-left font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
+              <span className="block">{t("titleLine1")}</span>
+              <span className="block text-heading">
+                {t.rich("titleLine2Template", {
+                  brand: (chunks) => <span className="text-gold">{chunks}</span>,
+                })}
+              </span>
+            </h1>
+          )}
 
           <p className="mt-7 max-w-lg animate-fade-in text-base leading-relaxed text-smoke [animation-delay:200ms] sm:text-lg">
-            {t("description")}
+            {slide?.subtitle || t("description")}
           </p>
 
           <div className="mt-10 flex animate-fade-in flex-col gap-4 [animation-delay:350ms] sm:flex-row">
-            <Link
-              href={PRIMARY_CTA.book.href}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
-            >
-              <Calendar className="h-4 w-4" strokeWidth={2} />
-              {t("bookNow")}
-            </Link>
-            <Link
-              href="/services"
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10"
-            >
-              {t("ourServices")}
-              <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
-            </Link>
+            {slide && slide.ctas.length > 0 ? (
+              slide.ctas.map((cta, index) => {
+                const external = /^[a-z][a-z0-9+.-]*:/i.test(cta.href);
+                const className =
+                  index === 0
+                    ? "inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+                    : "inline-flex items-center justify-center gap-2 rounded-lg border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10";
+                const content =
+                  index === 0 ? (
+                    <>
+                      <Calendar className="h-4 w-4" strokeWidth={2} />
+                      {cta.label}
+                    </>
+                  ) : (
+                    <>
+                      {cta.label}
+                      <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
+                    </>
+                  );
+                return external ? (
+                  <a key={cta.href} href={cta.href} target="_blank" rel="noopener noreferrer" className={className}>
+                    {content}
+                  </a>
+                ) : (
+                  <Link key={cta.href} href={cta.href} className={className}>
+                    {content}
+                  </Link>
+                );
+              })
+            ) : (
+              <>
+                <Link
+                  href={PRIMARY_CTA.book.href}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-obsidian transition-colors duration-200 hover:bg-gold-deep"
+                >
+                  <Calendar className="h-4 w-4" strokeWidth={2} />
+                  {t("bookNow")}
+                </Link>
+                <Link
+                  href="/services"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10"
+                >
+                  {t("ourServices")}
+                  <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Trust indicators */}

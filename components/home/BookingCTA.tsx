@@ -5,7 +5,8 @@ import CTAButton from "@/components/shared/CTAButton";
 import SectionHeading from "@/components/shared/SectionHeading";
 import Reveal from "@/components/shared/Reveal";
 import Ltr from "@/components/shared/Ltr";
-import { PRIMARY_CTA, SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
+import { PRIMARY_CTA, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
+import { getSiteContact } from "@/lib/public/site-contact";
 
 interface BookingCTAProps {
   eyebrow?: string;
@@ -26,6 +27,7 @@ export default async function BookingCTA({
   const t = await getTranslations("common.cta");
   const td = await getTranslations("common.bookingCta");
   const tCommon = await getTranslations("common");
+  const contact = await getSiteContact();
   const resolvedEyebrow = eyebrow ?? td("eyebrow");
   const resolvedHeading = heading ?? td("heading");
   const resolvedSubtitle = subtitle ?? td("subtitle");
@@ -92,17 +94,17 @@ export default async function BookingCTA({
             <CTAButton href={PRIMARY_CTA.quote.href} variant="outline">
               {t("getInstantQuote")}
             </CTAButton>
-            <CTAButton href={getWhatsAppLink(tCommon("whatsappGenericMessage"))} variant="outline" external>
+            <CTAButton href={getWhatsAppLink(tCommon("whatsappGenericMessage"), contact.whatsapp)} variant="outline" external>
               {t("whatsappUs")}
             </CTAButton>
           </div>
 
           <a
-            href={getPhoneLink()}
+            href={getPhoneLink(contact.phone)}
             className="mt-8 inline-flex items-center gap-2 text-sm text-smoke transition-colors hover:text-gold"
           >
             <Phone className="h-4 w-4" strokeWidth={1.5} />
-            <Ltr>{SITE.phoneDisplay}</Ltr>
+            <Ltr>{contact.phoneDisplay}</Ltr>
           </a>
         </Reveal>
       </Container>

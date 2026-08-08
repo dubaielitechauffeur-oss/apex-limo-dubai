@@ -11,12 +11,14 @@ import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import CarouselPauseButton from "@/components/shared/CarouselPauseButton";
 import FleetCarouselCard, { type FleetCarouselCardLabels } from "./FleetCarouselCard";
 import type { PlainFleetVehicle } from "@/data/fleet";
+import type { SiteContact } from "@/lib/public/site-contact";
 import { useInfiniteCarousel } from "./useInfiniteCarousel";
 import { isRtlLocale } from "@/i18n/locale-metadata";
 
 interface FleetCarouselClientProps {
   vehicles: PlainFleetVehicle[];
   cardLabels: FleetCarouselCardLabels;
+  contact: SiteContact;
   eyebrow: string;
   title: string;
   subtitle: string;
@@ -70,6 +72,7 @@ const SWIPE_THRESHOLD_PX = 40;
 export default function FleetCarouselClient({
   vehicles,
   cardLabels,
+  contact,
   eyebrow,
   title,
   subtitle,
@@ -180,7 +183,7 @@ export default function FleetCarouselClient({
             >
               {extended.map((vehicle, position) => (
                 <div key={`${vehicle.slug}-${position}`} className="w-full shrink-0 px-3 md:w-1/2 lg:w-1/3">
-                  <FleetCarouselCard vehicle={vehicle} labels={cardLabels} />
+                  <FleetCarouselCard vehicle={vehicle} labels={cardLabels} contact={contact} />
                 </div>
               ))}
             </div>

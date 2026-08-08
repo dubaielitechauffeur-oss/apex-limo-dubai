@@ -5,6 +5,7 @@ import { Sparkles, Info, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
 import { getWhatsAppLink } from "@/lib/constants";
+import type { SiteContact } from "@/lib/public/site-contact";
 
 /** localStorage key marking that this visitor has already dismissed the
  *  notice — once set, it never shows again for them (any page, any tab). */
@@ -24,7 +25,7 @@ const FOCUSABLE_SELECTOR =
  * Renders nothing during SSR/first paint to avoid a hydration mismatch;
  * the open state is only ever set client-side.
  */
-export default function ConstructionNoticeModal() {
+export default function ConstructionNoticeModal({ contact }: { contact: SiteContact }) {
   const t = useTranslations("common.constructionNotice");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -154,7 +155,7 @@ export default function ConstructionNoticeModal() {
               b: (chunks) => <strong className="font-semibold text-gold">{chunks}</strong>,
               whatsappLink: (chunks) => (
                 <a
-                  href={getWhatsAppLink(t("priceNoticeWhatsappMessage"))}
+                  href={getWhatsAppLink(t("priceNoticeWhatsappMessage"), contact.whatsapp)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={dismiss}

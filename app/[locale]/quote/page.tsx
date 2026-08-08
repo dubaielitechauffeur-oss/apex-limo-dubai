@@ -12,6 +12,7 @@ import { getAllVehicles } from "@/data/fleet";
 import { getAllServices } from "@/data/services";
 import { getAllLocations } from "@/data/locations";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { getSiteContact } from "@/lib/public/site-contact";
 
 interface QuotePageProps {
   params: Promise<{ locale: string }>;
@@ -56,6 +57,7 @@ export default async function QuotePage({ params }: QuotePageProps) {
     luggage: tSummary("luggage"),
     chauffeurIncluded: tSummary("chauffeurIncluded"),
   };
+  const contact = await getSiteContact();
 
   return (
     <>
@@ -85,7 +87,7 @@ export default async function QuotePage({ params }: QuotePageProps) {
               <Suspense fallback={null}>
                 <VehicleSummaryCardClient vehicles={vehicleSummaries} labels={summaryLabels} />
               </Suspense>
-              <QuoteForm services={services} locations={locations} vehicles={vehicles} />
+              <QuoteForm services={services} locations={locations} vehicles={vehicles} contact={contact} />
             </div>
 
             <aside>

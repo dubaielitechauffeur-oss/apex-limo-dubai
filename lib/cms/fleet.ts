@@ -496,3 +496,78 @@ export async function restoreVehicle(id: string): Promise<RoleAdminResult<{ id: 
 
   return { success: true, data: { id } };
 }
+
+// ── Pricing ──────────────────────────────────────────────────────────────
+// Rates live on `Vehicle.rates` (no separate Pricing entity — see
+// PUBLIC_CMS_INTEGRATION.md/FLEET_CMS.md) and are gated with the dedicated
+// `pricing:*` permissions rather than `fleet:*`, since this is the Pricing
+// module's own read/write surface even though it shares the Vehicle row.
+// Values here are never rendered on the public site (chauffeur rates are
+// always quoted per-trip on WhatsApp/quote request) — they're an internal
+// reference sheet for the sales team.
+
+export interface VehiclePricingItem {
+  id: string;
+  slug: string;
+  name: string;
+  categoryName: string;
+  status: PublishStatus;
+  rates: VehicleRatesInput;
+}
+
+export async function listVehicleRates(): Promise<RoleAdminResult<VehiclePricingItem[]>> {
+  const gate = await requireCmsPermission(PERMISSIONS.PRICING_READ);
+  if (!gate.success) return gate;
+
+  const rows = await prisma.vehicle.findMany({
+    where: { deletedAt: null },
+    orderBy: [{ category: { sortOrder: "asc" } }, { sortOrder: "asc" }],
+    include: { category: { select: { name: true } } },
+  });
+
+  return {
+    success: true,
+    data: rows.map((row) => ({
+      id: row.id,
+      slug: row.slug,
+      name: row.name,
+      categoryName: (row.category.name as LocalizedText | null)?.en ?? "",
+      status: row.status,
+      rates: (row.rates as unknown as VehicleRatesInput | null) ?? {
+        tenHours: 0, fiveHours: 0, oneHour: 0, airport: 0, extraHour: 0, additionalCity: 0,
+      },
+    })),
+  };
+}
+
+function validateRatesInput(rates: VehicleRatesInput): string | null {
+  const fields: (keyof VehicleRatesInput)[] = ["tenHours", "fiveHours", "oneHour", "airport", "extraHour", "additionalCity"];
+  for (const field of fields) {
+    const value = rates[field];
+    if (!Number.isFinite(value) || value < 0) return "All rates must be zero or a positive number.";
+  }
+  return null;
+}
+
+export async function updateVehicleRates(id: string, rates: VehicleRatesInput): Promise<RoleAdminResult<{ id: string }>> {
+  const gate = await requireCmsPermission(PERMISSIONS.PRICING_UPDATE);
+  if (!gate.success) return gate;
+
+  const existing = await prisma.vehicle.findFirst({ where: { id, deletedAt: null } });
+  if (!existing) return { success: false, error: "Vehicle not found." };
+
+  const validationError = validateRatesInput(rates);
+  if (validationError) return { success: false, error: validationError };
+
+  await prisma.vehicle.update({ where: { id }, data: { rates: rates as unknown as Prisma.InputJsonValue } });
+  await writeAuditLog({
+    action: "update",
+    entityType: "vehicle",
+    entityId: id,
+    userId: gate.data.userId,
+    userName: gate.data.roleName,
+    changes: [{ field: "rates", before: JSON.stringify(existing.rates), after: JSON.stringify(rates) }],
+  });
+
+  return { success: true, data: { id } };
+}

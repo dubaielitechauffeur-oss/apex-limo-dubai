@@ -22,6 +22,7 @@ import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { getAllServices } from "@/lib/public/cms-content";
+import { getSiteContact } from "@/lib/public/site-contact";
 import type { PlainService } from "@/data/services";
 import { getServicesFaqs } from "@/data/servicesFaqs";
 
@@ -90,7 +91,10 @@ export default async function ServicesPage({ params }: PageProps) {
   const t = await getTranslations("services");
   const tNav = await getTranslations("common.nav");
   const servicesFaqs = getServicesFaqs(locale as Locale);
-  const services = await getAllServices(locale as Locale);
+  const [services, contact] = await Promise.all([
+    getAllServices(locale as Locale),
+    getSiteContact(),
+  ]);
   return (
     <div>
       <script
@@ -127,7 +131,8 @@ export default async function ServicesPage({ params }: PageProps) {
             {services.map((service, index) => {
               const Icon = ICONS[service.slug] ?? Crown;
               const whatsappHref = getWhatsAppLink(
-                t("listing.whatsappMessage", { name: service.name })
+                t("listing.whatsappMessage", { name: service.name }),
+                contact.whatsapp
               );
               return (
                 <Reveal

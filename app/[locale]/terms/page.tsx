@@ -6,6 +6,7 @@ import Section from "@/components/shared/Section";
 import Ltr from "@/components/shared/Ltr";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
+import { getSiteContact } from "@/lib/public/site-contact";
 import { formatDate } from "@/lib/format";
 
 interface PageProps {
@@ -32,6 +33,7 @@ export default async function TermsPage({ params }: PageProps) {
   const tNav = await getTranslations({ locale, namespace: "common.nav" });
   const breadcrumbLabel = t("title");
   const lastUpdated = formatDate(LAST_UPDATED_ISO, locale as Locale);
+  const contact = await getSiteContact();
   return (
     <>
       <script
@@ -138,11 +140,11 @@ export default async function TermsPage({ params }: PageProps) {
             <h2 className="font-display text-2xl text-obsidian">{t("s12.heading")}</h2>
             <p className="mt-4">
               {t.rich("s12.p1Template", {
-                email: SITE.email,
-                phone: SITE.phoneDisplay,
+                email: contact.email,
+                phone: contact.phoneDisplay,
                 emailLink: (chunks) => (
                   <a
-                    href={`mailto:${SITE.email}`}
+                    href={`mailto:${contact.email}`}
                     className="text-obsidian underline underline-offset-4 transition-colors hover:text-gold-deep"
                   >
                     {chunks}

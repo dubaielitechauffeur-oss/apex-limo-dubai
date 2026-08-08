@@ -9,11 +9,13 @@ import HoneypotField from "@/components/shared/HoneypotField";
 import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
 import type { PlainFleetVehicle } from "@/data/fleet";
+import type { SiteContact } from "@/lib/public/site-contact";
 import type { QuoteFormData } from "@/lib/types";
 import { buildValidationMessages, validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
 interface VehicleHeroQuoteFormProps {
   vehicle: PlainFleetVehicle;
+  contact: SiteContact;
 }
 
 /** Hardcoded to a real, recognized service so the lead notification reads
@@ -31,7 +33,7 @@ type Status = "idle" | "submitting" | "success" | "error";
  * one placement. Vehicle and duration are folded into the message field
  * since the API only stores free text there.
  */
-export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormProps) {
+export default function VehicleHeroQuoteForm({ vehicle, contact }: VehicleHeroQuoteFormProps) {
   const t = useTranslations("fleet.heroQuoteForm");
   const tDetail = useTranslations("fleet.detail");
   const tForms = useTranslations("forms");
@@ -131,7 +133,8 @@ export default function VehicleHeroQuoteForm({ vehicle }: VehicleHeroQuoteFormPr
             t("followUpMessageTemplate", {
               name: vehicle.name,
               refPart: reference ? t("refPartTemplate", { reference }) : "",
-            })
+            }),
+            contact.whatsapp
           )}
           external
           className="mt-6"

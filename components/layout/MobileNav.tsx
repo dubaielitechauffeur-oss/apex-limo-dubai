@@ -9,18 +9,19 @@ import Ltr from "@/components/shared/Ltr";
 import {
   NAV_LINKS,
   PRIMARY_CTA,
-  SITE,
   getPhoneLink,
   getWhatsAppLink,
 } from "@/lib/constants";
+import type { SiteContact } from "@/lib/public/site-contact";
 
 interface MobileNavProps {
   open: boolean;
   onClose: () => void;
+  contact: SiteContact;
 }
 
 /** Full-screen mobile navigation panel, shown when the header's menu button is tapped. */
-export default function MobileNav({ open, onClose }: MobileNavProps) {
+export default function MobileNav({ open, onClose, contact }: MobileNavProps) {
   const t = useTranslations("common");
   const locale = useLocale() as Locale;
   const pathname = usePathname();
@@ -127,7 +128,7 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
             {t("cta.bookNow")}
           </Link>
           <a
-            href={getWhatsAppLink(t("whatsappGenericMessage"))}
+            href={getWhatsAppLink(t("whatsappGenericMessage"), contact.whatsapp)}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline w-full"
@@ -135,10 +136,10 @@ export default function MobileNav({ open, onClose }: MobileNavProps) {
             {t("cta.whatsappUs")}
           </a>
           <a
-            href={getPhoneLink()}
+            href={getPhoneLink(contact.phone)}
             className="mt-2 text-center text-sm tracking-wide text-smoke"
           >
-            {t("mobileNav.orCall")} <Ltr>{SITE.phoneDisplay}</Ltr>
+            {t("mobileNav.orCall")} <Ltr>{contact.phoneDisplay}</Ltr>
           </a>
         </div>
 

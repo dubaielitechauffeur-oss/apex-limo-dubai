@@ -25,7 +25,8 @@ import ContactFaqAccordion from "@/components/contact/ContactFaqAccordion";
 import ContactForm from "@/components/contact/ContactForm";
 import Ltr from "@/components/shared/Ltr";
 import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
-import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
+import { getPhoneLink, getWhatsAppLink } from "@/lib/constants";
+import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -50,11 +51,11 @@ const TRUST_BADGE_ICONS = [Clock, BadgeCheck, Car, MessageCircle];
  *  by position. Phone/email are real contact data, never translated. Built
  *  as a function (rather than a module-level const) since the WhatsApp
  *  href needs the current locale's translated prefill message. */
-function getQuickContactCardMeta(whatsappMessage: string) {
+function getQuickContactCardMeta(whatsappMessage: string, contact: SiteContact) {
   return [
-    { icon: Phone, href: getPhoneLink(), external: false, dataDetail: SITE.phoneDisplay },
-    { icon: MessageCircle, href: getWhatsAppLink(whatsappMessage), external: true, dataDetail: undefined },
-    { icon: Mail, href: `mailto:${SITE.email}`, external: false, dataDetail: SITE.email },
+    { icon: Phone, href: getPhoneLink(contact.phone), external: false, dataDetail: contact.phoneDisplay },
+    { icon: MessageCircle, href: getWhatsAppLink(whatsappMessage, contact.whatsapp), external: true, dataDetail: undefined },
+    { icon: Mail, href: `mailto:${contact.email}`, external: false, dataDetail: contact.email },
   ];
 }
 
@@ -67,7 +68,8 @@ export default async function ContactPage({ params }: PageProps) {
   const t = await getTranslations("contact");
   const tNav = await getTranslations("common.nav");
   const tCommon = await getTranslations("common");
-  const quickContactCardMeta = getQuickContactCardMeta(tCommon("whatsappGenericMessage"));
+  const contact = await getSiteContact();
+  const quickContactCardMeta = getQuickContactCardMeta(tCommon("whatsappGenericMessage"), contact);
   const trustBadges = t.raw("trustBadges") as string[];
   const quickContactCards = t.raw("quickContact.cards") as {
     label: string;
@@ -177,7 +179,7 @@ export default async function ContactPage({ params }: PageProps) {
               <h3 className="font-display text-2xl text-white">{t("form.panelTitle")}</h3>
               <p className="mt-3 text-sm text-smoke">{t("form.intro")}</p>
 
-              <ContactForm />
+              <ContactForm contact={contact} />
             </Reveal>
 
             {/* Sidebar */}
@@ -206,16 +208,16 @@ export default async function ContactPage({ params }: PageProps) {
                 <ul className="mt-5 space-y-4 text-sm text-smoke">
                   <li>
                     <a
-                      href={getPhoneLink()}
+                      href={getPhoneLink(contact.phone)}
                       className="flex items-center gap-3 transition-colors hover:text-gold"
                     >
                       <Phone className="h-4 w-4 text-gold" strokeWidth={1.5} />
-                      <Ltr>{SITE.phoneDisplay}</Ltr>
+                      <Ltr>{contact.phoneDisplay}</Ltr>
                     </a>
                   </li>
                   <li>
                     <a
-                      href={getWhatsAppLink(tCommon("whatsappGenericMessage"))}
+                      href={getWhatsAppLink(tCommon("whatsappGenericMessage"), contact.whatsapp)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 transition-colors hover:text-gold"
@@ -226,11 +228,11 @@ export default async function ContactPage({ params }: PageProps) {
                   </li>
                   <li>
                     <a
-                      href={`mailto:${SITE.email}`}
+                      href={`mailto:${contact.email}`}
                       className="flex items-center gap-3 transition-colors hover:text-gold"
                     >
                       <Mail className="h-4 w-4 text-gold" strokeWidth={1.5} />
-                      {SITE.email}
+                      {contact.email}
                     </a>
                   </li>
                   <li className="flex items-center gap-3">
@@ -239,11 +241,11 @@ export default async function ContactPage({ params }: PageProps) {
                   </li>
                 </ul>
                 <div className="mt-6 flex flex-col gap-3">
-                  <CTAButton href={getWhatsAppLink(tCommon("whatsappGenericMessage"))} external>
+                  <CTAButton href={getWhatsAppLink(tCommon("whatsappGenericMessage"), contact.whatsapp)} external>
                     {t("sidebar.whatsappUs")}
                   </CTAButton>
-                  <CTAButton href={getPhoneLink()} variant="outline">
-                    {t("sidebar.callCta")} <Ltr>{SITE.phoneDisplay}</Ltr>
+                  <CTAButton href={getPhoneLink(contact.phone)} variant="outline">
+                    {t("sidebar.callCta")} <Ltr>{contact.phoneDisplay}</Ltr>
                   </CTAButton>
                 </div>
               </div>
@@ -266,7 +268,7 @@ export default async function ContactPage({ params }: PageProps) {
                 </dl>
                 <p className="mt-4 text-xs text-smoke">{t("sidebar.hoursDisclaimer")}</p>
                 <a
-                  href={getWhatsAppLink(t("sidebar.urgentWhatsappMessage"))}
+                  href={getWhatsAppLink(t("sidebar.urgentWhatsappMessage"), contact.whatsapp)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gold transition-colors hover:text-gold-pale"

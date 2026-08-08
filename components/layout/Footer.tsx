@@ -9,6 +9,7 @@ import {
   getPhoneLink,
   getWhatsAppLink,
 } from "@/lib/constants";
+import { getSiteContact } from "@/lib/public/site-contact";
 import { getAllServices } from "@/data/services";
 import type { Locale } from "@/i18n/routing";
 
@@ -28,6 +29,7 @@ export default async function Footer() {
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("common");
   const services = getAllServices(locale);
+  const contact = await getSiteContact();
   const year = new Date().getFullYear();
 
   return (
@@ -98,13 +100,13 @@ export default async function Footer() {
             <h3 className="label-eyebrow mb-5">{t("footer.reachUs")}</h3>
             <ul className="flex flex-col gap-3 text-sm text-smoke">
               <li>
-                <a href={getPhoneLink()} className="transition-colors hover:text-gold">
-                  <Ltr>{SITE.phoneDisplay}</Ltr>
+                <a href={getPhoneLink(contact.phone)} className="transition-colors hover:text-gold">
+                  <Ltr>{contact.phoneDisplay}</Ltr>
                 </a>
               </li>
               <li>
                 <a
-                  href={getWhatsAppLink(t("whatsappGenericMessage"))}
+                  href={getWhatsAppLink(t("whatsappGenericMessage"), contact.whatsapp)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-gold"
@@ -114,10 +116,10 @@ export default async function Footer() {
               </li>
               <li>
                 <a
-                  href={`mailto:${SITE.email}`}
+                  href={`mailto:${contact.email}`}
                   className="transition-colors hover:text-gold"
                 >
-                  {SITE.email}
+                  {contact.email}
                 </a>
               </li>
               <li className="pt-1 text-smoke/80">{t("footer.address")}</li>

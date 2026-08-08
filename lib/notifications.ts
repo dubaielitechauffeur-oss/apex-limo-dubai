@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import type { BookingFormData, QuoteFormData, ContactFormData, LeadType } from "./types";
 import { bookingEmailHtml, quoteEmailHtml, contactEmailHtml } from "./email-templates";
-import { SITE } from "./constants";
+import { getSiteContact } from "./public/site-contact";
 
 /**
  * These functions give the booking/quote/contact API routes a single,
@@ -69,6 +69,7 @@ export async function sendLeadEmail(payload: LeadPayload): Promise<void> {
   assertResendConfigured();
   const resend = new Resend(process.env.RESEND_API_KEY);
   const timestamp = formatSubmittedAt();
+  const contact = await getSiteContact();
 
   let subject: string;
   let html: string;
@@ -85,7 +86,7 @@ export async function sendLeadEmail(payload: LeadPayload): Promise<void> {
 
   const { error } = await resend.emails.send({
     from: FROM_ADDRESS,
-    to: SITE.email,
+    to: contact.notificationEmail,
     replyTo: payload.data.email,
     subject,
     html,

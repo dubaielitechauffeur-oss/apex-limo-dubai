@@ -4,7 +4,8 @@ import { Phone } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Reveal from "@/components/shared/Reveal";
 import Ltr from "@/components/shared/Ltr";
-import { SITE, getPhoneLink, getWhatsAppLink } from "@/lib/constants";
+import { getPhoneLink, getWhatsAppLink } from "@/lib/constants";
+import { getSiteContact } from "@/lib/public/site-contact";
 
 const RECOMMENDATION_SLUGS = {
   mercedesSClass: "mercedes-s-class",
@@ -19,7 +20,7 @@ const RECOMMENDATION_SLUGS = {
  * premium dark presentation. Sits just before the closing Booking CTA.
  */
 export default async function FleetConciergeSection() {
-  const t = await getTranslations("fleet.concierge");
+  const [t, contact] = await Promise.all([getTranslations("fleet.concierge"), getSiteContact()]);
 
   const recommendations = (Object.keys(RECOMMENDATION_SLUGS) as (keyof typeof RECOMMENDATION_SLUGS)[]).map(
     (key) => ({
@@ -61,14 +62,14 @@ export default async function FleetConciergeSection() {
 
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
-            href={getPhoneLink()}
+            href={getPhoneLink(contact.phone)}
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-gold-deep"
           >
             <Phone className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-            {t("call")} <Ltr>{SITE.phoneDisplay}</Ltr>
+            {t("call")} <Ltr>{contact.phoneDisplay}</Ltr>
           </a>
           <a
-            href={getWhatsAppLink(t("whatsappMessage"))}
+            href={getWhatsAppLink(t("whatsappMessage"), contact.whatsapp)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-gold/40 px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-gold hover:text-gold"

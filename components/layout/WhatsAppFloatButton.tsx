@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { getWhatsAppLink } from "@/lib/constants";
+import { getSiteContact } from "@/lib/public/site-contact";
 
 /**
  * Persistent floating action button, fixed bottom-right on every page.
@@ -7,10 +8,10 @@ import { getWhatsAppLink } from "@/lib/constants";
  * so no client JS is shipped for it.
  */
 export default async function WhatsAppFloatButton() {
-  const t = await getTranslations("common");
+  const [t, contact] = await Promise.all([getTranslations("common"), getSiteContact()]);
   return (
     <a
-      href={getWhatsAppLink(t("whatsappGenericMessage"))}
+      href={getWhatsAppLink(t("whatsappGenericMessage"), contact.whatsapp)}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("a11y.whatsappChatAriaLabel")}

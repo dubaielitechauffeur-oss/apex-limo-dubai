@@ -15,6 +15,7 @@ import {
   getPhoneLink,
 } from "@/lib/constants";
 import { isConversionPath } from "@/lib/layout";
+import type { SiteContact } from "@/lib/public/site-contact";
 
 /** Desktop nav order for the luxury header redesign — pulled from the
  *  shared NAV_LINKS source of truth so hrefs/children stay in sync. */
@@ -23,7 +24,7 @@ const headerNavLinks = HEADER_NAV_ORDER.map((key) =>
   NAV_LINKS.find((link) => link.key === key)
 ).filter((link): link is (typeof NAV_LINKS)[number] => Boolean(link));
 
-export default function Header() {
+export default function Header({ contact }: { contact: SiteContact }) {
   const t = useTranslations("common");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -129,10 +130,10 @@ export default function Header() {
           {/* Desktop CTA — far right */}
           <div className="hidden items-center gap-2.5 justify-self-end lg:flex xl:gap-4">
             <a
-              href={getPhoneLink()}
+              href={getPhoneLink(contact.phone)}
               className="shrink-0 whitespace-nowrap text-[13px] text-smoke transition-colors duration-200 hover:text-champagne"
             >
-              <Ltr>{SITE.phoneDisplay}</Ltr>
+              <Ltr>{contact.phoneDisplay}</Ltr>
             </a>
             <Link
               href={PRIMARY_CTA.book.href}
@@ -162,7 +163,7 @@ export default function Header() {
         </div>
       </div>
 
-      <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} contact={contact} />
 
       {/* Close trigger rendered above the overlay when open */}
       {mobileOpen && (

@@ -3,6 +3,7 @@ import { SITE, PRICE_RANGE, SAME_AS_URLS, SOCIAL_PROFILES } from "./constants";
 import { routing, type Locale } from "@/i18n/routing";
 import { TESTIMONIALS } from "@/data/testimonials";
 import { LOCATIONS } from "@/data/locations";
+import type { SiteDefaultSeo } from "./public/site-seo";
 
 /** Open Graph locale tags per site locale (BCP-47-ish, underscore form OG expects). */
 const OG_LOCALE_MAP: Record<Locale, string> = {
@@ -19,18 +20,31 @@ export function localizedPath(locale: Locale, path: string): string {
   return locale === routing.defaultLocale ? path : `/${locale}${path}`;
 }
 
-/** Per-locale site-wide metadata defaults, applied via each locale's root layout.
- *  `tagline` is the translated `common.siteTagline` message — resolved by the
- *  caller (a Server Component) since this function itself isn't async. */
-export function getDefaultMetadata(locale: Locale, tagline: string = SITE.tagline): Metadata {
+/**
+ * Per-locale site-wide metadata defaults, applied via each locale's root
+ * layout. `tagline` is the translated `common.siteTagline` message —
+ * resolved by the caller (a Server Component) since this function itself
+ * isn't async. `defaultSeo` is the optional admin-configured override from
+ * the SEO Manager (`GlobalSettings.defaultSeo`, see
+ * `lib/public/site-seo.ts`) — when present, its title/description/OG image
+ * and robots directive replace the static copy below; every field it
+ * doesn't set keeps its static default.
+ */
+export function getDefaultMetadata(locale: Locale, tagline: string = SITE.tagline, defaultSeo?: SiteDefaultSeo | null): Metadata {
   const url = `${SITE.url}${localizedPath(locale, "/")}`;
+  const title = defaultSeo?.title || `${SITE.name} | ${tagline}`;
+  const description = defaultSeo?.description || SITE.description;
+  const ogImageUrl = defaultSeo?.ogImageUrl || "/og-image.jpg";
+  const indexable = !(defaultSeo?.noIndex ?? false);
+  const followable = !(defaultSeo?.noFollow ?? false);
+
   return {
     metadataBase: new URL(SITE.url),
     title: {
-      default: `${SITE.name} | ${tagline}`,
+      default: title,
       template: `%s | ${SITE.name}`,
     },
-    description: SITE.description,
+    description,
     keywords: [
       "chauffeur service Dubai",
       "limo service Dubai",
@@ -54,11 +68,11 @@ export function getDefaultMetadata(locale: Locale, tagline: string = SITE.taglin
       alternateLocale: routing.locales.filter((l) => l !== locale).map((l) => OG_LOCALE_MAP[l]),
       url,
       siteName: SITE.name,
-      title: `${SITE.name} | ${tagline}`,
-      description: SITE.description,
+      title,
+      description,
       images: [
         {
-          url: "/og-image.jpg",
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: SITE.name,
@@ -67,16 +81,16 @@ export function getDefaultMetadata(locale: Locale, tagline: string = SITE.taglin
     },
     twitter: {
       card: "summary_large_image",
-      title: `${SITE.name} | ${tagline}`,
-      description: SITE.description,
-      images: ["/og-image.jpg"],
+      title,
+      description,
+      images: [ogImageUrl],
     },
     robots: {
-      index: true,
-      follow: true,
+      index: indexable,
+      follow: followable,
       googleBot: {
-        index: true,
-        follow: true,
+        index: indexable,
+        follow: followable,
         "max-video-preview": -1,
         "max-image-preview": "large",
         "max-snippet": -1,
@@ -179,6 +193,7 @@ export function organizationId(): string {
  */
 export function organizationJsonLd(
   locale: Locale = routing.defaultLocale,
+  contact?: { phone: string; email: string },
   { includeReviews = false }: { includeReviews?: boolean } = {}
 ) {
   return {
@@ -190,8 +205,8 @@ export function organizationJsonLd(
     description: SITE.description,
     url: SITE.url,
     logo: `${SITE.url}/images/brand/apex-logo.webp`,
-    telephone: SITE.phone,
-    email: SITE.email,
+    telephone: contact?.phone ?? SITE.phone,
+    email: contact?.email ?? SITE.email,
     inLanguage: locale,
     // Service-area business: coverage is declared through areaServed rather
     // than a storefront address. Dubai city + the wider UAE is the honest

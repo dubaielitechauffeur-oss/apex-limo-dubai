@@ -12,6 +12,8 @@ import ConditionalFloatButtons from "@/components/layout/ConditionalFloatButtons
 import ScrollToTopButton from "@/components/layout/ScrollToTopButton";
 import ConstructionNoticeModal from "@/components/layout/ConstructionNoticeModal";
 import { getDefaultMetadata, organizationJsonLd } from "@/lib/seo";
+import { getSiteContact } from "@/lib/public/site-contact";
+import { getDefaultSeoOverride } from "@/lib/public/site-seo";
 import { routing, type Locale } from "@/i18n/routing";
 import { logoFont } from "@/fonts/logo";
 
@@ -27,8 +29,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: RootLayoutProps): Promise<Metadata> {
   const { locale } = await params;
   if (!routing.locales.includes(locale as Locale)) notFound();
-  const t = await getTranslations({ locale, namespace: "common" });
-  return getDefaultMetadata(locale as Locale, t("siteTagline"));
+  const [t, defaultSeo] = await Promise.all([
+    getTranslations({ locale, namespace: "common" }),
+    getDefaultSeoOverride(locale as Locale),
+  ]);
+  return getDefaultMetadata(locale as Locale, t("siteTagline"), defaultSeo);
 }
 
 /**
@@ -50,10 +55,11 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 
   setRequestLocale(typedLocale);
 
-  const [messages, { displayFont, bodyFont }, t] = await Promise.all([
+  const [messages, { displayFont, bodyFont }, t, contact] = await Promise.all([
     getMessages(),
     loadScriptFonts(typedLocale),
     getTranslations({ locale: typedLocale, namespace: "common.a11y" }),
+    getSiteContact(),
   ]);
 
   const dir = typedLocale === "ar" ? "rtl" : "ltr";
@@ -69,7 +75,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           type="application/ld+json"
 
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationJsonLd(typedLocale)),
+            __html: JSON.stringify(organizationJsonLd(typedLocale, contact)),
           }}
         />
       </head>
@@ -81,8 +87,8 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           >
             {t("skipToContent")}
           </a>
-          <ConstructionNoticeModal />
-          <Header />
+          <ConstructionNoticeModal contact={contact} />
+          <Header contact={contact} />
           {/* No padding offset needed — Header is `sticky`, so it reserves
               its own space in normal flow (see components/layout/Header.tsx). */}
           <main id="main-content" className="flex-1">{children}</main>

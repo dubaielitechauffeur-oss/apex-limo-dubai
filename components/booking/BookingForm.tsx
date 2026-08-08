@@ -11,6 +11,7 @@ import HoneypotField from "@/components/shared/HoneypotField";
 import CTAButton from "@/components/shared/CTAButton";
 import type { ServiceOption, LocationOption, VehicleOption } from "./QuoteForm";
 import { getWhatsAppLink } from "@/lib/constants";
+import type { SiteContact } from "@/lib/public/site-contact";
 import type { BookingFormData } from "@/lib/types";
 import { buildValidationMessages, validateBookingForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
@@ -88,10 +89,12 @@ function BookingFormFields({
   services,
   locations,
   vehicles,
+  contact,
 }: {
   services: ServiceOption[];
   locations: LocationOption[];
   vehicles: VehicleOption[];
+  contact: SiteContact;
 }) {
   const t = useTranslations("forms");
   const locale = useLocale();
@@ -208,7 +211,8 @@ function BookingFormFields({
             href={getWhatsAppLink(
               t("booking.confirmMessageTemplate", {
                 refPart: reference ? t("booking.refPartTemplate", { reference }) : "",
-              })
+              }),
+              contact.whatsapp
             )}
             external
           >
@@ -476,14 +480,16 @@ export default function BookingForm({
   services,
   locations,
   vehicles,
+  contact,
 }: {
   services: ServiceOption[];
   locations: LocationOption[];
   vehicles: VehicleOption[];
+  contact: SiteContact;
 }) {
   return (
     <Suspense fallback={<BookingFormSkeleton />}>
-      <BookingFormFields services={services} locations={locations} vehicles={vehicles} />
+      <BookingFormFields services={services} locations={locations} vehicles={vehicles} contact={contact} />
     </Suspense>
   );
 }

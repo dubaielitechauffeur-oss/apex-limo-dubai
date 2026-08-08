@@ -50,6 +50,7 @@ import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
+import { getSiteContact } from "@/lib/public/site-contact";
 import { getAllVehicles, getVehicleBySlug, getVehiclesByCategorySlug } from "@/lib/public/cms-content";
 import {
   FLEET,
@@ -219,6 +220,7 @@ function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLab
 async function FleetCategoryListing({ locale, category }: { locale: Locale; category: FleetCategorySlug }) {
   setRequestLocale(locale);
   const vehicles = await getVehiclesByCategorySlug(category, locale);
+  const contact = await getSiteContact();
   const t = await getTranslations("fleet.categoryPage");
   const tHero = await getTranslations("fleet.hero");
   const tDetail = await getTranslations("fleet.detail");
@@ -357,7 +359,7 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
             <div className="mt-10 flex flex-col gap-8">
               {vehicles.map((vehicle, index) => (
                 <Reveal key={vehicle.slug} delay={Math.min(index * 60, 300)}>
-                  <FleetListingCard vehicle={vehicle} />
+                  <FleetListingCard vehicle={vehicle} contact={contact} />
                 </Reveal>
               ))}
             </div>
@@ -534,6 +536,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
   const whatsappMessage = t("whatsappMessage", { name: vehicle.name });
   const filledStars = Math.round(parseFloat(RATING));
+  const contact = await getSiteContact();
 
   const crossLinks = VEHICLE_CROSS_LINKS[vehicle.slug];
   const relatedService = crossLinks
@@ -754,7 +757,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                   {vehicle.description}
                 </p>
               </div>
-              <VehicleHeroQuoteForm vehicle={vehicle} />
+              <VehicleHeroQuoteForm vehicle={vehicle} contact={contact} />
             </div>
 
             {relatedService || relatedLocation ? (
@@ -894,7 +897,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             {/* Mobile-only — moved here from the hero block above (see the
                 CTA cleanup that removed the duplicate hero buttons). */}
             <a
-              href={getWhatsAppLink(whatsappMessage)}
+              href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:hidden"
@@ -908,7 +911,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 was already lg:inline-flex only, so removing it doesn't
                 change mobile at all. */}
             <a
-              href={getWhatsAppLink(whatsappMessage)}
+              href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:inline-flex"
@@ -1064,7 +1067,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {similarVehicles.map((related, index) => (
             <Reveal key={related.slug} delay={index * 100}>
-              <FleetCarouselCard vehicle={related} labels={cardLabels} tone="dark" />
+              <FleetCarouselCard vehicle={related} labels={cardLabels} contact={contact} tone="dark" />
             </Reveal>
           ))}
         </div>

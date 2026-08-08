@@ -50,15 +50,20 @@ export const SAME_AS_URLS: string[] = Object.values(SOCIAL_PROFILES);
  *  app/[locale]/locations/[location]/page.tsx). */
 export const PRICE_RANGE = "$$$";
 
-/** WhatsApp deep link with a pre-filled inquiry message. */
-export const getWhatsAppLink = (message?: string) => {
+/** WhatsApp deep link with a pre-filled inquiry message. `whatsappNumber`
+ *  lets a caller pass the live, admin-editable number (see
+ *  `lib/public/site-contact.ts`) — omit it to keep using the static
+ *  `SITE.whatsapp` default, so every existing call site is unaffected. */
+export const getWhatsAppLink = (message?: string, whatsappNumber?: string) => {
   const defaultMessage =
     "Hello Apex Limo, I would like to book a chauffeur service in Dubai.";
   const text = encodeURIComponent(message ?? defaultMessage);
-  return `https://wa.me/${SITE.whatsapp.replace("+", "")}?text=${text}`;
+  return `https://wa.me/${(whatsappNumber ?? SITE.whatsapp).replace("+", "")}?text=${text}`;
 };
 
-export const getPhoneLink = () => `tel:${SITE.phone}`;
+/** `phoneNumber` lets a caller pass the live, admin-editable number — omit
+ *  it to keep using the static `SITE.phone` default. */
+export const getPhoneLink = (phoneNumber?: string) => `tel:${phoneNumber ?? SITE.phone}`;
 
 /**
  * `key` resolves a label via the "nav" namespace in messages/*.json

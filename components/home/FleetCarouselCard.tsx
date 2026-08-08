@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { Car, Clock, Plane, type LucideIcon } from "lucide-react";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
+import type { SiteContact } from "@/lib/public/site-contact";
 
 export interface FleetCarouselCardLabels {
   imageComingSoon: string;
@@ -26,6 +27,7 @@ interface FleetCarouselCardProps {
    *  FleetCarouselClient, so it stays a plain, hook-free component and
    *  never calls next-intl itself. */
   labels: FleetCarouselCardLabels;
+  contact: SiteContact;
   /** "light" (default) — the original ivory card, used on the homepage
    *  carousel. "dark" — a luxury-black variant for the vehicle detail
    *  page's related-vehicles grid. Same structure/content either way. */
@@ -39,7 +41,7 @@ interface FleetCarouselCardProps {
  * actions. Package tiles show the duration only — confirmed pricing is
  * quoted per-trip on WhatsApp/quote request, never a fabricated rate.
  */
-export default function FleetCarouselCard({ vehicle, labels, tone = "light" }: FleetCarouselCardProps) {
+export default function FleetCarouselCard({ vehicle, labels, contact, tone = "light" }: FleetCarouselCardProps) {
   const isDark = tone === "dark";
   const cover = vehicle.images?.[0];
   const rateTiles: { icon: LucideIcon; label: string }[] = [
@@ -114,7 +116,7 @@ export default function FleetCarouselCard({ vehicle, labels, tone = "light" }: F
           {labels.viewCar}
         </Link>
         <a
-          href={getWhatsAppLink(labels.whatsappMessageTemplate.replace("{name}", vehicle.name))}
+          href={getWhatsAppLink(labels.whatsappMessageTemplate.replace("{name}", vehicle.name), contact.whatsapp)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#25D366] px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A]"

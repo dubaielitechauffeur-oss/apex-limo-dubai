@@ -14,6 +14,7 @@ import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 import { getAllVehicles } from "@/lib/public/cms-content";
+import { getSiteContact } from "@/lib/public/site-contact";
 import { FLEET_CATEGORY_SLUGS } from "@/data/fleet";
 
 interface PageProps {
@@ -69,7 +70,10 @@ export default async function FleetPage({ params }: PageProps) {
   setRequestLocale(locale as Locale);
   const tNav = await getTranslations("common.nav");
   const tCategory = await getTranslations("fleet.categoryPage");
-  const vehicles = await getAllVehicles(locale as Locale);
+  const [vehicles, contact] = await Promise.all([
+    getAllVehicles(locale as Locale),
+    getSiteContact(),
+  ]);
   return (
     <div>
       <script
@@ -114,7 +118,7 @@ export default async function FleetPage({ params }: PageProps) {
           <div className="flex flex-col gap-8">
             {vehicles.map((vehicle, index) => (
               <Reveal key={vehicle.slug} delay={Math.min(index * 60, 300)}>
-                <FleetListingCard vehicle={vehicle} />
+                <FleetListingCard vehicle={vehicle} contact={contact} />
               </Reveal>
             ))}
           </div>

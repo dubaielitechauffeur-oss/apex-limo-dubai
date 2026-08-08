@@ -28,6 +28,7 @@ import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { RATING } from "@/lib/constants";
 import { getAllVehicles } from "@/data/fleet";
 import { FLEET_SIZE } from "@/lib/constants";
+import { getSiteContact } from "@/lib/public/site-contact";
 import { LOCATIONS } from "@/data/locations";
 import { TESTIMONIALS } from "@/data/testimonials";
 
@@ -92,6 +93,7 @@ export default async function AboutPage({ params }: PageProps) {
     whatsapp: tCard("whatsapp"),
     whatsappMessageTemplate: tCard("whatsappMessageTemplate"),
   };
+  const contact = await getSiteContact();
   return (
     <div>
       <script
@@ -241,7 +243,7 @@ export default async function AboutPage({ params }: PageProps) {
               const vehicle = vehicles.find((v) => v.slug === slug);
               return vehicle ? (
                 <Reveal key={vehicle.slug} delay={index * 100}>
-                  <FleetCarouselCard vehicle={vehicle} labels={cardLabels} />
+                  <FleetCarouselCard vehicle={vehicle} labels={cardLabels} contact={contact} />
                 </Reveal>
               ) : null;
             })}
