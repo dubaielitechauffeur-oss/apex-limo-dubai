@@ -274,6 +274,39 @@ services,services/[service],privacy-policy,terms,about}/page.tsx`,
 **Rebuilt from placeholders:**
 `app/admin/(dashboard)/{pricing,seo,analytics}/page.tsx`.
 
+## Addendum — public chauffeur rates now displayed on the site
+
+Originally every public rate tile (homepage carousel, `/fleet` listing,
+and the vehicle detail page's "Available Chauffeur Packages") showed
+"Price on Request"/"Custom Quote" regardless of `Vehicle.rates`, since the
+seeded `Vehicle.rates` values were explicitly marked as sample/placeholder
+figures ("added for layout review only... replace before treating as real
+quotes" — `data/fleet.ts`), not confirmed pricing.
+
+The user explicitly asked for real prices to be shown publicly. Flagged
+the placeholder-data risk first (confirmed via the Pricing admin screen
+that the live database still held the exact same sample numbers as the
+static file); the user chose to ship the display code now and fill in
+real rates via `/admin/pricing` afterward — **the numbers on the live site
+are only accurate once every vehicle's rates have been updated there.**
+
+- `lib/format.ts` gained `formatAedPrice(amount)` — `2500` → `"AED 2,500"`.
+- `FleetCarouselCard.tsx`, `FleetListingCard.tsx`, and the vehicle detail
+  page's package grid (mobile + desktop) now render each tier's real rate
+  from `vehicle.rates`, wrapped in `<Ltr>` so the digits don't reverse
+  under Arabic's RTL bidi algorithm (same pattern already used for phone
+  numbers).
+- A tier whose rate is still `0` (the un-priced default) falls back to
+  the existing "Price on Request"/"Custom Quote" copy rather than
+  rendering "AED 0" — so an unpriced vehicle degrades gracefully instead
+  of looking broken.
+- `VehicleHeroQuoteForm.tsx`'s "Price on Request" eyebrow (above the
+  Request a Quote form, not tied to any single duration) was left
+  unchanged — there's no single tier it could show.
+- Browser-verified on the homepage carousel, `/fleet`, a vehicle detail
+  page, and the Arabic RTL vehicle detail page — prices render correctly
+  and stay left-to-right inside RTL text.
+
 ## Deferred (out of scope for this phase)
 
 - **Website traffic analytics** (GA4 sessions/pageviews inside the admin

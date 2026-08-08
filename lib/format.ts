@@ -19,3 +19,12 @@ export function formatDate(iso: string, locale: Locale = "en"): string {
     timeZone: "UTC",
   }).format(new Date(iso));
 }
+
+/** Formats a whole-AED chauffeur rate for display, e.g. 2500 -> "AED 2,500".
+ *  Thousands separator uses "en-US" regardless of locale — Arabic-indic
+ *  digit variants would defeat the `<Ltr>` wrapper callers use around this
+ *  string, and AED amounts are conventionally shown in Western digits
+ *  site-wide (see the phone number formatting this same pattern follows). */
+export function formatAedPrice(amount: number): string {
+  return `AED ${new Intl.NumberFormat("en-US").format(amount)}`;
+}

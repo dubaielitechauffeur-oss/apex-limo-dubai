@@ -50,6 +50,7 @@ import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
+import { formatAedPrice } from "@/lib/format";
 import { getSiteContact } from "@/lib/public/site-contact";
 import { getAllVehicles, getVehicleBySlug, getVehiclesByCategorySlug } from "@/lib/public/cms-content";
 import {
@@ -572,10 +573,10 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   ];
 
   const priceTierLabels = [
-    { label: t("oneHour"), suffix: t("withinDubaiSuffix") },
-    { label: t("airportTransfer") },
-    { label: t("fiveHours"), suffix: t("halfDaySuffix") },
-    { label: t("tenHours"), suffix: t("fullDaySuffix") },
+    { label: t("oneHour"), suffix: t("withinDubaiSuffix"), price: vehicle.rates.oneHour },
+    { label: t("airportTransfer"), price: vehicle.rates.airport },
+    { label: t("fiveHours"), suffix: t("halfDaySuffix"), price: vehicle.rates.fiveHours },
+    { label: t("tenHours"), suffix: t("fullDaySuffix"), price: vehicle.rates.tenHours },
   ];
 
   // Desktop-only package grid — 4 tiers only (Additional Hour/Additional
@@ -583,10 +584,10 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   // Popular". Mobile keeps the original 6-tier, oneHour-first array and
   // plain (non-highlighted) card styling above, untouched.
   const priceTiersDesktop = [
-    { label: t("oneWayTransfer"), suffix: t("withinDubaiSuffix"), highlight: false },
-    { label: t("airportTransfer"), highlight: false },
-    { label: t("fiveHours"), suffix: t("halfDaySuffix"), highlight: true },
-    { label: t("tenHours"), suffix: t("fullDaySuffix"), highlight: false },
+    { label: t("oneWayTransfer"), suffix: t("withinDubaiSuffix"), highlight: false, price: vehicle.rates.oneHour },
+    { label: t("airportTransfer"), highlight: false, price: vehicle.rates.airport },
+    { label: t("fiveHours"), suffix: t("halfDaySuffix"), highlight: true, price: vehicle.rates.fiveHours },
+    { label: t("tenHours"), suffix: t("fullDaySuffix"), highlight: false, price: vehicle.rates.tenHours },
   ];
 
   return (
@@ -846,7 +847,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                   ) : null}
                 </span>
                 <span className="font-display text-lg font-bold text-gold">
-                  {t("priceOnRequest")}
+                  {tier.price > 0 ? <Ltr>{formatAedPrice(tier.price)}</Ltr> : t("priceOnRequest")}
                 </span>
               </div>
             ))}
@@ -880,7 +881,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                   ) : null}
                 </span>
                 <span className="font-display text-xl font-bold text-gold">
-                  {t("priceOnRequest")}
+                  {tier.price > 0 ? <Ltr>{formatAedPrice(tier.price)}</Ltr> : t("priceOnRequest")}
                 </span>
               </div>
             ))}

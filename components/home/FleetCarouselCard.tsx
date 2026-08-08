@@ -3,6 +3,8 @@ import { Link } from "@/i18n/navigation";
 import { Car, Clock, Plane, type LucideIcon } from "lucide-react";
 import type { PlainFleetVehicle } from "@/data/fleet";
 import { getWhatsAppLink } from "@/lib/constants";
+import { formatAedPrice } from "@/lib/format";
+import Ltr from "@/components/shared/Ltr";
 import type { SiteContact } from "@/lib/public/site-contact";
 
 export interface FleetCarouselCardLabels {
@@ -38,17 +40,18 @@ interface FleetCarouselCardProps {
  * Compact vertical card for the homepage fleet carousel — image with a
  * gold brand badge, black brand bar, gold model bar, a four-tile package
  * row (10h / 5h / 1h / airport), and the View Car / Enquire on WhatsApp
- * actions. Package tiles show the duration only — confirmed pricing is
- * quoted per-trip on WhatsApp/quote request, never a fabricated rate.
+ * actions. Each tile shows the admin-set AED rate from `vehicle.rates`; a
+ * tile whose rate hasn't been set yet (still 0, the un-priced default)
+ * falls back to `labels.priceOnRequest` rather than showing "AED 0".
  */
 export default function FleetCarouselCard({ vehicle, labels, contact, tone = "light" }: FleetCarouselCardProps) {
   const isDark = tone === "dark";
   const cover = vehicle.images?.[0];
-  const rateTiles: { icon: LucideIcon; label: string }[] = [
-    { icon: Clock, label: labels.tenHours },
-    { icon: Clock, label: labels.fiveHours },
-    { icon: Clock, label: labels.oneHour },
-    { icon: Plane, label: labels.airport },
+  const rateTiles: { icon: LucideIcon; label: string; price: number }[] = [
+    { icon: Clock, label: labels.tenHours, price: vehicle.rates.tenHours },
+    { icon: Clock, label: labels.fiveHours, price: vehicle.rates.fiveHours },
+    { icon: Clock, label: labels.oneHour, price: vehicle.rates.oneHour },
+    { icon: Plane, label: labels.airport, price: vehicle.rates.airport },
   ];
 
   return (
@@ -92,7 +95,7 @@ export default function FleetCarouselCard({ vehicle, labels, contact, tone = "li
 
       {/* Rates */}
       <div className="grid grid-cols-4 gap-1 px-3 py-5">
-        {rateTiles.map(({ icon: Icon, label }) => (
+        {rateTiles.map(({ icon: Icon, label, price }) => (
           <div key={label} className="flex flex-col items-center gap-1 text-center">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/15">
               <Icon className={`h-4 w-4 ${isDark ? "text-gold" : "text-gold-deep"}`} strokeWidth={1.5} aria-hidden="true" />
@@ -101,7 +104,7 @@ export default function FleetCarouselCard({ vehicle, labels, contact, tone = "li
               {label}
             </span>
             <span className={`text-xs font-bold ${isDark ? "text-gold" : "text-gold-deep"}`}>
-              {labels.priceOnRequest}
+              {price > 0 ? <Ltr>{formatAedPrice(price)}</Ltr> : labels.priceOnRequest}
             </span>
           </div>
         ))}
