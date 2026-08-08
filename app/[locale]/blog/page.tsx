@@ -8,11 +8,15 @@ import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 import { blogImageExists } from "@/lib/blogImage";
-import { getAllBlogPosts } from "@/data/blog";
+import { getAllBlogPosts } from "@/lib/public/cms-content";
+import type { PlainBlogPost } from "@/data/blog";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
 }
+
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
@@ -26,7 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /** ItemList of BlogPosting entities for the journal listing page. */
-function blogListJsonLd(posts: ReturnType<typeof getAllBlogPosts>, locale: Locale) {
+function blogListJsonLd(posts: PlainBlogPost[], locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -52,7 +56,7 @@ export default async function BlogPage({ params }: PageProps) {
   setRequestLocale(locale as Locale);
   const t = await getTranslations("blog.hero");
   const tNav = await getTranslations("common.nav");
-  const posts = getAllBlogPosts(locale as Locale);
+  const posts = await getAllBlogPosts(locale as Locale);
   const imageExistsBySlug = Object.fromEntries(
     posts.map((post) => [post.slug, blogImageExists(post.featuredImage.src)])
   );

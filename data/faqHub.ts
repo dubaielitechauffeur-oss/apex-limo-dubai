@@ -51,7 +51,7 @@ function pick<T>(value: Localized<T>, locale: Locale): T {
  * already written for the homepage, services, and locations, so this page
  * is a genuinely complete knowledge base rather than a duplicate of it.
  */
-const NEW_FAQS: FaqHubEntry[] = [
+export const NEW_FAQS: FaqHubEntry[] = [
   // Booking
   {
     id: "booking-1",

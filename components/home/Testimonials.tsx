@@ -3,7 +3,7 @@ import { Star, BadgeCheck } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import Reveal from "@/components/shared/Reveal";
-import { TESTIMONIALS } from "@/data/testimonials";
+import { getFeaturedTestimonials } from "@/lib/public/cms-content";
 import { SITE, RATING } from "@/lib/constants";
 
 /** Renders a row of filled/outline stars for a given rating out of 5. */
@@ -31,7 +31,7 @@ function StarRow({ rating, ariaLabel, size = "h-4 w-4" }: { rating: number; aria
 export default async function Testimonials() {
   const t = await getTranslations("home.testimonials");
   const tA11y = await getTranslations("common.a11y");
-  const featured = TESTIMONIALS.filter((item) => item.featured);
+  const featured = await getFeaturedTestimonials();
   const mapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     SITE.name
   )}`;

@@ -3,9 +3,14 @@ import { SITE } from "@/lib/constants";
 import { localizedPath } from "@/lib/seo";
 import { routing } from "@/i18n/routing";
 import { FLEET, FLEET_CATEGORY_SLUGS } from "@/data/fleet";
-import { SERVICES } from "@/data/services";
-import { LOCATIONS } from "@/data/locations";
-import { BLOG_POSTS } from "@/data/blog";
+import {
+  getServiceSitemapEntries,
+  getLocationSitemapEntries,
+  getBlogPostSitemapEntries,
+} from "@/lib/public/cms-content";
+
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
 
 type ChangeFrequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 
@@ -32,7 +37,7 @@ function localizedEntries(
   }));
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticPaths: Array<[string, ChangeFrequency, number]> = [
@@ -62,16 +67,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     localizedEntries(`/fleet/${category}`, now, "weekly", 0.75)
   );
 
-  const serviceRoutes = SERVICES.flatMap((service) =>
-    localizedEntries(`/services/${service.slug}`, now, "monthly", 0.7)
+  // Published, non-deleted CMS entries when available, falling back to the
+  // static data files (same rule as the public pages themselves — see
+  // lib/public/cms-content.ts) so the sitemap never drops a legitimate URL.
+  const [serviceEntries, locationEntries, blogEntries] = await Promise.all([
+    getServiceSitemapEntries(),
+    getLocationSitemapEntries(),
+    getBlogPostSitemapEntries(),
+  ]);
+
+  const serviceRoutes = serviceEntries.flatMap((service) =>
+    localizedEntries(`/services/${service.slug}`, service.lastModified ?? now, "monthly", 0.7)
   );
 
-  const locationRoutes = LOCATIONS.flatMap((location) =>
-    localizedEntries(`/locations/${location.slug}`, now, "monthly", 0.7)
+  const locationRoutes = locationEntries.flatMap((location) =>
+    localizedEntries(`/locations/${location.slug}`, location.lastModified ?? now, "monthly", 0.7)
   );
 
-  const blogRoutes = BLOG_POSTS.flatMap((post) =>
-    localizedEntries(`/blog/${post.slug}`, new Date(post.publishDate), "monthly", 0.6)
+  const blogRoutes = blogEntries.flatMap((post) =>
+    localizedEntries(`/blog/${post.slug}`, post.lastModified ?? now, "monthly", 0.6)
   );
 
   return [

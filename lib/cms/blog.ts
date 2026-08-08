@@ -244,7 +244,17 @@ export async function listBlogPosts(params: ListBlogPostsParams): Promise<RoleAd
     ...(params.includeDeleted ? {} : { deletedAt: null }),
     ...(params.status ? { status: params.status } : {}),
     ...(params.categoryId ? { categoryId: params.categoryId } : {}),
-    ...(params.q ? { OR: [{ slug: { contains: params.q, mode: "insensitive" as const } }, { title: { string_contains: params.q } }] } : {}),
+    // `path` is required for `string_contains` to match inside an
+    // object-shaped Json column (LocalizedText) — without it Prisma never
+    // matches. Searches English text.
+    ...(params.q
+      ? {
+          OR: [
+            { slug: { contains: params.q, mode: "insensitive" as const } },
+            { title: { path: ["en"], string_contains: params.q } },
+          ],
+        }
+      : {}),
   };
 
   const [total, rows] = await Promise.all([

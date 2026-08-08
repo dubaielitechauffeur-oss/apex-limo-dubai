@@ -15,6 +15,7 @@ import {
   type HeroCta,
 } from "@/lib/cms/homepage";
 import { readLocalizedField } from "@/lib/cms/localized";
+import { revalidatePublicHomepage } from "@/lib/cms/revalidate";
 import type { PublishStatus } from "@/lib/generated/prisma/client";
 import type { CmsActionState } from "@/app/admin/(dashboard)/services/actions";
 
@@ -41,6 +42,7 @@ export async function createHeroSlideAction(_prevState: CmsActionState, formData
   });
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Hero slide created." };
 }
 
@@ -57,6 +59,7 @@ export async function updateHeroSlideAction(_prevState: CmsActionState, formData
   });
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Hero slide updated." };
 }
 
@@ -64,6 +67,7 @@ export async function setHeroSlideStatusAction(id: string, status: PublishStatus
   const result = await setHeroSlideStatus(id, status);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: `Status changed to ${status}.` };
 }
 
@@ -71,6 +75,7 @@ export async function deleteHeroSlideAction(id: string): Promise<CmsActionState>
   const result = await deleteHeroSlide(id);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Hero slide deleted." };
 }
 
@@ -78,6 +83,7 @@ export async function createTestimonialAction(_prevState: CmsActionState, formDa
   const result = await createTestimonial(readTestimonialInput(formData));
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Testimonial created." };
 }
 
@@ -86,6 +92,7 @@ export async function updateTestimonialAction(_prevState: CmsActionState, formDa
   const result = await updateTestimonial(id, readTestimonialInput(formData));
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Testimonial updated." };
 }
 
@@ -109,6 +116,7 @@ export async function deleteTestimonialAction(id: string): Promise<CmsActionStat
   const result = await deleteTestimonial(id);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Testimonial deleted." };
 }
 
@@ -120,6 +128,7 @@ export async function createBrandAction(_prevState: CmsActionState, formData: Fo
   });
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Brand created." };
 }
 
@@ -132,6 +141,7 @@ export async function updateBrandAction(_prevState: CmsActionState, formData: Fo
   });
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Brand updated." };
 }
 
@@ -139,5 +149,6 @@ export async function deleteBrandAction(id: string): Promise<CmsActionState> {
   const result = await deleteBrand(id);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/homepage");
+  revalidatePublicHomepage();
   return { success: "Brand deleted." };
 }

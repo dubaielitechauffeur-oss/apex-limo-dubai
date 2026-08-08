@@ -34,13 +34,17 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
-import { SERVICES, getAllServices, getServiceBySlug, type PlainService } from "@/data/services";
+import { getAllServices, getServiceBySlug } from "@/lib/public/cms-content";
+import { SERVICES, type PlainService } from "@/data/services";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForService } from "@/lib/cross-links";
 
 interface PageProps {
   params: Promise<{ locale: string; service: string }>;
 }
+
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
 
 const ICONS: Record<string, LucideIcon> = {
   "airport-transfers": Plane,
@@ -69,7 +73,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, service: slug } = await params;
-  const service = getServiceBySlug(slug, locale as Locale);
+  const service = await getServiceBySlug(slug, locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata.service" });
 
   if (!service) {
@@ -118,7 +122,7 @@ function serviceJsonLd(service: PlainService, locale: Locale) {
 export default async function ServiceDetailPage({ params }: PageProps) {
   const { locale, service: slug } = await params;
   setRequestLocale(locale as Locale);
-  const service = getServiceBySlug(slug, locale as Locale);
+  const service = await getServiceBySlug(slug, locale as Locale);
 
   if (!service) {
     notFound();
@@ -128,7 +132,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const tNav = await getTranslations("common.nav");
   const Icon = ICONS[service.slug] ?? Crown;
   const MetricIcon = METRIC_ICONS[service.slug] ?? Users;
-  const otherServices = getAllServices(locale as Locale)
+  const otherServices = (await getAllServices(locale as Locale))
     .filter((s) => s.slug !== service.slug)
     .slice(0, 3);
   const whatsappMessage = t("detail.whatsappMessage", { name: service.name });

@@ -21,8 +21,14 @@ import ServicesHero from "@/components/services/ServicesHero";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
-import { getAllServices, type PlainService } from "@/data/services";
+import { getAllServices } from "@/lib/public/cms-content";
+import type { PlainService } from "@/data/services";
 import { getServicesFaqs } from "@/data/servicesFaqs";
+
+// CMS-backed content revalidates on a 5-minute cadence; admin
+// publish/unpublish also triggers an immediate revalidatePath() for this
+// route (see lib/cms/revalidate.ts) — see PUBLIC_CMS_INTEGRATION.md.
+export const revalidate = 300;
 
 const ICONS: Record<string, LucideIcon> = {
   "airport-transfers": Plane,
@@ -84,7 +90,7 @@ export default async function ServicesPage({ params }: PageProps) {
   const t = await getTranslations("services");
   const tNav = await getTranslations("common.nav");
   const servicesFaqs = getServicesFaqs(locale as Locale);
-  const services = getAllServices(locale as Locale);
+  const services = await getAllServices(locale as Locale);
   return (
     <div>
       <script

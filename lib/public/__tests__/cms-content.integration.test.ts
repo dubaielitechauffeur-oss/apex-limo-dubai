@@ -1,6 +1,16 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { prisma } from "@/lib/db";
-import { getPublishedServices, getPublishedLocations, getPublishedBlogPosts } from "@/lib/public/cms-content";
+import {
+  getAllServices,
+  getServiceBySlug,
+  getAllLocations,
+  getLocationBySlug,
+  getAllBlogPosts,
+  getBlogPostBySlug,
+  getServiceSitemapEntries,
+  getLocationSitemapEntries,
+  getBlogPostSitemapEntries,
+} from "@/lib/public/cms-content";
 import { emptyLocalizedText } from "@/lib/cms/localized";
 import { emptySeoMeta } from "@/lib/cms/seo";
 
@@ -90,9 +100,9 @@ afterAll(async () => {
   await prisma.blogPost.deleteMany({ where: { id: { in: blogPostIds } } });
 });
 
-describe("Public CMS readiness — draft/archived/soft-deleted content never leaks", () => {
-  it("getPublishedServices only returns published, non-deleted services", async () => {
-    const results = await getPublishedServices();
+describe("Public CMS read layer — draft/archived/soft-deleted content never leaks", () => {
+  it("getAllServices only returns published, non-deleted services", async () => {
+    const results = await getAllServices("en");
     const slugs = results.map((r) => r.slug);
     expect(slugs.some((s) => s.startsWith("vitest-pub-svc-published-"))).toBe(true);
     expect(slugs.some((s) => s.startsWith("vitest-pub-svc-draft-"))).toBe(false);
@@ -100,8 +110,16 @@ describe("Public CMS readiness — draft/archived/soft-deleted content never lea
     expect(slugs.some((s) => s.startsWith("vitest-pub-svc-deleted-"))).toBe(false);
   });
 
-  it("getPublishedLocations only returns published, non-deleted locations", async () => {
-    const results = await getPublishedLocations();
+  it("getServiceBySlug 404s a draft service by direct slug access", async () => {
+    const allDb = await prisma.service.findMany({ where: { id: { in: serviceIds } }, select: { slug: true, status: true } });
+    const draft = allDb.find((s) => s.status === "draft");
+    expect(draft).toBeDefined();
+    const result = await getServiceBySlug(draft!.slug, "en");
+    expect(result).toBeUndefined();
+  });
+
+  it("getAllLocations only returns published, non-deleted locations", async () => {
+    const results = await getAllLocations("en");
     const slugs = results.map((r) => r.slug);
     expect(slugs.some((s) => s.startsWith("vitest-pub-loc-published-"))).toBe(true);
     expect(slugs.some((s) => s.startsWith("vitest-pub-loc-draft-"))).toBe(false);
@@ -109,12 +127,59 @@ describe("Public CMS readiness — draft/archived/soft-deleted content never lea
     expect(slugs.some((s) => s.startsWith("vitest-pub-loc-deleted-"))).toBe(false);
   });
 
-  it("getPublishedBlogPosts only returns published, non-deleted posts", async () => {
-    const results = await getPublishedBlogPosts();
+  it("getLocationBySlug 404s an archived location by direct slug access", async () => {
+    const allDb = await prisma.location.findMany({ where: { id: { in: locationIds } }, select: { slug: true, status: true } });
+    const archived = allDb.find((l) => l.status === "archived");
+    expect(archived).toBeDefined();
+    const result = await getLocationBySlug(archived!.slug, "en");
+    expect(result).toBeUndefined();
+  });
+
+  it("getAllBlogPosts only returns published, non-deleted posts", async () => {
+    const results = await getAllBlogPosts("en");
     const slugs = results.map((r) => r.slug);
     expect(slugs.some((s) => s.startsWith("vitest-pub-post-published-"))).toBe(true);
     expect(slugs.some((s) => s.startsWith("vitest-pub-post-draft-"))).toBe(false);
     expect(slugs.some((s) => s.startsWith("vitest-pub-post-archived-"))).toBe(false);
     expect(slugs.some((s) => s.startsWith("vitest-pub-post-deleted-"))).toBe(false);
+  });
+
+  it("getBlogPostBySlug 404s a soft-deleted post by direct slug access", async () => {
+    const allDb = await prisma.blogPost.findMany({ where: { id: { in: blogPostIds } }, select: { slug: true, deletedAt: true } });
+    const deleted = allDb.find((p) => p.deletedAt !== null);
+    expect(deleted).toBeDefined();
+    const result = await getBlogPostBySlug(deleted!.slug, "en");
+    expect(result).toBeUndefined();
+  });
+});
+
+describe("Sitemap entries — draft/archived/soft-deleted never generate a URL", () => {
+  it("getServiceSitemapEntries excludes draft, archived, and soft-deleted services", async () => {
+    const entries = await getServiceSitemapEntries();
+    const slugs = entries.map((e) => e.slug);
+    const dbRows = await prisma.service.findMany({ where: { id: { in: serviceIds } }, select: { slug: true } });
+    const testSlugs = dbRows.map((r) => r.slug);
+    const publishedTestSlugs = testSlugs.filter((s) => s.includes("-published-"));
+    expect(publishedTestSlugs.length).toBeGreaterThan(0);
+    for (const slug of publishedTestSlugs) expect(slugs).toContain(slug);
+    for (const slug of testSlugs.filter((s) => !s.includes("-published-"))) expect(slugs).not.toContain(slug);
+  });
+
+  it("getLocationSitemapEntries excludes draft, archived, and soft-deleted locations", async () => {
+    const entries = await getLocationSitemapEntries();
+    const slugs = entries.map((e) => e.slug);
+    const dbRows = await prisma.location.findMany({ where: { id: { in: locationIds } }, select: { slug: true } });
+    const testSlugs = dbRows.map((r) => r.slug);
+    for (const slug of testSlugs.filter((s) => s.includes("-published-"))) expect(slugs).toContain(slug);
+    for (const slug of testSlugs.filter((s) => !s.includes("-published-"))) expect(slugs).not.toContain(slug);
+  });
+
+  it("getBlogPostSitemapEntries excludes draft, archived, and soft-deleted posts", async () => {
+    const entries = await getBlogPostSitemapEntries();
+    const slugs = entries.map((e) => e.slug);
+    const dbRows = await prisma.blogPost.findMany({ where: { id: { in: blogPostIds } }, select: { slug: true } });
+    const testSlugs = dbRows.map((r) => r.slug);
+    for (const slug of testSlugs.filter((s) => s.includes("-published-"))) expect(slugs).toContain(slug);
+    for (const slug of testSlugs.filter((s) => !s.includes("-published-"))) expect(slugs).not.toContain(slug);
   });
 });

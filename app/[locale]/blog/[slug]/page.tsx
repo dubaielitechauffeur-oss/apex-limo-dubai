@@ -16,11 +16,15 @@ import type { Locale } from "@/i18n/routing";
 import { buildMetadata, articleJsonLd, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/format";
 import { blogImageExists } from "@/lib/blogImage";
-import { BLOG_POSTS, getBlogPostBySlug, getRelatedBlogPosts } from "@/data/blog";
+import { getBlogPostBySlug, getRelatedBlogPosts } from "@/lib/public/cms-content";
+import { BLOG_POSTS } from "@/data/blog";
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
+
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({ slug: post.slug }));
@@ -28,7 +32,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const post = getBlogPostBySlug(slug, locale as Locale);
+  const post = await getBlogPostBySlug(slug, locale as Locale);
 
   if (!post) {
     const t = await getTranslations({ locale: locale as Locale, namespace: "metadata.blogPost" });
@@ -57,7 +61,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function BlogPostPage({ params }: PageProps) {
   const { locale, slug } = await params;
   setRequestLocale(locale as Locale);
-  const post = getBlogPostBySlug(slug, locale as Locale);
+  const post = await getBlogPostBySlug(slug, locale as Locale);
 
   if (!post) {
     notFound();
@@ -65,7 +69,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const t = await getTranslations("blog.detail");
   const tNav = await getTranslations("common.nav");
-  const relatedPosts = getRelatedBlogPosts(post.slug, locale as Locale);
+  const relatedPosts = await getRelatedBlogPosts(post.slug, locale as Locale);
   const faqBlock = post.content.find((block) => block.type === "faq");
   const featuredImageExists = blogImageExists(post.featuredImage.src);
 

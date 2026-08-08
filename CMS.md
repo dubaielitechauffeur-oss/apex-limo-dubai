@@ -281,43 +281,17 @@ FAQ/Testimonial/Brand have no draft concept in the schema — anything
 created there is immediately "live" from a data standpoint, matching how
 those models were designed.
 
-## Public Site Integration — deliberately not cut over
+## Public Site Integration — now live (Phase 8)
 
-The Phase 7 brief's Part 12 asks to "verify public pages CAN safely consume
-DB-backed content" and "only integrate approved entities" — not to
-blindly replace what's working. Auditing the current state found:
-
-- Every `app/[locale]/{services,locations,blog,faqs}/*` public page still
-  imports from static `data/*.ts` files, not Prisma.
-- Every relevant CMS table (`services`, `locations`, `blog_posts`,
-  `faqs`, `hero_slides`, `testimonials`, `brands`) has **zero rows** in
-  the database today — only `faq_categories` has seeded data (10 rows,
-  from Phase 4/5 seeding, unrelated to real FAQ content).
-
-Pointing a live public page at `lib/public/cms-content.ts` right now would
-render an empty page instead of the real, currently-working site — for
-every single one of these sections, in all six locales. That is exactly the
-"architectural conflict, STOP before making destructive changes and report
-it" case the brief's closing instructions call out.
-
-**What was built instead:** `lib/public/cms-content.ts` — read-only,
-unauthenticated, published-only query functions — proving the data shape
-and safety guarantee (draft/archived never leaks) are correct and ready,
-without wiring them into any live route. **What a real cutover needs, when
-it's scheduled as its own phase:**
-
-1. Migrate the real content currently hardcoded in `data/*.ts` into the
-   database (a content-import script, or manual re-entry through this
-   phase's new admin forms).
-2. Swap each public page's data source from `data/*.ts` to the matching
-   `getPublished*()` function, one page at a time.
-3. Verify each swapped page in all six locales, including that slugs/URLs
-   don't change (the DB `slug` columns were chosen to match the existing
-   static slugs already in `data/*.ts`) and that RTL/SEO/responsive
-   behavior is unaffected.
-
-No public page, route, translation file, or visual behavior was touched by
-this phase.
+Phase 7 deliberately did not connect the public site to this CMS — every
+table was empty, and every public page still read from static `data/*.ts`
+files. **Phase 8 completed that cutover**: it migrated the real static
+content into these tables and wired the public pages to read from them,
+with the static files kept as a permanent, tested fallback rather than
+deleted. See `PUBLIC_CMS_INTEGRATION.md` for the full architecture —
+content migration, the fallback-aware public read layer
+(`lib/public/cms-content.ts`), localization, SEO/sitemap verification,
+caching/revalidation strategy, browser testing, and rollback safety.
 
 ## Testing
 
@@ -344,10 +318,9 @@ raw database CHECK-constraint layer. 65 new tests, all passing; full suite
   already queries `Vehicle`, it's just always empty until Fleet CMS exists.
 - **HeroSlide CTAs are English-only, two-slot** — see "Homepage content" above.
 - **`Service`/`Location` legacy `imageUrl`-style string columns** — kept for
-  backward compatibility, unused by the new forms; a future cleanup phase
-  could drop them once nothing reads them anymore.
-- **Public site DB cutover** — see "Public Site Integration" above; not
-  started this phase by design.
+  backward compatibility; now actively used by the Phase 8 content
+  migration and public read layer's fallback (see
+  `PUBLIC_CMS_INTEGRATION.md`), not just unused compatibility scaffolding.
 - **No automatic image derivative generation** — unchanged from Phase 6;
   `MediaPickerField` selects whatever was actually uploaded.
 

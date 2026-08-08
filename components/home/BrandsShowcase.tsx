@@ -4,7 +4,7 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import Reveal from "@/components/shared/Reveal";
 import BrandBadge from "./BrandBadge";
-import { BRANDS } from "@/data/brands";
+import { getBrands } from "@/lib/public/cms-content";
 
 /**
  * "Our Brands" — a continuously auto-scrolling logo ticker beneath the
@@ -16,6 +16,7 @@ import { BRANDS } from "@/data/brands";
  */
 export default async function BrandsShowcase() {
   const t = await getTranslations("home.brandsShowcase");
+  const brands = await getBrands();
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">
       <Container>
@@ -25,7 +26,7 @@ export default async function BrandsShowcase() {
 
         <div className="relative mx-auto mt-16 max-w-5xl overflow-hidden">
           <div className="flex w-max animate-brand-marquee">
-            {[...BRANDS, ...BRANDS].map((brand, position) => (
+            {[...brands, ...brands].map((brand, position) => (
               <div key={`${brand.name}-${position}`} className="flex shrink-0 justify-center px-6 sm:px-8">
                 <BrandBadge brand={brand} />
               </div>

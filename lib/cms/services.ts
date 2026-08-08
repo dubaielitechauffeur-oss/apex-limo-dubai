@@ -122,8 +122,16 @@ export async function listServices(params: ListServicesParams): Promise<RoleAdmi
   const where: Prisma.ServiceWhereInput = {
     ...(params.includeDeleted ? {} : { deletedAt: null }),
     ...(params.status ? { status: params.status } : {}),
+    // `path` is required for `string_contains` to match inside an
+    // object-shaped Json column (LocalizedText) — without it Prisma never
+    // matches. Searches English text.
     ...(params.q
-      ? { OR: [{ slug: { contains: params.q, mode: "insensitive" as const } }, { name: { string_contains: params.q } }] }
+      ? {
+          OR: [
+            { slug: { contains: params.q, mode: "insensitive" as const } },
+            { name: { path: ["en"], string_contains: params.q } },
+          ],
+        }
       : {}),
   };
 

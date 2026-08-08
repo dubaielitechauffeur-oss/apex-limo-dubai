@@ -17,6 +17,7 @@ import {
 } from "@/lib/cms/blog";
 import { readLocalizedField } from "@/lib/cms/localized";
 import { readSeoField } from "@/lib/cms/seo";
+import { revalidatePublicBlog } from "@/lib/cms/revalidate";
 import type { PublishStatus } from "@/lib/generated/prisma/client";
 import type { CmsActionState } from "@/app/admin/(dashboard)/services/actions";
 
@@ -40,18 +41,22 @@ function readBlogPostInput(formData: FormData): BlogPostInput {
 }
 
 export async function createBlogPostAction(_prevState: CmsActionState, formData: FormData): Promise<CmsActionState> {
-  const result = await createBlogPost(readBlogPostInput(formData));
+  const input = readBlogPostInput(formData);
+  const result = await createBlogPost(input);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/blog");
+  revalidatePublicBlog(input.slug);
   redirect(`/admin/blog/${result.data.id}`);
 }
 
 export async function updateBlogPostAction(_prevState: CmsActionState, formData: FormData): Promise<CmsActionState> {
   const id = String(formData.get("id") ?? "");
-  const result = await updateBlogPost(id, readBlogPostInput(formData));
+  const input = readBlogPostInput(formData);
+  const result = await updateBlogPost(id, input);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/blog");
   revalidatePath(`/admin/blog/${id}`);
+  revalidatePublicBlog(input.slug);
   return { success: "Blog post updated." };
 }
 
@@ -60,6 +65,7 @@ export async function setBlogPostStatusAction(id: string, status: PublishStatus)
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/blog");
   revalidatePath(`/admin/blog/${id}`);
+  revalidatePublicBlog();
   return { success: `Status changed to ${status}.` };
 }
 
@@ -67,6 +73,7 @@ export async function deleteBlogPostAction(id: string): Promise<CmsActionState> 
   const result = await softDeleteBlogPost(id);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/blog");
+  revalidatePublicBlog();
   return { success: "Blog post deleted." };
 }
 
@@ -74,6 +81,7 @@ export async function restoreBlogPostAction(id: string): Promise<CmsActionState>
   const result = await restoreBlogPost(id);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/blog");
+  revalidatePublicBlog();
   return { success: "Blog post restored." };
 }
 

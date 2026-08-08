@@ -28,7 +28,8 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, PRICE_RANGE, getWhatsAppLink } from "@/lib/constants";
-import { LOCATIONS, getAllLocations, getLocationBySlug, type PlainLocation } from "@/data/locations";
+import { getAllLocations, getLocationBySlug } from "@/lib/public/cms-content";
+import { LOCATIONS, type PlainLocation } from "@/data/locations";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForLocation } from "@/lib/cross-links";
 
@@ -36,13 +37,16 @@ interface PageProps {
   params: Promise<{ locale: string; location: string }>;
 }
 
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   return LOCATIONS.map((location) => ({ location: location.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, location: slug } = await params;
-  const location = getLocationBySlug(slug, locale as Locale);
+  const location = await getLocationBySlug(slug, locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata.location" });
 
   if (!location) {
@@ -137,7 +141,7 @@ function locationJsonLd(location: PlainLocation, locale: Locale) {
 export default async function LocationDetailPage({ params }: PageProps) {
   const { locale, location: slug } = await params;
   setRequestLocale(locale as Locale);
-  const location = getLocationBySlug(slug, locale as Locale);
+  const location = await getLocationBySlug(slug, locale as Locale);
 
   if (!location) {
     notFound();
@@ -146,7 +150,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
   const t = await getTranslations("locations");
   const tNav = await getTranslations("common.nav");
   const Icon = location.isAirport ? Plane : MapPin;
-  const otherLocations = getAllLocations(locale as Locale)
+  const otherLocations = (await getAllLocations(locale as Locale))
     .filter((l) => l.slug !== location.slug)
     .slice(0, 3);
   const whatsappMessage = t("detail.whatsappMessage", { name: location.name });

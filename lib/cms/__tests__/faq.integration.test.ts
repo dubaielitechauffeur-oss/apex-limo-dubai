@@ -246,9 +246,14 @@ describe("updateFaq / deleteFaq / listFaqs / getFaq", () => {
   });
 
   it("lists FAQs and finds the created one", async () => {
-    const id = await makeFaq({ question: emptyLocalizedText("Unique listing question?") });
+    // Searches by the fixture's unique question text rather than relying on
+    // unfiltered pagination — the FAQ table now also holds the site's real
+    // migrated content (Phase 8), so a default-sized page is no longer
+    // guaranteed to include a freshly created, unsorted row.
+    const question = `Unique listing question ${Math.random().toString(36).slice(2, 10)}?`;
+    const id = await makeFaq({ question: emptyLocalizedText(question) });
     mockSessionFor(users.viewer);
-    const result = await listFaqs({});
+    const result = await listFaqs({ q: question });
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.items.some((f) => f.id === id)).toBe(true);

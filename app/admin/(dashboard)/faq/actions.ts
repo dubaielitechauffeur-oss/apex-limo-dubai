@@ -13,6 +13,7 @@ import {
   type FaqParentType,
 } from "@/lib/cms/faq";
 import { readLocalizedField } from "@/lib/cms/localized";
+import { revalidatePublicFaqs } from "@/lib/cms/revalidate";
 import type { CmsActionState } from "@/app/admin/(dashboard)/services/actions";
 
 function readFaqInput(formData: FormData): FaqInput {
@@ -33,6 +34,7 @@ export async function createFaqAction(_prevState: CmsActionState, formData: Form
   const result = await createFaq(readFaqInput(formData));
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/faq");
+  revalidatePublicFaqs();
   redirect(`/admin/faq/${result.data.id}`);
 }
 
@@ -42,6 +44,7 @@ export async function updateFaqAction(_prevState: CmsActionState, formData: Form
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/faq");
   revalidatePath(`/admin/faq/${id}`);
+  revalidatePublicFaqs();
   return { success: "FAQ updated." };
 }
 
@@ -49,6 +52,7 @@ export async function deleteFaqAction(id: string): Promise<CmsActionState> {
   const result = await deleteFaq(id);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/faq");
+  revalidatePublicFaqs();
   return { success: "FAQ deleted." };
 }
 
@@ -61,6 +65,7 @@ export async function createFaqCategoryAction(_prevState: CmsActionState, formDa
   });
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/faq");
+  revalidatePublicFaqs();
   return { success: "Category created." };
 }
 
@@ -74,6 +79,7 @@ export async function updateFaqCategoryAction(_prevState: CmsActionState, formDa
   });
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/faq");
+  revalidatePublicFaqs();
   return { success: "Category updated." };
 }
 
@@ -81,5 +87,6 @@ export async function deleteFaqCategoryAction(id: string): Promise<CmsActionStat
   const result = await deleteFaqCategory(id);
   if (!result.success) return { error: result.error };
   revalidatePath("/admin/faq");
+  revalidatePublicFaqs();
   return { success: "Category deleted." };
 }

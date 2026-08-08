@@ -12,11 +12,15 @@ import BookingCTA from "@/components/home/BookingCTA";
 import LocationsHero from "@/components/locations/LocationsHero";
 import { buildMetadata, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
-import { getAllLocations, type PlainLocation } from "@/data/locations";
+import { getAllLocations } from "@/lib/public/cms-content";
+import type { PlainLocation } from "@/data/locations";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
 }
+
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
@@ -54,7 +58,7 @@ export default async function LocationsPage({ params }: PageProps) {
   setRequestLocale(locale as Locale);
   const t = await getTranslations("locations");
   const tNav = await getTranslations("common.nav");
-  const locations = getAllLocations(locale as Locale);
+  const locations = await getAllLocations(locale as Locale);
   return (
     <div>
       <script

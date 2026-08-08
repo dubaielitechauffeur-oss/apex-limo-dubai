@@ -5,11 +5,15 @@ import Container from "@/components/shared/Container";
 import BookingCTA from "@/components/home/BookingCTA";
 import FaqHubClient from "@/components/faqs/FaqHubClient";
 import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
-import { getAllFaqs, FAQ_CATEGORIES } from "@/data/faqHub";
+import { getAllFaqs } from "@/lib/public/cms-content";
+import { FAQ_CATEGORIES } from "@/data/faqHub";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
 }
+
+// See app/[locale]/services/page.tsx for the revalidation strategy note.
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
@@ -27,7 +31,7 @@ export default async function FaqsPage({ params }: PageProps) {
   setRequestLocale(locale as Locale);
   const t = await getTranslations("faqs");
   const tNav = await getTranslations({ locale, namespace: "common.nav" });
-  const faqs = getAllFaqs(locale as Locale);
+  const faqs = await getAllFaqs(locale as Locale);
   return (
     <div>
       <script

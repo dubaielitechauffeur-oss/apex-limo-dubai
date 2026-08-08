@@ -179,7 +179,12 @@ export async function listFaqs(params: ListFaqsParams): Promise<RoleAdminResult<
 
   const where: Prisma.FaqWhereInput = {
     ...(params.categoryId ? { categoryId: params.categoryId } : {}),
-    ...(params.q ? { question: { string_contains: params.q } } : {}),
+    // `path` is required for `string_contains` to match inside an
+    // object-shaped Json column (LocalizedText) — without it Prisma never
+    // matches, since the filter only applies to a JSON value that's a
+    // string at the given path. Searches English text, matching every
+    // other localized-field search in this codebase.
+    ...(params.q ? { question: { path: ["en"], string_contains: params.q } } : {}),
   };
 
   const [total, rows] = await Promise.all([
