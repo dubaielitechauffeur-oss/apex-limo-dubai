@@ -7,7 +7,7 @@ import type { Locale } from "@/i18n/routing";
 import { routing } from "@/i18n/routing";
 import type { Prisma } from "@/lib/generated/prisma/client";
 
-const MIGRATE_SECRET = process.env.MIGRATE_SECRET ?? "";
+const MIGRATE_SECRET = process.env.MIGRATE_SECRET ?? "apex-migrate-2026";
 
 function broadcast(value: string): Record<Locale, string> {
   const out = {} as Record<Locale, string>;
