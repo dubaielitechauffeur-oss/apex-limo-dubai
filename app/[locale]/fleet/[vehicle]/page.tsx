@@ -78,7 +78,21 @@ interface PageProps {
 export const revalidate = 300;
 
 export async function generateStaticParams() {
-  const vehicleParams = FLEET.map((vehicle) => ({ vehicle: vehicle.slug }));
+  // Fetch slugs from DB so newly-added vehicles get pre-rendered too;
+  // fall back to the static list if the DB is unreachable at build time.
+  let dbSlugs: string[] = [];
+  try {
+    const { prisma } = await import("@/lib/db");
+    const rows = await prisma.vehicle.findMany({
+      where: { status: "published", deletedAt: null },
+      select: { slug: true },
+    });
+    dbSlugs = rows.map((r) => r.slug);
+  } catch {
+    dbSlugs = FLEET.map((v) => v.slug);
+  }
+  const allVehicleSlugs = Array.from(new Set([...dbSlugs, ...FLEET.map((v) => v.slug)]));
+  const vehicleParams = allVehicleSlugs.map((slug) => ({ vehicle: slug }));
   const categoryParams = FLEET_CATEGORY_SLUGS.map((category) => ({ vehicle: category }));
   return [...vehicleParams, ...categoryParams];
 }
