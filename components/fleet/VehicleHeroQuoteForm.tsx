@@ -41,10 +41,10 @@ export default function VehicleHeroQuoteForm({ vehicle, contact }: VehicleHeroQu
 
   const durationOptions = [
     { label: tDetail("twoHours"), value: "2 Hours" },
-    { label: tDetail("airportTransfer"), value: "Airport Transfer" },
     { label: tDetail("fiveHours"), value: "5 Hours" },
     { label: tDetail("tenHours"), value: "10 Hours" },
-    { label: tDetail("pointToPoint"), value: "Point-to-Point" },
+    { label: tDetail("airportTransfer"), value: "Airport Transfer" },
+    { label: tDetail("pointToPoint"), value: "Point-to-Point Transfer" },
   ];
 
   const [fullName, setFullName] = useState("");

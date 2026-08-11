@@ -6,10 +6,6 @@
 /* Base layer                                                            */
 /* -------------------------------------------------------------------- */
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     @apply bg-obsidian text-ivory font-body antialiased;
   }
@@ -96,6 +92,22 @@
 
   .field-input-error {
     @apply border-red-400/60;
+  }
+
+  /* Chrome/Safari/Edge render the native date/time picker icon in dark
+     grey by default, which is effectively invisible against the site's
+     dark (bg-obsidian) field background. `invert()` flips it to a light
+     icon that reads clearly; `cursor: pointer` restores the click affordance
+     the invert doesn't otherwise change. */
+  .field-input[type="date"]::-webkit-calendar-picker-indicator,
+  .field-input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1) brightness(1.5);
+  }
+
+  .field-input[type="date"],
+  .field-input[type="time"] {
+    color-scheme: dark;
   }
 
   /* Chrome/Safari/Edge force autofilled inputs onto a pale yellow/white

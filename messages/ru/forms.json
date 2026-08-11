@@ -5,6 +5,9 @@
     "fullNamePlaceholderShort": "Ваше имя",
     "phone": "Номер телефона",
     "phonePlaceholder": "Введите номер телефона",
+    "searchCountry": "Поиск страны",
+    "noCountryFound": "Страна не найдена",
+    "countrySelectorLabel": "Код страны",
     "email": "Электронная почта",
     "emailPlaceholder": "you@company.com",
     "pickupLocation": "Место посадки",
@@ -20,7 +23,7 @@
     "package": "Пакет",
     "passengers": "Количество пассажиров",
     "hours": "Количество часов",
-    "hoursHint": "Оставьте «в одну сторону», если это не почасовая аренда.",
+    "hoursHint": "Оставьте поле пустым, если это не почасовая аренда.",
     "specialRequests": "Особые пожелания",
     "specialRequestsHint": "Детские автокресла, табличка для встречи, дополнительные остановки, потребности в доступности и т. д.",
     "specialRequestsPlaceholder": "Всё, что нашему шофёру следует знать заранее",
@@ -39,11 +42,9 @@
     "vehicleAndRequirements": "Автомобиль и требования"
   },
   "hourOptions": {
-    "oneWay": "Трансфер в одну сторону",
+    "pointToPoint": "Трансфер из точки в точку",
     "twoHours": "2 часа",
-    "fourHours": "4 часа",
-    "sixHours": "6 часов",
-    "eightHours": "8 часов",
+    "fiveHours": "5 часов (Самый популярный)",
     "tenHours": "10 часов (полный день)",
     "custom": "Индивидуально — укажите в примечаниях"
   },

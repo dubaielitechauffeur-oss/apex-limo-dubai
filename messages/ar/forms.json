@@ -5,6 +5,9 @@
     "fullNamePlaceholderShort": "اسمك",
     "phone": "رقم الهاتف",
     "phonePlaceholder": "أدخل رقم الهاتف",
+    "searchCountry": "ابحث عن دولة",
+    "noCountryFound": "لم يتم العثور على دولة",
+    "countrySelectorLabel": "رمز الاتصال الدولي",
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "you@company.com",
     "pickupLocation": "موقع الاستقبال",
@@ -20,7 +23,7 @@
     "package": "الباقة",
     "passengers": "عدد الركاب",
     "hours": "عدد الساعات",
-    "hoursHint": "اتركه كرحلة ذهاب فقط إذا لم يكن هذا تأجيراً بالساعة.",
+    "hoursHint": "اتركه فارغًا إذا لم يكن هذا تأجيراً بالساعة.",
     "specialRequests": "طلبات خاصة",
     "specialRequestsHint": "مقاعد الأطفال، لافتة الاستقبال الشخصي، توقفات إضافية، احتياجات إمكانية الوصول، إلخ.",
     "specialRequestsPlaceholder": "أي شيء يجب أن يعرفه سائقنا مسبقاً",
@@ -39,11 +42,9 @@
     "vehicleAndRequirements": "السيارة والمتطلبات"
   },
   "hourOptions": {
-    "oneWay": "نقل ذهاب فقط",
+    "pointToPoint": "نقل من نقطة إلى نقطة",
     "twoHours": "ساعتان",
-    "fourHours": "4 ساعات",
-    "sixHours": "6 ساعات",
-    "eightHours": "8 ساعات",
+    "fiveHours": "5 ساعات (الأكثر طلبًا)",
     "tenHours": "10 ساعات (يوم كامل)",
     "custom": "مخصص — حدده في الملاحظات"
   },

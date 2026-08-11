@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from "next-intl";
 import PhoneInput, { type Labels } from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 import "react-phone-number-input/style.css";
+import CountrySelectDropdown from "./CountrySelectDropdown";
 
 interface PhoneInputFieldProps {
   id: string;
@@ -84,6 +85,7 @@ export default function PhoneInputField({
         placeholder={t("phonePlaceholder")}
         labels={labels}
         flags={flags}
+        countrySelectComponent={CountrySelectDropdown}
       />
     </div>
   );
