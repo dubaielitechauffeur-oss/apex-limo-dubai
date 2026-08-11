@@ -566,7 +566,11 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   const quickFacts = [
     { label: t("quickFacts.category"), value: categoryLabel, icon: Crown },
     { label: t("quickFacts.passengers"), value: `${vehicle.passengers} ${t("quickFacts.passengers")}`, icon: Users },
-    { label: t("quickFacts.luggage"), value: `${vehicle.luggage} ${t("quickFacts.luggage")}`, icon: Briefcase },
+    // Luggage stat is optional — some vehicles (large people-movers sold on
+    // seat count) omit it, so it's dropped from the facts grid when absent.
+    ...(vehicle.luggage != null
+      ? [{ label: t("quickFacts.luggage"), value: `${vehicle.luggage} ${t("quickFacts.luggage")}`, icon: Briefcase }]
+      : []),
     { label: t("quickFacts.bestFor"), value: vehicle.idealFor, icon: Compass },
   ];
 
@@ -698,10 +702,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 <Users className="h-4 w-4 text-gold" strokeWidth={1.5} />
                 {t("passengersShort", { count: vehicle.passengers })}
               </span>
-              <span className="flex items-center gap-2">
-                <Briefcase className="h-4 w-4 text-gold" strokeWidth={1.5} />
-                {t("bagsShort", { count: vehicle.luggage })}
-              </span>
+              {vehicle.luggage != null ? (
+                <span className="flex items-center gap-2">
+                  <Briefcase className="h-4 w-4 text-gold" strokeWidth={1.5} />
+                  {t("bagsShort", { count: vehicle.luggage })}
+                </span>
+              ) : null}
               <span className="flex items-center gap-2">
                 <Compass className="h-4 w-4 text-gold" strokeWidth={1.5} />
                 {vehicle.idealFor}
@@ -761,8 +767,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               <span>{categoryLabel}</span>
               <span className="text-gold">&bull;</span>
               <span>{t("passengersLabel", { count: vehicle.passengers })}</span>
-              <span className="text-gold">&bull;</span>
-              <span>{vehicle.luggage} {t("quickFacts.luggage")}</span>
+              {vehicle.luggage != null ? (
+                <>
+                  <span className="text-gold">&bull;</span>
+                  <span>{vehicle.luggage} {t("quickFacts.luggage")}</span>
+                </>
+              ) : null}
             </div>
 
             <div className="mt-8 grid animate-fade-in grid-cols-[3fr_2fr] items-start gap-10 [animation-delay:450ms] xl:gap-14">
