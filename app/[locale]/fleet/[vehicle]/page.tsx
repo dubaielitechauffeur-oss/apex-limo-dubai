@@ -883,46 +883,50 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               size (w-72, p-6) rather than shrink-wrapped to their text, so
               the grid reads as a deliberate block instead of a cluster of
               undersized tiles. */}
-          <div className="mt-6 hidden lg:grid lg:grid-cols-[max-content_max-content] lg:gap-5">
-            {priceTiersDesktop.map((tier) => (
-              <div
-                key={tier.label}
-                className={`relative flex w-72 flex-col justify-center gap-1.5 rounded-xl border p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] ${
-                  tier.highlight
-                    ? "border-gold bg-charcoal"
-                    : "border-gold/15 bg-charcoal hover:border-gold/35"
-                }`}
-              >
-                {tier.highlight ? (
-                  <span className="absolute -top-3 start-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-obsidian">
-                    {t("mostPopular")}
-                  </span>
-                ) : null}
-                <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
-                  {tier.label}
-                  {tier.suffix ? (
-                    <span className="ms-1 text-[9px] normal-case text-smoke/70">{tier.suffix}</span>
+          {/* Wrapper constrains both the 2×2 grid and the Point-to-Point
+              card to the same width so the card doesn't stretch full-container. */}
+          <div className="hidden lg:block lg:w-fit">
+            <div className="grid grid-cols-[max-content_max-content] gap-5 mt-6">
+              {priceTiersDesktop.map((tier) => (
+                <div
+                  key={tier.label}
+                  className={`relative flex w-72 flex-col justify-center gap-1.5 rounded-xl border p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] ${
+                    tier.highlight
+                      ? "border-gold bg-charcoal"
+                      : "border-gold/15 bg-charcoal hover:border-gold/35"
+                  }`}
+                >
+                  {tier.highlight ? (
+                    <span className="absolute -top-3 start-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-obsidian">
+                      {t("mostPopular")}
+                    </span>
                   ) : null}
+                  <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
+                    {tier.label}
+                    {tier.suffix ? (
+                      <span className="ms-1 text-[9px] normal-case text-smoke/70">{tier.suffix}</span>
+                    ) : null}
+                  </span>
+                  <span className="font-display text-xl font-bold text-gold">
+                    {tier.price > 0 ? <Ltr>{formatAedPrice(tier.price)}</Ltr> : t("priceOnRequest")}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Point-to-Point — same width as the 2×2 grid above */}
+            <div className="mt-5 flex items-center gap-5 rounded-xl border border-gold/15 bg-charcoal p-6 transition-all duration-200 hover:border-gold/35 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/20 bg-gold/10">
+                <MapPin className="h-5 w-5 text-gold" strokeWidth={1.5} />
+              </div>
+              <div>
+                <span className="block text-[10px] font-medium uppercase tracking-wide text-smoke">
+                  {t("pointToPoint")}
                 </span>
-                <span className="font-display text-xl font-bold text-gold">
-                  {tier.price > 0 ? <Ltr>{formatAedPrice(tier.price)}</Ltr> : t("priceOnRequest")}
+                <span className="mt-0.5 block font-display text-xl font-bold italic text-gold">
+                  {t("pointToPointNote")}
                 </span>
               </div>
-            ))}
-          </div>
-
-          {/* Point-to-Point — full-width card below the 2×2 grid, desktop only */}
-          <div className="mt-5 hidden items-center gap-5 rounded-xl border border-gold/15 bg-charcoal p-6 transition-all duration-200 hover:border-gold/35 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] lg:flex">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/20 bg-gold/10">
-              <MapPin className="h-5 w-5 text-gold" strokeWidth={1.5} />
-            </div>
-            <div className="flex-1">
-              <span className="block text-[10px] font-medium uppercase tracking-wide text-smoke">
-                {t("pointToPoint")}
-              </span>
-              <span className="mt-0.5 block font-display text-xl font-bold italic text-gold">
-                {t("pointToPointNote")}
-              </span>
             </div>
           </div>
 
