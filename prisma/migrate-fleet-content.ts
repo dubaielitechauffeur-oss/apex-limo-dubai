@@ -149,7 +149,7 @@ async function migrateVehicles() {
           whyChoose: vehicle.whyChoose as unknown as Prisma.InputJsonValue,
           badge: (vehicle.badge ?? null) as unknown as Prisma.InputJsonValue,
           passengers: vehicle.passengers,
-          luggage: vehicle.luggage,
+          luggage: vehicle.luggage ?? 0,
           rates: vehicle.rates as unknown as Prisma.InputJsonValue,
           seo: emptySeo(broadcast(vehicle.name), vehicle.description),
           status: "published",

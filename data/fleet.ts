@@ -65,7 +65,10 @@ export interface FleetVehicle {
   description: Localized;
   longDescription: Localized;
   passengers: number;
-  luggage: number;
+  /** Luggage capacity. Optional — a handful of vehicles (e.g. large
+   *  people-movers sold on seat count, not boot space) intentionally omit
+   *  it, and every render site hides the luggage stat when it's absent. */
+  luggage?: number;
   idealFor: Localized;
   features: Localized<string[]>;
   whyChoose: Localized<string[]>;
@@ -1655,6 +1658,234 @@ export const FLEET: FleetVehicle[] = [
     ],
   },
   {
+    slug: "mercedes-maybach-sprinter",
+    badge: {
+      en: "16 Seats",
+      ar: "16 مقعدًا",
+      ru: "16 мест",
+      zh: "16座",
+      fr: "16 places",
+      de: "16 Sitze",
+    },
+    brand: "Mercedes-Maybach",
+    model: "Sprinter",
+    rates: { tenHours: 3990, fiveHours: 2990, oneHour: 1490, airport: 1590, extraHour: 900, additionalCity: 900 },
+    images: [
+      {
+        src: "/images/fleet/mercedes-maybach-sprinter/mercedes-maybach-sprinter-1.png",
+        alt: {
+          en: "Black Mercedes-Maybach Sprinter 16-seater luxury van, front three-quarter view at a hotel entrance in Dubai at dusk",
+          ar: "حافلة مرسيدس-مايباخ سبرينتر الفاخرة السوداء بسعة 16 مقعدًا، منظر أمامي جانبي عند مدخل فندق في دبي عند الغسق",
+          ru: "Чёрный люкс-вэн Mercedes-Maybach Sprinter на 16 мест, вид спереди сбоку у входа в отель в Дубае в сумерках",
+          zh: "黑色梅赛德斯-迈巴赫斯宾特16座豪华商务车,黄昏时分迪拜酒店门口前四分之三视角",
+          fr: "Van de luxe 16 places Mercedes-Maybach Sprinter noir, vue avant trois-quarts à l'entrée d'un hôtel à Dubaï au crépuscule",
+          de: "Schwarzer Mercedes-Maybach Sprinter 16-Sitzer Luxus-Van, Vorderansicht von schräg vorne am Eingang eines Hotels in Dubai in der Dämmerung",
+        },
+      },
+      {
+        src: "/images/fleet/mercedes-maybach-sprinter/mercedes-maybach-sprinter-2.jpg",
+        alt: {
+          en: "Mercedes-Maybach Sprinter interior with rows of individual quilted Maybach captain seats, gold Maybach emblems and an illuminated star-light ceiling",
+          ar: "المقصورة الداخلية لمرسيدس-مايباخ سبرينتر بصفوف من المقاعد الفردية المبطنة من مايباخ، وشعارات مايباخ الذهبية، وسقف مضيء بإضاءة النجوم",
+          ru: "Салон Mercedes-Maybach Sprinter с рядами отдельных стёганых капитанских кресел Maybach, золотыми эмблемами Maybach и потолком с подсветкой «звёздное небо»",
+          zh: "梅赛德斯-迈巴赫斯宾特内舱,成排独立绗缝迈巴赫座椅、金色迈巴赫标识及星光顶棚照明",
+          fr: "Intérieur du Mercedes-Maybach Sprinter avec rangées de sièges capitaine Maybach matelassés individuels, emblèmes Maybach dorés et plafond étoilé illuminé",
+          de: "Innenraum des Mercedes-Maybach Sprinter mit Reihen einzelner gesteppter Maybach-Captain-Seats, goldenen Maybach-Emblemen und einem beleuchteten Sternenhimmel",
+        },
+      },
+      {
+        src: "/images/fleet/mercedes-maybach-sprinter/mercedes-maybach-sprinter-3.jpg",
+        alt: {
+          en: "Mercedes-Maybach Sprinter cabin showing Maybach captain seats with fold-out tables and cup holders under warm ambient lighting",
+          ar: "مقصورة مرسيدس-مايباخ سبرينتر تُظهر مقاعد مايباخ مع طاولات قابلة للطي وحاملات أكواب تحت إضاءة محيطية دافئة",
+          ru: "Салон Mercedes-Maybach Sprinter с креслами Maybach, откидными столиками и подстаканниками при тёплой атмосферной подсветке",
+          zh: "梅赛德斯-迈巴赫斯宾特座舱,迈巴赫座椅配折叠桌板与杯架,沐浴在暖色氛围灯光中",
+          fr: "Cabine du Mercedes-Maybach Sprinter montrant des sièges Maybach avec tablettes rabattables et porte-gobelets sous un éclairage d'ambiance chaleureux",
+          de: "Kabine des Mercedes-Maybach Sprinter mit Maybach-Sitzen, ausklappbaren Tischen und Getränkehaltern unter warmer Ambientebeleuchtung",
+        },
+      },
+    ],
+    name: "Mercedes-Maybach Sprinter",
+    category: "Van",
+    tagline: {
+      en: "Sixteen seats, Maybach class",
+      ar: "ستة عشر مقعدًا بفخامة مايباخ",
+      ru: "Шестнадцать мест класса Maybach",
+      zh: "十六座,迈巴赫级享受",
+      fr: "Seize places, classe Maybach",
+      de: "Sechzehn Sitze, Maybach-Klasse",
+    },
+    description: {
+      en: "A 16-seater Mercedes-Maybach Sprinter — the fleet's flagship luxury minibus, fitting an entire group into one chauffeur-driven Maybach cabin of individual quilted seats, a star-light ceiling and business-class comfort throughout.",
+      ar: "حافلة مرسيدس-مايباخ سبرينتر بسعة 16 مقعدًا — الحافلة الفاخرة الرائدة في الأسطول، تجمع مجموعة كاملة في مقصورة مايباخ واحدة بسائق خاص، بمقاعد فردية مبطنة وسقف بإضاءة النجوم وراحة بدرجة رجال الأعمال في كل مكان.",
+      ru: "16-местный Mercedes-Maybach Sprinter — флагманский люкс-микроавтобус автопарка, вмещающий целую группу в один салон Maybach с водителем: отдельные стёганые кресла, потолок «звёздное небо» и комфорт бизнес-класса повсюду.",
+      zh: "16座梅赛德斯-迈巴赫斯宾特——车队的旗舰豪华中巴,可将整个团体容纳于一辆专属司机驾驶的迈巴赫座舱之中,配独立绗缝座椅、星光顶棚,处处尽显商务舱般舒适。",
+      fr: "Un Mercedes-Maybach Sprinter 16 places — le minibus de luxe amiral de la flotte, réunissant tout un groupe dans une seule cabine Maybach avec chauffeur : sièges matelassés individuels, plafond étoilé et confort classe affaires partout.",
+      de: "Ein 16-sitziger Mercedes-Maybach Sprinter — der Luxus-Kleinbus als Flaggschiff der Flotte, der eine ganze Gruppe in einer chauffeurgefahrenen Maybach-Kabine vereint: einzelne gesteppte Sitze, ein Sternenhimmel und durchgehend Business-Class-Komfort.",
+    },
+    longDescription: {
+      en: "When the whole group needs to travel together in genuine luxury, the Mercedes-Maybach Sprinter is the answer — a full 16-seat minibus finished to Maybach standards rather than ordinary shuttle-bus trim. Every passenger gets an individual quilted-leather captain seat with its own armrests, USB charging and a fold-out table, set beneath an illuminated star-light ceiling and ambient mood lighting that turn a group transfer into an occasion. Panoramic tinted windows keep the cabin private, onboard Wi-Fi and entertainment keep everyone connected, and the elevated, insulated cabin stays quiet and composed even in Dubai traffic. It's the natural choice for corporate roadshows, conference shuttles, wedding parties, and large family groups who want to arrive together rather than split across several cars. Every journey is handled by a uniformed professional chauffeur, with easy step-in access and room for a full delegation to board at once — one coordinated arrival instead of a convoy. For airport pickups at DXB or DWC, flight tracking and a meet-and-greet keep a big group moving smoothly from the moment they land.",
+      ar: "عندما تحتاج المجموعة بأكملها إلى السفر معًا بفخامة حقيقية، تكون مرسيدس-مايباخ سبرينتر هي الحل — حافلة كاملة بسعة 16 مقعدًا مُجهّزة وفق معايير مايباخ بدلاً من تجهيزات الحافلات العادية. يحصل كل راكب على مقعد فردي من الجلد المبطن مع مساند ذراعين خاصة وشحن USB وطاولة قابلة للطي، تحت سقف مضيء بإضاءة النجوم وإضاءة محيطية تحوّل نقل المجموعة إلى مناسبة. تحافظ النوافذ البانورامية المظللة على خصوصية المقصورة، وتبقي شبكة الواي فاي والترفيه الجميع على اتصال، وتبقى المقصورة المرتفعة والمعزولة هادئة ومتزنة حتى في زحام دبي. إنها الخيار الطبيعي لجولات الشركات ونقل المؤتمرات وحفلات الزفاف والمجموعات العائلية الكبيرة التي ترغب في الوصول معًا بدلاً من التوزع على عدة سيارات. كل رحلة يديرها سائق محترف بزي رسمي، مع سهولة الصعود ومساحة لصعود وفد كامل دفعة واحدة — وصول واحد منسق بدلاً من موكب. لعمليات الاستقبال في مطار دبي الدولي أو مطار آل مكتوم، يحافظ تتبع الرحلات والاستقبال على تحرك المجموعة الكبيرة بسلاسة منذ لحظة هبوطها.",
+      ru: "Когда всей группе нужно ехать вместе с настоящим комфортом, ответ — Mercedes-Maybach Sprinter, полноценный 16-местный микроавтобус, отделанный по стандартам Maybach, а не как обычный шаттл. Каждый пассажир получает отдельное капитанское кресло из стёганой кожи с собственными подлокотниками, USB-зарядкой и откидным столиком, под потолком «звёздное небо» и атмосферной подсветкой, превращающими групповой трансфер в событие. Панорамные тонированные окна обеспечивают приватность, бортовой Wi-Fi и развлечения держат всех на связи, а приподнятый шумоизолированный салон остаётся тихим даже в пробках Дубая. Это естественный выбор для корпоративных роуд-шоу, конференц-шаттлов, свадебных компаний и больших семей, которые хотят прибыть вместе, а не разъезжаться по нескольким машинам. Каждую поездку ведёт профессиональный водитель в униформе, с удобной посадкой и местом, чтобы вся делегация села сразу — одно согласованное прибытие вместо кортежа. Для встреч в аэропортах DXB и DWC отслеживание рейса и встреча у выхода обеспечивают плавное перемещение большой группы с момента посадки.",
+      zh: "当整个团体需要以真正的奢华共同出行时,梅赛德斯-迈巴赫斯宾特便是答案——一辆按迈巴赫标准而非普通接驳车规格打造的16座中巴。每位乘客都拥有独立的绗缝真皮座椅,配专属扶手、USB充电及折叠桌板,置身星光顶棚与氛围灯光之下,让团体接送化作一场盛事。全景隐私车窗确保座舱私密,车载WiFi与娱乐系统让每位乘客保持在线,高踞而隔音的车舱即便身处迪拜车流中也从容静谧。对于希望共同抵达、而非分乘数车的企业路演、会议接驳、婚礼团队及大型家庭而言,它是自然之选。每段行程均由身着制服的专业司机驾驶,登车便捷,可容纳整个代表团一次登车——一次统一抵达,而非车队。在DXB或DWC机场接机时,航班追踪与专人接机让大型团体自落地起便顺畅前行。",
+      fr: "Quand tout un groupe doit voyager ensemble dans un luxe véritable, le Mercedes-Maybach Sprinter est la réponse — un minibus complet de 16 places fini aux standards Maybach plutôt qu'en habillage de navette ordinaire. Chaque passager dispose d'un siège capitaine individuel en cuir matelassé avec ses propres accoudoirs, recharge USB et tablette rabattable, sous un plafond étoilé illuminé et un éclairage d'ambiance qui transforment un transfert de groupe en événement. Des vitres panoramiques teintées préservent l'intimité de la cabine, le Wi-Fi et le divertissement embarqués gardent chacun connecté, et l'habitacle surélevé et insonorisé reste silencieux même dans le trafic de Dubaï. C'est le choix naturel pour les road-shows d'entreprise, navettes de conférence, cortèges de mariage et grandes familles qui veulent arriver ensemble plutôt que de se répartir dans plusieurs voitures. Chaque trajet est assuré par un chauffeur professionnel en uniforme, avec un accès facile et de la place pour qu'une délégation complète monte d'un coup — une arrivée coordonnée plutôt qu'un convoi. Pour les prises en charge aux aéroports DXB ou DWC, le suivi de vol et l'accueil personnalisé maintiennent un grand groupe en mouvement en douceur dès l'atterrissage.",
+      de: "Wenn die ganze Gruppe gemeinsam in echtem Luxus reisen soll, ist der Mercedes-Maybach Sprinter die Antwort — ein voller 16-Sitzer-Kleinbus, ausgestattet nach Maybach-Standards statt in gewöhnlicher Shuttle-Ausstattung. Jeder Fahrgast erhält einen einzelnen Captain-Seat aus gestepptem Leder mit eigenen Armlehnen, USB-Ladung und ausklappbarem Tisch, unter einem beleuchteten Sternenhimmel und Ambientebeleuchtung, die einen Gruppentransfer zum Ereignis machen. Panorama-Tönungsscheiben wahren die Privatsphäre, WLAN und Entertainment an Bord halten alle verbunden, und die erhöhte, gedämmte Kabine bleibt selbst im Dubaier Verkehr ruhig und gelassen. Er ist die natürliche Wahl für Corporate-Roadshows, Konferenz-Shuttles, Hochzeitsgesellschaften und große Familiengruppen, die gemeinsam ankommen möchten, statt sich auf mehrere Autos zu verteilen. Jede Fahrt übernimmt ein uniformierter Profi-Chauffeur, mit leichtem Einstieg und Platz, damit eine ganze Delegation auf einmal einsteigt — eine koordinierte Ankunft statt einer Wagenkolonne. Für Abholungen am DXB oder DWC sorgen Flugverfolgung und Meet-and-Greet dafür, dass eine große Gruppe vom Moment der Landung an reibungslos vorankommt.",
+    },
+    passengers: 16,
+    idealFor: {
+      en: "Large groups & VIP events",
+      ar: "المجموعات الكبيرة وفعاليات كبار الشخصيات",
+      ru: "Большие группы и VIP-мероприятия",
+      zh: "大型团体与贵宾活动",
+      fr: "Grands groupes et événements VIP",
+      de: "Große Gruppen & VIP-Events",
+    },
+    features: {
+      en: [
+        "16 individual quilted Maybach seats",
+        "Illuminated star-light ceiling",
+        "Fold-out tables with cup holders",
+        "Ambient mood lighting throughout",
+        "Onboard Wi-Fi & USB charging",
+        "Panoramic tinted privacy windows",
+      ],
+      ar: [
+        "16 مقعدًا فرديًا مبطنًا من مايباخ",
+        "سقف مضيء بإضاءة النجوم",
+        "طاولات قابلة للطي مع حاملات أكواب",
+        "إضاءة محيطية في كل أنحاء المقصورة",
+        "شبكة واي فاي وشحن USB على متن السيارة",
+        "نوافذ بانورامية مظللة للخصوصية",
+      ],
+      ru: [
+        "16 отдельных стёганых кресел Maybach",
+        "Потолок с подсветкой «звёздное небо»",
+        "Откидные столики с подстаканниками",
+        "Атмосферная подсветка по всему салону",
+        "Wi-Fi и USB-зарядка в салоне",
+        "Панорамные тонированные окна",
+      ],
+      zh: [
+        "16个独立绗缝迈巴赫座椅",
+        "星光顶棚照明",
+        "配杯架的折叠桌板",
+        "全舱氛围灯光",
+        "车载WiFi与USB充电",
+        "全景隐私隔热车窗",
+      ],
+      fr: [
+        "16 sièges Maybach matelassés individuels",
+        "Plafond étoilé illuminé",
+        "Tablettes rabattables avec porte-gobelets",
+        "Éclairage d'ambiance dans tout l'habitacle",
+        "Wi-Fi embarqué et recharge USB",
+        "Vitres panoramiques teintées d'intimité",
+      ],
+      de: [
+        "16 einzelne gesteppte Maybach-Sitze",
+        "Beleuchteter Sternenhimmel",
+        "Ausklappbare Tische mit Getränkehaltern",
+        "Ambientebeleuchtung im gesamten Innenraum",
+        "WLAN an Bord & USB-Laden",
+        "Panorama-Tönungsscheiben für Privatsphäre",
+      ],
+    },
+    whyChoose: {
+      en: [
+        "The fleet's largest vehicle — 16 VIP seats in one Maybach cabin",
+        "Keep an entire delegation or wedding party together in one vehicle",
+        "Business-class Maybach comfort scaled up for groups",
+        "Ideal for corporate roadshows, events and large family occasions",
+      ],
+      ar: [
+        "أكبر مركبة في الأسطول — 16 مقعدًا لكبار الشخصيات في مقصورة مايباخ واحدة",
+        "أبقِ وفدًا كاملاً أو حفل زفاف معًا في مركبة واحدة",
+        "راحة مايباخ بدرجة رجال الأعمال بحجم أكبر للمجموعات",
+        "مثالية لجولات الشركات والفعاليات والمناسبات العائلية الكبيرة",
+      ],
+      ru: [
+        "Самый большой автомобиль автопарка — 16 VIP-мест в одном салоне Maybach",
+        "Держите всю делегацию или свадебную компанию вместе в одном авто",
+        "Комфорт Maybach бизнес-класса, масштабированный для групп",
+        "Идеален для корпоративных роуд-шоу, мероприятий и больших семейных событий",
+      ],
+      zh: [
+        "车队最大车型——一辆迈巴赫座舱内设16个贵宾座位",
+        "让整个代表团或婚礼团队同乘一车",
+        "商务舱级迈巴赫舒适,为团体放大呈现",
+        "企业路演、活动及大型家庭场合的理想之选",
+      ],
+      fr: [
+        "Le plus grand véhicule de la flotte — 16 sièges VIP dans une seule cabine Maybach",
+        "Gardez toute une délégation ou un cortège de mariage dans un seul véhicule",
+        "Le confort Maybach classe affaires, à l'échelle des groupes",
+        "Idéal pour road-shows d'entreprise, événements et grandes occasions familiales",
+      ],
+      de: [
+        "Das größte Fahrzeug der Flotte — 16 VIP-Sitze in einer Maybach-Kabine",
+        "Eine ganze Delegation oder Hochzeitsgesellschaft in einem Fahrzeug zusammenhalten",
+        "Business-Class-Maybach-Komfort, hochskaliert für Gruppen",
+        "Ideal für Corporate-Roadshows, Events und große Familienanlässe",
+      ],
+    },
+    faqs: [
+      {
+        question: {
+          en: "How many passengers does the Mercedes-Maybach Sprinter seat?",
+          ar: "كم عدد الركاب الذين تتسع لهم مرسيدس-مايباخ سبرينتر؟",
+          ru: "Сколько пассажиров вмещает Mercedes-Maybach Sprinter?",
+          zh: "梅赛德斯-迈巴赫斯宾特可容纳多少乘客?",
+          fr: "Combien de passagers le Mercedes-Maybach Sprinter peut-il accueillir ?",
+          de: "Wie viele Passagiere fasst der Mercedes-Maybach Sprinter?",
+        },
+        answer: {
+          en: "It seats 16 passengers in individual Maybach-finished captain seats, making it the largest vehicle in the Apex fleet — ideal for keeping a whole group together in one chauffeur-driven cabin.",
+          ar: "تتسع لـ 16 راكبًا في مقاعد فردية بتجهيزات مايباخ، مما يجعلها أكبر مركبة في أسطول Apex — مثالية لإبقاء مجموعة كاملة معًا في مقصورة واحدة بسائق خاص.",
+          ru: "Он вмещает 16 пассажиров в отдельных капитанских креслах отделки Maybach, что делает его самым большим автомобилем автопарка Apex — идеально, чтобы держать всю группу вместе в одном салоне с водителем.",
+          zh: "它可容纳16名乘客,配迈巴赫工艺的独立座椅,是Apex车队中最大的车型——非常适合让整个团体同处一辆专属司机座舱之中。",
+          fr: "Il accueille 16 passagers dans des sièges capitaine de finition Maybach, ce qui en fait le plus grand véhicule de la flotte Apex — idéal pour garder tout un groupe ensemble dans une seule cabine avec chauffeur.",
+          de: "Er bietet Platz für 16 Passagiere in einzelnen Captain-Seats in Maybach-Ausführung und ist damit das größte Fahrzeug der Apex-Flotte — ideal, um eine ganze Gruppe in einer chauffeurgefahrenen Kabine zusammenzuhalten.",
+        },
+      },
+      {
+        question: {
+          en: "Is the Maybach Sprinter good for group airport transfers in Dubai?",
+          ar: "هل تناسب مايباخ سبرينتر نقل المجموعات من المطار في دبي؟",
+          ru: "Подходит ли Maybach Sprinter для групповых трансферов из аэропорта в Дубае?",
+          zh: "迈巴赫斯宾特是否适合迪拜的团体机场接送?",
+          fr: "Le Maybach Sprinter convient-il aux transferts aéroport de groupe à Dubaï ?",
+          de: "Ist der Maybach Sprinter gut für Gruppen-Flughafentransfers in Dubai geeignet?",
+        },
+        answer: {
+          en: "Yes — it's built for larger groups arriving together at DXB or DWC, with flight tracking, a meet-and-greet chauffeur, and room for an entire delegation or family in one vehicle instead of several.",
+          ar: "نعم — إنها مصممة للمجموعات الكبيرة التي تصل معًا إلى مطار دبي الدولي أو مطار آل مكتوم، مع تتبع الرحلات وسائق للاستقبال ومساحة لوفد أو عائلة بأكملها في مركبة واحدة بدلاً من عدة مركبات.",
+          ru: "Да — он создан для больших групп, прибывающих вместе в DXB или DWC: отслеживание рейса, водитель со встречей у выхода и место для целой делегации или семьи в одном автомобиле вместо нескольких.",
+          zh: "适合——它专为共同抵达DXB或DWC机场的大型团体而打造,配航班追踪、专人接机司机,并可容纳整个代表团或家庭同乘一车,无需分乘多辆。",
+          fr: "Oui — il est conçu pour les grands groupes arrivant ensemble à DXB ou DWC, avec suivi de vol, chauffeur d'accueil et de la place pour toute une délégation ou famille dans un seul véhicule plutôt que plusieurs.",
+          de: "Ja — er ist für größere Gruppen gebaut, die gemeinsam am DXB oder DWC ankommen, mit Flugverfolgung, einem Meet-and-Greet-Chauffeur und Platz für eine ganze Delegation oder Familie in einem Fahrzeug statt mehreren.",
+        },
+      },
+      {
+        question: {
+          en: "Can the Maybach Sprinter be booked for weddings and corporate events?",
+          ar: "هل يمكن حجز مايباخ سبرينتر لحفلات الزفاف وفعاليات الشركات؟",
+          ru: "Можно ли забронировать Maybach Sprinter для свадеб и корпоративных мероприятий?",
+          zh: "迈巴赫斯宾特是否可用于婚礼及企业活动预订?",
+          fr: "Le Maybach Sprinter peut-il être réservé pour des mariages et événements d'entreprise ?",
+          de: "Kann der Maybach Sprinter für Hochzeiten und Firmenveranstaltungen gebucht werden?",
+        },
+        answer: {
+          en: "Absolutely. Its 16 luxury seats, star-light ceiling and ambient lighting make it a favourite for wedding parties, conference shuttles and corporate roadshows across Dubai and the UAE.",
+          ar: "بالتأكيد. تجعلها مقاعدها الفاخرة الـ 16 وسقفها بإضاءة النجوم وإضاءتها المحيطية خيارًا مفضلاً لحفلات الزفاف ونقل المؤتمرات وجولات الشركات في جميع أنحاء دبي والإمارات.",
+          ru: "Безусловно. Его 16 роскошных кресел, потолок «звёздное небо» и атмосферная подсветка делают его фаворитом для свадебных компаний, конференц-шаттлов и корпоративных роуд-шоу по всему Дубаю и ОАЭ.",
+          zh: "当然可以。其16个豪华座椅、星光顶棚及氛围灯光,使其成为迪拜及阿联酋各地婚礼团队、会议接驳与企业路演的热门之选。",
+          fr: "Absolument. Ses 16 sièges de luxe, son plafond étoilé et son éclairage d'ambiance en font un favori pour les cortèges de mariage, navettes de conférence et road-shows d'entreprise à Dubaï et aux Émirats.",
+          de: "Auf jeden Fall. Seine 16 Luxussitze, der Sternenhimmel und die Ambientebeleuchtung machen ihn zum Favoriten für Hochzeitsgesellschaften, Konferenz-Shuttles und Corporate-Roadshows in Dubai und den VAE.",
+        },
+      },
+    ],
+  },
+  {
     slug: "bmw-7-series",
     badge: {
       en: "Corporate Preferred",
@@ -3195,7 +3426,7 @@ export interface PlainFleetVehicle {
   description: string;
   longDescription: string;
   passengers: number;
-  luggage: number;
+  luggage?: number;
   idealFor: string;
   features: string[];
   whyChoose: string[];

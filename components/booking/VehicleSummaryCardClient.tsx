@@ -11,7 +11,7 @@ export interface VehicleSummaryOption {
   brand: string;
   description: string;
   passengers: number;
-  luggage: number;
+  luggage?: number;
   cover?: { src: string; alt: string };
 }
 
@@ -70,10 +70,12 @@ export default function VehicleSummaryCardClient({ vehicles, labels }: VehicleSu
             <Users className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
             {vehicle.passengers} {labels.passengers}
           </span>
-          <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-smoke">
-            <Briefcase className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
-            {vehicle.luggage} {labels.luggage}
-          </span>
+          {vehicle.luggage != null ? (
+            <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-smoke">
+              <Briefcase className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
+              {vehicle.luggage} {labels.luggage}
+            </span>
+          ) : null}
           <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-smoke">
             <BadgeCheck className="h-4 w-4 text-gold" strokeWidth={1.5} aria-hidden="true" />
             {labels.chauffeurIncluded}

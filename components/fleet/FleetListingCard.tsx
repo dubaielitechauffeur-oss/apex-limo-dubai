@@ -119,7 +119,9 @@ export default async function FleetListingCard({ vehicle, contact }: FleetListin
         {/* Specifications — capacity and standard amenities only */}
         <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-neutral-200 py-2.5">
           <SpecItem icon={Users} label={`${vehicle.passengers} ${tSummary("passengers")}`} />
-          <SpecItem icon={Briefcase} label={`${vehicle.luggage} ${tSummary("luggage")}`} />
+          {vehicle.luggage != null ? (
+            <SpecItem icon={Briefcase} label={`${vehicle.luggage} ${tSummary("luggage")}`} />
+          ) : null}
           <SpecItem icon={Wifi} label={t("wifi")} />
           <SpecItem icon={GlassWater} label={t("water")} />
         </div>
