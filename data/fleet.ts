@@ -2509,7 +2509,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "tesla-model-3",
     brand: "Tesla",
     model: "Model 3",
-    rates: { tenHours: 990, fiveHours: 590, oneHour: 490, airport: 245, extraHour: 210, additionalCity: 210 },
+    rates: { tenHours: 990, fiveHours: 590, oneHour: 390, airport: 245, extraHour: 210, additionalCity: 210 },
     images: [
       {
         src: "/images/fleet/tesla-model-3/tesla-model-3-1.png",

@@ -5,6 +5,9 @@
     "fullNamePlaceholderShort": "Votre nom",
     "phone": "Numéro de Téléphone",
     "phonePlaceholder": "Saisissez le numéro de téléphone",
+    "searchCountry": "Rechercher un pays",
+    "noCountryFound": "Aucun pays trouvé",
+    "countrySelectorLabel": "Indicatif téléphonique",
     "email": "E-mail",
     "emailPlaceholder": "you@company.com",
     "pickupLocation": "Lieu de Prise en Charge",
@@ -20,7 +23,7 @@
     "package": "Forfait",
     "passengers": "Nombre de Passagers",
     "hours": "Nombre d'Heures",
-    "hoursHint": "Laissez sur « aller simple » si ce n'est pas une location à l'heure.",
+    "hoursHint": "Laissez vide si ce n'est pas une location à l'heure.",
     "specialRequests": "Demandes Particulières",
     "specialRequestsHint": "Sièges auto pour enfants, pancarte d'accueil, arrêts supplémentaires, besoins d'accessibilité, etc.",
     "specialRequestsPlaceholder": "Tout ce que notre chauffeur devrait savoir à l'avance",
@@ -39,11 +42,9 @@
     "vehicleAndRequirements": "Véhicule et Exigences"
   },
   "hourOptions": {
-    "oneWay": "Transfert Aller Simple",
+    "pointToPoint": "Transfert Point à Point",
     "twoHours": "2 heures",
-    "fourHours": "4 heures",
-    "sixHours": "6 heures",
-    "eightHours": "8 heures",
+    "fiveHours": "5 heures (Le plus populaire)",
     "tenHours": "10 heures (journée complète)",
     "custom": "Personnalisé — précisez dans les notes"
   },

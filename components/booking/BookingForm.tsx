@@ -119,11 +119,9 @@ function BookingFormFields({
   const todayISO = new Date().toISOString().split("T")[0];
 
   const hourOptions = [
-    t("hourOptions.oneWay"),
+    t("hourOptions.pointToPoint"),
     t("hourOptions.twoHours"),
-    t("hourOptions.fourHours"),
-    t("hourOptions.sixHours"),
-    t("hourOptions.eightHours"),
+    t("hourOptions.fiveHours"),
     t("hourOptions.tenHours"),
     t("hourOptions.custom"),
   ];

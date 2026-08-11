@@ -38,13 +38,13 @@ interface PriceItemProps {
  *  than showing "AED 0". */
 function PriceItem({ label, price, priceOnRequestLabel }: PriceItemProps) {
   return (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] font-medium uppercase tracking-wide text-graphite">{label}</span>
+    <div className="flex flex-col gap-1">
+      <span className="text-xs font-semibold uppercase tracking-wide text-graphite">{label}</span>
       {/* text-obsidian (not gold-deep) — gold-deep on this light linen
           panel measures ~3.5:1, below the 4.5:1 WCAG AA minimum for this
           text size. Obsidian gives ~19:1 and reads as a bolder price
           callout besides. */}
-      <span className="font-display text-sm font-bold text-obsidian">
+      <span className="font-display text-lg font-bold leading-tight text-obsidian">
         {price > 0 ? <Ltr>{formatAedPrice(price)}</Ltr> : priceOnRequestLabel}
       </span>
     </div>
@@ -68,9 +68,9 @@ export default async function FleetListingCard({ vehicle, contact }: FleetListin
 
   const priceTiers: { label: string; price: number }[] = [
     { label: t("twoHours"), price: vehicle.rates.oneHour },
-    { label: t("airportTransfer"), price: vehicle.rates.airport },
     { label: t("fiveHours"), price: vehicle.rates.fiveHours },
     { label: t("tenHours"), price: vehicle.rates.tenHours },
+    { label: t("airportTransfer"), price: vehicle.rates.airport },
   ];
 
   return (
@@ -130,7 +130,7 @@ export default async function FleetListingCard({ vehicle, contact }: FleetListin
 
         {/* Chauffeur rates — a refined price panel, not a rental-style
             bordered-tile grid, sitting between specs and the CTAs. */}
-        <div className="mt-2.5 grid grid-cols-2 gap-x-6 gap-y-2 rounded-xl border border-gold/15 bg-linen/60 px-5 py-3 sm:grid-cols-3">
+        <div className="mt-2.5 grid grid-cols-2 gap-x-6 gap-y-3 rounded-xl border border-gold/15 bg-linen/60 px-5 py-4 sm:grid-cols-3">
           {priceTiers.map((tier) => (
             <PriceItem key={tier.label} label={tier.label} price={tier.price} priceOnRequestLabel={t("priceOnRequest")} />
           ))}

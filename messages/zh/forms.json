@@ -5,6 +5,9 @@
     "fullNamePlaceholderShort": "您的姓名",
     "phone": "电话号码",
     "phonePlaceholder": "请输入电话号码",
+    "searchCountry": "搜索国家",
+    "noCountryFound": "未找到相关国家",
+    "countrySelectorLabel": "国家区号",
     "email": "电子邮箱",
     "emailPlaceholder": "you@company.com",
     "pickupLocation": "接客地点",
@@ -20,7 +23,7 @@
     "package": "套餐",
     "passengers": "乘客人数",
     "hours": "用车时长(小时)",
-    "hoursHint": "如非按小时租用,请保留为单程接送选项。",
+    "hoursHint": "如非按小时租用,请留空。",
     "specialRequests": "特殊需求",
     "specialRequestsHint": "儿童安全座椅、举牌接机、额外停靠点、无障碍需求等。",
     "specialRequestsPlaceholder": "任何需要提前告知司机的信息",
@@ -39,11 +42,9 @@
     "vehicleAndRequirements": "车辆与需求"
   },
   "hourOptions": {
-    "oneWay": "单程接送",
+    "pointToPoint": "点对点接送",
     "twoHours": "2小时",
-    "fourHours": "4小时",
-    "sixHours": "6小时",
-    "eightHours": "8小时",
+    "fiveHours": "5小时(最受欢迎)",
     "tenHours": "10小时(全天)",
     "custom": "自定义——请在备注中说明"
   },

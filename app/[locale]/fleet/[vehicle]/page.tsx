@@ -588,9 +588,9 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
   const priceTierLabels = [
     { label: t("twoHours"), price: vehicle.rates.oneHour },
-    { label: t("airportTransfer"), price: vehicle.rates.airport },
     { label: t("fiveHours"), suffix: t("halfDaySuffix"), price: vehicle.rates.fiveHours },
     { label: t("tenHours"), suffix: t("fullDaySuffix"), price: vehicle.rates.tenHours },
+    { label: t("airportTransfer"), price: vehicle.rates.airport },
   ];
 
   // Desktop-only package grid — 4 tiers only (Additional Hour/Additional
@@ -599,9 +599,9 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   // plain (non-highlighted) card styling above, untouched.
   const priceTiersDesktop = [
     { label: t("twoHours"), highlight: false, price: vehicle.rates.oneHour },
-    { label: t("airportTransfer"), highlight: false, price: vehicle.rates.airport },
     { label: t("fiveHours"), suffix: t("halfDaySuffix"), highlight: true, price: vehicle.rates.fiveHours },
     { label: t("tenHours"), suffix: t("fullDaySuffix"), highlight: false, price: vehicle.rates.tenHours },
+    { label: t("airportTransfer"), highlight: false, price: vehicle.rates.airport },
   ];
 
   return (

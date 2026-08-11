@@ -5,6 +5,9 @@
     "fullNamePlaceholderShort": "Your name",
     "phone": "Phone Number",
     "phonePlaceholder": "Enter phone number",
+    "searchCountry": "Search country",
+    "noCountryFound": "No country found",
+    "countrySelectorLabel": "Country calling code",
     "email": "Email",
     "emailPlaceholder": "you@company.com",
     "pickupLocation": "Pickup Location",
@@ -20,7 +23,7 @@
     "package": "Package",
     "passengers": "Passenger Count",
     "hours": "Number of Hours",
-    "hoursHint": "Leave as one-way if this isn't an hourly hire.",
+    "hoursHint": "Leave blank if this isn't an hourly hire.",
     "specialRequests": "Special Requests",
     "specialRequestsHint": "Child seats, meet-and-greet signage, extra stops, accessibility needs, etc.",
     "specialRequestsPlaceholder": "Anything our chauffeur should know in advance",
@@ -39,12 +42,10 @@
     "vehicleAndRequirements": "Vehicle & Requirements"
   },
   "hourOptions": {
-    "oneWay": "One-way transfer",
-    "twoHours": "2 hours",
-    "fourHours": "4 hours",
-    "sixHours": "6 hours",
-    "eightHours": "8 hours",
-    "tenHours": "10 hours (full day)",
+    "pointToPoint": "Point-to-Point Transfer",
+    "twoHours": "2 Hours",
+    "fiveHours": "5 Hours (Most Popular)",
+    "tenHours": "10 Hours (Full Day)",
     "custom": "Custom — specify in notes"
   },
   "validation": {
