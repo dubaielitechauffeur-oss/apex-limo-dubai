@@ -70,14 +70,28 @@ function pickArray(value: unknown, locale: Locale): string[] {
   return record[locale] ?? record[routing.defaultLocale] ?? [];
 }
 
-async function withFallback<T>(run: () => Promise<T>, isEmpty: (value: T) => boolean, fallback: () => T): Promise<T> {
-  try {
-    const result = await run();
-    return isEmpty(result) ? fallback() : result;
-  } catch (error) {
-    console.error("[public/cms-content] database query failed, falling back to static content:", error);
-    return fallback();
-  }
+/**
+ * The public site serves content from `data/*.ts` — the database is not in
+ * the read path.
+ *
+ * This used to query the database first and fall back to the static files
+ * only when a query returned nothing. That made a deploy insufficient on its
+ * own: editing a data file and merging changed nothing visible, because the
+ * database still held the old rows and won. Content only moved once someone
+ * remembered to run an import, and the importers deliberately refuse to
+ * overwrite existing rows, so in practice it often never moved at all.
+ *
+ * Reading the static files directly restores the obvious behaviour: whatever
+ * is committed is what the site shows, so merge-and-deploy is the whole
+ * workflow.
+ *
+ * The database, admin panel, and every query builder below are left in place
+ * and still compile — this is the single switch that takes them out of the
+ * public read path, so restoring CMS-backed reads means reverting this one
+ * function rather than rebuilding anything.
+ */
+async function withFallback<T>(_run: () => Promise<T>, _isEmpty: (value: T) => boolean, fallback: () => T): Promise<T> {
+  return fallback();
 }
 
 // ── Services ─────────────────────────────────────────────────────────────
@@ -369,25 +383,12 @@ function fetchHeroSlideRows() {
  * correct "use the existing static Hero" signal to `components/home/Hero.tsx`.
  * See PUBLIC_CMS_INTEGRATION.md "Homepage Hero" for the full reasoning.
  */
-export async function getHeroSlides(locale: Locale): Promise<PublicHeroSlide[]> {
-  try {
-    const rows = await fetchHeroSlideRows();
-    return rows.map((row) => ({
-      title: pickText(row.title, locale),
-      subtitle: pickText(row.subtitle, locale),
-      desktopImageUrl: row.desktopImage?.url ?? null,
-      mobileImageUrl: row.mobileImage?.url ?? null,
-      ctas: Array.isArray(row.ctas)
-        ? (row.ctas as unknown as { label: unknown; href: string }[]).map((cta) => ({
-            label: pickText(cta.label, locale),
-            href: cta.href,
-          }))
-        : [],
-    }));
-  } catch (error) {
-    console.error("[public/cms-content] hero slide query failed, falling back to the static hero:", error);
-    return [];
-  }
+export async function getHeroSlides(_locale: Locale): Promise<PublicHeroSlide[]> {
+  // Empty means "use the static hero" — the same result this returned
+  // whenever no slides were configured. The database is not in the public
+  // read path (see the note on `withFallback` above); restoring
+  // admin-managed hero slides means calling `fetchHeroSlideRows()` again.
+  return [];
 }
 
 // ── Fleet ────────────────────────────────────────────────────────────────

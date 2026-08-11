@@ -15,79 +15,41 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-describe("getDefaultSeoOverride — database-first, static-fallback", () => {
-  it("returns null when no GlobalSettings row exists", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue(null);
-    const result = await getDefaultSeoOverride("en");
-    expect(result).toBeNull();
+/**
+ * The site-wide SEO override was read from GlobalSettings.defaultSeo. The
+ * database is no longer in the public read path, so this always returns null
+ * and callers use the static defaults in `lib/seo.ts`. Asserting the null —
+ * including when a configured override would otherwise be available — keeps
+ * a re-introduced query from silently changing every page's metadata.
+ */
+describe("getDefaultSeoOverride — static, database not in the read path", () => {
+  it("returns null so callers use the static defaults", async () => {
+    expect(await getDefaultSeoOverride("en")).toBeNull();
   });
 
-  it("returns null when defaultSeo has never been configured (empty object)", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue({ defaultSeo: {} });
-    const result = await getDefaultSeoOverride("en");
-    expect(result).toBeNull();
+  it("never queries the database", async () => {
+    await getDefaultSeoOverride("en");
+    expect(mockGlobalSettings.findFirst).not.toHaveBeenCalled();
+    expect(mockMediaItem.findUnique).not.toHaveBeenCalled();
   });
 
-  it("returns null when the title for this locale is blank, even with other fields set", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue({
-      defaultSeo: { title: { en: "" }, description: { en: "Has a description" }, noIndex: false, noFollow: false, ogImageId: null },
-    });
-    const result = await getDefaultSeoOverride("en");
-    expect(result).toBeNull();
-  });
-
-  it("returns null when the query throws", async () => {
-    mockGlobalSettings.findFirst.mockRejectedValue(new Error("simulated connection failure"));
-    const result = await getDefaultSeoOverride("en");
-    expect(result).toBeNull();
-  });
-
-  it("returns the configured override for the requested locale", async () => {
+  it("returns null even when a configured override would be available", async () => {
     mockGlobalSettings.findFirst.mockResolvedValue({
       defaultSeo: {
-        title: { en: "English Title", ar: "Arabic Title" },
-        description: { en: "English description", ar: "Arabic description" },
-        noIndex: true,
+        title: { en: "Configured title" },
+        description: { en: "Configured description" },
+        ogImageId: "media-1",
+        noIndex: false,
         noFollow: false,
-        ogImageId: null,
       },
     });
-    const result = await getDefaultSeoOverride("ar");
-    expect(result).toEqual({
-      title: "Arabic Title",
-      description: "Arabic description",
-      ogImageUrl: null,
-      noIndex: true,
-      noFollow: false,
-    });
+    mockMediaItem.findUnique.mockResolvedValue({ url: "/images/og.jpg" });
+    expect(await getDefaultSeoOverride("en")).toBeNull();
   });
 
-  it("falls back to the default locale's title when the requested locale has none", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue({
-      defaultSeo: { title: { en: "English Title" }, description: { en: "English description" }, noIndex: false, noFollow: false, ogImageId: null },
-    });
-    const result = await getDefaultSeoOverride("fr");
-    expect(result?.title).toBe("English Title");
-  });
-
-  it("resolves the OG image URL from MediaItem when ogImageId is set", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue({
-      defaultSeo: { title: { en: "Title" }, description: { en: "Desc" }, noIndex: false, noFollow: false, ogImageId: "media-123" },
-    });
-    mockMediaItem.findUnique.mockResolvedValue({ url: "/uploads/og-custom.jpg" });
-
-    const result = await getDefaultSeoOverride("en");
-    expect(result?.ogImageUrl).toBe("/uploads/og-custom.jpg");
-    expect(mockMediaItem.findUnique).toHaveBeenCalledWith({ where: { id: "media-123" }, select: { url: true } });
-  });
-
-  it("returns null ogImageUrl when the referenced media item no longer exists", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue({
-      defaultSeo: { title: { en: "Title" }, description: { en: "Desc" }, noIndex: false, noFollow: false, ogImageId: "deleted-media" },
-    });
-    mockMediaItem.findUnique.mockResolvedValue(null);
-
-    const result = await getDefaultSeoOverride("en");
-    expect(result?.ogImageUrl).toBeNull();
+  it("returns null for every locale", async () => {
+    for (const locale of ["en", "ar", "ru", "zh", "fr", "de"] as const) {
+      expect(await getDefaultSeoOverride(locale)).toBeNull();
+    }
   });
 });
