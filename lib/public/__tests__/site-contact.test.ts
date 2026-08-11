@@ -15,66 +15,43 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-describe("getSiteContact — database-first, static-fallback", () => {
-  it("falls back to the static SITE constant when no GlobalSettings row exists", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue(null);
-    const result = await getSiteContact();
-    expect(result).toEqual({
-      phone: SITE.phone,
-      phoneDisplay: SITE.phoneDisplay,
-      whatsapp: SITE.whatsapp,
-      email: SITE.email,
-      notificationEmail: SITE.email,
-    });
+/**
+ * Contact details are served from `lib/constants.ts`; the database is not in
+ * the public read path. These assert that directly — including that a fully
+ * populated GlobalSettings row is ignored — so the guarantee can't be
+ * quietly undone by re-introducing a query here.
+ */
+describe("getSiteContact — static, database not in the read path", () => {
+  const staticContact = {
+    phone: SITE.phone,
+    phoneDisplay: SITE.phoneDisplay,
+    whatsapp: SITE.whatsapp,
+    email: SITE.email,
+    notificationEmail: SITE.email,
+  };
+
+  it("returns the static SITE constant", async () => {
+    expect(await getSiteContact()).toEqual(staticContact);
   });
 
-  it("falls back to static when the row exists but phone/whatsapp/email are still blank", async () => {
+  it("never queries the database", async () => {
+    await getSiteContact();
+    expect(mockGlobalSettings.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("still returns static even when a fully configured row would be available", async () => {
     mockGlobalSettings.findFirst.mockResolvedValue({
-      phone: "",
-      phoneDisplay: "",
-      whatsapp: "",
-      email: "",
-      notificationEmail: "",
+      phone: "+971500000000",
+      phoneDisplay: "+971 50 000 0000",
+      whatsapp: "+971500000001",
+      email: "hello@apex-test.example",
+      notificationEmail: "ops@apex-test.example",
     });
-    const result = await getSiteContact();
-    expect(result.phone).toBe(SITE.phone);
-    expect(result.whatsapp).toBe(SITE.whatsapp);
-    expect(result.email).toBe(SITE.email);
+    expect(await getSiteContact()).toEqual(staticContact);
   });
 
-  it("falls back to static when the query throws", async () => {
+  it("is unaffected by a database failure", async () => {
     mockGlobalSettings.findFirst.mockRejectedValue(new Error("simulated connection failure"));
-    const result = await getSiteContact();
-    expect(result.phone).toBe(SITE.phone);
-  });
-
-  it("returns the admin-configured contact when fully set", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue({
-      phone: "+971500000000",
-      phoneDisplay: "+971 50 000 0000",
-      whatsapp: "+971500000001",
-      email: "hello@apex-test.example",
-      notificationEmail: "ops@apex-test.example",
-    });
-    const result = await getSiteContact();
-    expect(result).toEqual({
-      phone: "+971500000000",
-      phoneDisplay: "+971 50 000 0000",
-      whatsapp: "+971500000001",
-      email: "hello@apex-test.example",
-      notificationEmail: "ops@apex-test.example",
-    });
-  });
-
-  it("falls back the notification email to the public email when notificationEmail is blank", async () => {
-    mockGlobalSettings.findFirst.mockResolvedValue({
-      phone: "+971500000000",
-      phoneDisplay: "+971 50 000 0000",
-      whatsapp: "+971500000001",
-      email: "hello@apex-test.example",
-      notificationEmail: "",
-    });
-    const result = await getSiteContact();
-    expect(result.notificationEmail).toBe("hello@apex-test.example");
+    expect(await getSiteContact()).toEqual(staticContact);
   });
 });

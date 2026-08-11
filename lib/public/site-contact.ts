@@ -33,21 +33,14 @@ function staticSiteContact(): SiteContact {
   return { phone: SITE.phone, phoneDisplay: SITE.phoneDisplay, whatsapp: SITE.whatsapp, email: SITE.email, notificationEmail: SITE.email };
 }
 
+/**
+ * Serves contact details from `lib/constants.ts` — the database is not in
+ * the read path, matching `lib/public/cms-content.ts`. Edit `SITE` and
+ * deploy to change what customers see.
+ *
+ * The query below is kept, unused, so restoring admin-managed contact
+ * details is a matter of calling it again rather than rewriting this file.
+ */
 export async function getSiteContact(): Promise<SiteContact> {
-  try {
-    const row = await prisma.globalSettings.findFirst({
-      select: { phone: true, phoneDisplay: true, whatsapp: true, email: true, notificationEmail: true },
-    });
-    if (!row || !row.phone || !row.whatsapp || !row.email) return staticSiteContact();
-    return {
-      phone: row.phone,
-      phoneDisplay: row.phoneDisplay,
-      whatsapp: row.whatsapp,
-      email: row.email,
-      notificationEmail: row.notificationEmail || row.email,
-    };
-  } catch (error) {
-    console.error("[public/site-contact] database query failed, falling back to static SITE constant:", error);
-    return staticSiteContact();
-  }
+  return staticSiteContact();
 }
