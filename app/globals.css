@@ -6,10 +6,6 @@
 /* Base layer                                                            */
 /* -------------------------------------------------------------------- */
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     @apply bg-obsidian text-ivory font-body antialiased;
   }

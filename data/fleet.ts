@@ -93,8 +93,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "mercedes-maybach-s-class",
     brand: "Mercedes-Maybach",
     model: "S-Class",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 5000, fiveHours: 3000, oneHour: 800, airport: 1000, extraHour: 650, additionalCity: 650 },
+    rates: { tenHours: 2980, fiveHours: 2190, oneHour: 1390, airport: 999, extraHour: 650, additionalCity: 650 },
     images: [
       {
         src: "/images/fleet/mercedes-maybach-s-class/mercedes-maybach-s-class-1.png",
@@ -317,8 +316,7 @@ export const FLEET: FleetVehicle[] = [
     },
     brand: "Rolls-Royce",
     model: "Phantom Extended Wheelbase",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 9500, fiveHours: 5500, oneHour: 1500, airport: 2000, extraHour: 1200, additionalCity: 1200 },
+    rates: { tenHours: 4890, fiveHours: 3490, oneHour: 2490, airport: 1899, extraHour: 1200, additionalCity: 1200 },
     images: [
       {
         src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-1.png",
@@ -546,8 +544,7 @@ export const FLEET: FleetVehicle[] = [
     },
     brand: "Mercedes-Benz",
     model: "S-Class",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 500, extraHour: 300, additionalCity: 300 },
+    rates: { tenHours: 2190, fiveHours: 1290, oneHour: 790, airport: 590, extraHour: 300, additionalCity: 300 },
     images: [
       {
         src: "/images/fleet/mercedes-s-class/mercedes-s-class-1.png",
@@ -769,8 +766,7 @@ export const FLEET: FleetVehicle[] = [
     },
     brand: "Range Rover",
     model: "Autobiography",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 3200, fiveHours: 1900, oneHour: 500, airport: 650, extraHour: 400, additionalCity: 400 },
+    rates: { tenHours: 1999, fiveHours: 1190, oneHour: 940, airport: 750, extraHour: 400, additionalCity: 400 },
     images: [
       {
         src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-1.png",
@@ -990,8 +986,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "cadillac-escalade",
     brand: "Cadillac",
     model: "Escalade ESV",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2800, fiveHours: 1700, oneHour: 450, airport: 600, extraHour: 350, additionalCity: 350 },
+    rates: { tenHours: 1790, fiveHours: 1390, oneHour: 890, airport: 650, extraHour: 350, additionalCity: 350 },
     images: [
       {
         src: "/images/fleet/cadillac-escalade/cadillac-escalade-1.png",
@@ -1214,8 +1209,7 @@ export const FLEET: FleetVehicle[] = [
     },
     brand: "Mercedes-Benz",
     model: "V-Class",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2200, fiveHours: 1300, oneHour: 350, airport: 450, extraHour: 250, additionalCity: 250 },
+    rates: { tenHours: 1199, fiveHours: 745, oneHour: 290, airport: 345, extraHour: 250, additionalCity: 250 },
     images: [
       {
         src: "/images/fleet/mercedes-v-class/mercedes-v-class-1.png",
@@ -1443,8 +1437,7 @@ export const FLEET: FleetVehicle[] = [
     },
     brand: "BMW",
     model: "7 Series",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 2500, fiveHours: 1500, oneHour: 400, airport: 500, extraHour: 300, additionalCity: 300 },
+    rates: { tenHours: 1790, fiveHours: 1190, oneHour: 690, airport: 490, extraHour: 300, additionalCity: 300 },
     images: [
       {
         src: "/images/fleet/bmw-7-series/bmw-7-series-1.png",
@@ -1659,8 +1652,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "lexus-es-300h",
     brand: "Lexus",
     model: "ES 300h",
-    // PLACEHOLDER sample rates — replace with confirmed pricing
-    rates: { tenHours: 1700, fiveHours: 1000, oneHour: 260, airport: 360, extraHour: 210, additionalCity: 210 },
+    rates: { tenHours: 990, fiveHours: 590, oneHour: 390, airport: 245, extraHour: 210, additionalCity: 210 },
     images: [
       {
         src: "/images/fleet/lexus-es-300h/lexus-es-300h-1.png",
@@ -1875,7 +1867,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "rolls-royce-cullinan-mansory",
     brand: "Rolls-Royce",
     model: "Cullinan Mansory",
-    rates: { tenHours: 11000, fiveHours: 6500, oneHour: 1800, airport: 2400, extraHour: 1400, additionalCity: 1400 },
+    rates: { tenHours: 4799, fiveHours: 3199, oneHour: 2650, airport: 1399, extraHour: 1400, additionalCity: 1400 },
     images: [
       {
         src: "/images/fleet/rolls-royce-cullinan-mansory/rolls-royce-cullinan-mansory-1.png",
@@ -2090,7 +2082,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "tesla-model-y",
     brand: "Tesla",
     model: "Model Y",
-    rates: { tenHours: 2000, fiveHours: 1200, oneHour: 320, airport: 420, extraHour: 230, additionalCity: 230 },
+    rates: { tenHours: 990, fiveHours: 590, oneHour: 390, airport: 245, extraHour: 230, additionalCity: 230 },
     images: [
       {
         src: "/images/fleet/tesla-model-y/tesla-model-y-1.png",
@@ -2301,7 +2293,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "gmc-yukon-elevation",
     brand: "GMC",
     model: "Yukon Elevation",
-    rates: { tenHours: 2400, fiveHours: 1450, oneHour: 380, airport: 520, extraHour: 290, additionalCity: 290 },
+    rates: { tenHours: 1490, fiveHours: 890, oneHour: 690, airport: 445, extraHour: 290, additionalCity: 290 },
     images: [
       {
         src: "/images/fleet/gmc-yukon-elevation/gmc-yukon-elevation-1.png",
@@ -2517,7 +2509,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "tesla-model-3",
     brand: "Tesla",
     model: "Model 3",
-    rates: { tenHours: 1800, fiveHours: 1050, oneHour: 270, airport: 370, extraHour: 210, additionalCity: 210 },
+    rates: { tenHours: 990, fiveHours: 590, oneHour: 490, airport: 245, extraHour: 210, additionalCity: 210 },
     images: [
       {
         src: "/images/fleet/tesla-model-3/tesla-model-3-1.png",
@@ -2733,7 +2725,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "byd-han",
     brand: "BYD",
     model: "Han",
-    rates: { tenHours: 2100, fiveHours: 1250, oneHour: 330, airport: 430, extraHour: 240, additionalCity: 240 },
+    rates: { tenHours: 990, fiveHours: 590, oneHour: 390, airport: 245, extraHour: 240, additionalCity: 240 },
     // NOTE: byd-han/2.jpg and byd-han/3.jpg in the uploaded folder are a
     // different vehicle's interior (a Rolls-Royce cabin — see the embroidered
     // "R" headrest logo), not the BYD Han. Only the verified exterior hero is
