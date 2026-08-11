@@ -587,7 +587,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   ];
 
   const priceTierLabels = [
-    { label: t("oneHour"), suffix: t("withinDubaiSuffix"), price: vehicle.rates.oneHour },
+    { label: t("twoHours"), price: vehicle.rates.oneHour },
     { label: t("airportTransfer"), price: vehicle.rates.airport },
     { label: t("fiveHours"), suffix: t("halfDaySuffix"), price: vehicle.rates.fiveHours },
     { label: t("tenHours"), suffix: t("fullDaySuffix"), price: vehicle.rates.tenHours },
@@ -598,7 +598,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   // Popular". Mobile keeps the original 6-tier, oneHour-first array and
   // plain (non-highlighted) card styling above, untouched.
   const priceTiersDesktop = [
-    { label: t("oneWayTransfer"), suffix: t("withinDubaiSuffix"), highlight: false, price: vehicle.rates.oneHour },
+    { label: t("twoHours"), highlight: false, price: vehicle.rates.oneHour },
     { label: t("airportTransfer"), highlight: false, price: vehicle.rates.airport },
     { label: t("fiveHours"), suffix: t("halfDaySuffix"), highlight: true, price: vehicle.rates.fiveHours },
     { label: t("tenHours"), suffix: t("fullDaySuffix"), highlight: false, price: vehicle.rates.tenHours },
@@ -865,6 +865,16 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 </span>
               </div>
             ))}
+            {/* Point-to-Point — spans full width on mobile (2 cols), normal cell on sm */}
+            <div className="col-span-2 flex flex-col gap-1 border-t border-gold/10 pt-4 sm:col-span-1 sm:border-0 sm:pt-0">
+              <span className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-smoke">
+                <MapPin className="h-3 w-3 text-gold/60" strokeWidth={1.5} />
+                {t("pointToPoint")}
+              </span>
+              <span className="font-display text-base italic text-gold/75">
+                {t("pointToPointNote")}
+              </span>
+            </div>
           </div>
 
           {/* Desktop package grid — 2 columns x 2 rows, 4 tiers (Additional
@@ -873,32 +883,51 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               size (w-72, p-6) rather than shrink-wrapped to their text, so
               the grid reads as a deliberate block instead of a cluster of
               undersized tiles. */}
-          <div className="mt-6 hidden lg:grid lg:grid-cols-[max-content_max-content] lg:gap-5">
-            {priceTiersDesktop.map((tier) => (
-              <div
-                key={tier.label}
-                className={`relative flex w-72 flex-col justify-center gap-1.5 rounded-xl border p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] ${
-                  tier.highlight
-                    ? "border-gold bg-charcoal"
-                    : "border-gold/15 bg-charcoal hover:border-gold/35"
-                }`}
-              >
-                {tier.highlight ? (
-                  <span className="absolute -top-3 start-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-obsidian">
-                    {t("mostPopular")}
-                  </span>
-                ) : null}
-                <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
-                  {tier.label}
-                  {tier.suffix ? (
-                    <span className="ms-1 text-[9px] normal-case text-smoke/70">{tier.suffix}</span>
+          {/* Wrapper constrains both the 2×2 grid and the Point-to-Point
+              card to the same width so the card doesn't stretch full-container. */}
+          <div className="hidden lg:block lg:w-fit">
+            <div className="grid grid-cols-[max-content_max-content] gap-5 mt-6">
+              {priceTiersDesktop.map((tier) => (
+                <div
+                  key={tier.label}
+                  className={`relative flex w-72 flex-col justify-center gap-1.5 rounded-xl border p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)] ${
+                    tier.highlight
+                      ? "border-gold bg-charcoal"
+                      : "border-gold/15 bg-charcoal hover:border-gold/35"
+                  }`}
+                >
+                  {tier.highlight ? (
+                    <span className="absolute -top-3 start-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-obsidian">
+                      {t("mostPopular")}
+                    </span>
                   ) : null}
+                  <span className="text-[10px] font-medium uppercase tracking-wide text-smoke">
+                    {tier.label}
+                    {tier.suffix ? (
+                      <span className="ms-1 text-[9px] normal-case text-smoke/70">{tier.suffix}</span>
+                    ) : null}
+                  </span>
+                  <span className="font-display text-xl font-bold text-gold">
+                    {tier.price > 0 ? <Ltr>{formatAedPrice(tier.price)}</Ltr> : t("priceOnRequest")}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Point-to-Point — same width as the 2×2 grid above */}
+            <div className="mt-5 flex items-center gap-5 rounded-xl border border-gold/15 bg-charcoal p-6 transition-all duration-200 hover:border-gold/35 hover:shadow-[0_12px_30px_-18px_rgba(212,175,55,0.35)]">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/20 bg-gold/10">
+                <MapPin className="h-5 w-5 text-gold" strokeWidth={1.5} />
+              </div>
+              <div>
+                <span className="block text-[10px] font-medium uppercase tracking-wide text-smoke">
+                  {t("pointToPoint")}
                 </span>
-                <span className="font-display text-xl font-bold text-gold">
-                  {tier.price > 0 ? <Ltr>{formatAedPrice(tier.price)}</Ltr> : t("priceOnRequest")}
+                <span className="mt-0.5 block font-display text-xl font-bold italic text-gold">
+                  {t("pointToPointNote")}
                 </span>
               </div>
-            ))}
+            </div>
           </div>
 
           <p className="mt-2 text-xs italic text-smoke lg:mt-3">
