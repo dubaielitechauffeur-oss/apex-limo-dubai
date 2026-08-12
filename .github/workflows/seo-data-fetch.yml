@@ -1,0 +1,50 @@
+name: "🔍 SEO Agent — Fetch & Report"
+
+on:
+  schedule:
+    - cron: "0 6 * * 1,4,6"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+env:
+  GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+  GSC_PROPERTY: ${{ secrets.GSC_PROPERTY }}
+  GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+
+jobs:
+  fetch-and-report:
+    name: "Fetch Data & Create Report"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r seo-agent/requirements.txt
+
+      - name: Fetch GSC data
+        working-directory: .
+        run: python seo-agent/fetch_gsc_data.py
+
+      - name: Fetch GA4 data
+        working-directory: .
+        run: python seo-agent/fetch_ga4_data.py
+
+      - name: Analyze & generate report
+        working-directory: .
+        run: python seo-agent/analyze_data.py
+
+      - name: Create GitHub Issue with report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: .
+        run: python seo-agent/create_issue.py
