@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.apexchauffeurdubai.com" }],
+      "destination": "https://apexchauffeurdubai.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/services/airport-transfer",
+      "destination": "/services/airport-transfers",
+      "permanent": true
+    }
+  ]
+}
