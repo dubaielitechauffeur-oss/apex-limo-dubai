@@ -1,0 +1,43 @@
+name: "📝 SEO Agent — Track Fixes"
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  issues: write
+
+jobs:
+  close-issue:
+    name: "Close Related SEO Issue"
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Close related SEO report issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body || '';
+            const issueMatch = prBody.match(/Report #(\d+)/i) || prBody.match(/issue #(\d+)/i);
+            
+            if (issueMatch) {
+              const issueNumber = parseInt(issueMatch[1]);
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body: '✅ **SEO Agent:** Fix deploy ho gaya! Vercel pe live hai ab. 🚀\n\nCheck karo: https://apexchauffeurdubai.com'
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  state: 'closed',
+                  state_reason: 'completed'
+                });
+              } catch (e) {
+                console.log('Could not close issue:', e.message);
+              }
+            }
