@@ -1,0 +1,66 @@
+name: "🔧 SEO Agent — Fix Reminder"
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+
+jobs:
+  remind-fix:
+    name: "Acknowledge Fix Request"
+    runs-on: ubuntu-latest
+    if: |
+      github.event.issue.pull_request == null &&
+      contains(github.event.issue.labels.*.name, 'seo-report') &&
+      (
+        contains(github.event.comment.body, 'fix karo') ||
+        contains(github.event.comment.body, 'Fix karo') ||
+        contains(github.event.comment.body, 'fix it') ||
+        contains(github.event.comment.body, 'approve')
+      )
+
+    steps:
+      - name: Post fix instructions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueBody = context.payload.issue.body || '';
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## 🤖 SEO Agent — Fix Instructions
+
+            **Report review ho gaya! Ab ye karo:**
+
+            1. Terminal kholo apne project folder mein
+            2. Claude Code chalao aur ye prompt do:
+
+            \`\`\`
+            Read the SEO report in this GitHub Issue and fix all HIGH priority issues in the codebase:
+
+            ${issueBody.substring(0, 2000)}
+
+            Fix meta titles, descriptions, structured data, heading hierarchy, internal links, alt text, and FAQ schema. Only change SEO-related content — don't change design/layout.
+
+            Create changes on a new branch "seo-fix" and commit.
+            \`\`\`
+
+            3. Claude Code changes karega → commit karega
+            4. Push karo: \`git push origin seo-fix\`
+            5. GitHub pe PR banao → review karo → merge karo
+            6. Vercel auto-deploy kar dega ✅
+
+            ---
+            *Ye workflow aapke existing Claude Code subscription se chalega — koi extra cost nahi!*`
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['fix-approved']
+            });
