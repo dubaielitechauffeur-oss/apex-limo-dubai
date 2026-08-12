@@ -13,6 +13,7 @@ import { getWhatsAppLink } from "@/lib/constants";
 import type { SiteContact } from "@/lib/public/site-contact";
 import type { QuoteFormData } from "@/lib/types";
 import { buildValidationMessages, validateQuoteForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
+import { trackConversion } from "@/lib/analytics";
 
 const EMPTY_FORM: QuoteFormData = {
   fullName: "",
@@ -182,6 +183,7 @@ function QuoteFormFields({
       setCustomerName(form.fullName.trim());
       setReference(data.reference ?? "");
       setStatus("success");
+      trackConversion("quote", form.vehicle || undefined);
       setForm(EMPTY_FORM);
     } catch {
       setStatus("error");

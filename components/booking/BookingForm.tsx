@@ -14,6 +14,7 @@ import { getWhatsAppLink } from "@/lib/constants";
 import type { SiteContact } from "@/lib/public/site-contact";
 import type { BookingFormData } from "@/lib/types";
 import { buildValidationMessages, validateBookingForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
+import { trackConversion } from "@/lib/analytics";
 
 const EMPTY_FORM: BookingFormData = {
   fullName: "",
@@ -176,6 +177,7 @@ function BookingFormFields({
       setCustomerName(form.fullName.trim());
       setReference(data.reference ?? "");
       setStatus("success");
+      trackConversion("booking", form.vehicle || undefined);
       setForm(EMPTY_FORM);
     } catch {
       setStatus("error");
