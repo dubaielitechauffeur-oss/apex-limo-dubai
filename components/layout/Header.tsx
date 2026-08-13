@@ -30,9 +30,13 @@ export default function Header({ contact }: { contact: SiteContact }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const showPromoBar = !isConversionPath(pathname);
+  // Transparent header only on the homepage hero — once user scrolls 80 px the
+  // header solidifies. 80 px gives a comfortable breathing window before the
+  // first section of content scrolls into view behind the nav bar.
+  const isHome = pathname === "/";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 80);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -56,13 +60,17 @@ export default function Header({ contact }: { contact: SiteContact }) {
     // problem disappears entirely (including when the promo bar below is
     // conditionally hidden).
     <header
-      className={`sticky top-0 z-50 border-b border-charcoal bg-black transition-shadow duration-300 ${
-        scrolled ? "shadow-[0_8px_30px_rgba(0,0,0,0.55)]" : ""
+      className={`sticky top-0 z-50 transition-all duration-500 ${
+        isHome && !scrolled
+          ? "border-b border-white/10 bg-transparent shadow-none"
+          : `border-b border-charcoal bg-black ${scrolled ? "shadow-[0_8px_30px_rgba(0,0,0,0.55)]" : ""}`
       }`}
     >
       {/* Promotional bar — hidden on conversion routes, see lib/layout.ts */}
       {showPromoBar ? (
-        <div className="flex h-9 items-center justify-center border-b border-charcoal bg-black px-4">
+        <div className={`flex h-9 items-center justify-center border-b px-4 transition-all duration-500 ${
+          isHome && !scrolled ? "border-white/10 bg-transparent" : "border-charcoal bg-black"
+        }`}>
           <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-white sm:text-[11px] sm:tracking-[0.25em]">
             {t("header.promoBar")}
           </p>
