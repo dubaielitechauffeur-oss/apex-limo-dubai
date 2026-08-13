@@ -34,3 +34,4 @@ next-env.d.ts
 # deployments configure the S3/R2 driver instead (see MEDIA_LIBRARY.md)
 /storage/media/*
 !/storage/media/.gitkeep
+scripts/

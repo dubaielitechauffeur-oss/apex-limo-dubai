@@ -160,7 +160,6 @@ export default async function ContactDetailPage({ params }: ContactDetailPagePro
                   deleteTitle="Delete this contact submission?"
                   deleteDescription="This is a hard delete — the submission cannot be recovered."
                   onDelete={deleteContactAction.bind(null, contact.id)}
-                  onRestore={async () => ({ success: "Not supported." })}
                 />
               </div>
             </section>

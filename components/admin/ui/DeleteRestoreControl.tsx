@@ -23,12 +23,15 @@ export function DeleteRestoreControl({
   deleteTitle: string;
   deleteDescription: string;
   onDelete: () => Promise<CmsActionState>;
-  onRestore: () => Promise<CmsActionState>;
+  /** Optional — omit for entities without a soft-delete/restore workflow
+   *  (e.g. ContactSubmission). Only used when `isDeleted` is true, which
+   *  such entities never are. */
+  onRestore?: () => Promise<CmsActionState>;
 }) {
   const router = useRouter();
   const { showToast } = useToast();
 
-  if (isDeleted) {
+  if (isDeleted && onRestore) {
     return (
       <button
         type="button"
