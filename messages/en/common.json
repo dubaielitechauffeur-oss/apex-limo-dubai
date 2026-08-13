@@ -72,15 +72,6 @@
   },
   "siteTagline": "Dubai's Premier Chauffeur & Limousine Service",
   "whatsappGenericMessage": "Hello Apex Limo, I would like to book a chauffeur service in Dubai.",
-  "constructionNotice": {
-    "eyebrow": "A Note From Apex Limo",
-    "heading": "We're Refining Your Experience",
-    "body": "Our website is still being fine-tuned, so you may notice a few details changing over the coming days. Every booking and quote request is fully live and personally handled by our team.",
-    "priceNotice": "All chauffeur rates are personally confirmed by our team before booking — <whatsappLink>WhatsApp us</whatsappLink> or request a quote for an exact price.",
-    "priceNoticeWhatsappMessage": "Hello Apex Limo, I'd like to get an exact chauffeur rate for my trip — could you help?",
-    "cta": "Continue to Website",
-    "closeAriaLabel": "Close notice"
-  },
   "notFound": {
     "title": "Page Not Found",
     "description": "The page you're looking for doesn't exist or may have moved.",

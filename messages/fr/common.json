@@ -72,15 +72,6 @@
   },
   "siteTagline": "Le service de chauffeur et de limousine de référence à Dubaï",
   "whatsappGenericMessage": "Bonjour Apex Limo, je souhaiterais réserver un service de chauffeur à Dubaï.",
-  "constructionNotice": {
-    "eyebrow": "Un mot d'Apex Limo",
-    "heading": "Nous peaufinons votre expérience",
-    "body": "Notre site est encore en cours de finalisation ; vous pourriez remarquer quelques ajustements au cours des prochains jours. Chaque demande de réservation et de devis est pleinement active et traitée personnellement par notre équipe.",
-    "priceNotice": "Tous les tarifs chauffeur sont confirmés personnellement par notre équipe avant la réservation — <whatsappLink>contactez-nous sur WhatsApp</whatsappLink> ou demandez un devis pour le prix exact.",
-    "priceNoticeWhatsappMessage": "Bonjour Apex Limo, je souhaite connaître le tarif exact pour mon trajet — pouvez-vous m'aider ?",
-    "cta": "Continuer vers le site",
-    "closeAriaLabel": "Fermer l'avis"
-  },
   "notFound": {
     "title": "Page introuvable",
     "description": "La page que vous recherchez n'existe pas ou a peut-être été déplacée.",
