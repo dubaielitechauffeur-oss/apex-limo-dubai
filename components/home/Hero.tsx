@@ -30,7 +30,11 @@ export default async function Hero() {
   const imageAlt = slide?.title || t("imageAlt");
 
   return (
-    <section className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-obsidian sm:min-h-[85vh] lg:min-h-[88vh]">
+    // -mt-[7.5rem] pulls the section up behind the sticky header (36px promo
+    // bar + 80px nav ≈ 116px; 7.5rem = 120px covers the border too), making
+    // the transparent header overlay the hero image. z-0 keeps it below the
+    // header's z-50 so the nav stays on top.
+    <section className="relative isolate z-0 -mt-[7.5rem] flex min-h-[700px] items-center overflow-hidden bg-obsidian sm:min-h-screen lg:min-h-screen">
       {/* Full-bleed hero photograph. `<picture>` + `<source media>` swaps the
           file itself (not just the CSS) below 768px, so mobile only ever
           downloads the portrait shot and never the desktop one. When an
@@ -61,7 +65,7 @@ export default async function Hero() {
         className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-obsidian/30"
       />
 
-      <Container className="relative z-10 py-24 sm:py-28">
+      <Container className="relative z-10 pt-36 pb-16 sm:pt-44 sm:pb-20 lg:pt-48 lg:pb-24">
         <div className="max-w-2xl">
           <span className="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-gold sm:text-sm">
             {t("eyebrow")}
@@ -86,7 +90,7 @@ export default async function Hero() {
             {slide?.subtitle || t("description")}
           </p>
 
-          <div className="mt-10 flex animate-fade-in flex-col gap-4 [animation-delay:350ms] sm:flex-row">
+          <div className="mt-8 flex animate-fade-in flex-col gap-4 [animation-delay:350ms] sm:mt-10 sm:flex-row">
             {slide && slide.ctas.length > 0 ? (
               slide.ctas.map((cta, index) => {
                 const external = /^[a-z][a-z0-9+.-]*:/i.test(cta.href);
@@ -126,10 +130,10 @@ export default async function Hero() {
                   {t("bookNow")}
                 </Link>
                 <Link
-                  href="/services"
+                  href="/fleet"
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-ivory/50 bg-transparent px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-ivory transition-colors duration-200 hover:border-ivory hover:bg-ivory/10"
                 >
-                  {t("ourServices")}
+                  {t("viewFleet")}
                   <DirectionalIcon icon={ArrowRight} className="h-4 w-4" strokeWidth={2} />
                 </Link>
               </>
@@ -137,7 +141,7 @@ export default async function Hero() {
           </div>
 
           {/* Trust indicators */}
-          <div className="mt-12 flex animate-fade-in flex-wrap items-center gap-x-6 gap-y-4 [animation-delay:500ms] sm:gap-x-8">
+          <div className="mt-8 flex animate-fade-in flex-wrap items-center gap-x-6 gap-y-4 [animation-delay:500ms] sm:mt-12 sm:gap-x-8">
             {TRUST_INDICATORS.map((item, i) => (
               <div key={i} className="flex items-center gap-6 sm:gap-8">
                 <div className="flex items-center gap-2.5">
