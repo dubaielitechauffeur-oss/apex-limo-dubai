@@ -17,7 +17,10 @@ function toPickerResult(item: MediaListItem): MediaPickerResult {
  *  `lib/media/items.ts`'s `listMedia()` as-is (permission-gated on
  *  `media:read`) — no parallel media-listing query was written for this. */
 export async function searchMediaForPicker(query: string): Promise<MediaPickerResult[]> {
-  const result = await listMedia({ q: query || undefined, type: "image", pageSize: 24 });
+  // Show up to 100 items so galleries with more than the previous 24 don't
+  // silently omit assets. `ensureMediaPickerItems()` handles the tail beyond
+  // this on the record's own referenced ids.
+  const result = await listMedia({ q: query || undefined, type: "image", pageSize: 100 });
   if (!result.success) return [];
   return result.data.items.map(toPickerResult);
 }

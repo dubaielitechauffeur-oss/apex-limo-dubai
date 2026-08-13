@@ -90,7 +90,7 @@ export function VehicleForm({
         <LocalizedField prefix="tagline" label="Tagline" value={vehicle?.tagline} />
         <LocalizedField prefix="description" label="Short description" value={vehicle?.description} multiline required />
         <LocalizedField prefix="longDescription" label="Long description" value={vehicle?.longDescription} multiline />
-        <LocalizedField prefix="idealFor" label="Ideal for" value={vehicle?.idealFor} hint='E.g. "Corporate travel, VIP arrivals"' />
+        <LocalizedField prefix="idealFor" label="Popular for" value={vehicle?.idealFor} hint='What this vehicle is popular for — comma-separated. E.g. "Event Transportation, Downtown Dubai". Shows as tags on the public detail page.' />
         <LocalizedField prefix="features" label="Features" value={vehicle?.features} multiline hint="One feature per line." />
         <LocalizedField prefix="whyChoose" label="Why choose this vehicle" value={vehicle?.whyChoose} multiline hint="One point per line." />
         <LocalizedField prefix="badge" label="Badge" value={vehicle?.badge ?? emptyLocalizedText()} hint='Optional standout label, e.g. "VIP Choice". Leave blank for none.' />
