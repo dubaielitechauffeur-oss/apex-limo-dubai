@@ -72,15 +72,6 @@
   },
   "siteTagline": "迪拜顶级专属司机与豪华轿车服务",
   "whatsappGenericMessage": "您好 Apex Limo，我想在迪拜预订专属司机服务。",
-  "constructionNotice": {
-    "eyebrow": "来自 Apex Limo 的提示",
-    "heading": "我们正在完善您的体验",
-    "body": "我们的网站仍在持续优化中，未来几天您可能会看到一些细节上的调整。所有预订与报价请求均已全面开通，并由我们的团队亲自处理。",
-    "priceNotice": "所有司机接送价格均由我们的团队在预订前亲自确认——请<whatsappLink>通过WhatsApp联系我们</whatsappLink>或申请报价以获取准确价格。",
-    "priceNoticeWhatsappMessage": "您好 Apex Limo,我想了解我行程的准确价格——能帮我一下吗?",
-    "cta": "继续浏览网站",
-    "closeAriaLabel": "关闭提示"
-  },
   "notFound": {
     "title": "页面未找到",
     "description": "您查找的页面不存在,或可能已被移动。",

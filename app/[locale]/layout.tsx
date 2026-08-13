@@ -10,7 +10,6 @@ import WhatsAppFloatButton from "@/components/layout/WhatsAppFloatButton";
 import CallFloatButton from "@/components/layout/CallFloatButton";
 import ConditionalFloatButtons from "@/components/layout/ConditionalFloatButtons";
 import ScrollToTopButton from "@/components/layout/ScrollToTopButton";
-import ConstructionNoticeModal from "@/components/layout/ConstructionNoticeModal";
 import { getDefaultMetadata, organizationJsonLd } from "@/lib/seo";
 import { getSiteContact } from "@/lib/public/site-contact";
 import { getDefaultSeoOverride } from "@/lib/public/site-seo";
@@ -87,7 +86,6 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           >
             {t("skipToContent")}
           </a>
-          <ConstructionNoticeModal contact={contact} />
           <Header contact={contact} />
           {/* No padding offset needed — Header is `sticky`, so it reserves
               its own space in normal flow (see components/layout/Header.tsx). */}

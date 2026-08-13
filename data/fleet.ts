@@ -1669,7 +1669,7 @@ export const FLEET: FleetVehicle[] = [
     },
     brand: "Mercedes-Maybach",
     model: "Sprinter",
-    rates: { tenHours: 3990, fiveHours: 2990, oneHour: 1490, airport: 1590, extraHour: 900, additionalCity: 900 },
+    rates: { tenHours: 1990, fiveHours: 1090, oneHour: 690, airport: 745, extraHour: 450, additionalCity: 450 },
     images: [
       {
         src: "/images/fleet/mercedes-maybach-sprinter/mercedes-maybach-sprinter-1.png",
