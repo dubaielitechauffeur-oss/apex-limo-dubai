@@ -30,8 +30,8 @@ export default function Header({ contact }: { contact: SiteContact }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const showPromoBar = !isConversionPath(pathname);
-  // All main pages open with a dark (bg-obsidian) section, so the header
-  // starts transparent site-wide and solidifies after 80 px of scroll.
+  const isHome = pathname === "/";
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
     onScroll();
@@ -58,7 +58,7 @@ export default function Header({ contact }: { contact: SiteContact }) {
     // conditionally hidden).
     <header
       className={`sticky top-0 z-50 transition-all duration-500 ${
-        !scrolled
+        isHome && !scrolled
           ? "border-b border-white/10 bg-transparent shadow-none"
           : `border-b border-charcoal bg-black ${scrolled ? "shadow-[0_8px_30px_rgba(0,0,0,0.55)]" : ""}`
       }`}
@@ -66,7 +66,7 @@ export default function Header({ contact }: { contact: SiteContact }) {
       {/* Promotional bar — hidden on conversion routes, see lib/layout.ts */}
       {showPromoBar ? (
         <div className={`flex h-9 items-center justify-center border-b px-4 transition-all duration-500 ${
-          !scrolled ? "border-white/10 bg-transparent" : "border-charcoal bg-black"
+          isHome && !scrolled ? "border-white/10 bg-transparent" : "border-charcoal bg-black"
         }`}>
           <p className="truncate text-center text-[10px] uppercase tracking-[0.2em] text-white sm:text-[11px] sm:tracking-[0.25em]">
             {t("header.promoBar")}
