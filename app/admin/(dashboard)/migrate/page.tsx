@@ -1,58 +1,22 @@
-"use client";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getAuthzContext, isSuperAdmin } from "@/lib/permissions/context";
+import { MigrateClient } from "./MigrateClient";
 
-import { useState } from "react";
+export const metadata: Metadata = { title: "Migration — Admin" };
 
-export default function MigratePage() {
-  const [status, setStatus] = useState<"idle" | "running" | "done" | "error">("idle");
-  const [result, setResult] = useState<string>("");
-
-  async function runMigration() {
-    setStatus("running");
-    setResult("");
-    try {
-      const res = await fetch("/api/admin/migrate", {
-        method: "POST",
-        headers: { "x-migrate-secret": "apex-migrate-2026" },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setStatus("done");
-        setResult(data.message + (data.errors?.length ? "\nErrors: " + data.errors.join(", ") : ""));
-      } else {
-        setStatus("error");
-        setResult(data.error ?? "Unknown error");
-      }
-    } catch (e) {
-      setStatus("error");
-      setResult(String(e));
-    }
-  }
+export default async function MigratePage() {
+  const ctx = await getAuthzContext();
+  if (!ctx) redirect("/admin/login");
+  if (!isSuperAdmin(ctx)) redirect("/admin/forbidden");
 
   return (
     <div className="mx-auto max-w-lg p-8">
       <h1 className="mb-2 text-2xl font-bold">Database Migration</h1>
       <p className="mb-6 text-sm text-gray-500">
-        Imports all 13 vehicles from static data into the database. Safe to run multiple times — existing rows are skipped.
+        One-time fleet import from static data. Safe to run multiple times — existing rows are skipped. Requires MIGRATE_SECRET in environment.
       </p>
-
-      <button
-        onClick={runMigration}
-        disabled={status === "running"}
-        className="w-full rounded-lg bg-amber-500 px-6 py-3 font-bold text-black disabled:opacity-50"
-      >
-        {status === "running" ? "Running... please wait" : "Run Migration"}
-      </button>
-
-      {status === "done" && (
-        <div className="mt-4 rounded-lg border border-green-500 bg-green-50 p-4 text-green-800">
-          ✅ {result}
-        </div>
-      )}
-      {status === "error" && (
-        <div className="mt-4 rounded-lg border border-red-500 bg-red-50 p-4 text-red-800">
-          ❌ {result}
-        </div>
-      )}
+      <MigrateClient />
     </div>
   );
 }

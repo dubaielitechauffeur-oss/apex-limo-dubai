@@ -16,24 +16,30 @@ beforeEach(() => {
 });
 
 /**
- * The site-wide SEO override was read from GlobalSettings.defaultSeo. The
- * database is no longer in the public read path, so this always returns null
- * and callers use the static defaults in `lib/seo.ts`. Asserting the null —
- * including when a configured override would otherwise be available — keeps
- * a re-introduced query from silently changing every page's metadata.
+ * DB-first read of GlobalSettings.defaultSeo, with null → static defaults
+ * fallback. Restores the admin SEO Manager's control over site-wide meta
+ * without ever letting a DB outage or empty override render a blank page.
  */
-describe("getDefaultSeoOverride — static, database not in the read path", () => {
-  it("returns null so callers use the static defaults", async () => {
+describe("getDefaultSeoOverride — DB-first with static fallback", () => {
+  it("returns null when no GlobalSettings row exists", async () => {
+    mockGlobalSettings.findFirst.mockResolvedValue(null);
     expect(await getDefaultSeoOverride("en")).toBeNull();
   });
 
-  it("never queries the database", async () => {
-    await getDefaultSeoOverride("en");
-    expect(mockGlobalSettings.findFirst).not.toHaveBeenCalled();
-    expect(mockMediaItem.findUnique).not.toHaveBeenCalled();
+  it("returns null when the configured title and description are both empty for this locale", async () => {
+    mockGlobalSettings.findFirst.mockResolvedValue({
+      defaultSeo: {
+        title: {},
+        description: {},
+        ogImageId: null,
+        noIndex: false,
+        noFollow: false,
+      },
+    });
+    expect(await getDefaultSeoOverride("en")).toBeNull();
   });
 
-  it("returns null even when a configured override would be available", async () => {
+  it("returns the configured override with resolved OG image url when both are set", async () => {
     mockGlobalSettings.findFirst.mockResolvedValue({
       defaultSeo: {
         title: { en: "Configured title" },
@@ -43,13 +49,49 @@ describe("getDefaultSeoOverride — static, database not in the read path", () =
         noFollow: false,
       },
     });
-    mockMediaItem.findUnique.mockResolvedValue({ url: "/images/og.jpg" });
-    expect(await getDefaultSeoOverride("en")).toBeNull();
+    mockMediaItem.findUnique.mockResolvedValue({ url: "/images/og.jpg", deletedAt: null });
+    const result = await getDefaultSeoOverride("en");
+    expect(result).toEqual({
+      title: "Configured title",
+      description: "Configured description",
+      ogImageUrl: "/images/og.jpg",
+      noIndex: false,
+      noFollow: false,
+    });
   });
 
-  it("returns null for every locale", async () => {
-    for (const locale of ["en", "ar", "ru", "zh", "fr", "de"] as const) {
-      expect(await getDefaultSeoOverride(locale)).toBeNull();
-    }
+  it("returns null ogImageUrl when the referenced media item was soft-deleted", async () => {
+    mockGlobalSettings.findFirst.mockResolvedValue({
+      defaultSeo: {
+        title: { en: "T" },
+        description: { en: "D" },
+        ogImageId: "media-1",
+        noIndex: false,
+        noFollow: false,
+      },
+    });
+    mockMediaItem.findUnique.mockResolvedValue({ url: "/x.jpg", deletedAt: new Date() });
+    const result = await getDefaultSeoOverride("en");
+    expect(result?.ogImageUrl).toBeNull();
+  });
+
+  it("falls back to English for locales with no configured translation", async () => {
+    mockGlobalSettings.findFirst.mockResolvedValue({
+      defaultSeo: {
+        title: { en: "English title" },
+        description: { en: "English description" },
+        ogImageId: null,
+        noIndex: false,
+        noFollow: false,
+      },
+    });
+    const result = await getDefaultSeoOverride("ar");
+    expect(result?.title).toBe("English title");
+    expect(result?.description).toBe("English description");
+  });
+
+  it("returns null (uses static defaults) when the database query throws", async () => {
+    mockGlobalSettings.findFirst.mockRejectedValue(new Error("boom"));
+    expect(await getDefaultSeoOverride("en")).toBeNull();
   });
 });

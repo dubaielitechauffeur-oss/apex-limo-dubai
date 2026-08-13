@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { requirePermission } from "@/lib/permissions/guard";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import { listHeroSlides, listTestimonials, listBrands } from "@/lib/cms/homepage";
-import { getInitialMediaPickerItems } from "@/lib/cms/media-picker-actions";
+import { getInitialMediaPickerItems, ensureMediaPickerItems } from "@/lib/cms/media-picker-actions";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { HeroSlideManager } from "@/components/admin/cms/HeroSlideManager";
 import { TestimonialManager } from "@/components/admin/cms/TestimonialManager";
@@ -13,12 +13,25 @@ export const metadata: Metadata = { title: "Homepage — Admin" };
 export default async function HomepageContentPage() {
   await requirePermission(PERMISSIONS.HOMEPAGE_READ);
 
-  const [heroResult, testimonialsResult, brandsResult, mediaLibraryItems] = await Promise.all([
+  const [heroResult, testimonialsResult, brandsResult, initialMediaLibraryItems] = await Promise.all([
     listHeroSlides(),
     listTestimonials(),
     listBrands(),
     getInitialMediaPickerItems(),
   ]);
+
+  // Resolve every hero slide's desktop+mobile images and every brand's logo
+  // in the picker even when they fall outside the newest-24 default page.
+  const referencedIds: (string | null)[] = [];
+  if (heroResult.success) {
+    for (const slide of heroResult.data) {
+      referencedIds.push(slide.desktopImageId, slide.mobileImageId);
+    }
+  }
+  if (brandsResult.success) {
+    for (const brand of brandsResult.data) referencedIds.push(brand.logoId);
+  }
+  const mediaLibraryItems = await ensureMediaPickerItems(initialMediaLibraryItems, referencedIds);
 
   return (
     <div>

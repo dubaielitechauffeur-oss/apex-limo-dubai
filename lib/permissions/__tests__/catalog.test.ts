@@ -19,13 +19,10 @@ describe("permission catalog", () => {
     expect(unique.size).toBe(ALL_PERMISSIONS.length);
   });
 
-  it("totals 57 permissions — matches super_admin's fully-granted set", () => {
-    // Regression guard: super_admin's DB row (seeded from every constant
-    // in this catalog) reports "57 permissions" as of Phase 7 (53 from
-    // Phase 2B + the 4 faq:* permissions added for the FAQ CMS). If this
-    // count ever changes, either a permission was added/removed here, or
-    // something drifted — worth a second look either way.
-    expect(ALL_PERMISSIONS.length).toBe(57);
+  it("totals 60 permissions — matches super_admin's fully-granted set", () => {
+    // Regression guard. 53 from Phase 2B + 4 faq:* (Phase 7) + 3 contacts:*
+    // (Phase 12, when the ContactSubmission admin module was wired up).
+    expect(ALL_PERMISSIONS.length).toBe(60);
   });
 
   it("isValidPermission accepts catalog members and rejects unknown strings", () => {

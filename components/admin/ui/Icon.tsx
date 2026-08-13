@@ -17,6 +17,7 @@ import {
   BarChart3,
   ScrollText,
   HelpCircle,
+  Mail,
   Circle,
   type LucideIcon,
 } from "lucide-react";
@@ -46,6 +47,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   BarChart3,
   ScrollText,
   HelpCircle,
+  Mail,
 };
 
 export function AdminNavIcon({ name, className }: { name: string; className?: string }) {

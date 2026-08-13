@@ -34,13 +34,26 @@ function staticSiteContact(): SiteContact {
 }
 
 /**
- * Serves contact details from `lib/constants.ts` — the database is not in
- * the read path, matching `lib/public/cms-content.ts`. Edit `SITE` and
- * deploy to change what customers see.
- *
- * The query below is kept, unused, so restoring admin-managed contact
- * details is a matter of calling it again rather than rewriting this file.
+ * DB-first with static fallback. When admin edits GlobalSettings in
+ * /admin/settings, the new phone/WhatsApp/email is served immediately
+ * (paired with the settings action's revalidatePath calls). On DB error
+ * or when GlobalSettings is unpopulated, falls back to `SITE` in
+ * `lib/constants.ts` so the public site never breaks.
  */
 export async function getSiteContact(): Promise<SiteContact> {
-  return staticSiteContact();
+  try {
+    const row = await prisma.globalSettings.findFirst();
+    if (!row) return staticSiteContact();
+    const fallback = staticSiteContact();
+    return {
+      phone: row.phone?.trim() || fallback.phone,
+      phoneDisplay: row.phoneDisplay?.trim() || fallback.phoneDisplay,
+      whatsapp: row.whatsapp?.trim() || fallback.whatsapp,
+      email: row.email?.trim() || fallback.email,
+      notificationEmail: row.notificationEmail?.trim() || row.email?.trim() || fallback.notificationEmail,
+    };
+  } catch (err) {
+    console.error("[site-contact] DB read failed, using static fallback:", err);
+    return staticSiteContact();
+  }
 }

@@ -27,6 +27,7 @@ const MODULE_VIEW_PERMISSION: Partial<Record<string, Permission>> = {
   analytics: PERMISSIONS.ANALYTICS_READ,
   homepage: PERMISSIONS.HOMEPAGE_READ,
   pricing: PERMISSIONS.PRICING_READ,
+  contacts: PERMISSIONS.CONTACTS_READ,
 };
 
 export function canAccessModule(ctx: AuthzContext | null, moduleId: string): boolean {

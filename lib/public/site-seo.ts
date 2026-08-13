@@ -24,10 +24,31 @@ function pickText(value: unknown, locale: Locale): string {
  * falls back to the static site copy — same DB-first + static-fallback
  * pattern as `getSiteContact()`.
  */
-export async function getDefaultSeoOverride(_locale: Locale): Promise<SiteDefaultSeo | null> {
-  // Returns null so the caller uses the static defaults in `lib/seo.ts` —
-  // the database is not in the public read path (see
-  // `lib/public/cms-content.ts`). Restoring the admin-managed override means
-  // querying `GlobalSettings.defaultSeo` here again.
-  return null;
+export async function getDefaultSeoOverride(locale: Locale): Promise<SiteDefaultSeo | null> {
+  try {
+    const row = await prisma.globalSettings.findFirst({ select: { defaultSeo: true } });
+    if (!row?.defaultSeo) return null;
+    const seo = row.defaultSeo as unknown as SeoMeta;
+    const title = pickText(seo.title, locale);
+    const description = pickText(seo.description, locale);
+    if (!title && !description) return null;
+    let ogImageUrl: string | null = null;
+    if (seo.ogImageId) {
+      const media = await prisma.mediaItem.findUnique({
+        where: { id: seo.ogImageId },
+        select: { url: true, deletedAt: true },
+      });
+      if (media && !media.deletedAt) ogImageUrl = media.url;
+    }
+    return {
+      title,
+      description,
+      ogImageUrl,
+      noIndex: seo.noIndex ?? false,
+      noFollow: seo.noFollow ?? false,
+    };
+  } catch (err) {
+    console.error("[site-seo] DB read failed, using static defaults:", err);
+    return null;
+  }
 }

@@ -4,7 +4,7 @@ import { requirePermission } from "@/lib/permissions/guard";
 import { hasPermission, isSuperAdmin } from "@/lib/permissions/context";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import { getBlogPost, listBlogCategories, listTags } from "@/lib/cms/blog";
-import { getInitialMediaPickerItems } from "@/lib/cms/media-picker-actions";
+import { getInitialMediaPickerItems, ensureMediaPickerItems } from "@/lib/cms/media-picker-actions";
 import { setBlogPostStatusAction, deleteBlogPostAction, restoreBlogPostAction } from "@/app/admin/(dashboard)/blog/actions";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { ErrorState } from "@/components/admin/ui/ErrorState";
@@ -21,7 +21,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
   const ctx = await requirePermission(PERMISSIONS.BLOG_READ);
   const { id } = await params;
 
-  const [result, categoriesResult, tagsResult, mediaLibraryItems] = await Promise.all([
+  const [result, categoriesResult, tagsResult, initialMediaLibraryItems] = await Promise.all([
     getBlogPost(id),
     listBlogCategories(),
     listTags(),
@@ -39,6 +39,8 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
   }
 
   const post = result.data;
+  // Guarantee this post's featured image + OG image resolve in the picker.
+  const mediaLibraryItems = await ensureMediaPickerItems(initialMediaLibraryItems, [post.featuredImageId, post.seo.ogImageId]);
   const canManage = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.BLOG_UPDATE);
   const canPublish = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.BLOG_PUBLISH);
   const canDelete = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.BLOG_DELETE);

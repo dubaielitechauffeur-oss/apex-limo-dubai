@@ -16,12 +16,12 @@ beforeEach(() => {
 });
 
 /**
- * Contact details are served from `lib/constants.ts`; the database is not in
- * the public read path. These assert that directly — including that a fully
- * populated GlobalSettings row is ignored — so the guarantee can't be
- * quietly undone by re-introducing a query here.
+ * DB-first read of GlobalSettings, with fallback to `lib/constants.ts`'s
+ * `SITE` on empty/missing data or database failure. Restores the admin
+ * Settings module's control over site-wide phone/WhatsApp/email while
+ * keeping the public site rock-solid when the database is unavailable.
  */
-describe("getSiteContact — static, database not in the read path", () => {
+describe("getSiteContact — DB-first with static fallback", () => {
   const staticContact = {
     phone: SITE.phone,
     phoneDisplay: SITE.phoneDisplay,
@@ -30,16 +30,12 @@ describe("getSiteContact — static, database not in the read path", () => {
     notificationEmail: SITE.email,
   };
 
-  it("returns the static SITE constant", async () => {
+  it("returns the static SITE constant when no GlobalSettings row exists", async () => {
+    mockGlobalSettings.findFirst.mockResolvedValue(null);
     expect(await getSiteContact()).toEqual(staticContact);
   });
 
-  it("never queries the database", async () => {
-    await getSiteContact();
-    expect(mockGlobalSettings.findFirst).not.toHaveBeenCalled();
-  });
-
-  it("still returns static even when a fully configured row would be available", async () => {
+  it("returns the configured row when GlobalSettings is populated", async () => {
     mockGlobalSettings.findFirst.mockResolvedValue({
       phone: "+971500000000",
       phoneDisplay: "+971 50 000 0000",
@@ -47,10 +43,30 @@ describe("getSiteContact — static, database not in the read path", () => {
       email: "hello@apex-test.example",
       notificationEmail: "ops@apex-test.example",
     });
-    expect(await getSiteContact()).toEqual(staticContact);
+    expect(await getSiteContact()).toEqual({
+      phone: "+971500000000",
+      phoneDisplay: "+971 50 000 0000",
+      whatsapp: "+971500000001",
+      email: "hello@apex-test.example",
+      notificationEmail: "ops@apex-test.example",
+    });
   });
 
-  it("is unaffected by a database failure", async () => {
+  it("falls back to static for each empty field so a blank admin field can't break the site", async () => {
+    mockGlobalSettings.findFirst.mockResolvedValue({
+      phone: "",
+      phoneDisplay: "",
+      whatsapp: "+971500000001",
+      email: "",
+      notificationEmail: "",
+    });
+    const result = await getSiteContact();
+    expect(result.phone).toBe(SITE.phone);
+    expect(result.whatsapp).toBe("+971500000001");
+    expect(result.email).toBe(SITE.email);
+  });
+
+  it("degrades to static on database failure", async () => {
     mockGlobalSettings.findFirst.mockRejectedValue(new Error("simulated connection failure"));
     expect(await getSiteContact()).toEqual(staticContact);
   });

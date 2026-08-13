@@ -4,8 +4,8 @@ import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
 import { buildValidationMessages, validateContactForm, hasErrors, contactBodySchema, type ValidationMessages } from "@/lib/validation";
 import { dispatchLead } from "@/lib/notifications";
-import { resolveLocale, generateReference, readJsonBodyWithLimit } from "@/lib/api-lead-handler";
-import { isRateLimited, isHoneypotTripped } from "@/lib/spam-protection";
+import { resolveLocale, generateReference, readJsonBodyWithLimit, persistContact } from "@/lib/api-lead-handler";
+import { isRateLimited, isHoneypotTripped, getClientIp } from "@/lib/spam-protection";
 
 export async function POST(request: NextRequest) {
   let locale: Locale = routing.defaultLocale;
@@ -51,6 +51,10 @@ export async function POST(request: NextRequest) {
   }
 
   const reference = generateReference("APX-C-");
+
+  // Persisted first so the admin Contacts module has a durable record
+  // regardless of whether the downstream email dispatch below succeeds.
+  await persistContact(body, { reference, locale, ipAddress: getClientIp(request.headers) });
 
   try {
     await dispatchLead("contact", body, reference);
