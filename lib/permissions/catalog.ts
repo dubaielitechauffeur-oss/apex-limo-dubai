@@ -34,6 +34,7 @@ export const RESOURCES = [
   "analytics",
   "homepage",
   "pricing",
+  "contacts",
 ] as const;
 
 export type Resource = (typeof RESOURCES)[number];
@@ -126,6 +127,10 @@ export const PERMISSIONS = {
   PRICING_READ: "pricing:read",
   PRICING_UPDATE: "pricing:update",
   PRICING_DELETE: "pricing:delete",
+
+  CONTACTS_READ: "contacts:read",
+  CONTACTS_UPDATE: "contacts:update",
+  CONTACTS_DELETE: "contacts:delete",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

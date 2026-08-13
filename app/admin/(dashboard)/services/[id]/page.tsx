@@ -4,7 +4,7 @@ import { requirePermission } from "@/lib/permissions/guard";
 import { hasPermission, isSuperAdmin } from "@/lib/permissions/context";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import { getService } from "@/lib/cms/services";
-import { getInitialMediaPickerItems } from "@/lib/cms/media-picker-actions";
+import { getInitialMediaPickerItems, ensureMediaPickerItems } from "@/lib/cms/media-picker-actions";
 import { setServiceStatusAction, deleteServiceAction, restoreServiceAction } from "@/app/admin/(dashboard)/services/actions";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { ErrorState } from "@/components/admin/ui/ErrorState";
@@ -21,7 +21,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const ctx = await requirePermission(PERMISSIONS.SERVICES_READ);
   const { id } = await params;
 
-  const [result, mediaLibraryItems] = await Promise.all([getService(id), getInitialMediaPickerItems()]);
+  const [result, initialMediaLibraryItems] = await Promise.all([getService(id), getInitialMediaPickerItems()]);
 
   if (!result.success) {
     if (result.error === "Service not found.") notFound();
@@ -34,6 +34,9 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   }
 
   const service = result.data;
+  // Guarantee this service's own image + OG image resolve in the picker
+  // even when they were uploaded earlier than the library's most-recent 24.
+  const mediaLibraryItems = await ensureMediaPickerItems(initialMediaLibraryItems, [service.imageId, service.seo.ogImageId]);
   const canManage = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.SERVICES_UPDATE);
   const canPublish = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.SERVICES_PUBLISH);
   const canDelete = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.SERVICES_DELETE);

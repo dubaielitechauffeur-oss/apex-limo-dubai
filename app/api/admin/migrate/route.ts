@@ -6,8 +6,9 @@ import { FLEET } from "@/data/fleet";
 import type { Locale } from "@/i18n/routing";
 import { routing } from "@/i18n/routing";
 import type { Prisma } from "@/lib/generated/prisma/client";
+import { getAuthzContext, isSuperAdmin } from "@/lib/permissions/context";
 
-const MIGRATE_SECRET = process.env.MIGRATE_SECRET ?? "apex-migrate-2026";
+const MIGRATE_SECRET = process.env.MIGRATE_SECRET;
 
 function broadcast(value: string): Record<Locale, string> {
   const out = {} as Record<Locale, string>;
@@ -108,8 +109,15 @@ async function resyncVehicleImages(prisma: PrismaClient) {
 }
 
 export async function POST(request: Request) {
+  // Accept either a super_admin session (admin panel button) or the shared
+  // MIGRATE_SECRET header (CLI/curl automation). No hardcoded fallback —
+  // if MIGRATE_SECRET is not set in the environment, only session-authed
+  // super_admins can trigger this.
+  const ctx = await getAuthzContext();
+  const hasSession = isSuperAdmin(ctx);
   const secret = request.headers.get("x-migrate-secret");
-  if (!MIGRATE_SECRET || secret !== MIGRATE_SECRET) {
+  const hasSecret = Boolean(MIGRATE_SECRET) && secret === MIGRATE_SECRET;
+  if (!hasSession && !hasSecret) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

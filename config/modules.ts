@@ -34,6 +34,14 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
     phase: 2,
   },
   {
+    id: "contacts",
+    name: "Contact Submissions",
+    description: "Public contact form messages, status lifecycle, reply-by-email",
+    featurePath: "features/contacts",
+    dependencies: [],
+    phase: 2,
+  },
+  {
     id: "pricing",
     name: "Pricing Management",
     description: "Per-vehicle rates, packages, airport/hourly/daily tiers",

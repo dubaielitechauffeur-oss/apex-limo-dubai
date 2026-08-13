@@ -71,27 +71,26 @@ function pickArray(value: unknown, locale: Locale): string[] {
 }
 
 /**
- * The public site serves content from `data/*.ts` — the database is not in
- * the read path.
+ * DB-first with static fallback. Order: try the database; if the query
+ * throws (connection down, unreachable, Prisma error) or the result is
+ * empty (no rows migrated yet), serve the static `data/*.ts` file so the
+ * public route never renders blank. The static files are the permanent
+ * safety net and are never removed.
  *
- * This used to query the database first and fall back to the static files
- * only when a query returned nothing. That made a deploy insufficient on its
- * own: editing a data file and merging changed nothing visible, because the
- * database still held the old rows and won. Content only moved once someone
- * remembered to run an import, and the importers deliberately refuse to
- * overwrite existing rows, so in practice it often never moved at all.
- *
- * Reading the static files directly restores the obvious behaviour: whatever
- * is committed is what the site shows, so merge-and-deploy is the whole
- * workflow.
- *
- * The database, admin panel, and every query builder below are left in place
- * and still compile — this is the single switch that takes them out of the
- * public read path, so restoring CMS-backed reads means reverting this one
- * function rather than rebuilding anything.
+ * When a table has rows the admin panel manages, the DB wins — this is
+ * what makes admin publish visible on the public site. Pair with each
+ * page's `export const revalidate = 300` (ISR) and the CMS actions'
+ * `revalidatePath()` calls for near-immediate visibility.
  */
-async function withFallback<T>(_run: () => Promise<T>, _isEmpty: (value: T) => boolean, fallback: () => T): Promise<T> {
-  return fallback();
+async function withFallback<T>(run: () => Promise<T>, isEmpty: (value: T) => boolean, fallback: () => T): Promise<T> {
+  try {
+    const result = await run();
+    if (isEmpty(result)) return fallback();
+    return result;
+  } catch (err) {
+    console.error("[cms-content] DB read failed, using static fallback:", err);
+    return fallback();
+  }
 }
 
 // ── Services ─────────────────────────────────────────────────────────────

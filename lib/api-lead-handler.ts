@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
 import { prisma } from "@/lib/db";
-import type { BookingFormData, QuoteFormData } from "@/lib/types";
+import type { BookingFormData, QuoteFormData, ContactFormData } from "@/lib/types";
 
 /** Shared helpers for the booking/quote/contact API routes — previously
  *  duplicated near-verbatim across each `route.ts`. */
@@ -173,6 +173,35 @@ export async function persistBooking(data: BookingFormData, context: LeadPersist
  *   ("flexible, no specific date"), which the folded-in note makes explicit
  *   rather than letting the admin misread it as a firm request for today.
  */
+/**
+ * Writes a public contact submission into the `ContactSubmission` table —
+ * the admin Contacts module reads from this table. Same silent-fail
+ * pattern as `persistBooking`/`persistQuote`: never throws, returns null
+ * on failure — the customer already has their reference and confirmation
+ * regardless of whether this write succeeds.
+ */
+export async function persistContact(data: ContactFormData, context: LeadPersistContext): Promise<PersistedLead | null> {
+  try {
+    const row = await prisma.contactSubmission.create({
+      data: {
+        reference: context.reference,
+        fullName: data.fullName,
+        email: data.email,
+        phone: data.phone || null,
+        subject: data.subject,
+        message: data.message,
+        locale: context.locale,
+        ipAddress: context.ipAddress ?? undefined,
+      },
+      select: { id: true, reference: true },
+    });
+    return row;
+  } catch (err) {
+    console.error("[api-lead-handler] failed to persist contact submission:", err);
+    return null;
+  }
+}
+
 export async function persistQuote(data: QuoteFormData, context: LeadPersistContext): Promise<PersistedLead | null> {
   try {
     const vehicleId = await resolveVehicleId(data.vehicle);

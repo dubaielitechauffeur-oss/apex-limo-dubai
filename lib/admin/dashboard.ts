@@ -49,6 +49,13 @@ export async function getDashboardStats(): Promise<DashboardStat[]> {
       count: () => prisma.quote.count({ where: { deletedAt: null, status: "pending" } }),
     },
     {
+      id: "contacts",
+      label: "New Contact Messages",
+      href: "/admin/contacts",
+      permission: PERMISSIONS.CONTACTS_READ,
+      count: () => prisma.contactSubmission.count({ where: { status: "new_submission" } }),
+    },
+    {
       id: "blogs",
       label: "Published Blogs",
       href: "/admin/blog",

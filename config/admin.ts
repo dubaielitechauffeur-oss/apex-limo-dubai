@@ -42,6 +42,13 @@ export const ADMIN_NAV: AdminNavSection[] = [
         icon: "MessageSquareQuote",
         moduleId: "quotes",
       },
+      {
+        id: "contacts",
+        label: "Contacts",
+        href: "/admin/contacts",
+        icon: "Mail",
+        moduleId: "contacts",
+      },
     ],
   },
   {

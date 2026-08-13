@@ -4,7 +4,7 @@ import { requirePermission } from "@/lib/permissions/guard";
 import { hasPermission, isSuperAdmin } from "@/lib/permissions/context";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import { getLocation } from "@/lib/cms/locations";
-import { getInitialMediaPickerItems } from "@/lib/cms/media-picker-actions";
+import { getInitialMediaPickerItems, ensureMediaPickerItems } from "@/lib/cms/media-picker-actions";
 import { setLocationStatusAction, deleteLocationAction, restoreLocationAction } from "@/app/admin/(dashboard)/locations/actions";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { ErrorState } from "@/components/admin/ui/ErrorState";
@@ -22,7 +22,7 @@ export default async function LocationDetailPage({ params }: LocationDetailPageP
   const ctx = await requirePermission(PERMISSIONS.LOCATIONS_READ);
   const { id } = await params;
 
-  const [result, mediaLibraryItems] = await Promise.all([getLocation(id), getInitialMediaPickerItems()]);
+  const [result, initialMediaLibraryItems] = await Promise.all([getLocation(id), getInitialMediaPickerItems()]);
 
   if (!result.success) {
     if (result.error === "Location not found.") notFound();
@@ -35,6 +35,13 @@ export default async function LocationDetailPage({ params }: LocationDetailPageP
   }
 
   const location = result.data;
+  // Resolve hero (desktop+mobile) and OG image references even when they
+  // fall outside the picker's most-recent-uploaded page.
+  const mediaLibraryItems = await ensureMediaPickerItems(initialMediaLibraryItems, [
+    location.heroDesktopImageId,
+    location.heroMobileImageId,
+    location.seo.ogImageId,
+  ]);
   const canManage = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.LOCATIONS_UPDATE);
   const canPublish = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.LOCATIONS_PUBLISH);
   const canDelete = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.LOCATIONS_DELETE);
