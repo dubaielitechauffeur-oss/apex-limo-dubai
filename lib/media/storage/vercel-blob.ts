@@ -1,4 +1,3 @@
-import { put, del } from "@vercel/blob";
 import type { StorageDriver, StoredFile } from "./types";
 
 /**
@@ -21,11 +20,10 @@ export class VercelBlobStorageDriver implements StorageDriver {
   readonly provider = "s3" as const;
 
   async save({ key, buffer, contentType }: { key: string; buffer: Buffer; contentType: string }): Promise<StoredFile> {
-    // `access: 'public'` gives us a stable, CDN-served URL we can
-    // drop directly into <img>/<Image> tags — no signed URLs, no
-    // per-request proxy. `addRandomSuffix: false` keeps the key we
-    // computed as the object path so `storagePath === key` stays
-    // meaningful (the local driver holds the same contract).
+    // Lazy import so a missing/broken @vercel/blob package can't crash
+    // the module tree at admin-panel load time — only uploads that
+    // actually hit this driver will surface an import failure.
+    const { put } = await import("@vercel/blob");
     const { url } = await put(key, buffer, {
       access: "public",
       contentType,
@@ -35,9 +33,7 @@ export class VercelBlobStorageDriver implements StorageDriver {
   }
 
   async delete(storagePath: string): Promise<void> {
-    // `del` accepts either the full URL or a pathname; storing the key
-    // gives us the pathname form. Failures are surfaced — a missing
-    // object still succeeds under Vercel Blob's semantics.
+    const { del } = await import("@vercel/blob");
     await del(storagePath);
   }
 }
