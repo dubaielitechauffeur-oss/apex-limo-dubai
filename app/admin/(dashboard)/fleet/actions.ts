@@ -13,6 +13,7 @@ import {
   deleteVehicleCategory,
   type VehicleInput,
 } from "@/lib/cms/fleet";
+import { createFaq, updateFaq, deleteFaq } from "@/lib/cms/faq";
 import { readLocalizedField } from "@/lib/cms/localized";
 import { readSeoField } from "@/lib/cms/seo";
 import { revalidatePublicFleet } from "@/lib/cms/revalidate";
@@ -133,4 +134,63 @@ export async function deleteVehicleCategoryAction(id: string): Promise<CmsAction
   revalidatePath("/admin/fleet/categories");
   revalidatePublicFleet();
   return { success: "Category deleted." };
+}
+
+// ── Inline FAQ management on the vehicle detail page ─────────────────────
+
+export async function addVehicleFaqAction(
+  vehicleId: string,
+  _prev: CmsActionState,
+  formData: FormData
+): Promise<CmsActionState> {
+  const question = readLocalizedField(formData, "question");
+  const answer = readLocalizedField(formData, "answer");
+  const sortOrder = Number(formData.get("sortOrder") ?? 0) || 0;
+  const result = await createFaq({
+    question,
+    answer,
+    categoryId: null,
+    parentType: "vehicle",
+    vehicleId,
+    serviceId: null,
+    locationId: null,
+    sortOrder,
+  });
+  if (!result.success) return { error: result.error };
+  revalidatePath(`/admin/fleet/vehicles/${vehicleId}`);
+  revalidatePublicFleet();
+  return { success: "FAQ added." };
+}
+
+export async function updateVehicleFaqAction(
+  vehicleId: string,
+  faqId: string,
+  _prev: CmsActionState,
+  formData: FormData
+): Promise<CmsActionState> {
+  const question = readLocalizedField(formData, "question");
+  const answer = readLocalizedField(formData, "answer");
+  const sortOrder = Number(formData.get("sortOrder") ?? 0) || 0;
+  const result = await updateFaq(faqId, {
+    question,
+    answer,
+    categoryId: null,
+    parentType: "vehicle",
+    vehicleId,
+    serviceId: null,
+    locationId: null,
+    sortOrder,
+  });
+  if (!result.success) return { error: result.error };
+  revalidatePath(`/admin/fleet/vehicles/${vehicleId}`);
+  revalidatePublicFleet();
+  return { success: "FAQ updated." };
+}
+
+export async function deleteVehicleFaqAction(vehicleId: string, faqId: string): Promise<CmsActionState> {
+  const result = await deleteFaq(faqId);
+  if (!result.success) return { error: result.error };
+  revalidatePath(`/admin/fleet/vehicles/${vehicleId}`);
+  revalidatePublicFleet();
+  return { success: "FAQ deleted." };
 }

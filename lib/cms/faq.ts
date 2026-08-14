@@ -316,6 +316,34 @@ export async function deleteFaq(id: string): Promise<RoleAdminResult<{ id: strin
   return { success: true, data: { id } };
 }
 
+// ── Scoped listers (for inline FAQ managers on vehicle/service/location detail) ─
+
+export interface ScopedFaqItem {
+  id: string;
+  question: LocalizedText;
+  answer: LocalizedText;
+  sortOrder: number;
+}
+
+export async function listFaqsForVehicle(vehicleId: string): Promise<RoleAdminResult<ScopedFaqItem[]>> {
+  const gate = await requireCmsPermission(PERMISSIONS.FAQ_READ);
+  if (!gate.success) return gate;
+  const rows = await prisma.faq.findMany({
+    where: { vehicleId },
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+    select: { id: true, question: true, answer: true, sortOrder: true },
+  });
+  return {
+    success: true,
+    data: rows.map((r) => ({
+      id: r.id,
+      question: (r.question as LocalizedText | null) ?? emptyLocalizedText(),
+      answer: (r.answer as LocalizedText | null) ?? emptyLocalizedText(),
+      sortOrder: r.sortOrder,
+    })),
+  };
+}
+
 // ── Parent option lists (for the FAQ form's scope pickers) ───────────────
 
 export interface ParentOption {
