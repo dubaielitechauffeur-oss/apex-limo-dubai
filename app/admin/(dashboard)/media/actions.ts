@@ -24,33 +24,25 @@ function readVariant(formData: FormData): ImageVariant | null {
 }
 
 export async function uploadMediaAction(_prevState: MediaActionState, formData: FormData): Promise<MediaActionState> {
-  try {
-    const file = formData.get("file");
-    if (!(file instanceof File) || file.size === 0) {
-      return { error: "Choose a file to upload." };
-    }
-
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const folderId = String(formData.get("folderId") ?? "") || null;
-
-    const result = await uploadMedia({
-      buffer,
-      originalFilename: file.name,
-      folderId,
-      variant: readVariant(formData),
-    });
-
-    if (!result.success) return { error: result.error };
-
-    revalidatePath("/admin/media");
-    return { success: `Uploaded "${result.data.originalFilename}".` };
-  } catch (err) {
-    // Surface the real exception to the browser toast instead of letting
-    // Next.js swallow it into a generic 500 — otherwise every failed
-    // upload looks the same from the admin's point of view.
-    console.error("[uploadMediaAction] failed:", err);
-    return { error: `Upload failed: ${err instanceof Error ? err.message : String(err)}` };
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { error: "Choose a file to upload." };
   }
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const folderId = String(formData.get("folderId") ?? "") || null;
+
+  const result = await uploadMedia({
+    buffer,
+    originalFilename: file.name,
+    folderId,
+    variant: readVariant(formData),
+  });
+
+  if (!result.success) return { error: result.error };
+
+  revalidatePath("/admin/media");
+  return { success: `Uploaded "${result.data.originalFilename}".` };
 }
 
 function readLocalizedField(formData: FormData, prefix: string): LocalizedText {
