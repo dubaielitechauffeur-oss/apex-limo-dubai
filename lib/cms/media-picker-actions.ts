@@ -22,20 +22,25 @@ function toPickerResult(item: MediaListItem): MediaPickerResult {
 export async function uploadMediaForPicker(
   formData: FormData
 ): Promise<{ success: true; data: MediaPickerResult } | { success: false; error: string }> {
-  const file = formData.get("file");
-  if (!(file instanceof File) || file.size === 0) {
-    return { success: false, error: "Choose a file to upload." };
+  try {
+    const file = formData.get("file");
+    if (!(file instanceof File) || file.size === 0) {
+      return { success: false, error: "Choose a file to upload." };
+    }
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const result = await uploadMedia({
+      buffer,
+      originalFilename: file.name,
+      folderId: null,
+      variant: null,
+    });
+    if (!result.success) return { success: false, error: result.error };
+    revalidatePath("/admin/media");
+    return { success: true, data: toPickerResult(result.data) };
+  } catch (err) {
+    console.error("[uploadMediaForPicker] failed:", err);
+    return { success: false, error: `Upload failed: ${err instanceof Error ? err.message : String(err)}` };
   }
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const result = await uploadMedia({
-    buffer,
-    originalFilename: file.name,
-    folderId: null,
-    variant: null,
-  });
-  if (!result.success) return { success: false, error: result.error };
-  revalidatePath("/admin/media");
-  return { success: true, data: toPickerResult(result.data) };
 }
 
 /** Backs the CMS `MediaPickerField` modal's search box. Reuses

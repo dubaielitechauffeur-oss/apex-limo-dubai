@@ -216,7 +216,20 @@ export async function uploadMedia(input: UploadMediaInput): Promise<RoleAdminRes
   const storageProvider = getDefaultStorageProvider();
   const driver = getStorageDriver(storageProvider);
 
-  const stored = await driver.save({ key: storageKey, buffer: input.buffer, contentType: validation.mimeType });
+  let stored: Awaited<ReturnType<typeof driver.save>>;
+  try {
+    stored = await driver.save({ key: storageKey, buffer: input.buffer, contentType: validation.mimeType });
+  } catch (err) {
+    // Storage driver errors (missing BLOB_READ_WRITE_TOKEN, blob store
+    // not connected to this project, disk full, permission denied…)
+    // usually surface as opaque 500s otherwise. Return the message so
+    // the admin toast can show what actually went wrong.
+    console.error("[uploadMedia] storage driver failed:", err);
+    return {
+      success: false,
+      error: `Storage upload failed (${storageProvider}): ${err instanceof Error ? err.message : String(err)}`,
+    };
+  }
 
   const created = await prisma.mediaItem.create({
     data: {
