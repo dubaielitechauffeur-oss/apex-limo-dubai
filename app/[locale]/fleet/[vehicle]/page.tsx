@@ -40,6 +40,8 @@ import Card from "@/components/shared/Card";
 import Reveal from "@/components/shared/Reveal";
 import Ltr from "@/components/shared/Ltr";
 import VehicleHeroGallery, { VehicleGalleryCarousel } from "@/components/fleet/VehicleHeroGallery";
+import { VehiclePopularForChips } from "@/components/fleet/VehiclePopularForChips";
+import { VehicleAmenitiesChips } from "@/components/fleet/VehicleAmenitiesChips";
 import VehicleHeroQuoteForm from "@/components/fleet/VehicleHeroQuoteForm";
 import VehicleFaqSection from "@/components/fleet/VehicleFaqSection";
 import ServiceFaqSection from "@/components/services/ServiceFaqSection";
@@ -714,7 +716,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               </span>
             </div>
 
-            {relatedService || relatedLocation ? (
+            {vehicle.amenities && vehicle.amenities.length > 0 ? (
+              <VehicleAmenitiesChips amenities={vehicle.amenities} />
+            ) : null}
+            {vehicle.popularFor && vehicle.popularFor.length > 0 ? (
+              <VehiclePopularForChips chips={vehicle.popularFor} locale={locale} />
+            ) : relatedService || relatedLocation ? (
               <p className="mt-6 text-sm text-smoke">
                 {relatedService ? (
                   <>
@@ -785,7 +792,12 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               <VehicleHeroQuoteForm vehicle={vehicle} contact={contact} />
             </div>
 
-            {relatedService || relatedLocation ? (
+            {vehicle.amenities && vehicle.amenities.length > 0 ? (
+              <VehicleAmenitiesChips amenities={vehicle.amenities} />
+            ) : null}
+            {vehicle.popularFor && vehicle.popularFor.length > 0 ? (
+              <VehiclePopularForChips chips={vehicle.popularFor} locale={locale} />
+            ) : relatedService || relatedLocation ? (
               <p className="mt-6 text-sm text-smoke">
                 {relatedService ? (
                   <>

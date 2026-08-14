@@ -4,7 +4,7 @@ import { requirePermission } from "@/lib/permissions/guard";
 import { hasPermission, isSuperAdmin } from "@/lib/permissions/context";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import { getVehicle, listVehicleCategories } from "@/lib/cms/fleet";
-import { listFaqsForVehicle } from "@/lib/cms/faq";
+import { listFaqParentOptions, listFaqsForVehicle } from "@/lib/cms/faq";
 import { getInitialMediaPickerItems, ensureMediaPickerItems } from "@/lib/cms/media-picker-actions";
 import { setVehicleStatusAction, deleteVehicleAction, restoreVehicleAction } from "@/app/admin/(dashboard)/fleet/actions";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
@@ -23,11 +23,12 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
   const ctx = await requirePermission(PERMISSIONS.FLEET_READ);
   const { id } = await params;
 
-  const [result, categoriesResult, initialMediaLibraryItems, faqsResult] = await Promise.all([
+  const [result, categoriesResult, initialMediaLibraryItems, faqsResult, parentOptionsResult] = await Promise.all([
     getVehicle(id),
     listVehicleCategories(),
     getInitialMediaPickerItems(),
     listFaqsForVehicle(id),
+    listFaqParentOptions(),
   ]);
 
   if (!result.success) {
@@ -63,7 +64,13 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           {canManage ? (
-            <VehicleForm vehicle={vehicle} categories={categories} mediaLibraryItems={mediaLibraryItems} />
+            <VehicleForm
+              vehicle={vehicle}
+              categories={categories}
+              mediaLibraryItems={mediaLibraryItems}
+              servicesForPopularFor={parentOptionsResult.success ? parentOptionsResult.data.services : []}
+              locationsForPopularFor={parentOptionsResult.success ? parentOptionsResult.data.locations : []}
+            />
           ) : (
             <ErrorState title="Read-only" description="You do not have permission to edit vehicles." />
           )}

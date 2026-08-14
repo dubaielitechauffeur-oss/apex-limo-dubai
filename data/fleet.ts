@@ -3417,6 +3417,17 @@ export interface PlainVehicleImage {
   mobileSrc?: string;
 }
 
+/** Structured "Popular for" chip: labels the customer sees +
+ *  slugs the anchor tags point at. When the referenced service or
+ *  location is deleted or renamed, its slot is silently dropped
+ *  server-side, keeping public copy clean. */
+export interface PlainPopularForChip {
+  serviceLabel?: string;
+  serviceSlug?: string;
+  locationLabel?: string;
+  locationSlug?: string;
+}
+
 export interface PlainFleetVehicle {
   slug: string;
   name: string;
@@ -3437,6 +3448,8 @@ export interface PlainFleetVehicle {
   images?: PlainVehicleImage[];
   badge?: string;
   isPlaceholder?: boolean;
+  amenities?: string[];
+  popularFor?: PlainPopularForChip[];
 }
 
 export function localizeVehicle(vehicle: FleetVehicle, locale: Locale): PlainFleetVehicle {

@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { createVehicleAction, updateVehicleAction, type CmsActionState } from "@/app/admin/(dashboard)/fleet/actions";
 import { LocalizedField } from "@/components/admin/cms/LocalizedField";
 import { VehicleImagesManager } from "@/components/admin/cms/VehicleImagesManager";
+import { AmenitiesField } from "@/components/admin/cms/AmenitiesField";
+import { PopularForField, type PopularForOption } from "@/components/admin/cms/PopularForField";
 import { SlugField } from "@/components/admin/cms/SlugField";
 import { SeoFieldsSection } from "@/components/admin/cms/SeoFieldsSection";
 import { PublishStatusSelect } from "@/components/admin/cms/PublishStatusControls";
@@ -21,10 +23,14 @@ export function VehicleForm({
   vehicle,
   categories,
   mediaLibraryItems,
+  servicesForPopularFor = [],
+  locationsForPopularFor = [],
 }: {
   vehicle: VehicleDetail | null;
   categories: VehicleCategoryItem[];
   mediaLibraryItems: MediaPickerResult[];
+  servicesForPopularFor?: PopularForOption[];
+  locationsForPopularFor?: PopularForOption[];
 }) {
   const action = vehicle ? updateVehicleAction : createVehicleAction;
   const [state, formAction, isPending] = useActionState(action, initialState);
@@ -140,6 +146,14 @@ export function VehicleForm({
           initialItems={mediaLibraryItems}
         />
       </div>
+
+      <AmenitiesField initial={vehicle?.amenities ?? []} />
+
+      <PopularForField
+        initial={vehicle?.popularFor ?? []}
+        services={servicesForPopularFor}
+        locations={locationsForPopularFor}
+      />
 
       <SeoFieldsSection seo={seo} ogImage={ogImage} mediaLibraryItems={mediaLibraryItems} />
 

@@ -25,6 +25,7 @@ import {
   getVehicleBySlug as staticGetVehicleBySlug,
   getVehiclesByCategorySlug as staticGetVehiclesByCategorySlug,
   type PlainFleetVehicle,
+  type PlainPopularForChip,
   type FleetCategory,
   type FleetCategorySlug,
 } from "@/data/fleet";
@@ -443,11 +444,41 @@ function mapVehicle(row: Awaited<ReturnType<typeof fetchAllVehicleRows>>[number]
       : undefined,
     badge: badge ? pickText(badge, locale) || undefined : undefined,
     isPlaceholder: row.isPlaceholder,
+    amenities: Array.isArray(row.amenities) ? (row.amenities as string[]) : undefined,
+    popularFor: buildPopularForChips(row, locale),
   };
 }
 
-function fetchAllVehicleRows() {
-  return prisma.vehicle.findMany({
+/** Resolve serviceId/locationId FKs into label + slug for public rendering.
+ *  Fetched in `fetchAllVehicleRows` via a lightweight include. */
+function buildPopularForChips(
+  row: Awaited<ReturnType<typeof fetchAllVehicleRows>>[number],
+  locale: Locale
+): PlainPopularForChip[] | undefined {
+  if (!Array.isArray(row.popularFor)) return undefined;
+  const services = (row as unknown as { _popularForServices?: { id: string; slug: string; name: unknown }[] })._popularForServices ?? [];
+  const locations = (row as unknown as { _popularForLocations?: { id: string; slug: string; name: string }[] })._popularForLocations ?? [];
+  const svcById = new Map(services.map((s) => [s.id, s]));
+  const locById = new Map(locations.map((l) => [l.id, l]));
+  const pairs = row.popularFor as { serviceId: string | null; locationId: string | null }[];
+  const chips: PlainPopularForChip[] = [];
+  for (const pair of pairs) {
+    const svc = pair.serviceId ? svcById.get(pair.serviceId) : undefined;
+    const loc = pair.locationId ? locById.get(pair.locationId) : undefined;
+    // Drop rows whose FKs both resolve to nothing (deleted/renamed).
+    if (!svc && !loc) continue;
+    chips.push({
+      serviceLabel: svc ? pickText(svc.name, locale) : undefined,
+      serviceSlug: svc?.slug,
+      locationLabel: loc?.name,
+      locationSlug: loc?.slug,
+    });
+  }
+  return chips.length > 0 ? chips : undefined;
+}
+
+async function fetchAllVehicleRows() {
+  const rows = await prisma.vehicle.findMany({
     where: { status: "published", deletedAt: null },
     orderBy: { sortOrder: "asc" },
     include: {
@@ -461,6 +492,45 @@ function fetchAllVehicleRows() {
       },
       faqs: { orderBy: { sortOrder: "asc" } },
     },
+  });
+
+  // Resolve popularFor's service+location FKs (stored inside JSON, so
+  // Prisma cannot join them declaratively). Batch-fetch once across all
+  // rows and attach as private _popularForServices/_popularForLocations
+  // fields for `buildPopularForChips()` above.
+  const serviceIds = new Set<string>();
+  const locationIds = new Set<string>();
+  for (const row of rows) {
+    if (Array.isArray(row.popularFor)) {
+      for (const p of row.popularFor as { serviceId?: string | null; locationId?: string | null }[]) {
+        if (p?.serviceId) serviceIds.add(p.serviceId);
+        if (p?.locationId) locationIds.add(p.locationId);
+      }
+    }
+  }
+  const [services, locations] = await Promise.all([
+    serviceIds.size > 0
+      ? prisma.service.findMany({
+          where: { id: { in: [...serviceIds] }, status: "published", deletedAt: null },
+          select: { id: true, slug: true, name: true },
+        })
+      : Promise.resolve([]),
+    locationIds.size > 0
+      ? prisma.location.findMany({
+          where: { id: { in: [...locationIds] }, status: "published", deletedAt: null },
+          select: { id: true, slug: true, name: true },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  return rows.map((row) => {
+    const attached = row as typeof row & {
+      _popularForServices?: typeof services;
+      _popularForLocations?: typeof locations;
+    };
+    attached._popularForServices = services;
+    attached._popularForLocations = locations;
+    return attached;
   });
 }
 

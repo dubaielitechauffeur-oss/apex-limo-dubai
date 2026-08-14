@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { requirePermission } from "@/lib/permissions/guard";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import { listVehicleCategories } from "@/lib/cms/fleet";
+import { listFaqParentOptions } from "@/lib/cms/faq";
 import { getInitialMediaPickerItems } from "@/lib/cms/media-picker-actions";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { ErrorState } from "@/components/admin/ui/ErrorState";
@@ -11,7 +12,11 @@ export const metadata: Metadata = { title: "New Vehicle — Admin" };
 
 export default async function NewVehiclePage() {
   await requirePermission(PERMISSIONS.FLEET_CREATE);
-  const [categoriesResult, mediaLibraryItems] = await Promise.all([listVehicleCategories(), getInitialMediaPickerItems()]);
+  const [categoriesResult, mediaLibraryItems, parentOptionsResult] = await Promise.all([
+    listVehicleCategories(),
+    getInitialMediaPickerItems(),
+    listFaqParentOptions(),
+  ]);
 
   if (!categoriesResult.success) {
     return (
@@ -34,7 +39,13 @@ export default async function NewVehiclePage() {
   return (
     <div>
       <PageHeader title="New Vehicle" breadcrumbs={[{ label: "Vehicles", href: "/admin/fleet/vehicles" }, { label: "New" }]} />
-      <VehicleForm vehicle={null} categories={categoriesResult.data} mediaLibraryItems={mediaLibraryItems} />
+      <VehicleForm
+        vehicle={null}
+        categories={categoriesResult.data}
+        mediaLibraryItems={mediaLibraryItems}
+        servicesForPopularFor={parentOptionsResult.success ? parentOptionsResult.data.services : []}
+        locationsForPopularFor={parentOptionsResult.success ? parentOptionsResult.data.locations : []}
+      />
     </div>
   );
 }

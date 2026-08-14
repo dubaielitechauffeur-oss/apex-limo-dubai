@@ -57,6 +57,22 @@ function readVehicleInput(formData: FormData): VehicleInput {
       const s = String(v).trim();
       return s === "" ? null : s;
     }),
+    amenities: formData.getAll("amenity").map(String).filter(Boolean),
+    // Client submits parallel arrays: popularFor_serviceId[] + popularFor_locationId[]
+    // Rows are dropped when both fields in a pair are empty.
+    popularFor: (() => {
+      const services = formData.getAll("popularFor_serviceId").map((v) => String(v).trim());
+      const locations = formData.getAll("popularFor_locationId").map((v) => String(v).trim());
+      const len = Math.max(services.length, locations.length);
+      const out: { serviceId: string | null; locationId: string | null }[] = [];
+      for (let i = 0; i < len; i++) {
+        const sid = services[i] || "";
+        const lid = locations[i] || "";
+        if (!sid && !lid) continue;
+        out.push({ serviceId: sid || null, locationId: lid || null });
+      }
+      return out;
+    })(),
     seo: readSeoField(formData),
     status: String(formData.get("status") ?? "draft") as PublishStatus,
     sortOrder: Number(formData.get("sortOrder") ?? 0) || 0,

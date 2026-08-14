@@ -164,6 +164,8 @@ export interface VehicleDetail {
   luggage: number;
   rates: VehicleRatesInput;
   images: { id: string; mediaId: string; url: string; alt: string; mobileMediaId: string | null; mobileUrl: string | null; sortOrder: number }[];
+  amenities: string[];
+  popularFor: { serviceId: string | null; locationId: string | null }[];
   seo: SeoMeta;
   status: PublishStatus;
   sortOrder: number;
@@ -193,6 +195,8 @@ export interface VehicleInput {
   rates: VehicleRatesInput;
   imageIds: string[];
   mobileImageIds?: (string | null)[];
+  amenities?: string[];
+  popularFor?: { serviceId: string | null; locationId: string | null }[];
   seo: SeoMeta;
   status: PublishStatus;
   sortOrder: number;
@@ -349,6 +353,10 @@ export async function getVehicle(id: string): Promise<RoleAdminResult<VehicleDet
         mobileUrl: img.mobileMedia?.url ?? null,
         sortOrder: img.sortOrder,
       })),
+      amenities: Array.isArray(row.amenities) ? (row.amenities as string[]) : [],
+      popularFor: Array.isArray(row.popularFor)
+        ? (row.popularFor as { serviceId: string | null; locationId: string | null }[])
+        : [],
       seo: (row.seo as unknown as SeoMeta | null) ?? emptySeoMeta(),
       status: row.status,
       sortOrder: row.sortOrder,
@@ -409,6 +417,8 @@ function buildData(input: VehicleInput): Omit<Prisma.VehicleUncheckedCreateInput
     passengers: input.passengers,
     luggage: input.luggage,
     rates: input.rates as unknown as Prisma.InputJsonValue,
+    amenities: (input.amenities ?? []) as unknown as Prisma.InputJsonValue,
+    popularFor: (input.popularFor ?? []) as unknown as Prisma.InputJsonValue,
     seo: input.seo as unknown as Prisma.InputJsonValue,
     status: input.status,
     sortOrder: input.sortOrder,

@@ -339,6 +339,15 @@ model Vehicle {
   features        Json
   whyChoose       Json
   badge           Json?
+  /// Array of amenity keys the admin ticked (e.g. ["water","wifi",
+  /// "privacy-glass"]) — rendered as icon chips on the public detail
+  /// page. See AMENITY_CATALOG in components/admin/cms/AmenitiesField.
+  amenities       Json?
+  /// Structured "Popular for" links — array of {serviceId, locationId}
+  /// pairs, each rendering as a "Popular for [Service] in [Location]"
+  /// chip with anchor tags on the public detail page. Distinct from
+  /// `idealFor` (free-text tagline) which stays for backwards compat.
+  popularFor      Json?
   isPlaceholder   Boolean       @default(false)
   isFeatured      Boolean       @default(false)
   rates           Json
