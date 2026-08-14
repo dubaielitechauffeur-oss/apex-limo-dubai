@@ -2,9 +2,10 @@
 
 import { useState, useRef, useTransition } from "react";
 import Image from "next/image";
-import { ImageOff, Search, Check, ArrowLeft, ArrowRight, Trash2 } from "lucide-react";
+import { ImageOff, Search, Check, ArrowLeft, ArrowRight, Trash2, Upload } from "lucide-react";
 import { Modal } from "@/components/admin/ui/Modal";
-import { searchMediaForPicker, type MediaPickerResult } from "@/lib/cms/media-picker-actions";
+import { useToast } from "@/components/admin/ui/Toast";
+import { searchMediaForPicker, uploadMediaForPicker, type MediaPickerResult } from "@/lib/cms/media-picker-actions";
 
 /**
  * Multi-image counterpart to `MediaPickerField` — same "choose from
@@ -28,7 +29,32 @@ export function VehicleImagesManager({
   const [items, setItems] = useState(initialItems);
   const [query, setQuery] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [uploading, setUploading] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { showToast } = useToast();
+
+  async function handleUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.target.files ?? []);
+    if (files.length === 0) return;
+    setUploading(true);
+    let uploaded = 0;
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("file", file);
+      const result = await uploadMediaForPicker(formData);
+      if (!result.success) {
+        showToast(`${file.name}: ${result.error}`, "error");
+        continue;
+      }
+      setItems((prev) => [result.data, ...prev.filter((i) => i.id !== result.data.id)]);
+      setSelected((prev) => (prev.some((i) => i.id === result.data.id) ? prev : [...prev, result.data]));
+      uploaded++;
+    }
+    setUploading(false);
+    if (event.target) event.target.value = "";
+    if (uploaded > 0) showToast(`Uploaded ${uploaded} image${uploaded === 1 ? "" : "s"} and added to gallery.`, "success");
+  }
 
   function handleSearch(value: string) {
     setQuery(value);
@@ -95,23 +121,53 @@ export function VehicleImagesManager({
         ))}
       </ul>
 
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="mt-3 rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-      >
-        Add from Library
-      </button>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          Add from Library
+        </button>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="inline-flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+        >
+          <Upload className="h-4 w-4" aria-hidden="true" />
+          {uploading ? "Uploading…" : "Upload from device"}
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleUpload}
+          className="hidden"
+        />
+      </div>
 
       <Modal open={open} onClose={() => setOpen(false)} title="Choose from Media Library">
-        <div className="relative mb-3">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden="true" />
-          <input
-            value={query}
-            onChange={(event) => handleSearch(event.target.value)}
-            placeholder="Search media…"
-            className="h-9 w-full rounded-md border border-gray-300 bg-white pl-9 pr-3 text-sm text-gray-900 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-          />
+        <div className="mb-3 flex gap-2">
+          <div className="relative flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden="true" />
+            <input
+              value={query}
+              onChange={(event) => handleSearch(event.target.value)}
+              placeholder="Search media…"
+              className="h-9 w-full rounded-md border border-gray-300 bg-white pl-9 pr-3 text-sm text-gray-900 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="inline-flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+          >
+            <Upload className="h-4 w-4" aria-hidden="true" />
+            {uploading ? "Uploading…" : "Upload"}
+          </button>
         </div>
         <div className={`grid max-h-96 grid-cols-3 gap-2 overflow-y-auto sm:grid-cols-4 ${isPending ? "opacity-50" : ""}`}>
           {items.length === 0 ? (

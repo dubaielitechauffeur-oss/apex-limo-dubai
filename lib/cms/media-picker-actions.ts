@@ -1,6 +1,7 @@
 "use server";
 
-import { listMedia, getMediaItem, type MediaListItem } from "@/lib/media/items";
+import { revalidatePath } from "next/cache";
+import { listMedia, getMediaItem, uploadMedia, type MediaListItem } from "@/lib/media/items";
 
 export interface MediaPickerResult {
   id: string;
@@ -11,6 +12,30 @@ export interface MediaPickerResult {
 
 function toPickerResult(item: MediaListItem): MediaPickerResult {
   return { id: item.id, url: item.url, originalFilename: item.originalFilename, alt: item.alt.en || item.originalFilename };
+}
+
+/** Directly upload a file from a CMS picker modal (e.g. VehicleForm's
+ *  MediaPickerField) and return the picker result so the caller can select
+ *  it immediately, without navigating away to /admin/media. Same permission
+ *  check as the standalone upload — `media:create` — enforced inside
+ *  `uploadMedia()` itself. */
+export async function uploadMediaForPicker(
+  formData: FormData
+): Promise<{ success: true; data: MediaPickerResult } | { success: false; error: string }> {
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { success: false, error: "Choose a file to upload." };
+  }
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const result = await uploadMedia({
+    buffer,
+    originalFilename: file.name,
+    folderId: null,
+    variant: null,
+  });
+  if (!result.success) return { success: false, error: result.error };
+  revalidatePath("/admin/media");
+  return { success: true, data: toPickerResult(result.data) };
 }
 
 /** Backs the CMS `MediaPickerField` modal's search box. Reuses
