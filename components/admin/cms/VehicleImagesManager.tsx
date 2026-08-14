@@ -17,15 +17,27 @@ import { searchMediaForPicker, uploadMediaForPicker, type MediaPickerResult } fr
  */
 export function VehicleImagesManager({
   name,
+  mobileName = "mobileImageIds",
   initial,
+  initialMobiles = [],
   initialItems,
 }: {
   name: string;
+  mobileName?: string;
   initial: MediaPickerResult[];
+  /** Aligned with `initial` by index — null when a slot has no mobile
+   *  variant, so desktop is used at every viewport (backwards-compat). */
+  initialMobiles?: (MediaPickerResult | null)[];
   initialItems: MediaPickerResult[];
 }) {
   const [selected, setSelected] = useState<MediaPickerResult[]>(initial);
+  const [mobileSelected, setMobileSelected] = useState<(MediaPickerResult | null)[]>(() => {
+    const seed = [...initialMobiles];
+    while (seed.length < initial.length) seed.push(null);
+    return seed.slice(0, initial.length);
+  });
   const [open, setOpen] = useState(false);
+  const [mobilePickerFor, setMobilePickerFor] = useState<number | null>(null);
   const [items, setItems] = useState(initialItems);
   const [query, setQuery] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -68,11 +80,20 @@ export function VehicleImagesManager({
   }
 
   function addImage(item: MediaPickerResult) {
-    setSelected((prev) => (prev.some((i) => i.id === item.id) ? prev : [...prev, item]));
+    setSelected((prev) => {
+      if (prev.some((i) => i.id === item.id)) return prev;
+      return [...prev, item];
+    });
+    setMobileSelected((prev) => [...prev, null]);
   }
 
   function removeImage(id: string) {
-    setSelected((prev) => prev.filter((i) => i.id !== id));
+    setSelected((prev) => {
+      const index = prev.findIndex((i) => i.id === id);
+      if (index < 0) return prev;
+      setMobileSelected((m) => m.filter((_, i) => i !== index));
+      return prev.filter((_, i) => i !== index);
+    });
   }
 
   function move(index: number, direction: -1 | 1) {
@@ -81,6 +102,19 @@ export function VehicleImagesManager({
       const target = index + direction;
       if (target < 0 || target >= next.length) return prev;
       [next[index], next[target]] = [next[target], next[index]];
+      setMobileSelected((m) => {
+        const nextM = [...m];
+        [nextM[index], nextM[target]] = [nextM[target], nextM[index]];
+        return nextM;
+      });
+      return next;
+    });
+  }
+
+  function setMobileAt(index: number, item: MediaPickerResult | null) {
+    setMobileSelected((prev) => {
+      const next = [...prev];
+      next[index] = item;
       return next;
     });
   }
@@ -88,37 +122,70 @@ export function VehicleImagesManager({
   return (
     <div>
       <span className="block text-sm font-medium text-gray-700">Gallery images</span>
-      <p className="mt-0.5 text-xs text-gray-500">First image is the primary/hero image. Drag order with the arrows.</p>
-      {selected.map((item) => (
-        <input key={item.id} type="hidden" name={name} value={item.id} />
+      <p className="mt-0.5 text-xs text-gray-500">First image is the primary/hero. Each slot has an optional mobile variant — leave blank to use desktop on all viewports.</p>
+      {selected.map((item, idx) => (
+        <span key={`${item.id}-${idx}`}>
+          <input type="hidden" name={name} value={item.id} />
+          <input type="hidden" name={mobileName} value={mobileSelected[idx]?.id ?? ""} />
+        </span>
       ))}
 
       <ul className="mt-2 space-y-2">
         {selected.length === 0 ? (
           <li className="rounded-md border border-dashed border-gray-300 p-4 text-center text-sm text-gray-400">No images selected.</li>
         ) : null}
-        {selected.map((item, index) => (
-          <li key={item.id} className="flex items-center gap-3 rounded-md border border-gray-200 p-2">
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
-              <Image src={item.url} alt={item.alt} fill sizes="56px" className="object-cover" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm text-gray-700">{item.originalFilename}</p>
-              {index === 0 ? <span className="text-xs font-medium text-gray-500">Primary image</span> : null}
-            </div>
-            <div className="flex shrink-0 items-center gap-1">
-              <button type="button" disabled={index === 0} onClick={() => move(index, -1)} aria-label="Move earlier" className="rounded p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30">
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <button type="button" disabled={index === selected.length - 1} onClick={() => move(index, 1)} aria-label="Move later" className="rounded p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30">
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <button type="button" onClick={() => removeImage(item.id)} aria-label="Remove image" className="rounded p-1 text-gray-400 hover:text-red-600">
-                <Trash2 className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          </li>
-        ))}
+        {selected.map((item, index) => {
+          const mobileItem = mobileSelected[index] ?? null;
+          return (
+            <li key={`${item.id}-${index}`} className="flex flex-wrap items-center gap-3 rounded-md border border-gray-200 p-2">
+              <div className="flex items-center gap-2">
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50" title="Desktop">
+                  <Image src={item.url} alt={item.alt} fill sizes="56px" className="object-cover" />
+                </div>
+                <span className="text-[10px] font-medium uppercase tracking-wide text-gray-400">Desktop</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {mobileItem ? (
+                  <>
+                    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50" title="Mobile">
+                      <Image src={mobileItem.url} alt={mobileItem.alt} fill sizes="56px" className="object-cover" />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setMobileAt(index, null)}
+                      className="text-xs font-medium text-red-600 underline hover:no-underline"
+                    >
+                      Clear mobile
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setMobilePickerFor(index)}
+                    className="rounded-md border border-dashed border-gray-300 px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50"
+                  >
+                    + Mobile variant
+                  </button>
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm text-gray-700">{item.originalFilename}</p>
+                {index === 0 ? <span className="text-xs font-medium text-gray-500">Primary image</span> : null}
+              </div>
+              <div className="flex shrink-0 items-center gap-1">
+                <button type="button" disabled={index === 0} onClick={() => move(index, -1)} aria-label="Move earlier" className="rounded p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30">
+                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                </button>
+                <button type="button" disabled={index === selected.length - 1} onClick={() => move(index, 1)} aria-label="Move later" className="rounded p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30">
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+                <button type="button" onClick={() => removeImage(item.id)} aria-label="Remove image" className="rounded p-1 text-gray-400 hover:text-red-600">
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </li>
+          );
+        })}
       </ul>
 
       <div className="mt-3 flex flex-wrap gap-2">
@@ -193,6 +260,32 @@ export function VehicleImagesManager({
                 </button>
               );
             })
+          )}
+        </div>
+      </Modal>
+
+      <Modal open={mobilePickerFor !== null} onClose={() => setMobilePickerFor(null)} title="Pick a mobile variant">
+        <p className="mb-3 text-xs text-gray-500">
+          Choose a mobile-optimised image for this slot — shown below the tablet breakpoint on the public detail page.
+          Leave the slot empty (Cancel) to keep using the desktop image everywhere.
+        </p>
+        <div className={`grid max-h-96 grid-cols-3 gap-2 overflow-y-auto sm:grid-cols-4 ${isPending ? "opacity-50" : ""}`}>
+          {items.length === 0 ? (
+            <p className="col-span-full py-8 text-center text-sm text-gray-400">No media found.</p>
+          ) : (
+            items.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => {
+                  if (mobilePickerFor !== null) setMobileAt(mobilePickerFor, item);
+                  setMobilePickerFor(null);
+                }}
+                className="group relative aspect-square overflow-hidden rounded-md border-2 border-transparent hover:border-gray-300"
+              >
+                <Image src={item.url} alt={item.alt} fill sizes="120px" className="object-cover" />
+              </button>
+            ))
           )}
         </div>
       </Modal>

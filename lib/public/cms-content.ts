@@ -434,7 +434,13 @@ function mapVehicle(row: Awaited<ReturnType<typeof fetchAllVehicleRows>>[number]
     features: pickArray(row.features, locale),
     whyChoose: pickArray(row.whyChoose, locale),
     faqs: row.faqs.map((faq) => ({ question: pickText(faq.question, locale), answer: pickText(faq.answer, locale) })),
-    images: row.images.length > 0 ? row.images.map((img) => ({ src: img.media.url, alt: pickText(img.media.alt, locale) })) : undefined,
+    images: row.images.length > 0
+      ? row.images.map((img) => ({
+          src: img.media.url,
+          alt: pickText(img.media.alt, locale),
+          mobileSrc: img.mobileMedia?.url,
+        }))
+      : undefined,
     badge: badge ? pickText(badge, locale) || undefined : undefined,
     isPlaceholder: row.isPlaceholder,
   };
@@ -446,7 +452,13 @@ function fetchAllVehicleRows() {
     orderBy: { sortOrder: "asc" },
     include: {
       category: { select: { slug: true, name: true } },
-      images: { orderBy: { sortOrder: "asc" }, include: { media: { select: { url: true, alt: true } } } },
+      images: {
+        orderBy: { sortOrder: "asc" },
+        include: {
+          media: { select: { url: true, alt: true } },
+          mobileMedia: { select: { url: true } },
+        },
+      },
       faqs: { orderBy: { sortOrder: "asc" } },
     },
   });

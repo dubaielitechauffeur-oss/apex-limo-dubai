@@ -50,6 +50,13 @@ function readVehicleInput(formData: FormData): VehicleInput {
       additionalCity: Number(formData.get("rates_additionalCity") ?? 0) || 0,
     },
     imageIds: formData.getAll("imageIds").map(String),
+    // Client sends one mobileImageIds entry per imageIds entry, in the
+    // same order — empty string when the admin didn't choose a mobile
+    // variant for that slot.
+    mobileImageIds: formData.getAll("mobileImageIds").map((v) => {
+      const s = String(v).trim();
+      return s === "" ? null : s;
+    }),
     seo: readSeoField(formData),
     status: String(formData.get("status") ?? "draft") as PublishStatus,
     sortOrder: Number(formData.get("sortOrder") ?? 0) || 0,

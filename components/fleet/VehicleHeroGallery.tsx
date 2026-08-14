@@ -105,7 +105,18 @@ export function VehicleGalleryCarousel({
         className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-gold/20 bg-gradient-to-br from-charcoal via-obsidian to-charcoal shadow-[0_30px_60px_-25px_rgba(0,0,0,0.85)]"
       >
         {activeImage ? (
-          <Image src={activeImage.src} alt={activeImage.alt} fill priority sizes={sizes} className="object-cover" />
+          activeImage.mobileSrc ? (
+            /* Native <picture> so the mobile-optimised variant is fetched
+               below 768px without doubling network requests. Loses
+               next/image's build-time transform for this slot, but the
+               admin already uploaded a hand-sized mobile asset. */
+            <picture>
+              <source media="(max-width: 767px)" srcSet={activeImage.mobileSrc} />
+              <img src={activeImage.src} alt={activeImage.alt} className="absolute inset-0 h-full w-full object-cover" />
+            </picture>
+          ) : (
+            <Image src={activeImage.src} alt={activeImage.alt} fill priority sizes={sizes} className="object-cover" />
+          )
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <Car className="h-16 w-16 text-gold/70" strokeWidth={1} aria-hidden="true" />
@@ -139,15 +150,27 @@ export function VehicleGalleryCarousel({
               key={`${image.src}-${position}`}
               className="relative h-full w-full shrink-0 bg-gradient-to-br from-charcoal via-obsidian to-charcoal"
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                draggable={false}
-                priority={position === 1}
-                sizes={sizes}
-                className="object-cover"
-              />
+              {image.mobileSrc ? (
+                <picture>
+                  <source media="(max-width: 767px)" srcSet={image.mobileSrc} />
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    draggable={false}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </picture>
+              ) : (
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  draggable={false}
+                  priority={position === 1}
+                  sizes={sizes}
+                  className="object-cover"
+                />
+              )}
             </div>
           ))}
         </div>

@@ -163,7 +163,7 @@ export interface VehicleDetail {
   passengers: number;
   luggage: number;
   rates: VehicleRatesInput;
-  images: { id: string; mediaId: string; url: string; alt: string; sortOrder: number }[];
+  images: { id: string; mediaId: string; url: string; alt: string; mobileMediaId: string | null; mobileUrl: string | null; sortOrder: number }[];
   seo: SeoMeta;
   status: PublishStatus;
   sortOrder: number;
@@ -192,6 +192,7 @@ export interface VehicleInput {
   luggage: number;
   rates: VehicleRatesInput;
   imageIds: string[];
+  mobileImageIds?: (string | null)[];
   seo: SeoMeta;
   status: PublishStatus;
   sortOrder: number;
@@ -301,7 +302,15 @@ export async function getVehicle(id: string): Promise<RoleAdminResult<VehicleDet
 
   const row = await prisma.vehicle.findFirst({
     where: { id, deletedAt: null },
-    include: { images: { orderBy: { sortOrder: "asc" }, include: { media: { select: { url: true, alt: true } } } } },
+    include: {
+      images: {
+        orderBy: { sortOrder: "asc" },
+        include: {
+          media: { select: { url: true, alt: true } },
+          mobileMedia: { select: { url: true } },
+        },
+      },
+    },
   });
   if (!row) return { success: false, error: "Vehicle not found." };
 
@@ -331,7 +340,15 @@ export async function getVehicle(id: string): Promise<RoleAdminResult<VehicleDet
       passengers: row.passengers,
       luggage: row.luggage,
       rates,
-      images: row.images.map((img) => ({ id: img.id, mediaId: img.mediaId, url: img.media.url, alt: (img.media.alt as LocalizedText | null)?.en ?? "", sortOrder: img.sortOrder })),
+      images: row.images.map((img) => ({
+        id: img.id,
+        mediaId: img.mediaId,
+        url: img.media.url,
+        alt: (img.media.alt as LocalizedText | null)?.en ?? "",
+        mobileMediaId: img.mobileMediaId ?? null,
+        mobileUrl: img.mobileMedia?.url ?? null,
+        sortOrder: img.sortOrder,
+      })),
       seo: (row.seo as unknown as SeoMeta | null) ?? emptySeoMeta(),
       status: row.status,
       sortOrder: row.sortOrder,
@@ -358,6 +375,18 @@ async function assertImagesExist(imageIds: string[]): Promise<string | null> {
   if (imageIds.length === 0) return null;
   const count = await prisma.mediaItem.count({ where: { id: { in: imageIds }, deletedAt: null } });
   return count === imageIds.length ? null : "One or more selected images could not be found.";
+}
+
+/** Build the `images.create` payload — pairs each imageId with its
+ *  optional mobile variant by index. Extra mobileImageIds beyond the
+ *  imageIds list are ignored (client-side arrays kept aligned already). */
+function buildImageCreatePayload(imageIds: string[], mobileImageIds: (string | null)[] | undefined) {
+  const mobiles = mobileImageIds ?? [];
+  return imageIds.map((mediaId, index) => ({
+    mediaId,
+    mobileMediaId: mobiles[index] || null,
+    sortOrder: index,
+  }));
 }
 
 function buildData(input: VehicleInput): Omit<Prisma.VehicleUncheckedCreateInput, "images"> {
@@ -413,7 +442,7 @@ export async function createVehicle(input: VehicleInput): Promise<RoleAdminResul
   const created = await prisma.vehicle.create({
     data: {
       ...buildData(input),
-      images: { create: input.imageIds.map((mediaId, index) => ({ mediaId, sortOrder: index })) },
+      images: { create: buildImageCreatePayload(input.imageIds, input.mobileImageIds) },
     },
   });
   await writeAuditLog({ action: "create", entityType: "vehicle", entityId: created.id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", after: created.slug }] });
@@ -446,7 +475,7 @@ export async function updateVehicle(id: string, input: VehicleInput): Promise<Ro
     prisma.vehicleImage.deleteMany({ where: { vehicleId: id } }),
     prisma.vehicle.update({
       where: { id },
-      data: { ...data, images: { create: input.imageIds.map((mediaId, index) => ({ mediaId, sortOrder: index })) } },
+      data: { ...data, images: { create: buildImageCreatePayload(input.imageIds, input.mobileImageIds) } },
     }),
   ]);
   await writeAuditLog({ action: "update", entityType: "vehicle", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });

@@ -3412,6 +3412,9 @@ function pick<T>(value: Localized<T>, locale: Locale): T {
 export interface PlainVehicleImage {
   src: string;
   alt: string;
+  /** Optional mobile-optimised variant. When present, the public detail
+   *  page swaps to this URL below the tablet breakpoint via <picture>. */
+  mobileSrc?: string;
 }
 
 export interface PlainFleetVehicle {

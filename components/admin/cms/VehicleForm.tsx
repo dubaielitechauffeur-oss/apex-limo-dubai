@@ -43,9 +43,11 @@ export function VehicleForm({
 
   const seo = vehicle?.seo ?? emptySeoMeta();
   const ogImage = seo.ogImageId ? (mediaLibraryItems.find((m) => m.id === seo.ogImageId) ?? null) : null;
-  const currentImages = vehicle ? mediaLibraryItems.filter((m) => vehicle.images.some((i) => i.mediaId === m.id)) : [];
   const orderedCurrentImages = vehicle
-    ? vehicle.images.map((i) => currentImages.find((m) => m.id === i.mediaId)).filter((m): m is MediaPickerResult => Boolean(m))
+    ? vehicle.images.map((i) => mediaLibraryItems.find((m) => m.id === i.mediaId)).filter((m): m is MediaPickerResult => Boolean(m))
+    : [];
+  const orderedCurrentMobiles = vehicle
+    ? vehicle.images.map((i) => (i.mobileMediaId ? (mediaLibraryItems.find((m) => m.id === i.mobileMediaId) ?? null) : null))
     : [];
 
   return (
@@ -130,7 +132,13 @@ export function VehicleForm({
       </div>
 
       <div className="rounded-lg border border-gray-200 bg-white p-5">
-        <VehicleImagesManager name="imageIds" initial={orderedCurrentImages} initialItems={mediaLibraryItems} />
+        <VehicleImagesManager
+          name="imageIds"
+          mobileName="mobileImageIds"
+          initial={orderedCurrentImages}
+          initialMobiles={orderedCurrentMobiles}
+          initialItems={mediaLibraryItems}
+        />
       </div>
 
       <SeoFieldsSection seo={seo} ogImage={ogImage} mediaLibraryItems={mediaLibraryItems} />

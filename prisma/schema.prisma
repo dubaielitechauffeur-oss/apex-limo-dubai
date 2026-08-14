@@ -246,7 +246,8 @@ model MediaItem {
   folder     MediaFolder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
   uploadedBy User?        @relation("UploadedBy", fields: [uploadedById], references: [id], onDelete: SetNull)
 
-  vehicleImages VehicleImage[]
+  vehicleImages       VehicleImage[]
+  vehicleImagesMobile VehicleImage[] @relation("VehicleImageMobile")
 
   heroSlidesDesktop HeroSlide[] @relation("HeroDesktopImage")
   heroSlidesMobile  HeroSlide[] @relation("HeroMobileImage")
@@ -366,17 +367,24 @@ model Vehicle {
 }
 
 model VehicleImage {
-  id        String   @id @default(cuid())
-  vehicleId String
-  mediaId   String
-  sortOrder Int      @default(0)
-  createdAt DateTime @default(now())
+  id            String   @id @default(cuid())
+  vehicleId     String
+  mediaId       String
+  /// Optional per-slot mobile variant. When set, the public detail page
+  /// swaps to this asset below the tablet breakpoint via <picture>; when
+  /// null, the desktop `mediaId` is used at every viewport (matches the
+  /// original single-image behavior).
+  mobileMediaId String?
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
 
-  vehicle Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-  media   MediaItem @relation(fields: [mediaId], references: [id])
+  vehicle      Vehicle    @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  media        MediaItem  @relation(fields: [mediaId], references: [id])
+  mobileMedia  MediaItem? @relation("VehicleImageMobile", fields: [mobileMediaId], references: [id])
 
   @@index([vehicleId, sortOrder])
   @@index([mediaId])
+  @@index([mobileMediaId])
   @@map("vehicle_images")
 }
 
