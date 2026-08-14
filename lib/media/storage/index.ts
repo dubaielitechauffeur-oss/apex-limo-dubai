@@ -1,29 +1,27 @@
 import type { StorageProvider } from "@/lib/generated/prisma/client";
 import type { StorageDriver } from "./types";
 import { LocalStorageDriver } from "./local";
+import { VercelBlobStorageDriver } from "./vercel-blob";
 
 export type { StorageDriver, StoredFile } from "./types";
 
 const localDriver = new LocalStorageDriver();
+const vercelBlobDriver = new VercelBlobStorageDriver();
 
 /**
- * Provider factory. `local` is the only implemented driver this phase —
- * `s3`/`r2` are real, already-reserved values on the `StorageProvider`
- * enum (so `MediaItem` rows can name them once a driver exists) but throw a
- * clear configuration error rather than silently writing to local disk,
- * which would be a confusing surprise in a future deployment that thinks
- * it configured cloud storage. See MEDIA_LIBRARY.md's migration path for
- * what implementing one of these involves.
+ * Provider factory. The `s3` slot is filled by Vercel Blob (both are
+ * public-URL object stores; reusing the enum value avoids a Prisma
+ * migration). `r2` remains reserved for a future Cloudflare R2 driver.
  */
 export function getStorageDriver(provider: StorageProvider = "local"): StorageDriver {
   switch (provider) {
     case "local":
       return localDriver;
     case "s3":
+      return vercelBlobDriver;
     case "r2":
       throw new Error(
-        `Storage provider "${provider}" is not configured yet. Implement lib/media/storage/${provider}.ts ` +
-          `(satisfying the StorageDriver interface) and wire it in here — see MEDIA_LIBRARY.md.`
+        `Storage provider "r2" is not configured yet. Implement lib/media/storage/r2.ts and wire it in here.`
       );
     default:
       provider satisfies never;
@@ -31,9 +29,14 @@ export function getStorageDriver(provider: StorageProvider = "local"): StorageDr
   }
 }
 
-/** The provider new uploads use — a single switch point for a future
- *  cutover to S3/R2 (e.g. reading `process.env.MEDIA_STORAGE_PROVIDER`
- *  once a cloud driver exists). Hardcoded to "local" for this phase. */
+/**
+ * The provider new uploads use. When `BLOB_READ_WRITE_TOKEN` is set
+ * (i.e. Vercel Blob is provisioned on the deployment) new uploads go
+ * to Vercel Blob (`s3` slot). Otherwise falls back to the local disk
+ * driver — fine for `next dev`, fails on Vercel's read-only serverless
+ * filesystem, which is deliberate: it forces the ops step of adding
+ * the env var rather than silently swallowing every upload.
+ */
 export function getDefaultStorageProvider(): StorageProvider {
-  return "local";
+  return process.env.BLOB_READ_WRITE_TOKEN ? "s3" : "local";
 }

@@ -31,7 +31,7 @@ export function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="presentation">
-      <div className="fixed inset-0 bg-gray-900/50" aria-hidden="true" onClick={onClose} />
+      <div className="fixed inset-0 bg-gray-900/70 backdrop-blur-sm" aria-hidden="true" onClick={onClose} />
       <div
         ref={dialogRef}
         role="dialog"
