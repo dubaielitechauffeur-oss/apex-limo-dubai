@@ -233,33 +233,52 @@ export async function uploadMedia(input: UploadMediaInput): Promise<RoleAdminRes
     stored = await driver.save({ key: storageKey, buffer: input.buffer, contentType: validation.mimeType });
   } catch (error) {
     console.error(`[media] upload failed writing to "${storageProvider}" storage:`, error);
+    // The underlying reason is included deliberately. This surface is
+    // gated on `media:create`, so it is only ever shown to a signed-in
+    // admin, and the alternative — a generic "try again" — sends whoever
+    // is debugging to the deployment logs for a message the storage
+    // provider already phrased perfectly well ("Access denied", "store
+    // suspended", a quota message). Truncated so a stack-like body can't
+    // fill the toast.
+    const reason = error instanceof Error ? error.message : String(error);
     return {
       success: false,
-      error:
-        "Couldn't save the file to storage. Please try again — if it keeps happening, " +
-        "check the media storage configuration for this deployment.",
+      error: `Couldn't save the file to ${storageProvider === "s3" ? "Vercel Blob" : "local"} storage: ${reason.slice(0, 300)}`,
     };
   }
 
-  const created = await prisma.mediaItem.create({
-    data: {
-      filename: storageKey.split("/").pop()!,
-      originalFilename,
-      mimeType: validation.mimeType,
-      sizeBytes: input.buffer.length,
-      width: dimensions?.width ?? null,
-      height: dimensions?.height ?? null,
-      alt: emptyLocalizedText(altSeedFromFilename(originalFilename)),
-      type: "image",
-      variant: input.variant ?? null,
-      storageProvider,
-      storagePath: stored.storagePath,
-      url: stored.url,
-      folderId: input.folderId ?? null,
-      uploadedById: gate.data.userId,
-    },
-    include: { folder: { select: { name: true } }, uploadedBy: { select: { name: true } } },
-  });
+  // The file is in storage by this point, so a failure here leaves an
+  // orphaned blob rather than a broken upload — worth reporting cleanly
+  // (and logging) instead of throwing, for the same reason as above.
+  let created;
+  try {
+    created = await prisma.mediaItem.create({
+      data: {
+        filename: storageKey.split("/").pop()!,
+        originalFilename,
+        mimeType: validation.mimeType,
+        sizeBytes: input.buffer.length,
+        width: dimensions?.width ?? null,
+        height: dimensions?.height ?? null,
+        alt: emptyLocalizedText(altSeedFromFilename(originalFilename)),
+        type: "image",
+        variant: input.variant ?? null,
+        storageProvider,
+        storagePath: stored.storagePath,
+        url: stored.url,
+        folderId: input.folderId ?? null,
+        uploadedById: gate.data.userId,
+      },
+      include: { folder: { select: { name: true } }, uploadedBy: { select: { name: true } } },
+    });
+  } catch (error) {
+    console.error("[media] upload saved to storage but the database record failed:", error);
+    const reason = error instanceof Error ? error.message : String(error);
+    return {
+      success: false,
+      error: `The file uploaded but couldn't be recorded in the media library: ${reason.slice(0, 300)}`,
+    };
+  }
 
   await writeAuditLog({
     action: "create",
