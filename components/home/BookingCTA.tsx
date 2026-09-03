@@ -60,7 +60,7 @@ export default async function BookingCTA({
           </picture>
           <div
             aria-hidden="true"
-            className="absolute inset-0 hidden bg-cover bg-fixed xl:block"
+            className="pointer-events-none absolute inset-0 hidden bg-cover bg-fixed xl:block"
             style={{
               backgroundImage: "url('/images/cta/cta-desktop.webp')",
               backgroundPosition: "center 65%",
@@ -70,12 +70,12 @@ export default async function BookingCTA({
           {/* Dark overlay for text contrast. Mobile/tablet keep the original
               vignette untouched (soft top/bottom, darkest through the
               middle). Desktop (xl+) uses one flat 85% tone instead. */}
-          <div aria-hidden="true" className="absolute inset-0 bg-black/35 xl:hidden" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black/35 xl:hidden" />
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/50 to-black/25 xl:hidden"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/15 via-black/50 to-black/25 xl:hidden"
           />
-          <div aria-hidden="true" className="absolute inset-0 hidden bg-black/85 xl:block" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden bg-black/85 xl:block" />
         </>
       ) : null}
 
@@ -83,7 +83,10 @@ export default async function BookingCTA({
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-0 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-gold/10 blur-3xl"
       />
-      <Container className="relative text-center">
+      {/* `z-10` matches Hero/ServicesHero/LocationsHero: it puts the content
+          above the decorative overlays by stacking order rather than relying
+          on it happening to come later in the DOM. */}
+      <Container className="relative z-10 text-center">
         <Reveal>
           <SectionHeading eyebrow={resolvedEyebrow} title={resolvedHeading} subtitle={resolvedSubtitle} tone="dark" />
 

@@ -55,7 +55,7 @@ export default async function ServicesGrid() {
               {/* Dark gradient overlay for text legibility */}
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10"
               />
 
               {/* Content */}

@@ -24,11 +24,11 @@ export default async function LocationsHero() {
       {/* Dark overlay for text legibility, matching the Services/About heroes */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-obsidian/70 via-transparent to-obsidian/30"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian/70 via-transparent to-obsidian/30"
       />
 
       <Container className="relative z-10 text-center">

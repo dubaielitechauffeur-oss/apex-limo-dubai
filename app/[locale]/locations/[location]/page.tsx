@@ -230,11 +230,11 @@ export default async function LocationDetailPage({ params }: PageProps) {
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-obsidian/70 via-transparent to-obsidian/30"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian/70 via-transparent to-obsidian/30"
         />
 
         <Container className="relative z-10">
@@ -393,10 +393,10 @@ export default async function LocationDetailPage({ params }: PageProps) {
             className="object-cover"
           />
         </div>
-        <div aria-hidden="true" className="absolute inset-0 bg-obsidian/60" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-obsidian/60" />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-b from-obsidian/40 via-obsidian/75 to-obsidian/50"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-obsidian/40 via-obsidian/75 to-obsidian/50"
         />
 
         <Container className="relative">

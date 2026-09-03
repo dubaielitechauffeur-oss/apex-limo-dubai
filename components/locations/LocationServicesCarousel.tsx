@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent, type PointerEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
@@ -47,8 +47,10 @@ export default function LocationServicesCarousel({
   const [page, setPage] = useState(0);
   const [autoplayActive, setAutoplayActive] = useState(true);
   const [inView, setInView] = useState(false);
+  const [documentVisible, setDocumentVisible] = useState(true);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const dragStartX = useRef<number | null>(null);
+  const didDragRef = useRef(false);
   const PAGES = chunk(services, CARDS_PER_VIEW);
   const pageCount = PAGES.length;
 
@@ -81,15 +83,32 @@ export default function LocationServicesCarousel({
     return () => observer.disconnect();
   }, []);
 
+  // Suspended while the tab is in the background: a hidden document never
+  // paints, so advancing pages there is pure waste and leaves the visitor on
+  // an arbitrary page when they return.
   useEffect(() => {
-    if (!autoplayActive || !inView || pageCount <= 1) return;
+    const sync = () => setDocumentVisible(!document.hidden);
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    window.addEventListener("pageshow", sync);
+    return () => {
+      document.removeEventListener("visibilitychange", sync);
+      window.removeEventListener("pageshow", sync);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!autoplayActive || !inView || !documentVisible || pageCount <= 1) return;
     const timer = setInterval(() => {
       setPage((current) => (current + 1) % pageCount);
     }, AUTOPLAY_INTERVAL_MS);
     return () => clearInterval(timer);
-  }, [autoplayActive, inView, pageCount]);
+  }, [autoplayActive, inView, documentVisible, pageCount]);
 
   function handlePointerDown(e: PointerEvent<HTMLDivElement>) {
+    // Cleared here, not only in the click handler: a touch swipe produces no
+    // click, so a flag left set would swallow the next genuine tap.
+    didDragRef.current = false;
     dragStartX.current = e.clientX;
   }
 
@@ -98,9 +117,19 @@ export default function LocationServicesCarousel({
     const deltaX = e.clientX - dragStartX.current;
     dragStartX.current = null;
     if (Math.abs(deltaX) < DRAG_THRESHOLD_PX) return;
+    didDragRef.current = true;
     stopAutoplay();
     const draggedTowardNext = rtl ? deltaX > 0 : deltaX < 0;
     goToPage(draggedTowardNext ? page + 1 : page - 1);
+  }
+
+  /** Without this, a drag that happens to end on a service card also fires
+   *  that card's link and navigates away mid-swipe. */
+  function handleClickCapture(e: MouseEvent<HTMLDivElement>) {
+    if (!didDragRef.current) return;
+    didDragRef.current = false;
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   return (
@@ -111,6 +140,11 @@ export default function LocationServicesCarousel({
           style={{ transform: `translateX(${rtl ? "" : "-"}${page * 100}%)` }}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
+          onPointerCancel={() => {
+            dragStartX.current = null;
+            didDragRef.current = false;
+          }}
+          onClickCapture={handleClickCapture}
         >
           {PAGES.map((pageServices, i) => (
             <div key={i} className="grid w-full shrink-0 grid-cols-3 gap-6">

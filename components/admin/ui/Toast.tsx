@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { CheckCircle2, XCircle, Info, X } from "lucide-react";
 
 type ToastTone = "success" | "error" | "info";
@@ -25,17 +25,38 @@ let nextId = 1;
  *  the action's returned result). */
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastEntry[]>([]);
-
-  const showToast = useCallback((message: string, tone: ToastTone = "info") => {
-    const id = nextId++;
-    setToasts((current) => [...current, { id, message, tone }]);
-    setTimeout(() => {
-      setToasts((current) => current.filter((toast) => toast.id !== id));
-    }, 4000);
-  }, []);
+  // Every pending auto-dismiss timer, so none survives unmount — an admin
+  // navigating away mid-toast previously left the timer running against a
+  // torn-down provider.
+  const timersRef = useRef(new Map<number, ReturnType<typeof setTimeout>>());
 
   const dismiss = useCallback((id: number) => {
+    const timer = timersRef.current.get(id);
+    if (timer) {
+      clearTimeout(timer);
+      timersRef.current.delete(id);
+    }
     setToasts((current) => current.filter((toast) => toast.id !== id));
+  }, []);
+
+  const showToast = useCallback(
+    (message: string, tone: ToastTone = "info") => {
+      const id = nextId++;
+      setToasts((current) => [...current, { id, message, tone }]);
+      timersRef.current.set(
+        id,
+        setTimeout(() => dismiss(id), 4000)
+      );
+    },
+    [dismiss]
+  );
+
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => {
+      for (const timer of timers.values()) clearTimeout(timer);
+      timers.clear();
+    };
   }, []);
 
   return (

@@ -123,6 +123,12 @@ export default function FleetCarouselClient({
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    // Every new interaction starts from a clean slate. `didSwipeRef` used to
+    // be cleared only inside `handleClickCapture`, but a touch swipe does not
+    // produce a click at all — so after any swipe the flag stayed true and
+    // the *next* genuine tap was swallowed by the capture handler below,
+    // which is why buttons appeared to need two or three taps.
+    didSwipeRef.current = false;
     dragStartRef.current = { x: event.clientX, y: event.clientY };
   };
 
@@ -173,6 +179,7 @@ export default function FleetCarouselClient({
             onPointerUp={handlePointerUp}
             onPointerCancel={() => {
               dragStartRef.current = null;
+              didSwipeRef.current = false;
             }}
             onClickCapture={handleClickCapture}
           >

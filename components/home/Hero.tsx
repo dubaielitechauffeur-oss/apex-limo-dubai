@@ -57,12 +57,12 @@ export default async function Hero() {
       {/* Large left-side dark gradient overlay for text legibility */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent"
       />
       {/* Vignette for overall contrast */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-obsidian/30"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-obsidian/30"
       />
 
       <Container className="relative z-10 pt-36 pb-16 sm:pt-44 sm:pb-20 lg:pt-48 lg:pb-24">
