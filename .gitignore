@@ -34,4 +34,8 @@ next-env.d.ts
 # deployments configure the S3/R2 driver instead (see MEDIA_LIBRARY.md)
 /storage/media/*
 !/storage/media/.gitkeep
+
+# local one-off/scratch scripts (image resizing, data backfills) — kept out
+# of the repo deliberately. Anything meant to be shared belongs in
+# package.json's scripts or prisma/, both of which are tracked.
 scripts/

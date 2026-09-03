@@ -46,10 +46,10 @@ export default function FAQAccordion({
           background (still bg-cover, just moves with the page). */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-scroll bg-cover bg-center md:bg-fixed"
+        className="pointer-events-none absolute inset-0 bg-scroll bg-cover bg-center md:bg-fixed"
         style={{ backgroundImage: "url(/images/home/faq-mercedes-dubai-skyline.webp)" }}
       />
-      <div aria-hidden="true" className="absolute inset-0 bg-obsidian/80" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-obsidian/80" />
 
       <Container className="relative z-10 max-w-4xl">
         <Reveal>

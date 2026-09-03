@@ -190,3 +190,19 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* -------------------------------------------------------------------- */
+/* Scroll-reveal fallback                                                */
+/* -------------------------------------------------------------------- */
+/* components/shared/Reveal.tsx parks its content at opacity-0 until an
+   IntersectionObserver fires, and it wraps most of the site's sections. With
+   JavaScript disabled that observer never runs, so without this rule the
+   page would render almost entirely blank. Scoped to the `noscript` case
+   only — with JS on, the component's own failsafe timer handles an observer
+   that never reports. */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

@@ -78,9 +78,16 @@ export function VehicleGalleryCarousel({
   const extended = hasMultiple ? [images[images.length - 1], ...images, images[0]] : images;
 
   const dragStartRef = useRef<{ x: number; y: number } | null>(null);
+  // Set when a pointer release is classified as a swipe, so the click a mouse
+  // drag leaves behind can be suppressed before it reaches the arrows, dots,
+  // or any link inside the gallery. Cleared at the start of every new
+  // interaction rather than only in the click handler — a touch swipe fires
+  // no click at all, and a flag left set would swallow the next real tap.
+  const didSwipeRef = useRef(false);
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    didSwipeRef.current = false;
     dragStartRef.current = { x: event.clientX, y: event.clientY };
   };
 
@@ -91,10 +98,18 @@ export function VehicleGalleryCarousel({
     const dx = event.clientX - start.x;
     const dy = event.clientY - start.y;
     if (Math.abs(dx) >= SWIPE_THRESHOLD_PX && Math.abs(dx) > Math.abs(dy)) {
+      didSwipeRef.current = true;
       const draggedTowardStart = rtl ? dx < 0 : dx > 0;
       if (draggedTowardStart) goPrev();
       else goNext();
     }
+  };
+
+  const handleClickCapture = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!didSwipeRef.current) return;
+    didSwipeRef.current = false;
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   if (!hasMultiple) {
@@ -112,7 +127,13 @@ export function VehicleGalleryCarousel({
                admin already uploaded a hand-sized mobile asset. */
             <picture>
               <source media="(max-width: 767px)" srcSet={activeImage.mobileSrc} />
-              <img src={activeImage.src} alt={activeImage.alt} className="absolute inset-0 h-full w-full object-cover" />
+              <img
+                src={activeImage.src}
+                alt={activeImage.alt}
+                fetchPriority="high"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
             </picture>
           ) : (
             <Image src={activeImage.src} alt={activeImage.alt} fill priority sizes={sizes} className="object-cover" />
@@ -138,7 +159,9 @@ export function VehicleGalleryCarousel({
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {
           dragStartRef.current = null;
+          didSwipeRef.current = false;
         }}
+        onClickCapture={handleClickCapture}
       >
         <div
           className={`flex h-full ${instant ? "" : "transition-transform duration-500 ease-out"}`}
@@ -153,10 +176,17 @@ export function VehicleGalleryCarousel({
               {image.mobileSrc ? (
                 <picture>
                   <source media="(max-width: 767px)" srcSet={image.mobileSrc} />
+                  {/* Only the first real slide is worth fetching eagerly —
+                      the rest are off-screen until the carousel advances.
+                      This path skips next/image (see the note above), so the
+                      hints it would normally add have to be set by hand. */}
                   <img
                     src={image.src}
                     alt={image.alt}
                     draggable={false}
+                    loading={position === 1 ? "eager" : "lazy"}
+                    fetchPriority={position === 1 ? "high" : "auto"}
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </picture>

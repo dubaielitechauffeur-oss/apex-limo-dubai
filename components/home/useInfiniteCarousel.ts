@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type TransitionEvent } from "react";
 
 interface UseInfiniteCarouselOptions {
   /** Total number of real (non-cloned) items. */
@@ -53,6 +53,14 @@ export function useInfiniteCarousel({
   const [index, setIndex] = useState(slidesPerView);
   const [instant, setInstant] = useState(false);
   const [autoplayActive, setAutoplayActive] = useState(false);
+  // Autoplay must not tick while the document is hidden. A hidden tab still
+  // runs `setInterval` (throttled to roughly once a minute) but never paints,
+  // so CSS transitions never run and `transitionend` never fires — which is
+  // what advances `index` past the cloned edge and snaps it back. Left
+  // unguarded, `index` climbs unbounded while the visitor is away and the
+  // track ends up translated far beyond the last slide, so the carousel is
+  // blank when they return and only a reload fixes it.
+  const [documentVisible, setDocumentVisible] = useState(true);
 
   const sectionRef = useRef<HTMLElement | null>(null);
   // Once true (stopOnInteraction mode only), autoplay must never turn back
@@ -136,11 +144,53 @@ export function useInfiniteCarousel({
   const next = useCallback(() => setIndex((current) => current + 1), []);
   const prev = useCallback(() => setIndex((current) => current - 1), []);
 
+  // Track document visibility so autoplay can be suspended entirely while the
+  // tab is in the background (see `documentVisible` above), and so the track
+  // can be re-normalised the moment the visitor comes back.
   useEffect(() => {
-    if (!autoplayActive) return;
+    const sync = () => setDocumentVisible(!document.hidden);
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    // `pageshow` covers the bfcache restore path (navigating back to the page,
+    // or returning to it on mobile Safari), where `visibilitychange` alone
+    // isn't guaranteed to fire.
+    window.addEventListener("pageshow", sync);
+    return () => {
+      document.removeEventListener("visibilitychange", sync);
+      window.removeEventListener("pageshow", sync);
+    };
+  }, []);
+
+  // Belt-and-braces recovery, run only on the hidden -> visible edge (not on
+  // every index change, which would cancel the running animation): snap
+  // without animating to the real slide equivalent to wherever `index` now
+  // points. If the tab was hidden long enough for `index` to drift out of the
+  // extended array — or a `transitionend` was simply missed — this puts a real
+  // slide back under the viewport instead of empty space.
+  const wasVisibleRef = useRef(true);
+  const indexRef = useRef(index);
+
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
+
+  useEffect(() => {
+    const wasVisible = wasVisibleRef.current;
+    wasVisibleRef.current = documentVisible;
+    if (!documentVisible || wasVisible || itemCount < 1) return;
+
+    const current = indexRef.current;
+    const normalized = slidesPerView + ((((current - slidesPerView) % itemCount) + itemCount) % itemCount);
+    if (normalized === current) return;
+    setInstant(true);
+    setIndex(normalized);
+  }, [documentVisible, itemCount, slidesPerView]);
+
+  useEffect(() => {
+    if (!autoplayActive || !documentVisible) return;
     const timer = setInterval(next, autoplayIntervalMs);
     return () => clearInterval(timer);
-  }, [autoplayActive, autoplayIntervalMs, next]);
+  }, [autoplayActive, documentVisible, autoplayIntervalMs, next]);
 
   useEffect(() => {
     return () => {
@@ -180,15 +230,26 @@ export function useInfiniteCarousel({
   // Once the CSS transition into a cloned edge finishes, snap invisibly
   // (no transition) to the equivalent real position — always continuing
   // forward/backward, never rewinding.
-  const handleTransitionEnd = useCallback(() => {
-    if (index >= itemCount + slidesPerView) {
-      setInstant(true);
-      setIndex(index - itemCount);
-    } else if (index < slidesPerView) {
-      setInstant(true);
-      setIndex(index + itemCount);
-    }
-  }, [index, itemCount, slidesPerView]);
+  //
+  // `transitionend` bubbles, so without the guard below every transition
+  // inside a slide (card hover lifts, image scales, colour fades) also
+  // reaches this handler and can fire a snap mid-animation, which reads as
+  // the carousel randomly jumping. Only the track's own transform counts.
+  const handleTransitionEnd = useCallback(
+    (event: TransitionEvent<HTMLElement>) => {
+      if (event.target !== event.currentTarget) return;
+      if (event.propertyName !== "transform") return;
+
+      if (index >= itemCount + slidesPerView) {
+        setInstant(true);
+        setIndex(index - itemCount);
+      } else if (index < slidesPerView) {
+        setInstant(true);
+        setIndex(index + itemCount);
+      }
+    },
+    [index, itemCount, slidesPerView]
+  );
 
   // Re-enable the transition only after the browser has painted the
   // transition-less snap (double rAF — a single frame can land before paint).

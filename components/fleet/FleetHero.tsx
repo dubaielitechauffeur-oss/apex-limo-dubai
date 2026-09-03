@@ -43,7 +43,7 @@ export default async function FleetHero() {
           fading out under it against the bright sky/glass towers. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0"
+        className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
             "linear-gradient(to right, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.88) 40%, rgba(0,0,0,0.62) 62%, rgba(0,0,0,0.3) 85%, rgba(0,0,0,0.15) 100%)",
@@ -51,7 +51,7 @@ export default async function FleetHero() {
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40"
       />
 
       <Container className="relative z-10">
