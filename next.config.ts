@@ -3,16 +3,28 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
+/** Where CMS-uploaded media lives. Vercel Blob serves every store from
+ *  `<store>.public.blob.vercel-storage.com`, so one wildcard label covers
+ *  this project's store without naming its id — and without widening the
+ *  allowance beyond Vercel Blob's own domain. */
+const VERCEL_BLOB_HOST = "*.public.blob.vercel-storage.com";
+
 /**
- * All content today ships from data/*.ts as local /public paths — verified
- * zero external image URLs in use (see data/fleet.ts, data/blog.ts, etc.).
- * Scoped to Google's own image/beacon hosts (which next/image never
- * proxies) plus self; the previous hostname: "**" allowed the Image
- * Optimizer to fetch from any HTTPS host, which was unused in practice but
- * a real SSRF-adjacent misconfiguration for whoever adds a CMS-driven
- * image field later.
+ * Static content still ships from data/*.ts as local /public paths, but
+ * media uploaded through the admin Media Library is stored in Vercel Blob
+ * and referenced by its absolute URL — the "CMS-driven image field later"
+ * this list was previously emptied in anticipation of. next/image refuses
+ * any remote URL that matches no pattern here, which is what left every
+ * uploaded image broken once uploads started working.
+ *
+ * Scoped to exactly that one host rather than restoring the old
+ * hostname: "**", which let the Image Optimizer fetch from any HTTPS host
+ * (the SSRF-adjacent shape the previous change removed, and worth keeping
+ * removed).
  */
-const IMAGE_REMOTE_PATTERNS: NonNullable<NextConfig["images"]>["remotePatterns"] = [];
+const IMAGE_REMOTE_PATTERNS: NonNullable<NextConfig["images"]>["remotePatterns"] = [
+  { protocol: "https", hostname: VERCEL_BLOB_HOST },
+];
 
 /**
  * A CSP that allows exactly what this site actually loads: same-origin
@@ -26,7 +38,11 @@ const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com",
+  // The Blob host is needed even though next/image proxies through
+  // /_next/image (same-origin): the vehicle gallery renders a CMS image
+  // with a mobile variant as a native <picture>/<img> pointing straight at
+  // the Blob URL, and the browser blocks that without an img-src entry.
+  `img-src 'self' data: https://${VERCEL_BLOB_HOST} https://www.google-analytics.com https://www.googletagmanager.com`,
   "font-src 'self' data:",
   "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
   "frame-src 'none'",
