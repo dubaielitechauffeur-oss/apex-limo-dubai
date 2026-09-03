@@ -8,7 +8,7 @@ import { requireMediaPermission } from "./guard";
 import { validateUpload, sanitizeOriginalFilename } from "./validation";
 import { generateStorageKey } from "./keys";
 import { readImageDimensions } from "./dimensions";
-import { getStorageDriver, getDefaultStorageProvider } from "./storage";
+import { getStorageDriver, getDefaultStorageProvider, getStorageConfigError, type StoredFile } from "./storage";
 
 export type LocalizedText = Partial<Record<Locale, string>>;
 
@@ -202,6 +202,12 @@ export async function uploadMedia(input: UploadMediaInput): Promise<RoleAdminRes
   const gate = await requireMediaPermission(PERMISSIONS.MEDIA_CREATE);
   if (!gate.success) return gate;
 
+  // Checked before doing any work: when storage isn't usable on this
+  // deployment the upload cannot possibly succeed, and saying so up front
+  // is far more useful than letting the driver throw further down.
+  const configError = getStorageConfigError();
+  if (configError) return { success: false, error: configError };
+
   const validation = validateUpload(input.buffer);
   if (!validation.ok) return { success: false, error: validation.error };
 
@@ -216,7 +222,24 @@ export async function uploadMedia(input: UploadMediaInput): Promise<RoleAdminRes
   const storageProvider = getDefaultStorageProvider();
   const driver = getStorageDriver(storageProvider);
 
-  const stored = await driver.save({ key: storageKey, buffer: input.buffer, contentType: validation.mimeType });
+  // Every other failure in this function returns a result the admin sees as
+  // a toast; an unhandled throw here instead escaped the Server Action and
+  // replaced the whole Media Library page with the generic error boundary.
+  // Storage is the one step that talks to something outside this process
+  // (a disk, or Vercel Blob over the network), so it is also the one most
+  // likely to fail at runtime — it gets the same treatment as the rest.
+  let stored: StoredFile;
+  try {
+    stored = await driver.save({ key: storageKey, buffer: input.buffer, contentType: validation.mimeType });
+  } catch (error) {
+    console.error(`[media] upload failed writing to "${storageProvider}" storage:`, error);
+    return {
+      success: false,
+      error:
+        "Couldn't save the file to storage. Please try again — if it keeps happening, " +
+        "check the media storage configuration for this deployment.",
+    };
+  }
 
   const created = await prisma.mediaItem.create({
     data: {
