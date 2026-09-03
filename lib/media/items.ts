@@ -8,7 +8,7 @@ import { requireMediaPermission } from "./guard";
 import { validateUpload, sanitizeOriginalFilename } from "./validation";
 import { generateStorageKey } from "./keys";
 import { readImageDimensions } from "./dimensions";
-import { getStorageDriver, getDefaultStorageProvider } from "./storage";
+import { getStorageDriver, getDefaultStorageProvider, getStorageConfigError, type StoredFile } from "./storage";
 
 export type LocalizedText = Partial<Record<Locale, string>>;
 
@@ -202,6 +202,12 @@ export async function uploadMedia(input: UploadMediaInput): Promise<RoleAdminRes
   const gate = await requireMediaPermission(PERMISSIONS.MEDIA_CREATE);
   if (!gate.success) return gate;
 
+  // Checked before doing any work: when storage isn't usable on this
+  // deployment the upload cannot possibly succeed, and saying so up front
+  // is far more useful than letting the driver throw further down.
+  const configError = getStorageConfigError();
+  if (configError) return { success: false, error: configError };
+
   const validation = validateUpload(input.buffer);
   if (!validation.ok) return { success: false, error: validation.error };
 
@@ -216,27 +222,63 @@ export async function uploadMedia(input: UploadMediaInput): Promise<RoleAdminRes
   const storageProvider = getDefaultStorageProvider();
   const driver = getStorageDriver(storageProvider);
 
-  const stored = await driver.save({ key: storageKey, buffer: input.buffer, contentType: validation.mimeType });
+  // Every other failure in this function returns a result the admin sees as
+  // a toast; an unhandled throw here instead escaped the Server Action and
+  // replaced the whole Media Library page with the generic error boundary.
+  // Storage is the one step that talks to something outside this process
+  // (a disk, or Vercel Blob over the network), so it is also the one most
+  // likely to fail at runtime — it gets the same treatment as the rest.
+  let stored: StoredFile;
+  try {
+    stored = await driver.save({ key: storageKey, buffer: input.buffer, contentType: validation.mimeType });
+  } catch (error) {
+    console.error(`[media] upload failed writing to "${storageProvider}" storage:`, error);
+    // The underlying reason is included deliberately. This surface is
+    // gated on `media:create`, so it is only ever shown to a signed-in
+    // admin, and the alternative — a generic "try again" — sends whoever
+    // is debugging to the deployment logs for a message the storage
+    // provider already phrased perfectly well ("Access denied", "store
+    // suspended", a quota message). Truncated so a stack-like body can't
+    // fill the toast.
+    const reason = error instanceof Error ? error.message : String(error);
+    return {
+      success: false,
+      error: `Couldn't save the file to ${storageProvider === "s3" ? "Vercel Blob" : "local"} storage: ${reason.slice(0, 300)}`,
+    };
+  }
 
-  const created = await prisma.mediaItem.create({
-    data: {
-      filename: storageKey.split("/").pop()!,
-      originalFilename,
-      mimeType: validation.mimeType,
-      sizeBytes: input.buffer.length,
-      width: dimensions?.width ?? null,
-      height: dimensions?.height ?? null,
-      alt: emptyLocalizedText(altSeedFromFilename(originalFilename)),
-      type: "image",
-      variant: input.variant ?? null,
-      storageProvider,
-      storagePath: stored.storagePath,
-      url: stored.url,
-      folderId: input.folderId ?? null,
-      uploadedById: gate.data.userId,
-    },
-    include: { folder: { select: { name: true } }, uploadedBy: { select: { name: true } } },
-  });
+  // The file is in storage by this point, so a failure here leaves an
+  // orphaned blob rather than a broken upload — worth reporting cleanly
+  // (and logging) instead of throwing, for the same reason as above.
+  let created;
+  try {
+    created = await prisma.mediaItem.create({
+      data: {
+        filename: storageKey.split("/").pop()!,
+        originalFilename,
+        mimeType: validation.mimeType,
+        sizeBytes: input.buffer.length,
+        width: dimensions?.width ?? null,
+        height: dimensions?.height ?? null,
+        alt: emptyLocalizedText(altSeedFromFilename(originalFilename)),
+        type: "image",
+        variant: input.variant ?? null,
+        storageProvider,
+        storagePath: stored.storagePath,
+        url: stored.url,
+        folderId: input.folderId ?? null,
+        uploadedById: gate.data.userId,
+      },
+      include: { folder: { select: { name: true } }, uploadedBy: { select: { name: true } } },
+    });
+  } catch (error) {
+    console.error("[media] upload saved to storage but the database record failed:", error);
+    const reason = error instanceof Error ? error.message : String(error);
+    return {
+      success: false,
+      error: `The file uploaded but couldn't be recorded in the media library: ${reason.slice(0, 300)}`,
+    };
+  }
 
   await writeAuditLog({
     action: "create",
