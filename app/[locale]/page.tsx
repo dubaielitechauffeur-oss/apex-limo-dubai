@@ -19,6 +19,14 @@ interface PageProps {
   params: Promise<{ locale: string }>;
 }
 
+// Time-based ISR fallback, matching every other CMS-backed public page
+// (see app/[locale]/fleet/page.tsx and friends) — the homepage reads
+// admin-managed vehicle rates via the Fleet carousel, so it needs the
+// same freshness guarantee. Admin actions that touch vehicle data also
+// call revalidatePublicFleet(), which revalidates "/" immediately; this
+// export is the safety net for the rare case that revalidation is missed.
+export const revalidate = 300;
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata.home" });

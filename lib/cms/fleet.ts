@@ -588,7 +588,7 @@ function validateRatesInput(rates: VehicleRatesInput): string | null {
   return null;
 }
 
-export async function updateVehicleRates(id: string, rates: VehicleRatesInput): Promise<RoleAdminResult<{ id: string }>> {
+export async function updateVehicleRates(id: string, rates: VehicleRatesInput): Promise<RoleAdminResult<{ id: string; slug: string }>> {
   const gate = await requireCmsPermission(PERMISSIONS.PRICING_UPDATE);
   if (!gate.success) return gate;
 
@@ -608,5 +608,5 @@ export async function updateVehicleRates(id: string, rates: VehicleRatesInput): 
     changes: [{ field: "rates", before: JSON.stringify(existing.rates), after: JSON.stringify(rates) }],
   });
 
-  return { success: true, data: { id } };
+  return { success: true, data: { id, slug: existing.slug } };
 }

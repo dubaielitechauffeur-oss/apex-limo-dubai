@@ -122,7 +122,7 @@ export function VehicleForm({
           <FormField id="rates_fiveHours" label="5 hours">
             <input id="rates_fiveHours" name="rates_fiveHours" type="number" min={0} defaultValue={vehicle?.rates.fiveHours ?? 0} className={ADMIN_INPUT_CLASSES} />
           </FormField>
-          <FormField id="rates_oneHour" label="1 hour">
+          <FormField id="rates_oneHour" label="2 hours" hint='Field name is "oneHour" internally, but the public site always displays this rate as the 2-hour minimum package.'>
             <input id="rates_oneHour" name="rates_oneHour" type="number" min={0} defaultValue={vehicle?.rates.oneHour ?? 0} className={ADMIN_INPUT_CLASSES} />
           </FormField>
           <FormField id="rates_airport" label="Airport transfer">

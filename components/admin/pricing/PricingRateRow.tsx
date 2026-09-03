@@ -8,7 +8,12 @@ import type { VehiclePricingItem, VehicleRatesInput } from "@/lib/cms/fleet";
 import type { CmsActionState } from "@/app/admin/(dashboard)/pricing/actions";
 
 const RATE_FIELDS: { key: keyof VehicleRatesInput; label: string }[] = [
-  { key: "oneHour", label: "1 Hour" },
+  // Field name is `oneHour` on the schema, but every public page (fleet
+  // detail, homepage carousel, listing cards) displays this exact rate
+  // labeled "2 Hours" — a 2-hour minimum chauffeur-hire package, not a
+  // literal 1-hour rate. Labeled here to match what admins will see
+  // reflected on the live site once they save a change.
+  { key: "oneHour", label: "2 Hours" },
   { key: "fiveHours", label: "5 Hours" },
   { key: "tenHours", label: "10 Hours" },
   { key: "airport", label: "Airport" },
