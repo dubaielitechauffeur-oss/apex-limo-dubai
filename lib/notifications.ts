@@ -1,13 +1,21 @@
 import { Resend } from "resend";
 import type { BookingFormData, QuoteFormData, ContactFormData, LeadType } from "./types";
-import { bookingEmailHtml, quoteEmailHtml, contactEmailHtml } from "./email-templates";
+import {
+  bookingEmailHtml,
+  quoteEmailHtml,
+  contactEmailHtml,
+  customerBookingEmailHtml,
+  customerQuoteEmailHtml,
+  customerContactEmailHtml,
+} from "./email-templates";
 import { getSiteContact } from "./public/site-contact";
 
 /**
  * These functions give the booking/quote/contact API routes a single,
  * stable place to call into for each downstream integration: `sendLeadEmail`
- * (Resend), `notifyWhatsApp` (WhatsApp Business Cloud API) and `pushToCRM`
- * (JSON webhook).
+ * (Resend, to ops), `sendCustomerEmail` (Resend, the customer's own
+ * confirmation), `notifyWhatsApp` (WhatsApp Business Cloud API) and
+ * `pushToCRM` (JSON webhook).
  *
  * Every channel is configured entirely through environment variables and
  * skips itself when its variables are absent, so the site runs correctly
@@ -213,6 +221,62 @@ export async function sendLeadEmail(payload: LeadPayload): Promise<void> {
 }
 
 /**
+ * Sends the customer their own confirmation email — the acknowledgement
+ * they see after submitting a booking, quote or contact form.
+ *
+ * Runs as a peer channel of `sendLeadEmail` inside `dispatchLead` rather
+ * than as a second `to:` on it, because the two emails are nothing alike:
+ * the ops one is a work ticket that must reach the team even if the
+ * customer's address bounces, this one is branded reassurance for the
+ * customer. Isolated per-channel like everything else, so a bad customer
+ * address never costs ops their notification.
+ *
+ * English only, deliberately: the site is localized, but a chauffeur team
+ * replying in English to a request that arrived in English is the current
+ * reality, and a half-translated confirmation reads worse than a clean
+ * English one. Localizing later means passing the route's `locale` through
+ * `dispatchLead` and moving these strings into `messages/*`.
+ *
+ * Sends from the same verified domain as the ops notification, so no extra
+ * Resend/DNS setup is needed. Note this doubles the account's send volume:
+ * every submission is now two emails.
+ */
+export async function sendCustomerEmail(payload: LeadPayload): Promise<void> {
+  assertResendConfigured();
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const contact = await getSiteContact();
+
+  // The customer replies to this one, so `replyTo` is the business address
+  // (the public-facing one, not the internal notification inbox).
+  const replyTo = contact.email;
+
+  let subject: string;
+  let html: string;
+  if (payload.type === "booking") {
+    subject = `Booking request received — ${payload.reference}`;
+    html = customerBookingEmailHtml(payload.data, payload.reference, contact);
+  } else if (payload.type === "quote") {
+    subject = `Quote request received — ${payload.reference}`;
+    html = customerQuoteEmailHtml(payload.data, payload.reference, contact);
+  } else {
+    subject = `We've received your message — ${payload.reference}`;
+    html = customerContactEmailHtml(payload.data, payload.reference, contact);
+  }
+
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
+    to: payload.data.email,
+    replyTo,
+    subject,
+    html,
+  });
+
+  if (error) {
+    throw new Error(`Resend error (customer confirmation): ${error.message}`);
+  }
+}
+
+/**
  * Pushes the lead to the CRM as a JSON webhook POST, so sales/dispatch can
  * follow up from wherever they already work.
  *
@@ -269,12 +333,13 @@ export async function dispatchLead(
   const results = await Promise.allSettled([
     notifyWhatsApp(payload),
     sendLeadEmail(payload),
+    sendCustomerEmail(payload),
     pushToCRM(payload),
   ]);
 
   results.forEach((result, i) => {
     if (result.status === "rejected") {
-      const channel = ["whatsapp", "email", "crm"][i];
+      const channel = ["whatsapp", "email", "customer-email", "crm"][i];
       console.error(`[notifications] ${channel} dispatch failed:`, result.reason);
     }
   });
