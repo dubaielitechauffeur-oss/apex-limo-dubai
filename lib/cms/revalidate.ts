@@ -58,3 +58,50 @@ export function revalidatePublicFleet(slug?: string) {
   // The homepage fleet carousel also reads vehicle data.
   revalidateAllLocales("/");
 }
+
+/** Detail routes whose slugs can't be enumerated here without a query. Next
+ *  accepts the route pattern itself, which clears every page rendered from
+ *  that route in one call — the right tool when a change can touch any of
+ *  them rather than one known slug. */
+const PUBLIC_DETAIL_ROUTES = [
+  "/[locale]/fleet/[vehicle]",
+  "/[locale]/services/[service]",
+  "/[locale]/locations/[location]",
+  "/[locale]/blog/[slug]",
+];
+
+/** Static public routes, in the same shape the per-type helpers above use. */
+const PUBLIC_STATIC_ROUTES = [
+  "/",
+  "/fleet",
+  "/services",
+  "/locations",
+  "/blog",
+  "/faqs",
+  "/about",
+  "/contact",
+  "/booking",
+  "/quote",
+];
+
+/**
+ * Every public page at once — for changes that aren't scoped to one content
+ * type and so can affect any of them:
+ *
+ *  - **Default SEO settings**, which feed the title/description/OG image of
+ *    every page through `buildMetadata()`.
+ *  - **Media edits**, since a single image (or its alt text) may be used by
+ *    a vehicle, a location, a service, the homepage hero, or a blog post,
+ *    and nothing here knows which.
+ *
+ * Deliberately not called from the per-type helpers above — those already
+ * target exactly what changed, and this is the blunter instrument for the
+ * cases where narrowing isn't possible. Both triggers are rare admin
+ * actions, so the extra re-renders cost little; pages re-render lazily on
+ * the next request either way.
+ */
+export function revalidateAllPublicContent() {
+  for (const path of PUBLIC_STATIC_ROUTES) revalidateAllLocales(path);
+  for (const route of PUBLIC_DETAIL_ROUTES) revalidatePath(route, "page");
+  revalidatePath("/sitemap.xml");
+}

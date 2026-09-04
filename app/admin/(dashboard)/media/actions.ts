@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { uploadMedia, updateMediaMetadata, deleteMedia, type LocalizedText } from "@/lib/media/items";
 import { createFolder, renameFolder, moveFolder, deleteFolder } from "@/lib/media/folders";
+import { revalidateAllPublicContent } from "@/lib/cms/revalidate";
 import { routing } from "@/i18n/routing";
 import type { ImageVariant } from "@/lib/generated/prisma/client";
 
@@ -70,6 +71,11 @@ export async function updateMediaMetadataAction(_prevState: MediaActionState, fo
 
   revalidatePath("/admin/media");
   revalidatePath(`/admin/media/${id}`);
+  // Alt text and the image variant are both rendered on the public site,
+  // and this image could be on a vehicle, a location, a service, the
+  // homepage hero or a blog post — nothing here knows which, so refresh
+  // all of them rather than leave stale copy on an unknown page.
+  revalidateAllPublicContent();
   return { success: "Media details updated." };
 }
 
@@ -78,6 +84,9 @@ export async function deleteMediaAction(id: string): Promise<MediaActionState> {
   if (!result.success) return { error: result.error };
 
   revalidatePath("/admin/media");
+  // Same reasoning as the metadata update above — with more at stake, since
+  // any public page still referencing this image now has a dead one.
+  revalidateAllPublicContent();
   return { success: "Media item deleted." };
 }
 
