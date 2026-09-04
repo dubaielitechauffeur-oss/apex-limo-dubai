@@ -72,6 +72,19 @@ jobs:
       - name: Apply migrations
         run: npx prisma migrate deploy
 
+      # `prisma migrate diff --from-migrations` replays the migration history
+      # into a throwaway SHADOW database, so that database has to exist first.
+      # The service container only creates POSTGRES_DB, which is why the drift
+      # step failed on this workflow's first run with
+      # `FATAL: database "apex_shadow" does not exist`.
+      # Connection flags rather than $DATABASE_URL: that URL carries Prisma's
+      # `?schema=public` parameter, which psql rejects as an invalid URI query
+      # parameter.
+      - name: Create shadow database
+        run: psql -h localhost -p 5432 -U postgres -d apex_limo_dubai -v ON_ERROR_STOP=1 -c 'CREATE DATABASE apex_shadow;'
+        env:
+          PGPASSWORD: postgres
+
       # Guards against schema drift: `schema.prisma` once declared three
       # columns that no migration created, so a database built purely from the
       # migration history was missing them and every vehicle write failed.
