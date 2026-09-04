@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { getAppOrigin } from "@/lib/app-url";
 import { headers } from "next/headers";
 import { writeAuditLog } from "@/lib/audit/log";
 import { generateResetToken, RESET_TOKEN_TTL_MS } from "@/lib/auth/tokens";
@@ -267,11 +268,9 @@ export async function adminSendPasswordReset(targetUserId: string): Promise<Role
     }),
   ]);
 
-  const requestHeaders = await headers();
-  const proto = requestHeaders.get("x-forwarded-proto") ?? "https";
-  const host = requestHeaders.get("host") ?? requestHeaders.get("x-forwarded-host");
-  const origin = host ? `${proto}://${host}` : "";
-  const resetUrl = `${origin}/admin/reset-password?token=${token}`;
+  // Configured origin, never the request's Host header — a spoofed Host would
+  // send this one-time reset token to an attacker's domain. See lib/app-url.ts.
+  const resetUrl = `${getAppOrigin()}/admin/reset-password?token=${token}`;
 
   try {
     await sendPasswordResetEmail(targetUser.email, resetUrl);

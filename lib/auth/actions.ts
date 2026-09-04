@@ -6,7 +6,7 @@ import { AuthError, CredentialsSignin } from "next-auth";
 import { signIn, signOut } from "@/lib/auth";
 import { requireUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/db";
-import { SITE } from "@/lib/constants";
+import { getAppOrigin } from "@/lib/app-url";
 import { hashPassword, verifyPassword, passwordPolicySchema } from "@/lib/auth/password";
 import { generateResetToken, hashResetToken, RESET_TOKEN_TTL_MS } from "@/lib/auth/tokens";
 import { isForgotPasswordRateLimited } from "@/lib/auth/rate-limit";
@@ -89,25 +89,6 @@ export interface ForgotPasswordState {
   error?: string;
 }
 
-/**
- * Base URL for password-reset links.
- *
- * This used to be built from the request's `Host` header. A `Host` an attacker
- * controls (header injection past a permissive proxy, or any host that does
- * not validate it) would then produce a reset email pointing at THEIR domain
- * — handing them the one-time token for someone else's admin account. The
- * request is the wrong source of truth for a URL that gets emailed.
- *
- * `AUTH_URL`/`NEXTAUTH_URL` are the deployment's own configured origin when
- * set; otherwise the canonical site URL in lib/constants.ts. Neither can be
- * influenced by a request. Nothing here reads a header at all.
- */
-function resolveOrigin(): string {
-  const configured = process.env.AUTH_URL || process.env.NEXTAUTH_URL;
-  if (configured) return configured.replace(/\/+$/, "");
-  return SITE.url.replace(/\/+$/, "");
-}
-
 export async function forgotPasswordAction(
   _prevState: ForgotPasswordState,
   formData: FormData
@@ -136,7 +117,7 @@ export async function forgotPasswordAction(
       }),
     ]);
 
-    const origin = resolveOrigin();
+    const origin = getAppOrigin();
     const resetUrl = `${origin}/admin/reset-password?token=${token}`;
 
     try {

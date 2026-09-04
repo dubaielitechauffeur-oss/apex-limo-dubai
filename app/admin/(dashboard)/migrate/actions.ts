@@ -1,7 +1,7 @@
 "use server";
 
 import { getAuthzContext, isSuperAdmin } from "@/lib/permissions/context";
-import { headers } from "next/headers";
+import { getAppOrigin } from "@/lib/app-url";
 
 /**
  * Triggers the one-time fleet import defined in
@@ -22,12 +22,11 @@ export async function runMigrationAction(): Promise<{ success: true; message: st
   }
 
   try {
-    const requestHeaders = await headers();
-    const host = requestHeaders.get("host");
-    const protocol = requestHeaders.get("x-forwarded-proto") ?? "https";
-    const origin = host ? `${protocol}://${host}` : "";
-
-    const res = await fetch(`${origin}/api/admin/migrate`, {
+    // Configured origin, never the request's Host header. This call carries
+    // MIGRATE_SECRET in a header, so a spoofed Host would make the server
+    // POST to an arbitrary destination AND hand it the shared secret.
+    // See lib/app-url.ts.
+    const res = await fetch(`${getAppOrigin()}/api/admin/migrate`, {
       method: "POST",
       headers: { "x-migrate-secret": secret, "content-type": "application/json" },
       body: JSON.stringify({}),
