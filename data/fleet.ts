@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/routing";
+import type { PublicSeo } from "@/lib/public/seo-fields";
 import type { Localized } from "@/lib/i18n-types";
 
 export type FleetCategory = "Sedan" | "SUV" | "Van" | "Ultra-Luxury";
@@ -99,7 +100,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 2980, fiveHours: 2190, oneHour: 1390, airport: 999, extraHour: 650, additionalCity: 650 },
     images: [
       {
-        src: "/images/fleet/mercedes-maybach-s-class/mercedes-maybach-s-class-1.png",
+        src: "/images/fleet/mercedes-maybach-s-class/mercedes-maybach-s-class-1.webp",
         alt: {
           en: "Two-tone white and black Mercedes-Maybach S-Class front three-quarter view in a marble-floored showroom",
           ar: "منظر أمامي جانبي لمرسيدس مايباخ S-Class بلونين أبيض وأسود في صالة عرض بأرضية رخامية",
@@ -110,7 +111,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/mercedes-maybach-s-class/mercedes-maybach-s-class-2.png",
+        src: "/images/fleet/mercedes-maybach-s-class/mercedes-maybach-s-class-2.webp",
         alt: {
           en: "Mercedes-Maybach S-Class rear cabin with cognac diamond-quilted leather and reclining seat",
           ar: "المقصورة الخلفية لمرسيدس مايباخ S-Class بجلد مبطن على شكل ماسي بلون الكونياك ومقعد قابل للاستلقاء",
@@ -121,7 +122,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/mercedes-maybach-s-class/mercedes-maybach-s-class-3.png",
+        src: "/images/fleet/mercedes-maybach-s-class/mercedes-maybach-s-class-3.webp",
         alt: {
           en: "Mercedes-Maybach S-Class rear headrest pillows and polished centre divider with ambient lighting",
           ar: "وسائد مساند الرأس الخلفية في مرسيدس مايباخ S-Class وفاصل أوسط مصقول مع إضاءة محيطية",
@@ -322,7 +323,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 4890, fiveHours: 3490, oneHour: 2490, airport: 1899, extraHour: 1200, additionalCity: 1200 },
     images: [
       {
-        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-1.png",
+        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-1.webp",
         alt: {
           en: "White Rolls-Royce Phantom front three-quarter view in a marble-floored showroom",
           ar: "منظر أمامي جانبي لرولز رويس فانتوم البيضاء في صالة عرض بأرضية رخامية",
@@ -333,7 +334,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-2.png",
+        src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-2.webp",
         alt: {
           en: "Rolls-Royce Phantom rear cabin in cream and black leather beneath a starlight headliner",
           ar: "المقصورة الخلفية لرولز رويس فانتوم بجلد كريمي وأسود أسفل سقف النجوم المضيء",
@@ -550,7 +551,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 2190, fiveHours: 1290, oneHour: 790, airport: 590, extraHour: 300, additionalCity: 300 },
     images: [
       {
-        src: "/images/fleet/mercedes-s-class/mercedes-s-class-1.png",
+        src: "/images/fleet/mercedes-s-class/mercedes-s-class-1.webp",
         alt: {
           en: "Black Mercedes-Benz S-Class front three-quarter view in a marble-floored showroom",
           ar: "منظر أمامي جانبي لمرسيدس بنز S-Class السوداء في صالة عرض بأرضية رخامية",
@@ -561,7 +562,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/mercedes-s-class/mercedes-s-class-2.png",
+        src: "/images/fleet/mercedes-s-class/mercedes-s-class-2.webp",
         alt: {
           en: "Mercedes-Benz S-Class rear cabin in white quilted leather beneath a panoramic roof",
           ar: "المقصورة الخلفية لمرسيدس بنز S-Class بجلد أبيض مبطن أسفل سقف بانورامي",
@@ -572,7 +573,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/mercedes-s-class/mercedes-s-class-3.png",
+        src: "/images/fleet/mercedes-s-class/mercedes-s-class-3.webp",
         alt: {
           en: "Mercedes-Benz S-Class rear seats in cream quilted leather with folding centre armrest",
           ar: "المقاعد الخلفية لمرسيدس بنز S-Class بجلد كريمي مبطن مع مسند ذراع أوسط قابل للطي",
@@ -772,7 +773,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 1999, fiveHours: 1190, oneHour: 940, airport: 750, extraHour: 400, additionalCity: 400 },
     images: [
       {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-1.png",
+        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-1.webp",
         alt: {
           en: "Black Range Rover Autobiography front three-quarter view in a marble-floored showroom",
           ar: "منظر أمامي جانبي لرينج روفر أوتوبيوغرافي السوداء في صالة عرض بأرضية رخامية",
@@ -783,7 +784,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-2.png",
+        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-2.webp",
         alt: {
           en: "Range Rover Autobiography rear cabin in black leather beneath a panoramic roof",
           ar: "المقصورة الخلفية لرينج روفر أوتوبيوغرافي من الجلد الأسود أسفل سقف بانورامي",
@@ -794,7 +795,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-3.png",
+        src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-3.webp",
         alt: {
           en: "Range Rover Autobiography rear-seat entertainment screens and climate controls",
           ar: "شاشات الترفيه للمقاعد الخلفية وأدوات التحكم بالمناخ في رينج روفر أوتوبيوغرافي",
@@ -992,7 +993,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 1790, fiveHours: 1390, oneHour: 890, airport: 650, extraHour: 350, additionalCity: 350 },
     images: [
       {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-1.png",
+        src: "/images/fleet/cadillac-escalade/cadillac-escalade-1.webp",
         alt: {
           en: "Black Cadillac Escalade ESV front three-quarter view with chrome grille in a marble-floored showroom",
           ar: "منظر أمامي جانبي لكاديلاك إسكاليد ESV السوداء بشبك أمامي كرومي في صالة عرض بأرضية رخامية",
@@ -1003,7 +1004,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-2.png",
+        src: "/images/fleet/cadillac-escalade/cadillac-escalade-2.webp",
         alt: {
           en: "Cadillac Escalade ESV second-row captain's chair in black leather with contrast piping",
           ar: "مقعد فردي في الصف الثاني بكاديلاك إسكاليد ESV من الجلد الأسود مع حواف بلون مغاير",
@@ -1014,7 +1015,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/cadillac-escalade/cadillac-escalade-3.png",
+        src: "/images/fleet/cadillac-escalade/cadillac-escalade-3.webp",
         alt: {
           en: "Cadillac Escalade ESV rear cabin with second-row captain's chairs and third-row bench seating",
           ar: "المقصورة الخلفية لكاديلاك إسكاليد ESV بمقاعد فردية في الصف الثاني ومقعد طويل في الصف الثالث",
@@ -1215,7 +1216,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 1199, fiveHours: 745, oneHour: 290, airport: 345, extraHour: 250, additionalCity: 250 },
     images: [
       {
-        src: "/images/fleet/mercedes-v-class/mercedes-v-class-1.png",
+        src: "/images/fleet/mercedes-v-class/mercedes-v-class-1.webp",
         alt: {
           en: "Black Mercedes V-Class front three-quarter view in a marble-floored showroom",
           ar: "منظر أمامي جانبي لمرسيدس V-Class السوداء في صالة عرض بأرضية رخامية",
@@ -1226,7 +1227,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/mercedes-v-class/mercedes-v-class-2.png",
+        src: "/images/fleet/mercedes-v-class/mercedes-v-class-2.webp",
         alt: {
           en: "Mercedes V-Class rear passenger seating in black leather with bottled water in the door holders",
           ar: "مقاعد الركاب الخلفية في مرسيدس V-Class من الجلد الأسود مع مياه معبأة في حاملات الأبواب",
@@ -1443,7 +1444,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 1790, fiveHours: 1090, oneHour: 590, airport: 645, extraHour: 350, additionalCity: 350 },
     images: [
       {
-        src: "/images/fleet/mercedes-v250-falcon/mercedes-v250-falcon-1.png",
+        src: "/images/fleet/mercedes-v250-falcon/mercedes-v250-falcon-1.webp",
         alt: {
           en: "Black Mercedes-Benz V250 Falcon Edition luxury van, front three-quarter view at a hotel entrance in Dubai",
           ar: "حافلة مرسيدس-بنز V250 فالكون إديشن الفاخرة السوداء، منظر أمامي جانبي عند مدخل فندق في دبي",
@@ -1672,7 +1673,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 1990, fiveHours: 1090, oneHour: 690, airport: 745, extraHour: 450, additionalCity: 450 },
     images: [
       {
-        src: "/images/fleet/mercedes-maybach-sprinter/mercedes-maybach-sprinter-1.png",
+        src: "/images/fleet/mercedes-maybach-sprinter/mercedes-maybach-sprinter-1.webp",
         alt: {
           en: "Black Mercedes-Maybach Sprinter 16-seater luxury van, front three-quarter view at a hotel entrance in Dubai at dusk",
           ar: "حافلة مرسيدس-مايباخ سبرينتر الفاخرة السوداء بسعة 16 مقعدًا، منظر أمامي جانبي عند مدخل فندق في دبي عند الغسق",
@@ -1900,7 +1901,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 1790, fiveHours: 1190, oneHour: 690, airport: 490, extraHour: 300, additionalCity: 300 },
     images: [
       {
-        src: "/images/fleet/bmw-7-series/bmw-7-series-1.png",
+        src: "/images/fleet/bmw-7-series/bmw-7-series-1.webp",
         alt: {
           en: "Black BMW 7 Series front three-quarter view with illuminated grille in a marble-floored showroom",
           ar: "منظر أمامي جانبي لسيارة بي إم دبليو الفئة 7 السوداء بشبك أمامي مضيء في صالة عرض بأرضية رخامية",
@@ -1911,7 +1912,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/bmw-7-series/bmw-7-series-2.png",
+        src: "/images/fleet/bmw-7-series/bmw-7-series-2.webp",
         alt: {
           en: "BMW 7 Series rear passenger cabin with cognac quilted leather seating",
           ar: "مقصورة الركاب الخلفية في بي إم دبليو الفئة 7 بمقاعد جلدية مبطنة بلون الكونياك",
@@ -1922,7 +1923,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/bmw-7-series/bmw-7-series-3.png",
+        src: "/images/fleet/bmw-7-series/bmw-7-series-3.webp",
         alt: {
           en: "BMW 7 Series rear seats with headrest cushions and illuminated rear-door touchscreen controls",
           ar: "المقاعد الخلفية في بي إم دبليو الفئة 7 مع وسائد لمساند الرأس وشاشة لمس مضيئة في الباب الخلفي",
@@ -2115,7 +2116,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 990, fiveHours: 590, oneHour: 390, airport: 245, extraHour: 210, additionalCity: 210 },
     images: [
       {
-        src: "/images/fleet/lexus-es-300h/lexus-es-300h-1.png",
+        src: "/images/fleet/lexus-es-300h/lexus-es-300h-1.webp",
         alt: {
           en: "Silver Lexus ES 300h front three-quarter view in a marble-floored showroom",
           ar: "منظر أمامي جانبي للكزس ES 300h الفضية في صالة عرض بأرضية رخامية",
@@ -2126,7 +2127,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/lexus-es-300h/lexus-es-300h-2.png",
+        src: "/images/fleet/lexus-es-300h/lexus-es-300h-2.webp",
         alt: {
           en: "Lexus ES 300h rear cabin in tan leather with folding centre armrest",
           ar: "المقصورة الخلفية للكزس ES 300h من الجلد البني الفاتح مع مسند ذراع أوسط قابل للطي",
@@ -2137,7 +2138,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/lexus-es-300h/lexus-es-300h-3.png",
+        src: "/images/fleet/lexus-es-300h/lexus-es-300h-3.webp",
         alt: {
           en: "Lexus ES 300h rear seats with centre armrest control panel",
           ar: "المقاعد الخلفية للكزس ES 300h مع لوحة تحكم في مسند الذراع الأوسط",
@@ -2330,7 +2331,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 4799, fiveHours: 3199, oneHour: 2650, airport: 1399, extraHour: 1400, additionalCity: 1400 },
     images: [
       {
-        src: "/images/fleet/rolls-royce-cullinan-mansory/rolls-royce-cullinan-mansory-1.png",
+        src: "/images/fleet/rolls-royce-cullinan-mansory/rolls-royce-cullinan-mansory-1.webp",
         alt: {
           en: "Turquoise Rolls-Royce Cullinan Mansory front three-quarter view outdoors at dusk",
           ar: "منظر أمامي جانبي لرولز رويس كولينان مانسوري بلون فيروزي في الهواء الطلق عند الغسق",
@@ -2341,7 +2342,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/rolls-royce-cullinan-mansory/rolls-royce-cullinan-mansory-2.png",
+        src: "/images/fleet/rolls-royce-cullinan-mansory/rolls-royce-cullinan-mansory-2.webp",
         alt: {
           en: "Rolls-Royce Cullinan Mansory head-on front view showing the wide-body styling",
           ar: "منظر أمامي مباشر لرولز رويس كولينان مانسوري يظهر التصميم عريض الهيكل",
@@ -2352,7 +2353,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/rolls-royce-cullinan-mansory/rolls-royce-cullinan-mansory-3.png",
+        src: "/images/fleet/rolls-royce-cullinan-mansory/rolls-royce-cullinan-mansory-3.webp",
         alt: {
           en: "Rolls-Royce Cullinan Mansory with coach doors open showing turquoise and white leather interior",
           ar: "رولز رويس كولينان مانسوري بأبوابها المفتوحة تكشف عن مقصورة جلدية فيروزية وبيضاء",
@@ -2545,7 +2546,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 990, fiveHours: 590, oneHour: 390, airport: 245, extraHour: 230, additionalCity: 230 },
     images: [
       {
-        src: "/images/fleet/tesla-model-y/tesla-model-y-1.png",
+        src: "/images/fleet/tesla-model-y/tesla-model-y-1.webp",
         alt: {
           en: "White Tesla Model Y front three-quarter view outside a modern building",
           ar: "منظر أمامي جانبي لتسلا موديل Y البيضاء أمام مبنى عصري",
@@ -2556,7 +2557,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/tesla-model-y/tesla-model-y-2.png",
+        src: "/images/fleet/tesla-model-y/tesla-model-y-2.webp",
         alt: {
           en: "Tesla Model Y rear bench seating in black leather",
           ar: "المقعد الخلفي الطويل في تسلا موديل Y من الجلد الأسود",
@@ -2756,7 +2757,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 1490, fiveHours: 890, oneHour: 690, airport: 445, extraHour: 290, additionalCity: 290 },
     images: [
       {
-        src: "/images/fleet/gmc-yukon-elevation/gmc-yukon-elevation-1.png",
+        src: "/images/fleet/gmc-yukon-elevation/gmc-yukon-elevation-1.webp",
         alt: {
           en: "Black GMC Yukon Elevation front three-quarter view at night outside a lit building",
           ar: "منظر أمامي جانبي لجي إم سي يوكون إليفيشن السوداء ليلاً أمام مبنى مضاء",
@@ -2972,7 +2973,7 @@ export const FLEET: FleetVehicle[] = [
     rates: { tenHours: 990, fiveHours: 590, oneHour: 390, airport: 245, extraHour: 210, additionalCity: 210 },
     images: [
       {
-        src: "/images/fleet/tesla-model-3/tesla-model-3-1.png",
+        src: "/images/fleet/tesla-model-3/tesla-model-3-1.webp",
         alt: {
           en: "White Tesla Model 3 front three-quarter view in a marble-floored showroom",
           ar: "منظر أمامي جانبي لتسلا موديل 3 البيضاء في صالة عرض بأرضية رخامية",
@@ -2983,7 +2984,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/tesla-model-3/tesla-model-3-2.png",
+        src: "/images/fleet/tesla-model-3/tesla-model-3-2.webp",
         alt: {
           en: "Tesla Model 3 rear bench seating in black leather",
           ar: "المقعد الخلفي الطويل في تسلا موديل 3 من الجلد الأسود",
@@ -2994,7 +2995,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/tesla-model-3/tesla-model-3-3.png",
+        src: "/images/fleet/tesla-model-3/tesla-model-3-3.webp",
         alt: {
           en: "Tesla Model 3 rear seats with centre console air vents",
           ar: "المقاعد الخلفية في تسلا موديل 3 مع فتحات تهوية في الكونسول الأوسط",
@@ -3193,7 +3194,7 @@ export const FLEET: FleetVehicle[] = [
     // extend this array once available.
     images: [
       {
-        src: "/images/fleet/byd-han/byd-han-1.png",
+        src: "/images/fleet/byd-han/byd-han-1.webp",
         alt: {
           en: "Silver BYD Han front three-quarter view in a marble-floored showroom",
           ar: "منظر أمامي جانبي لسيارة BYD Han الفضية في صالة عرض بأرضية رخامية",
@@ -3204,7 +3205,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/byd-han/byd-han-2.png",
+        src: "/images/fleet/byd-han/byd-han-2.webp",
         alt: {
           en: "BYD Han front cabin with taupe quilted leather seats and centre console",
           ar: "المقصورة الأمامية في BYD Han بمقاعد جلدية مبطنة بلون بني رمادي والكونسول الأوسط",
@@ -3215,7 +3216,7 @@ export const FLEET: FleetVehicle[] = [
         },
       },
       {
-        src: "/images/fleet/byd-han/byd-han-3.png",
+        src: "/images/fleet/byd-han/byd-han-3.webp",
         alt: {
           en: "BYD Han rear bench seating with folding centre armrest and cupholders",
           ar: "المقعد الخلفي في BYD Han مع مسند ذراع أوسط قابل للطي وحاملات أكواب",
@@ -3450,6 +3451,12 @@ export interface PlainFleetVehicle {
   isPlaceholder?: boolean;
   amenities?: string[];
   popularFor?: PlainPopularForChip[];
+  /** See the note on PlainService.seo. */
+  seo?: PublicSeo;
+  /** Locales this row actually has translated copy for. Undefined means all
+   *  six (the static data below, and any fully-translated CMS row) — see
+   *  lib/public/translation-coverage.ts. */
+  availableLocales?: Locale[];
 }
 
 export function localizeVehicle(vehicle: FleetVehicle, locale: Locale): PlainFleetVehicle {

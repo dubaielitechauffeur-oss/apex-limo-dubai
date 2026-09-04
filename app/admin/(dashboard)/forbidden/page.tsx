@@ -23,6 +23,12 @@ export const metadata: Metadata = {
 export default function ForbiddenPage() {
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
+      {/* `EmptyState` renders its title as an <h3>, which left this page as the
+          one admin route with no <h1> at all — a screen reader landing here
+          after a permission redirect got no page heading to orient from. The
+          visible design is unchanged; the heading is exposed to assistive
+          technology only. */}
+      <h1 className="sr-only">Access denied</h1>
       <EmptyState
         icon={ShieldAlert}
         title="You don't have permission to view this page"

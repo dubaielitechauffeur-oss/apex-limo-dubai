@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import TrackedCta from "@/components/shared/TrackedCta";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Calendar } from "lucide-react";
@@ -134,12 +135,14 @@ export default function Header({ contact }: { contact: SiteContact }) {
 
           {/* Desktop CTA — far right */}
           <div className="hidden items-center gap-2.5 justify-self-end lg:flex xl:gap-4">
-            <a
-              href={getPhoneLink(contact.phone)}
+            <TrackedCta
+href={getPhoneLink(contact.phone)}
               className="shrink-0 whitespace-nowrap text-[13px] text-smoke transition-colors duration-200 hover:text-champagne"
+              channel="phone"
+              placement="header"
             >
               <Ltr>{contact.phoneDisplay}</Ltr>
-            </a>
+            </TrackedCta>
             <Link
               href={PRIMARY_CTA.book.href}
               className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-champagne px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-colors duration-200 hover:bg-champagne-dark xl:px-6 xl:py-3 xl:tracking-[0.12em]"

@@ -16,6 +16,7 @@ import { SITE } from "@/lib/constants";
 import { getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact } from "@/lib/public/site-contact";
 import { FLEET_CATEGORY_SLUGS } from "@/data/fleet";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -57,7 +58,7 @@ function fleetJsonLd(locale: Locale, vehicles: Awaited<ReturnType<typeof getAllV
         provider: {
           "@type": "LocalBusiness",
           "additionalType": "https://schema.org/LimousineService",
-          "@id": organizationId(),
+          "@id": organizationId(locale),
           name: SITE.name,
         },
       },
@@ -76,20 +77,8 @@ export default async function FleetPage({ params }: PageProps) {
   ]);
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(fleetJsonLd(locale as Locale, vehicles)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: tNav("fleet"), path: "/fleet" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={fleetJsonLd(locale as Locale, vehicles)} />
+      <JsonLd data={breadcrumbJsonLd([{ name: tNav("fleet"), path: "/fleet" }], locale as Locale, tNav("home"))} />
 
       {/* Hero — luxury showroom moment, full fleet lineup photograph */}
       <FleetHero />

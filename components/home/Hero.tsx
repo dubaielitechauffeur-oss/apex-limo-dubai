@@ -27,7 +27,10 @@ export default async function Hero() {
 
   const desktopImageSrc = slide?.desktopImageUrl || "/images/home/hero-chauffeur-door-night.webp";
   const mobileImageSrc = slide?.mobileImageUrl || slide?.desktopImageUrl || "/images/home/hero-mobile-burj-khalifa.webp";
-  const imageAlt = slide?.title || t("imageAlt");
+  // Prefer the Media Library's alt text for a CMS hero image; fall back to the
+  // translated static alt. Never the slide headline — that duplicates the H1
+  // for screen-reader users and says nothing about the photograph itself.
+  const imageAlt = slide?.imageAlt || t("imageAlt");
 
   return (
     // -mt-[7.5rem] pulls the section up behind the sticky header (36px promo

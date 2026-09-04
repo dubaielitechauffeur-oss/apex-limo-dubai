@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/routing";
+import type { PublicSeo } from "@/lib/public/seo-fields";
 import type { Localized } from "@/lib/i18n-types";
 
 export interface ServiceFAQ {
@@ -2086,6 +2087,14 @@ export interface PlainService {
   faqs: { question: string; answer: string }[];
   image: { src: string; alt: string };
   tags: string[];
+  /** Admin SEO Manager overrides for this row, when the CMS is the source.
+   *  Always undefined for the static fallback data below — those rows have no
+   *  SEO Manager entry, so pages keep their template-generated metadata. */
+  seo?: PublicSeo;
+  /** Locales this row actually has translated copy for. Undefined means all
+   *  six (the static data below, and any fully-translated CMS row) — see
+   *  lib/public/translation-coverage.ts. */
+  availableLocales?: Locale[];
 }
 
 /** Resolves one service's Localized<T> fields to plain strings for the given locale. */

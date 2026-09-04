@@ -13,6 +13,7 @@ import { getAllServices } from "@/data/services";
 import { getAllLocations } from "@/data/locations";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { getSiteContact } from "@/lib/public/site-contact";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface QuotePageProps {
   params: Promise<{ locale: string }>;
@@ -61,15 +62,7 @@ export default async function QuotePage({ params }: QuotePageProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: t("quote.breadcrumbLabel"), path: "/quote" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={breadcrumbJsonLd([{ name: t("quote.breadcrumbLabel"), path: "/quote" }], locale as Locale, tNav("home"))} />
 
       <ConversionPageIntro
         heading={t("quote.pageHeading")}

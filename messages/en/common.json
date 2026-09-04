@@ -96,5 +96,11 @@
     "description": "We hit an unexpected error loading this page. Please try again, or head back to the homepage.",
     "tryAgain": "Try Again",
     "backToHome": "Back to Home"
+  },
+  "consent": {
+    "title": "Cookies & analytics",
+    "body": "We use analytics cookies to understand how visitors use this site so we can improve it. Nothing is stored until you accept, and declining will not affect your booking.",
+    "accept": "Accept",
+    "decline": "Decline"
   }
 }

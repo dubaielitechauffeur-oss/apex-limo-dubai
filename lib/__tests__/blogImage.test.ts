@@ -22,7 +22,7 @@ describe("blogImageExists", () => {
 
   it("still resolves a static path that really is in public/", () => {
     // Shipped with the repo — see data/blog.ts.
-    expect(blogImageExists("/images/blog/dubai-airport-transfer-vs-taxi.png")).toBe(true);
+    expect(blogImageExists("/images/blog/dubai-airport-transfer-vs-taxi.webp")).toBe(true);
   });
 
   it("still reports a missing static path, which is what shows the placeholder", () => {

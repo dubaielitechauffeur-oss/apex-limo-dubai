@@ -14,6 +14,7 @@ import { buildMetadata, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 import { getAllLocations } from "@/lib/public/cms-content";
 import type { PlainLocation } from "@/data/locations";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -61,20 +62,8 @@ export default async function LocationsPage({ params }: PageProps) {
   const locations = await getAllLocations(locale as Locale);
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationsJsonLd(locale as Locale, locations)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: tNav("locations"), path: "/locations" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={locationsJsonLd(locale as Locale, locations)} />
+      <JsonLd data={breadcrumbJsonLd([{ name: tNav("locations"), path: "/locations" }], locale as Locale, tNav("home"))} />
 
       <LocationsHero />
 

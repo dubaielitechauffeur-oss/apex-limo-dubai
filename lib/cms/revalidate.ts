@@ -23,17 +23,29 @@ function revalidateAllLocales(path: string) {
 export function revalidatePublicServices(slug?: string) {
   revalidateAllLocales("/services");
   if (slug) revalidateAllLocales(`/services/${slug}`);
+  // The homepage "What We Offer" grid and every location page's services
+  // carousel read the same rows, and the site-wide footer lists every service
+  // — so a rename or an unpublish has to reach them too, or the footer keeps
+  // linking to a slug that no longer resolves.
+  revalidateAllLocales("/");
+  revalidatePath("/[locale]/locations/[location]", "page");
   revalidatePath("/sitemap.xml");
 }
 
 export function revalidatePublicLocations(slug?: string) {
   revalidateAllLocales("/locations");
   if (slug) revalidateAllLocales(`/locations/${slug}`);
+  // Homepage LocationsShowcase + the site-wide footer's locations column.
+  revalidateAllLocales("/");
   revalidatePath("/sitemap.xml");
 }
 
 export function revalidatePublicFaqs() {
   revalidateAllLocales("/faqs");
+  // The homepage FAQ section and its FAQPage structured data now read the
+  // same CMS rows as /faqs (see getHomepageFaqs), so it has to be refreshed
+  // alongside the hub or the two can drift apart again.
+  revalidateAllLocales("/");
 }
 
 export function revalidatePublicBlog(slug?: string) {

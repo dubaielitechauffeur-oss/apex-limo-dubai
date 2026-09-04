@@ -156,7 +156,11 @@ export function validateBookingForm(
   if (!data.time) {
     errors.time = messages.timeRequired;
   }
-  if (!data.vehicle) {
+  // Length-capped like every other short field: `vehicle` is interpolated
+  // directly into the outbound email SUBJECT line, and it was the one required
+  // field with no upper bound — so a hand-crafted payload could push ~20 KB
+  // (the body limit) into an inbox header.
+  if (!data.vehicle || exceedsLength(data.vehicle, MAX_SHORT_FIELD_LENGTH)) {
     errors.vehicle = messages.vehicleRequired;
   }
   if (!data.passengers || data.passengers < 1) {

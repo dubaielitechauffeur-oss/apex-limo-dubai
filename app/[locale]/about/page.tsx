@@ -31,6 +31,7 @@ import { FLEET_SIZE } from "@/lib/constants";
 import { getSiteContact } from "@/lib/public/site-contact";
 import { LOCATIONS } from "@/data/locations";
 import { TESTIMONIALS } from "@/data/testimonials";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -96,15 +97,7 @@ export default async function AboutPage({ params }: PageProps) {
   const contact = await getSiteContact();
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: tNav("about"), path: "/about" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={breadcrumbJsonLd([{ name: tNav("about"), path: "/about" }], locale as Locale, tNav("home"))} />
 
       {/* Hero */}
       <AboutHero />

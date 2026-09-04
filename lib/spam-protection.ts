@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { consumeSharedRateLimit } from "@/lib/rate-limit/shared";
 
 /**
  * Lightweight, dependency-free abuse mitigation for the lead-generation API
@@ -75,8 +76,29 @@ export function getClientIp(headers: Headers): string {
   return headers.get("x-real-ip") ?? "unknown";
 }
 
-/** Returns true if this request should be rejected as rate-limit abuse. */
-export function isRateLimited(request: NextRequest): boolean {
+/**
+ * True if this request should be rejected as rate-limit abuse.
+ *
+ * Two layers. The in-memory check below rejects an obvious flood immediately,
+ * with no database round trip. `consumeSharedRateLimit` then enforces the same
+ * budget ACROSS instances, which the in-memory map alone cannot do on a
+ * serverless host — see lib/rate-limit/shared.ts.
+ *
+ * The in-memory layer runs first and short-circuits, so a flood costs no
+ * database writes.
+ */
+export async function isRateLimited(request: NextRequest): Promise<boolean> {
+  if (isRateLimitedInMemory(request)) return true;
+  return consumeSharedRateLimit({
+    scope: "lead",
+    key: getClientIp(request.headers),
+    limit: MAX_REQUESTS_PER_WINDOW,
+    windowMs: WINDOW_MS,
+  });
+}
+
+/** Per-process sliding window — the fast first layer. */
+function isRateLimitedInMemory(request: NextRequest): boolean {
   const ip = getClientIp(request.headers);
   const now = Date.now();
 

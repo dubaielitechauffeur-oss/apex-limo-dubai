@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/routing";
+import type { PublicSeo } from "@/lib/public/seo-fields";
 import type { Localized } from "@/lib/i18n-types";
 
 export interface BlogImage {
@@ -82,12 +83,12 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Was ein echter Luxus-Chauffeurservice in Dubai tatsächlich beinhaltet — für Führungskräfte, Familien und alle, die möchten, dass ihr Stadtbesuch schon ab der ersten Abholung professionell organisiert wird.",
     },
     seoTitle: {
-      en: "Luxury Chauffeur Service Dubai | Complete Guide | Apex Limo",
-      ar: "خدمة السائق الفاخر في دبي | دليل شامل | أبيكس ليمو",
-      ru: "Роскошный шофёр в Дубае | Полное руководство | Apex Limo",
-      zh: "迪拜豪华专属司机服务 | 完整指南 | Apex Limo",
-      fr: "Chauffeur de Luxe à Dubaï | Guide Complet | Apex Limo",
-      de: "Luxus-Chauffeurservice Dubai | Kompletter Leitfaden | Apex Limo",
+      en: "Luxury Chauffeur Service Dubai | Complete Guide",
+      ar: "خدمة السائق الفاخر في دبي | دليل شامل",
+      ru: "Роскошный шофёр в Дубае | Полное руководство",
+      zh: "迪拜豪华专属司机服务 | 完整指南",
+      fr: "Chauffeur de Luxe à Dubaï | Guide Complet",
+      de: "Luxus-Chauffeurservice Dubai | Kompletter Leitfaden",
     },
     seoDescription: {
       en: "A complete guide to luxury chauffeur service in Dubai for business and leisure travelers — what's included, which vehicle suits which trip, and how booking works.",
@@ -108,7 +109,6 @@ export const BLOG_POSTS: BlogPost[] = [
         fr: "Fondatrice et PDG",
         de: "Gründerin und CEO",
       },
-      email: "sarah@apexlimo.com",
     },
     featuredImage: {
       src: "/images/blog/luxury-chauffeur-service-dubai-guide.webp",
@@ -580,12 +580,12 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Ein direkter Vergleich zwischen einem gebuchten Chauffeurtransfer und einem gewöhnlichen Flughafentaxi in Dubai — Flugverfolgung, Preisgestaltung, Meet-and-Greet und was bei einer Flugverspätung tatsächlich passiert.",
     },
     seoTitle: {
-      en: "Dubai Airport Transfer vs. Taxi | Chauffeur Service Guide | Apex Limo",
-      ar: "نقل مطار دبي مقابل سيارة الأجرة | دليل خدمة السائق الخاص | أبيكس ليمو",
-      ru: "Трансфер из аэропорта Дубая или такси | Руководство по шофёрскому сервису | Apex Limo",
-      zh: "迪拜机场接送对比出租车 | 专属司机服务指南 | Apex Limo",
-      fr: "Transfert Aéroport Dubaï vs Taxi | Guide du Service Chauffeur | Apex Limo",
-      de: "Dubai Flughafentransfer vs. Taxi | Chauffeurservice-Leitfaden | Apex Limo",
+      en: "Dubai Airport Transfer vs. Taxi | Chauffeur Service Guide",
+      ar: "نقل مطار دبي مقابل سيارة الأجرة | دليل خدمة السائق الخاص",
+      ru: "Трансфер из аэропорта Дубая или такси | Руководство по шофёрскому сервису",
+      zh: "迪拜机场接送对比出租车 | 专属司机服务指南",
+      fr: "Transfert Aéroport Dubaï vs Taxi | Guide du Service Chauffeur",
+      de: "Dubai Flughafentransfer vs. Taxi | Chauffeurservice-Leitfaden",
     },
     seoDescription: {
       en: "Chauffeur transfer or taxi for Dubai Airport? A full comparison covering flight tracking, fixed pricing, meet-and-greet, and DXB/DWC-specific advice.",
@@ -606,10 +606,9 @@ export const BLOG_POSTS: BlogPost[] = [
         fr: "Responsable des Opérations",
         de: "Leiter des Betriebs",
       },
-      email: "marcus@apexlimo.com",
     },
     featuredImage: {
-      src: "/images/blog/dubai-airport-transfer-vs-taxi.png",
+      src: "/images/blog/dubai-airport-transfer-vs-taxi.webp",
       alt: {
         en: "Luxury Mercedes S-Class arriving at Dubai International Airport terminal, chauffeur opening rear passenger door, business traveler with luggage",
         ar: "مرسيدس S-Class فاخرة تصل إلى محطة مطار دبي الدولي، والسائق يفتح الباب الخلفي للراكب، مسافر أعمال بصحبة أمتعته",
@@ -1114,12 +1113,12 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Warum die Mercedes S-Klasse Dubais Maßstab für Executive-Chauffeurfahrzeuge bleibt — Kabinenkomfort, ideale Einsatzszenarien und der Vergleich mit anderen Executive-Limousinen.",
     },
     seoTitle: {
-      en: "Mercedes S-Class Chauffeur Service Dubai | Apex Limo",
-      ar: "خدمة سائق مرسيدس S-Class في دبي | Apex Limo",
-      ru: "Услуги шофёра на Mercedes S-Class в Дубае | Apex Limo",
-      zh: "迪拜奔驰S级专属司机服务 | Apex Limo",
-      fr: "Service de Chauffeur Mercedes Classe S à Dubaï | Apex Limo",
-      de: "Mercedes S-Klasse Chauffeurservice Dubai | Apex Limo",
+      en: "Mercedes S-Class Chauffeur Service Dubai",
+      ar: "خدمة سائق مرسيدس S-Class في دبي",
+      ru: "Услуги шофёра на Mercedes S-Class в Дубае",
+      zh: "迪拜奔驰S级专属司机服务",
+      fr: "Service de Chauffeur Mercedes Classe S à Dubaï",
+      de: "Mercedes S-Klasse Chauffeurservice Dubai",
     },
     seoDescription: {
       en: "An in-depth look at the Mercedes S-Class as Dubai's executive chauffeur standard — cabin features, ideal use cases, and how it compares to the 7 Series and E-Class.",
@@ -1140,7 +1139,6 @@ export const BLOG_POSTS: BlogPost[] = [
         fr: "Gestionnaire de Flotte",
         de: "Flottenmanager",
       },
-      email: "amara@apexlimo.com",
     },
     featuredImage: {
       src: "/images/blog/mercedes-s-class-chauffeur-dubai.jpeg",
@@ -1619,12 +1617,12 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Was einen wirklich zuverlässigen Firmenchauffeurservice in Dubai von einem unterscheidet, der nur den Anschein erweckt — Diskretion, Pünktlichkeit, Fuhrparkwahl und Kontoeinrichtung.",
     },
     seoTitle: {
-      en: "Best Chauffeur Service for Corporate Travel in Dubai | Apex Limo",
-      ar: "أفضل خدمة سائق للسفر التجاري في دبي | Apex Limo",
-      ru: "Лучший шофёрский сервис для деловых поездок в Дубае | Apex Limo",
-      zh: "迪拜商务出行的最佳专属司机服务 | Apex Limo",
-      fr: "Meilleur Service de Chauffeur pour les Déplacements Professionnels à Dubaï | Apex Limo",
-      de: "Bester Chauffeurservice für Geschäftsreisen in Dubai | Apex Limo",
+      en: "Best Chauffeur Service for Corporate Travel in Dubai",
+      ar: "أفضل خدمة سائق للسفر التجاري في دبي",
+      ru: "Лучший шофёрский сервис для деловых поездок в Дубае",
+      zh: "迪拜商务出行的最佳专属司机服务",
+      fr: "Meilleur Service de Chauffeur pour les Déplacements Professionnels à Dubaï",
+      de: "Bester Chauffeurservice für Geschäftsreisen in Dubai",
     },
     seoDescription: {
       en: "How to choose the best chauffeur service for corporate travel in Dubai — discretion, punctuality, fleet choice, standing accounts, and what visiting executives should expect.",
@@ -1645,10 +1643,9 @@ export const BLOG_POSTS: BlogPost[] = [
         fr: "Responsable des Relations Clients",
         de: "Kundenbeziehungsmanager",
       },
-      email: "david@apexlimo.com",
     },
     featuredImage: {
-      src: "/images/blog/best-chauffeur-service-corporate-travel-dubai.png",
+      src: "/images/blog/best-chauffeur-service-corporate-travel-dubai.webp",
       alt: {
         en: "Corporate executive entering luxury chauffeur driven Mercedes sedan outside DIFC financial district Dubai, modern skyscrapers",
         ar: "تنفيذي شركة يدخل سيارة مرسيدس فاخرة بسائق خاص خارج منطقة مركز دبي المالي العالمي (DIFC)، وناطحات سحاب حديثة",
@@ -2132,12 +2129,12 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Wie man Dubai mit einem privaten Chauffeur richtig erkundet — die eigene Route planen, zwischen einer Halbtages- und Ganztagestour wählen und welche Sehenswürdigkeiten den Stopp wert sind.",
     },
     seoTitle: {
-      en: "Dubai City Tours with a Private Chauffeur | Apex Limo",
-      ar: "جولات دبي السياحية مع سائق خاص | Apex Limo",
-      ru: "Городские экскурсии по Дубаю с личным шофёром | Apex Limo",
-      zh: "私人专属司机迪拜城市观光之旅 | Apex Limo",
-      fr: "Visites de la Ville de Dubaï avec un Chauffeur Privé | Apex Limo",
-      de: "Stadtrundfahrten durch Dubai mit privatem Chauffeur | Apex Limo",
+      en: "Dubai City Tours with a Private Chauffeur",
+      ar: "جولات دبي السياحية مع سائق خاص",
+      ru: "Городские экскурсии по Дубаю с личным шофёром",
+      zh: "私人专属司机迪拜城市观光之旅",
+      fr: "Visites de la Ville de Dubaï avec un Chauffeur Privé",
+      de: "Stadtrundfahrten durch Dubai mit privatem Chauffeur",
     },
     seoDescription: {
       en: "A guide to touring Dubai with a private chauffeur — building your itinerary, half-day vs full-day options, vehicle choice, and getting the most from your sightseeing day.",
@@ -2158,7 +2155,6 @@ export const BLOG_POSTS: BlogPost[] = [
         fr: "Spécialiste de l'Expérience de Voyage",
         de: "Spezialistin für Reiseerlebnisse",
       },
-      email: "leila@apexlimo.com",
     },
     featuredImage: {
       src: "/images/blog/dubai-city-tours-private-chauffeur.jpeg",
@@ -2650,12 +2646,12 @@ export const BLOG_POSTS: BlogPost[] = [
       de: "Hochzeitstransport in Dubai planen — das Brautauto, die Koordination von Hochzeitsgesellschaft und Gästen, das Timing mit Ihrem Planer und die Wahl zwischen Limousine, SUV oder Ultra-Luxusfahrzeug.",
     },
     seoTitle: {
-      en: "Wedding Chauffeur Service Dubai | Luxury Wedding Cars | Apex Limo",
-      ar: "خدمة سائق حفلات الزفاف في دبي | سيارات زفاف فاخرة | Apex Limo",
-      ru: "Свадебный шофёрский сервис в Дубае | Роскошные свадебные автомобили | Apex Limo",
-      zh: "迪拜婚礼专车服务 | 豪华婚车 | Apex Limo",
-      fr: "Service de Chauffeur de Mariage à Dubaï | Voitures de Mariage de Luxe | Apex Limo",
-      de: "Hochzeitschauffeurservice Dubai | Luxus-Hochzeitsautos | Apex Limo",
+      en: "Wedding Chauffeur Service Dubai | Luxury Wedding Cars",
+      ar: "خدمة سائق حفلات الزفاف في دبي | سيارات زفاف فاخرة",
+      ru: "Свадебный шофёрский сервис в Дубае | Роскошные свадебные автомобили",
+      zh: "迪拜婚礼专车服务 | 豪华婚车",
+      fr: "Service de Chauffeur de Mariage à Dubaï | Voitures de Mariage de Luxe",
+      de: "Hochzeitschauffeurservice Dubai | Luxus-Hochzeitsautos",
     },
     seoDescription: {
       en: "A complete guide to wedding chauffeur service in Dubai — the bridal car, coordinating guests and the wedding party, timing, and choosing the right vehicle for your day.",
@@ -2676,10 +2672,9 @@ export const BLOG_POSTS: BlogPost[] = [
         fr: "Responsable de la Coordination des Événements",
         de: "Leiterin der Veranstaltungskoordination",
       },
-      email: "yasmin@apexlimo.com",
     },
     featuredImage: {
-      src: "/images/blog/wedding-chauffeur-service-dubai.png",
+      src: "/images/blog/wedding-chauffeur-service-dubai.webp",
       alt: {
         en: "Elegant black luxury Mercedes with wedding decoration outside luxury Dubai hotel, bride and groom arriving, premium wedding transportation photography",
         ar: "مرسيدس فاخرة سوداء أنيقة مزينة لحفل الزفاف أمام فندق فاخر في دبي، العروسان يصلان، تصوير نقل زفاف راقٍ",
@@ -3156,6 +3151,15 @@ export interface PlainBlogImage {
 export interface PlainBlogAuthor {
   name: string;
   title: string;
+  /**
+   * Internal contact only — NEVER emitted into public structured data.
+   *
+   * It used to be published as `Article.author.email`, on a domain the
+   * business does not own (apexlimo.com), which both leaked an address to
+   * harvesters and split the entity graph across two domains. The static posts
+   * below no longer carry one at all; the CMS still stores it for editorial
+   * contact, and `lib/seo.ts` deliberately does not read it.
+   */
   email?: string;
 }
 
@@ -3175,6 +3179,16 @@ export interface PlainBlogPost {
   author: PlainBlogAuthor;
   featuredImage: PlainBlogImage;
   content: PlainBlogContentBlock[];
+  /** See the note on PlainService.seo. */
+  seo?: PublicSeo;
+  /** ISO timestamp of the last CMS edit, used for Article.dateModified.
+   *  Undefined for the static posts below, which have no edit history — those
+   *  fall back to publishDate, exactly as before. */
+  updatedAt?: string;
+  /** Locales this row actually has translated copy for. Undefined means all
+   *  six (the static data below, and any fully-translated CMS row) — see
+   *  lib/public/translation-coverage.ts. */
+  availableLocales?: Locale[];
 }
 
 function localizeBlock(block: BlogContentBlock, locale: Locale): PlainBlogContentBlock {

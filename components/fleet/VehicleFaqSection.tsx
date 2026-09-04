@@ -56,6 +56,8 @@ export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProp
                     type="button"
                     onClick={() => setOpenIndex(isOpen ? null : index)}
                     aria-expanded={isOpen}
+                    id={`vehicle-faq-trigger-${index}`}
+                    aria-controls={`vehicle-faq-panel-${index}`}
                     className="flex w-full items-center justify-between gap-6 px-6 py-5 text-start"
                   >
                     <span className="font-display text-base text-obsidian sm:text-lg">
@@ -70,6 +72,9 @@ export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProp
                     />
                   </button>
                   <div
+                    id={`vehicle-faq-panel-${index}`}
+                    role="region"
+                    aria-labelledby={`vehicle-faq-trigger-${index}`}
                     className={`grid overflow-hidden transition-all duration-300 ${
                       isOpen ? "grid-rows-[1fr] px-6 pb-5 opacity-100" : "grid-rows-[0fr] px-6 opacity-0"
                     }`}

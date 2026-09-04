@@ -1,5 +1,17 @@
 import { Link } from "@/i18n/navigation";
 import { ReactNode } from "react";
+import TrackedCta from "./TrackedCta";
+import type { CtaPlacement } from "@/lib/analytics";
+
+/** Classifies a CTA destination so WhatsApp/phone clicks can be counted as
+ *  leads. Matching on the href rather than requiring every call site to pass a
+ *  flag means a new WhatsApp button is tracked by construction, not by
+ *  remembering to opt in. */
+function contactChannelFor(href: string): "whatsapp" | "phone" | null {
+  if (href.startsWith("tel:")) return "phone";
+  if (href.includes("wa.me/") || href.includes("api.whatsapp.com")) return "whatsapp";
+  return null;
+}
 
 interface CTAButtonProps {
   href: string;
@@ -12,6 +24,12 @@ interface CTAButtonProps {
   icon?: ReactNode;
   className?: string;
   external?: boolean;
+  /** Where this button sits, for GA4 placement reporting. Optional — an
+   *  untagged contact CTA is still counted, just without a placement. */
+  placement?: CtaPlacement;
+  /** Categorical context (vehicle/service name) for the GA4 event. Never
+   *  customer data. */
+  trackingItem?: string;
 }
 
 /**
@@ -27,10 +45,32 @@ export default function CTAButton({
   icon,
   className = "",
   external = false,
+  placement,
+  trackingItem,
 }: CTAButtonProps) {
   const base = variant === "solid" ? "btn-gold" : "btn-outline";
   const toneOverride = variant === "outline" && tone === "light" ? "text-obsidian" : "";
   const styles = `${base} ${toneOverride}`;
+
+  // WhatsApp and phone CTAs are conversions on this site — most of the real
+  // booking demand arrives through them rather than the forms — so they route
+  // through the tracked anchor. Everything else stays a plain server-rendered
+  // element with no client JS.
+  const contactChannel = contactChannelFor(href);
+  if (contactChannel) {
+    return (
+      <TrackedCta
+        href={href}
+        channel={contactChannel}
+        placement={placement ?? "hero"}
+        item={trackingItem}
+        className={`${styles} ${className}`}
+      >
+        {icon}
+        {children}
+      </TrackedCta>
+    );
+  }
 
   if (external) {
     return (

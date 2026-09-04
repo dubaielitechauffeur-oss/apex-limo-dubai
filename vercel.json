@@ -4,6 +4,11 @@
       "source": "/services/airport-transfer",
       "destination": "/services/airport-transfers",
       "permanent": true
+    },
+    {
+      "source": "/:locale(ar|ru|zh|fr|de)/services/airport-transfer",
+      "destination": "/:locale/services/airport-transfers",
+      "permanent": true
     }
   ]
 }

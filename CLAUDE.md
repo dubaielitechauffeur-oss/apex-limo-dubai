@@ -15,35 +15,83 @@ Tu is website ka SEO agent hai. Tera kaam hai:
 - **GSC Property:** sc-domain:apexchauffeurdubai.com
 - **GA4 Property ID:** 546463892
 
-## File Structure
+## File Structure (ACTUAL — verified against the repository)
+
+The site is a **localized App Router tree**. Every public page lives under
+`app/[locale]/`, and service / location / vehicle / blog pages are **dynamic
+routes backed by the CMS**, not one file per page.
+
 ```
 app/
-  page.tsx                    → Homepage
-  about/page.tsx              → About page
-  contact/page.tsx            → Contact page
-  booking/page.tsx            → Booking page
-  services/
-    airport-transfer/page.tsx
-    corporate-chauffeur/page.tsx
-    city-tour/page.tsx
-    intercity-transfer/page.tsx
-    event-chauffeur/page.tsx
-    hourly-chauffeur/page.tsx
-  fleet/
-    mercedes-s-class/page.tsx
-    mercedes-v-class/page.tsx
-    bmw-7-series/page.tsx
-    range-rover/page.tsx
-    rolls-royce-phantom/page.tsx
-    cadillac-escalade/page.tsx
-  locations/
-    dubai-marina/page.tsx
-    downtown-dubai/page.tsx
-    palm-jumeirah/page.tsx
-    business-bay/page.tsx
-    dxb-airport/page.tsx
-    dwc-airport/page.tsx
+  [locale]/
+    layout.tsx                  → locale shell: fonts, header/footer, Organization + WebSite JSON-LD
+    page.tsx                    → Homepage
+    about/page.tsx
+    contact/page.tsx
+    booking/page.tsx            → conversion page (nav chrome stripped)
+    quote/page.tsx              → conversion page (nav chrome stripped)
+    faqs/page.tsx
+    privacy-policy/page.tsx
+    terms/page.tsx
+    services/page.tsx           → services listing
+    services/[service]/page.tsx → ALL service detail pages (slug from CMS/data)
+    locations/page.tsx          → locations listing
+    locations/[location]/page.tsx → ALL location detail pages
+    fleet/page.tsx              → fleet listing
+    fleet/[vehicle]/page.tsx    → vehicle detail AND fleet category listings
+                                  (/fleet/sedan, /fleet/suv, /fleet/van,
+                                   /fleet/ultra-luxury, /fleet/electric)
+    blog/page.tsx
+    blog/[slug]/page.tsx        → ALL blog posts
+    error.tsx · not-found.tsx · [...rest]/page.tsx
+  admin/                        → English-only admin panel, outside locale routing
+  api/booking · api/quote · api/contact · api/auth · api/admin/migrate
+  robots.ts · sitemap.ts · global-error.tsx · uploads/[...path]/route.ts
 ```
+
+**Locales:** `en` (unprefixed), `ar`, `ru`, `zh`, `fr`, `de` — see `i18n/routing.ts`.
+50 routes per locale = **300 URLs**.
+
+**Real slugs** (do not invent others):
+
+- Services: `airport-transfers`, `corporate-chauffeur`, `luxury-chauffeur`,
+  `vip-transportation`, `event-transportation`, `wedding-chauffeur`
+- Locations: `dubai-marina`, `downtown-dubai`, `palm-jumeirah`, `business-bay`,
+  `jbr`, `dubai-international-airport-dxb`
+- Fleet categories: `sedan`, `suv`, `van`, `ultra-luxury`, `electric`
+- Vehicles: 15 slugs in `data/fleet.ts` (`mercedes-s-class`,
+  `mercedes-maybach-s-class`, `rolls-royce-phantom`, `range-rover-autobiography`,
+  `cadillac-escalade`, `mercedes-v-class`, `bmw-7-series`, `lexus-es-300h`,
+  `tesla-model-y`, `tesla-model-3`, `byd-han`, …)
+
+## Where content actually comes from
+
+Public pages read **`lib/public/cms-content.ts`**, which is database-first with
+the `data/*.ts` files as a permanent static fallback. Never import `data/*.ts`
+directly in a public component — that was the cause of the homepage and footer
+showing stale service names after a CMS rename.
+
+```
+Admin panel → Prisma → lib/public/cms-content.ts → page → HTML
+                                    ↓ (DB down / empty)
+                              data/*.ts static fallback
+```
+
+## SEO plumbing (all of it goes through one path)
+
+- **Metadata:** `buildMetadata()` in `lib/seo.ts` — the single place titles,
+  descriptions, canonicals, hreflang, OG and robots are produced. It applies
+  admin SEO Manager overrides (`<Model>.seo`) on top of the page template, and
+  clamps descriptions to 158 characters.
+- **Structured data:** always `<JsonLd data={...} />`
+  (`components/shared/JsonLd.tsx`). Never hand-write a
+  `<script type="application/ld+json">` — the component escapes `<`/`>`/`&`,
+  without which CMS content containing `</script>` breaks out of the block.
+- **hreflang / sitemap:** gated on real translation coverage
+  (`lib/public/translation-coverage.ts`), so an English-only CMS row does not
+  advertise six languages.
+- **Analytics:** `lib/analytics.ts`. WhatsApp and phone CTAs are conversions —
+  use `CTAButton` (auto-tracks contact links) or `TrackedCta`.
 
 ## SEO Fix Karne Ka Tareeqa (Next.js 15)
 
@@ -135,7 +183,21 @@ const faqJsonLd = {
 - ❌ Colors/fonts mat chhedo
 - ❌ Component structure mat badlo
 
-## Contact Info (SEO mein use karo)
+## Contact Info
+
+These are the STATIC fallbacks in `lib/constants.ts`. At runtime the live
+values come from `GlobalSettings` via `lib/public/site-contact.ts`, editable in
+**/admin/settings** — so change them there, not in code.
+
 - **Phone/WhatsApp:** +971529426152
-- **Email:** bookings@apexchauffeurdubai.com
-- **Location:** Dubai, UAE
+- **Public email (shown on site + in schema):** `apexchauffeurdubai@gmail.com`
+- **Transactional sender (Resend):** `bookings@apexchauffeurdubai.com`
+- **Location:** Dubai, UAE — service-area business, **no street address** is
+  published (see the note in `lib/seo.ts`; adding one would contradict the
+  Google Business Profile listing)
+
+> ⚠️ **Open item for the owner:** the public-facing email is a `gmail.com`
+> address while transactional mail already sends from the domain. A free-mail
+> address in `LocalBusiness` schema is a measurable trust/NAP weakness for a
+> luxury brand. Switching it is a one-field change in /admin/settings once a
+> domain mailbox exists — it is deliberately not hardcoded here.

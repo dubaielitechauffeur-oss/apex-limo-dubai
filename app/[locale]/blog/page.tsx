@@ -10,6 +10,7 @@ import { SITE } from "@/lib/constants";
 import { blogImageExists } from "@/lib/blogImage";
 import { getAllBlogPosts } from "@/lib/public/cms-content";
 import type { PlainBlogPost } from "@/data/blog";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -63,20 +64,8 @@ export default async function BlogPage({ params }: PageProps) {
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd(posts, locale as Locale)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: tNav("blog"), path: "/blog" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={blogListJsonLd(posts, locale as Locale)} />
+      <JsonLd data={breadcrumbJsonLd([{ name: tNav("blog"), path: "/blog" }], locale as Locale, tNav("home"))} />
 
       {/* Hero */}
       <Section tone="obsidian" padding="sm" separator={false}>

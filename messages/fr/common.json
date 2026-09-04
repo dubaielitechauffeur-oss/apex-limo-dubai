@@ -96,5 +96,11 @@
     "description": "Une erreur inattendue s'est produite lors du chargement de cette page. Veuillez réessayer ou retourner à la page d'accueil.",
     "tryAgain": "Réessayer",
     "backToHome": "Retour à l'accueil"
+  },
+  "consent": {
+    "title": "Cookies et analyse",
+    "body": "Nous utilisons des cookies d'analyse pour comprendre comment les visiteurs utilisent ce site afin de l'améliorer. Rien n'est enregistré avant votre accord, et un refus n'affectera pas votre réservation.",
+    "accept": "Accepter",
+    "decline": "Refuser"
   }
 }

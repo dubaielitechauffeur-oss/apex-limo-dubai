@@ -800,6 +800,32 @@ model VehicleLocationLink {
 // AUDIT
 // ─────────────────────────────────────────────────────────────────────────────
 
+/// Cross-instance rate-limit counters.
+///
+/// The in-memory limiters in lib/spam-protection.ts and lib/auth/rate-limit.ts
+/// are per-process, so on a serverless host the effective limit multiplies by
+/// the number of warm instances — a determined attacker just needs their
+/// requests spread across them. This table makes the limit shared without
+/// introducing Redis or any new infrastructure, since Postgres is already a
+/// hard dependency.
+///
+/// Fixed windows (not sliding): `windowStart` is the bucket boundary, which
+/// makes the increment a single atomic INSERT ... ON CONFLICT DO UPDATE. A
+/// sliding window would need per-hit rows and a range scan on every request;
+/// the precision difference does not matter for abuse control.
+model RateLimitCounter {
+  /// "<scope>:<client ip>" — see lib/rate-limit/shared.ts.
+  key         String
+  /// Epoch milliseconds of the window's start.
+  windowStart BigInt
+  count       Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  @@id([key, windowStart])
+  @@index([windowStart])
+  @@map("rate_limit_counters")
+}
+
 model AuditLog {
   id         String      @id @default(cuid())
   action     AuditAction

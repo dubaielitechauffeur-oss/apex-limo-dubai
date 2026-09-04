@@ -39,6 +39,7 @@ import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 import { SERVICES, type PlainService } from "@/data/services";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForService } from "@/lib/cross-links";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string; service: string }>;
@@ -92,6 +93,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: t("titleTemplate", { name: service.name }),
     description: t("descriptionTemplate", { shortDescription: service.shortDescription }),
     path: `/services/${service.slug}`,
+    // Admin SEO Manager overrides (title/description/canonical/OG/noindex).
+    seo: service.seo,
+    // Only advertise locales this service is genuinely translated into.
+    alternateLocales: service.availableLocales,
   });
 }
 
@@ -108,7 +113,7 @@ function serviceJsonLd(service: PlainService, locale: Locale, contact: SiteConta
     provider: {
       "@type": "LocalBusiness",
       "additionalType": "https://schema.org/LimousineService",
-      "@id": organizationId(),
+      "@id": organizationId(locale),
       name: SITE.name,
       url: SITE.url,
       telephone: contact.phone,
@@ -148,32 +153,16 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd(service, locale as Locale, contact)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(service.faqs, locale as Locale)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd(
+      <JsonLd data={serviceJsonLd(service, locale as Locale, contact)} />
+      <JsonLd data={faqJsonLd(service.faqs, locale as Locale)} />
+      <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("services"), path: "/services" },
                 { name: service.name, path: `/services/${service.slug}` },
               ],
               locale as Locale,
               tNav("home")
-            )
-          ),
-        }}
-      />
+            )} />
 
       {/* Hero zone — reuses the same service.image shown on this service's
           /services listing card, so both stay in sync automatically. */}

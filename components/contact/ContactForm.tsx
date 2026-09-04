@@ -10,6 +10,7 @@ import CTAButton from "@/components/shared/CTAButton";
 import { getWhatsAppLink } from "@/lib/constants";
 import type { SiteContact } from "@/lib/public/site-contact";
 import type { ContactFormData } from "@/lib/types";
+import { trackConversion } from "@/lib/analytics";
 import { buildValidationMessages, validateContactForm, hasErrors, type FormErrors, type ValidationMessages } from "@/lib/validation";
 
 const EMPTY_FORM: ContactFormData = {
@@ -84,6 +85,11 @@ export default function ContactForm({ contact }: { contact: SiteContact }) {
       setCustomerName(form.fullName.trim());
       setReference(data.reference ?? "");
       setStatus("success");
+      // Contact submissions are leads too — this form was the one of the three
+      // that never reported a conversion, so enquiries arriving through it
+      // were invisible in the GA4 funnel. No form field is passed: the event
+      // carries only which form and which step, never customer data.
+      trackConversion("contact", { placement: "form_success" });
       setForm(EMPTY_FORM);
     } catch {
       setStatus("error");

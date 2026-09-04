@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { SITE, PRICE_RANGE, SAME_AS_URLS, SOCIAL_PROFILES } from "./constants";
+import { SITE, PRICE_RANGE, RATING, SAME_AS_URLS, SOCIAL_PROFILES } from "./constants";
 import { routing, type Locale } from "@/i18n/routing";
 import { TESTIMONIALS } from "@/data/testimonials";
 import { LOCATIONS } from "@/data/locations";
 import type { SiteDefaultSeo } from "./public/site-seo";
+import type { PublicSeo } from "./public/seo-fields";
 
 /** Open Graph locale tags per site locale (BCP-47-ish, underscore form OG expects). */
 const OG_LOCALE_MAP: Record<Locale, string> = {
@@ -14,6 +15,38 @@ const OG_LOCALE_MAP: Record<Locale, string> = {
   fr: "fr_FR",
   de: "de_DE",
 };
+
+/**
+ * Google renders roughly 155-160 characters of a meta description before
+ * truncating with an ellipsis. Every page type on this site was shipping past
+ * that — 166 to 231 characters — because the templates interpolate a full
+ * service/vehicle description into a sentence that already has framing text.
+ * The tail was therefore never seen by a searcher, and the call to action
+ * usually sat inside the discarded part.
+ *
+ * Clamping here rather than at each template means no future page can
+ * regress, and it works for every locale: the cut lands on a whitespace
+ * boundary where one exists (Latin, Cyrillic, Arabic) and falls back to a
+ * hard cut where it does not (Chinese, which has no inter-word spaces).
+ *
+ * A description already within budget is returned untouched — this only ever
+ * shortens.
+ */
+const MAX_DESCRIPTION_LENGTH = 158;
+
+export function clampDescription(text: string, max = MAX_DESCRIPTION_LENGTH): string {
+  const trimmed = text.trim();
+  if (trimmed.length <= max) return trimmed;
+
+  // Leave room for the ellipsis character itself.
+  const budget = max - 1;
+  const slice = trimmed.slice(0, budget);
+  const lastSpace = slice.lastIndexOf(" ");
+  // Only honour a word boundary if it isn't so early that we'd lose most of
+  // the sentence (scripts without spaces would otherwise cut at ~0).
+  const cut = lastSpace > budget * 0.6 ? slice.slice(0, lastSpace) : slice;
+  return `${cut.replace(/[\s,;:.\u060C\u061B-]+$/u, "")}\u2026`;
+}
 
 /** Prefixes `path` with the locale segment for every locale except the default. */
 export function localizedPath(locale: Locale, path: string): string {
@@ -33,7 +66,7 @@ export function localizedPath(locale: Locale, path: string): string {
 export function getDefaultMetadata(locale: Locale, tagline: string = SITE.tagline, defaultSeo?: SiteDefaultSeo | null): Metadata {
   const url = `${SITE.url}${localizedPath(locale, "/")}`;
   const title = defaultSeo?.title || `${SITE.name} | ${tagline}`;
-  const description = defaultSeo?.description || SITE.description;
+  const description = clampDescription(defaultSeo?.description || SITE.description);
   const ogImageUrl = defaultSeo?.ogImageUrl || "/og-image.jpg";
   const indexable = !(defaultSeo?.noIndex ?? false);
   const followable = !(defaultSeo?.noFollow ?? false);
@@ -118,6 +151,26 @@ interface BuildMetadataOptions {
    *  not-found metadata branch of dynamic detail routes (fleet/service/
    *  location/blog), which resolves to a real 404 response. */
   robots?: Metadata["robots"];
+  /**
+   * Per-page overrides from the admin SEO Manager (`<Model>.seo`), resolved to
+   * this locale by `lib/public/seo-fields.ts`. Any field the editor filled in
+   * wins over the template-generated value passed above; anything left blank
+   * keeps the template default, so an untouched SEO tab changes nothing.
+   *
+   * This is the ONLY place CMS SEO is applied — there is deliberately no
+   * second metadata path, so a page cannot end up with a template title and a
+   * CMS canonical disagreeing with each other.
+   */
+  seo?: PublicSeo | null;
+  /**
+   * Which locales this page genuinely exists in. Defaults to every configured
+   * locale (correct for static pages, whose copy is fully translated in
+   * `messages/*`). CMS-backed detail routes pass the narrower set that
+   * actually has translated content, so hreflang never advertises a locale
+   * that would only render an English fallback — see
+   * `lib/public/translation-coverage.ts`.
+   */
+  alternateLocales?: Locale[];
 }
 
 /** Helper for generating page-level metadata that inherits site defaults, with
@@ -131,40 +184,69 @@ export function buildMetadata({
   type = "website",
   publishedTime,
   robots,
+  seo,
+  alternateLocales,
 }: BuildMetadataOptions): Metadata {
-  const url = `${SITE.url}${localizedPath(locale, path)}`;
+  // CMS values win over the template-generated ones, field by field, so an
+  // editor can override just the title and keep the generated description.
+  const effectiveTitle = seo?.title || title;
+  const effectiveDescription = clampDescription(seo?.description || description);
+  const selfUrl = `${SITE.url}${localizedPath(locale, path)}`;
+  const canonical = seo?.canonical || selfUrl;
+  const effectiveImages = seo?.ogImageUrl ? [seo.ogImageUrl] : images;
+
+  // An explicit `robots` argument (the 404 branch of a detail route) always
+  // wins; otherwise a CMS noIndex/noFollow tick becomes a real robots
+  // directive. When neither applies, the page inherits the site-wide default
+  // from the root layout rather than restating it.
+  const seoRobots: Metadata["robots"] | undefined =
+    seo && (seo.noIndex || seo.noFollow)
+      ? {
+          index: !seo.noIndex,
+          follow: !seo.noFollow,
+          googleBot: { index: !seo.noIndex, follow: !seo.noFollow },
+        }
+      : undefined;
+  const effectiveRobots = robots ?? seoRobots;
 
   // Every locale's URL for this path, plus x-default pointing at the
   // unprefixed (English) URL — the entry point Google's hreflang guidance
   // recommends for visitors whose language doesn't match any listed locale.
+  // Narrowed to `alternateLocales` when the caller knows some locales have no
+  // real translation for this specific page.
+  const hreflangLocales = alternateLocales ?? [...routing.locales];
   const languages: Record<string, string> = Object.fromEntries(
-    routing.locales.map((l) => [l, `${SITE.url}${localizedPath(l, path)}`])
+    hreflangLocales.map((l) => [l, `${SITE.url}${localizedPath(l, path)}`])
   );
-  languages["x-default"] = `${SITE.url}${path}`;
+  // x-default only makes sense when the default locale is genuinely among the
+  // published set — which it always is, since English is the required locale.
+  if (hreflangLocales.includes(routing.defaultLocale)) {
+    languages["x-default"] = `${SITE.url}${path}`;
+  }
 
   return {
-    title,
-    description,
-    alternates: { canonical: url, languages },
-    ...(robots ? { robots } : {}),
+    title: effectiveTitle,
+    description: effectiveDescription,
+    alternates: { canonical, languages },
+    ...(effectiveRobots ? { robots: effectiveRobots } : {}),
     openGraph: {
       type,
-      title,
-      description,
-      url,
+      title: effectiveTitle,
+      description: effectiveDescription,
+      url: selfUrl,
       siteName: SITE.name,
       locale: OG_LOCALE_MAP[locale],
-      alternateLocale: routing.locales.filter((l) => l !== locale).map((l) => OG_LOCALE_MAP[l]),
-      images: images
-        ? images.map((img) => ({ url: img }))
+      alternateLocale: hreflangLocales.filter((l) => l !== locale).map((l) => OG_LOCALE_MAP[l]),
+      images: effectiveImages
+        ? effectiveImages.map((img) => ({ url: img }))
         : getDefaultMetadata(locale).openGraph?.images,
       ...(type === "article" && publishedTime ? { publishedTime } : {}),
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
-      images: images ?? ["/og-image.jpg"],
+      title: effectiveTitle,
+      description: effectiveDescription,
+      images: effectiveImages ?? ["/og-image.jpg"],
     },
   };
 }
@@ -176,8 +258,15 @@ export function buildMetadata({
  *  should ever reuse this @id — a page describing a distinct sub-entity
  *  (e.g. a specific service area) must use its own unique @id instead, or
  *  Google's structured-data parser can't cleanly resolve the graph. */
-export function organizationId(): string {
-  return `${SITE.url}/#organization`;
+export function organizationId(locale: Locale = routing.defaultLocale): string {
+  // One node per locale. Previously every locale emitted the SAME `@id` while
+  // declaring a different `url`, `inLanguage` and description — six
+  // contradictory property sets merged onto a single entity, which is exactly
+  // the conflict that produced Search Console's "Invalid object type for
+  // field 'parent_node'" error on the location pages. Distinct ids let each
+  // language resolve as its own clean node; `sameAs`/`url` still tie them to
+  // one business.
+  return `${SITE.url}${localizedPath(locale, "/")}#organization`;
 }
 
 /**
@@ -200,7 +289,7 @@ export function organizationJsonLd(
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "additionalType": "https://schema.org/LimousineService",
-    "@id": organizationId(),
+    "@id": organizationId(locale),
     name: SITE.name,
     description: SITE.description,
     url: SITE.url,
@@ -292,35 +381,47 @@ export function organizationReviewsJsonLd(locale: Locale = routing.defaultLocale
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "additionalType": "https://schema.org/LimousineService",
-    "@id": organizationId(),
+    "@id": organizationId(locale),
     inLanguage: locale,
     ...fields,
   };
 }
 
 /**
- * aggregateRating + review, built from data/testimonials.ts — real,
- * published customer testimonials already shown on the site, not
- * fabricated figures. reviewCount intentionally matches the number of
- * reviews actually included here (not the site-wide marketing RATING
- * figure's underlying sample, which may include unlisted Google reviews)
- * so the schema never claims more than what it publishes.
+ * aggregateRating + review, built from data/testimonials.ts.
+ *
+ * Two rules govern what may be published here, and they used to conflict:
+ *
+ * 1. Google requires the marked-up rating to MATCH what the visitor sees.
+ *    Every rating on this site renders `RATING` (lib/constants.ts) — the
+ *    business's stated aggregate, also written into the About and metadata
+ *    copy in all six locales. This function previously ignored that and
+ *    published the mean of the listed testimonials instead, so the schema
+ *    said 5.0 while every visible star row said 4.9.
+ *
+ * 2. Nothing here may be invented. `reviewCount` is the number of reviews
+ *    this markup actually publishes — never a larger implied sample.
+ *
+ * The guard below enforces both: if the published testimonials cannot
+ * substantiate the stated figure (they differ by more than half a star), the
+ * aggregate is OMITTED rather than published as a claim the page cannot back
+ * up. Individual `review` nodes are still emitted either way, since those are
+ * verbatim and verifiable.
+ *
+ * To raise `reviewCount` honestly, sync real Google Business Profile reviews
+ * into `TESTIMONIALS` — the Testimonial shape already carries `source:
+ * "google"` and `profileUrl` for exactly that.
  */
+const MAX_RATING_DIVERGENCE = 0.5;
+
 function aggregateRatingFields() {
   if (TESTIMONIALS.length === 0) return {};
 
-  const ratingValue = (
-    TESTIMONIALS.reduce((sum, review) => sum + review.rating, 0) / TESTIMONIALS.length
-  ).toFixed(1);
+  const publishedMean =
+    TESTIMONIALS.reduce((sum, review) => sum + review.rating, 0) / TESTIMONIALS.length;
+  const statedRating = parseFloat(RATING);
 
-  return {
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue,
-      reviewCount: TESTIMONIALS.length,
-      bestRating: "5",
-      worstRating: "1",
-    },
+  const reviews = {
     review: TESTIMONIALS.map((testimonial) => ({
       "@type": "Review",
       author: { "@type": "Person", name: testimonial.name },
@@ -334,6 +435,45 @@ function aggregateRatingFields() {
       },
     })),
   };
+
+  if (!Number.isFinite(statedRating) || Math.abs(publishedMean - statedRating) > MAX_RATING_DIVERGENCE) {
+    return reviews;
+  }
+
+  return {
+    aggregateRating: {
+      "@type": "AggregateRating",
+      // The figure the page itself displays — see rule 1 above.
+      ratingValue: RATING,
+      reviewCount: TESTIMONIALS.length,
+      bestRating: "5",
+      worstRating: "1",
+    },
+    ...reviews,
+  };
+}
+
+/**
+ * WebSite node — previously absent entirely, so nothing in the graph declared
+ * the site's own name or its search endpoint. Gives Google an explicit
+ * site-name signal (rather than inferring one from the title tag) and makes
+ * the site eligible for the sitelinks search box.
+ *
+ * `potentialAction` points at the FAQ hub's client-side search, which is the
+ * only real site search that exists — pointing it anywhere else would declare
+ * a capability the site does not have.
+ */
+export function websiteJsonLd(locale: Locale = routing.defaultLocale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE.url}${localizedPath(locale, "/")}#website`,
+    name: SITE.name,
+    alternateName: SITE.shortName,
+    url: `${SITE.url}${localizedPath(locale, "/")}`,
+    inLanguage: locale,
+    publisher: { "@id": organizationId(locale) },
+  };
 }
 
 interface ArticleJsonLdInput {
@@ -342,23 +482,38 @@ interface ArticleJsonLdInput {
   description: string;
   image: string;
   publishDate: string;
+  /** ISO timestamp of the last edit. Falls back to publishDate when unknown. */
+  modifiedDate?: string;
   path: string;
   authorName?: string;
-  authorEmail?: string;
 }
 
 /** Article JSON-LD for a blog post with optional author information. */
-export function articleJsonLd({ locale, title, description, image, publishDate, path, authorName, authorEmail }: ArticleJsonLdInput) {
+export function articleJsonLd({ locale, title, description, image, publishDate, modifiedDate, path, authorName }: ArticleJsonLdInput) {
   const url = `${SITE.url}${localizedPath(locale, path)}`;
-  const author = authorName ? {
-    "@type": "Person",
-    name: authorName,
-    ...(authorEmail && { email: authorEmail }),
-  } : {
-    "@type": "Organization",
-    "@id": organizationId(),
-    name: SITE.name,
-  };
+  // Author email is deliberately NOT published.
+  //
+  // `email` is not a recommended property of `Article.author` and adds nothing
+  // for search or answer engines, while publishing an address in
+  // machine-readable markup is a standing invitation to harvesters. The
+  // addresses previously emitted here also sat on a domain the business does
+  // not own (apexlimo.com, vs apexchauffeurdubai.com), which actively worked
+  // against the entity consolidation that AI search depends on — a second
+  // domain in the author graph reads as a different organisation.
+  //
+  // `url` links the author to the business entity instead, which is the
+  // relationship Google actually uses.
+  const author = authorName
+    ? {
+        "@type": "Person",
+        name: authorName,
+        worksFor: { "@id": organizationId(locale) },
+      }
+    : {
+        "@type": "Organization",
+        "@id": organizationId(locale),
+        name: SITE.name,
+      };
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -366,14 +521,18 @@ export function articleJsonLd({ locale, title, description, image, publishDate, 
     description,
     image: image.startsWith("http") ? image : `${SITE.url}${image}`,
     datePublished: publishDate,
-    dateModified: publishDate,
+    // Real last-edit timestamp when the CMS has one. This was hardcoded to
+    // `publishDate`, so every post claimed it had never been updated —
+    // freshness is a ranking and AI-citation input, and the `updatedAt`
+    // column already existed.
+    dateModified: modifiedDate ?? publishDate,
     mainEntityOfPage: url,
     url,
     inLanguage: locale,
     author,
     publisher: {
       "@type": "Organization",
-      "@id": organizationId(),
+      "@id": organizationId(locale),
       name: SITE.name,
       logo: {
         "@type": "ImageObject",

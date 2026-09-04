@@ -67,7 +67,7 @@ export function BlogPostForm({
         <FormField id="authorName" label="Author name" required>
           <input id="authorName" name="authorName" required defaultValue={post?.authorName} className={ADMIN_INPUT_CLASSES} />
         </FormField>
-        <FormField id="authorEmail" label="Author email" hint="Optional — used for structured data only, never displayed.">
+        <FormField id="authorEmail" label="Author email" hint="Optional, internal only — kept for editorial contact. It is never displayed and never published in structured data.">
           <input id="authorEmail" name="authorEmail" type="email" defaultValue={post?.authorEmail} className={ADMIN_INPUT_CLASSES} />
         </FormField>
         <div className="sm:col-span-2">

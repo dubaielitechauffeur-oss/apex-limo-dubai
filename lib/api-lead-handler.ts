@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
@@ -80,10 +81,22 @@ export async function readJsonBodyWithLimit(
   }
 }
 
-/** e.g. generateReference("APX-") -> "APX-L8K3J2A1-F9Q2", generateReference("APX-Q-") -> "APX-Q-L8K3J2A1-F9Q2" */
+/**
+ * e.g. generateReference("APX-") -> "APX-L8K3J2A1-F9Q2X7".
+ *
+ * The random half uses `crypto.randomBytes`, not `Math.random()`.
+ * `Math.random()` is seeded PRNG output: given a couple of observed
+ * references an attacker can predict neighbouring ones, and the timestamp
+ * half is already guessable. That is harmless today because nothing looks a
+ * lead up by reference — but a "track my booking" feature is the obvious next
+ * step, and it would turn predictable references into an IDOR on customer
+ * contact details. Making them unguessable now costs nothing and removes that
+ * trap from the design.
+ */
 export function generateReference(prefix: string): string {
   const stamp = Date.now().toString(36).toUpperCase();
-  const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
+  // 4 bytes -> 6 base32-ish characters, ~1 in 16 million per millisecond.
+  const rand = randomBytes(4).toString("base64url").replace(/[-_]/g, "").slice(0, 6).toUpperCase();
   return `${prefix}${stamp}-${rand}`;
 }
 

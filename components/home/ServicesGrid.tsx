@@ -6,7 +6,11 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import Reveal from "@/components/shared/Reveal";
-import { getAllServices } from "@/data/services";
+// CMS-backed, so a service renamed/added/removed in the admin panel shows
+// up here too. This previously read the static data file while /services
+// read the CMS, so the homepage could advertise a service the CMS had
+// renamed — or link to a slug that now 404s.
+import { getAllServices } from "@/lib/public/cms-content";
 import type { Locale } from "@/i18n/routing";
 
 /**
@@ -19,7 +23,7 @@ import type { Locale } from "@/i18n/routing";
 export default async function ServicesGrid() {
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("services");
-  const services = getAllServices(locale);
+  const services = await getAllServices(locale);
 
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">

@@ -322,6 +322,28 @@ export async function pushToCRM(payload: LeadPayload): Promise<void> {
   }
 }
 
+/**
+ * Caps how long a single channel may run before it is abandoned.
+ *
+ * The two fetch-based channels (WhatsApp, CRM) already pass
+ * `AbortSignal.timeout`, but the Resend SDK takes no timeout option — so a
+ * slow or hanging email provider held the customer's form response open until
+ * the serverless function itself timed out, turning a provider hiccup into a
+ * failed submission for someone who had already filled the form correctly.
+ *
+ * The lead is persisted to the database BEFORE dispatch runs (see the route
+ * handlers), so abandoning a slow channel loses a notification, never the
+ * lead itself.
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms)
+    ),
+  ]);
+}
+
 /** Fires all downstream integrations for a new lead. Errors are isolated per-channel so one failure doesn't block the others. */
 export async function dispatchLead(
   type: LeadType,
@@ -332,8 +354,8 @@ export async function dispatchLead(
 
   const results = await Promise.allSettled([
     notifyWhatsApp(payload),
-    sendLeadEmail(payload),
-    sendCustomerEmail(payload),
+    withTimeout(sendLeadEmail(payload), OUTBOUND_TIMEOUT_MS, "ops email"),
+    withTimeout(sendCustomerEmail(payload), OUTBOUND_TIMEOUT_MS, "customer email"),
     pushToCRM(payload),
   ]);
 
