@@ -65,6 +65,8 @@ export default function ServiceFaqSection({
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
+                  id={`service-faq-trigger-${index}`}
+                  aria-controls={`service-faq-panel-${index}`}
                   className="flex w-full items-center justify-between gap-6 px-6 py-5 text-start"
                 >
                   <span className="font-display text-base text-white sm:text-lg">
@@ -79,6 +81,9 @@ export default function ServiceFaqSection({
                   />
                 </button>
                 <div
+                  id={`service-faq-panel-${index}`}
+                  role="region"
+                  aria-labelledby={`service-faq-trigger-${index}`}
                   className={`grid overflow-hidden transition-all duration-300 ${
                     isOpen ? "grid-rows-[1fr] px-6 pb-5 opacity-100" : "grid-rows-[0fr] px-6 opacity-0"
                   }`}

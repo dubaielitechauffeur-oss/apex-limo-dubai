@@ -10,7 +10,11 @@ import {
   getWhatsAppLink,
 } from "@/lib/constants";
 import { getSiteContact } from "@/lib/public/site-contact";
-import { getAllServices } from "@/data/services";
+import TrackedCta from "@/components/shared/TrackedCta";
+// CMS-backed. The footer is on EVERY page, so a stale service slug here
+// was a site-wide broken link, and a service added in the admin panel
+// never appeared in the site's main internal-linking surface.
+import { getAllServices, getAllLocations } from "@/lib/public/cms-content";
 import type { Locale } from "@/i18n/routing";
 
 /** Curated footer order, mirroring the homepage LocationsShowcase pattern —
@@ -28,7 +32,15 @@ const FOOTER_LOCATIONS = [
 export default async function Footer() {
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("common");
-  const services = getAllServices(locale);
+  const [services, locations] = await Promise.all([
+    getAllServices(locale),
+    getAllLocations(locale),
+  ]);
+  // Curated order, resolved against live CMS rows — an unpublished or
+  // renamed location drops out instead of linking to a dead URL.
+  const footerLocations = FOOTER_LOCATIONS.filter((entry) =>
+    locations.some((location) => location.slug === entry.slug)
+  );
   const contact = await getSiteContact();
   const year = new Date().getFullYear();
 
@@ -82,7 +94,7 @@ export default async function Footer() {
           <div>
             <h3 className="label-eyebrow mb-5">{t("footer.locations")}</h3>
             <ul className="flex flex-col gap-3">
-              {FOOTER_LOCATIONS.map((location) => (
+              {footerLocations.map((location) => (
                 <li key={location.slug}>
                   <Link
                     href={`/locations/${location.slug}`}
@@ -100,19 +112,24 @@ export default async function Footer() {
             <h3 className="label-eyebrow mb-5">{t("footer.reachUs")}</h3>
             <ul className="flex flex-col gap-3 text-sm text-smoke">
               <li>
-                <a href={getPhoneLink(contact.phone)} className="transition-colors hover:text-gold">
+                <TrackedCta
+                  href={getPhoneLink(contact.phone)}
+                  channel="phone"
+                  placement="footer"
+                  className="transition-colors hover:text-gold"
+                >
                   <Ltr>{contact.phoneDisplay}</Ltr>
-                </a>
+                </TrackedCta>
               </li>
               <li>
-                <a
+                <TrackedCta
                   href={getWhatsAppLink(t("whatsappGenericMessage"), contact.whatsapp)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  channel="whatsapp"
+                  placement="footer"
                   className="transition-colors hover:text-gold"
                 >
                   {t("footer.whatsappUs")}
-                </a>
+                </TrackedCta>
               </li>
               <li>
                 <a

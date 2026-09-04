@@ -96,5 +96,11 @@
     "description": "Beim Laden dieser Seite ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut oder kehren Sie zur Startseite zurück.",
     "tryAgain": "Erneut versuchen",
     "backToHome": "Zurück zur Startseite"
+  },
+  "consent": {
+    "title": "Cookies & Analyse",
+    "body": "Wir verwenden Analyse-Cookies, um zu verstehen, wie Besucher diese Website nutzen, und sie zu verbessern. Vor Ihrer Zustimmung wird nichts gespeichert, und eine Ablehnung wirkt sich nicht auf Ihre Buchung aus.",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen"
   }
 }

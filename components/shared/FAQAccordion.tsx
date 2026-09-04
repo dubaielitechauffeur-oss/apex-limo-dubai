@@ -69,6 +69,8 @@ export default function FAQAccordion({
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
+                  id={`faq-trigger-${index}`}
+                  aria-controls={`faq-panel-${index}`}
                   className="flex w-full items-center justify-between gap-6 px-6 py-6 text-start"
                 >
                   <span
@@ -85,6 +87,9 @@ export default function FAQAccordion({
                   )}
                 </button>
                 <div
+                  id={`faq-panel-${index}`}
+                  role="region"
+                  aria-labelledby={`faq-trigger-${index}`}
                   className={`grid overflow-hidden transition-all duration-300 ${
                     isOpen ? "grid-rows-[1fr] px-6 pb-6 opacity-100" : "grid-rows-[0fr] px-6 opacity-0"
                   }`}

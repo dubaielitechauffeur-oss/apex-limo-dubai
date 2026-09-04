@@ -4,7 +4,8 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import Reveal from "@/components/shared/Reveal";
 import LocationServiceCard from "./LocationServiceCard";
 import LocationServicesCarousel from "./LocationServicesCarousel";
-import { getAllServices } from "@/data/services";
+// CMS-backed — see the note in components/home/ServicesGrid.tsx.
+import { getAllServices } from "@/lib/public/cms-content";
 import type { Locale } from "@/i18n/routing";
 
 /**
@@ -18,7 +19,7 @@ import type { Locale } from "@/i18n/routing";
 export default async function LocationServicesSection() {
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("services");
-  const services = getAllServices(locale);
+  const services = await getAllServices(locale);
 
   return (
     <section className="border-t border-gold/10 bg-ivory py-24">

@@ -177,7 +177,7 @@ function BookingFormFields({
       setCustomerName(form.fullName.trim());
       setReference(data.reference ?? "");
       setStatus("success");
-      trackConversion("booking", form.vehicle || undefined);
+      trackConversion("booking", { item: form.vehicle || undefined, placement: "form_success" });
       setForm(EMPTY_FORM);
     } catch {
       setStatus("error");

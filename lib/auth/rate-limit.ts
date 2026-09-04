@@ -1,4 +1,5 @@
 import { getClientIp } from "@/lib/spam-protection";
+import { consumeSharedRateLimit } from "@/lib/rate-limit/shared";
 
 /**
  * Per-IP sliding-window rate limiting for auth endpoints, independent of the
@@ -39,10 +40,31 @@ function hit(bucket: Bucket, key: string): boolean {
   return timestamps.length > bucket.maxHits;
 }
 
-export function isLoginRateLimited(headers: Headers): boolean {
-  return hit(loginBucket, getClientIp(headers));
+/**
+ * Both checks combine the per-process window above with a shared,
+ * database-backed counter so the limit holds across serverless instances —
+ * the in-memory map alone gave an attacker a fresh budget per warm instance.
+ * The local check runs first and short-circuits, so a flood costs no database
+ * writes. See lib/rate-limit/shared.ts for the failure-mode reasoning.
+ */
+export async function isLoginRateLimited(headers: Headers): Promise<boolean> {
+  const ip = getClientIp(headers);
+  if (hit(loginBucket, ip)) return true;
+  return consumeSharedRateLimit({
+    scope: "login",
+    key: ip,
+    limit: loginBucket.maxHits,
+    windowMs: loginBucket.windowMs,
+  });
 }
 
-export function isForgotPasswordRateLimited(headers: Headers): boolean {
-  return hit(forgotPasswordBucket, getClientIp(headers));
+export async function isForgotPasswordRateLimited(headers: Headers): Promise<boolean> {
+  const ip = getClientIp(headers);
+  if (hit(forgotPasswordBucket, ip)) return true;
+  return consumeSharedRateLimit({
+    scope: "forgot-password",
+    key: ip,
+    limit: forgotPasswordBucket.maxHits,
+    windowMs: forgotPasswordBucket.windowMs,
+  });
 }

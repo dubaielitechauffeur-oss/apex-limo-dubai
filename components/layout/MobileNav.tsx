@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import TrackedCta from "@/components/shared/TrackedCta";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { LOCALE_METADATA } from "@/i18n/locale-metadata";
@@ -127,20 +128,22 @@ export default function MobileNav({ open, onClose, contact }: MobileNavProps) {
           >
             {t("cta.bookNow")}
           </Link>
-          <a
-            href={getWhatsAppLink(t("whatsappGenericMessage"), contact.whatsapp)}
-            target="_blank"
-            rel="noopener noreferrer"
+          <TrackedCta
+href={getWhatsAppLink(t("whatsappGenericMessage"), contact.whatsapp)}
             className="btn-outline w-full"
+            channel="whatsapp"
+            placement="header"
           >
             {t("cta.whatsappUs")}
-          </a>
-          <a
-            href={getPhoneLink(contact.phone)}
+          </TrackedCta>
+          <TrackedCta
+href={getPhoneLink(contact.phone)}
             className="mt-2 text-center text-sm tracking-wide text-smoke"
+            channel="phone"
+            placement="header"
           >
             {t("mobileNav.orCall")} <Ltr>{contact.phoneDisplay}</Ltr>
-          </a>
+          </TrackedCta>
         </div>
 
         {/* Language — grid of flag + native-name toggles, mirrors the

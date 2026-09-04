@@ -18,6 +18,7 @@ import { formatDate } from "@/lib/format";
 import { blogImageExists } from "@/lib/blogImage";
 import { getBlogPostBySlug, getRelatedBlogPosts } from "@/lib/public/cms-content";
 import { BLOG_POSTS } from "@/data/blog";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -55,6 +56,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     images: [post.featuredImage.src],
     type: "article",
     publishedTime: post.publishDate,
+    // seoTitle/seoDescription above already fold in seo.title/description;
+    // passing the whole object adds canonical, OG image and noindex/nofollow,
+    // which posts previously had no way to set either.
+    seo: post.seo,
+    alternateLocales: post.availableLocales,
   });
 }
 
@@ -75,47 +81,27 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            articleJsonLd({
+      <JsonLd data={articleJsonLd({
               locale: locale as Locale,
               title: post.title,
               description: post.seoDescription,
               image: post.featuredImage.src,
               publishDate: post.publishDate,
+              modifiedDate: post.updatedAt,
               path: `/blog/${post.slug}`,
               authorName: post.author.name,
-              authorEmail: post.author.email,
-            })
-          ),
-        }}
-      />
+            })} />
       {faqBlock && faqBlock.type === "faq" ? (
-        <script
-          type="application/ld+json"
-
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqBlock.items, locale as Locale)) }}
-        />
+        <JsonLd data={faqJsonLd(faqBlock.items, locale as Locale)} />
       ) : null}
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd(
+      <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("blog"), path: "/blog" },
                 { name: post.title, path: `/blog/${post.slug}` },
               ],
               locale as Locale,
               tNav("home")
-            )
-          ),
-        }}
-      />
+            )} />
 
       {/* Featured image */}
       <Section tone="obsidian" padding="sm" separator={false}>

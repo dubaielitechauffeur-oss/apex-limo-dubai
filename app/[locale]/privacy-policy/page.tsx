@@ -8,6 +8,7 @@ import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 import { getSiteContact } from "@/lib/public/site-contact";
 import { formatDate } from "@/lib/format";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -36,15 +37,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
   const contact = await getSiteContact();
   return (
     <>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: breadcrumbLabel, path: "/privacy-policy" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={breadcrumbJsonLd([{ name: breadcrumbLabel, path: "/privacy-policy" }], locale as Locale, tNav("home"))} />
       <Section tone="ivory" separator={false}>
       <Container className="max-w-3xl">
         <span className="label-eyebrow text-graphite">{t("eyebrow")}</span>

@@ -7,6 +7,7 @@ import FaqHubClient from "@/components/faqs/FaqHubClient";
 import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { getAllFaqs } from "@/lib/public/cms-content";
 import { FAQ_CATEGORIES } from "@/data/faqHub";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -34,20 +35,8 @@ export default async function FaqsPage({ params }: PageProps) {
   const faqs = await getAllFaqs(locale as Locale);
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs, locale as Locale)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: tNav("faqs"), path: "/faqs" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={faqJsonLd(faqs, locale as Locale)} />
+      <JsonLd data={breadcrumbJsonLd([{ name: tNav("faqs"), path: "/faqs" }], locale as Locale, tNav("home"))} />
 
       {/* Hero */}
       <section className="border-b border-gold/15 bg-obsidian py-20 sm:py-24">

@@ -96,5 +96,11 @@
     "description": "加载此页面时发生意外错误。请重试,或返回首页。",
     "tryAgain": "重试",
     "backToHome": "返回首页"
+  },
+  "consent": {
+    "title": "Cookie 与分析",
+    "body": "我们使用分析类 Cookie 了解访客如何使用本网站,以便持续改进。在您同意之前不会存储任何数据,拒绝也不会影响您的预订。",
+    "accept": "接受",
+    "decline": "拒绝"
   }
 }

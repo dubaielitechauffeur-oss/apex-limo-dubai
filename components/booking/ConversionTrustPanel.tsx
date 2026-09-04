@@ -1,25 +1,32 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Star, Car, BadgeCheck, Clock, Zap, Quote } from "lucide-react";
 import Reveal from "@/components/shared/Reveal";
 import Ltr from "@/components/shared/Ltr";
 import { RATING, FLEET_SIZE } from "@/lib/constants";
-import { TESTIMONIALS } from "@/data/testimonials";
+// CMS-backed, like the homepage Testimonials section. Reading the static file
+// here meant the booking and quote pages could quote a review the admin had
+// already edited or unfeatured elsewhere — the same source-of-truth split that
+// affected the homepage grid and the footer.
+import { getFeaturedTestimonials } from "@/lib/public/cms-content";
 
 /** One real, published testimonial (see data/testimonials.ts) shown at the
  *  point of conversion — previously this panel had no actual customer
  *  quote, only aggregate numbers, at the exact moment social proof most
  *  reduces booking anxiety. */
-const featuredTestimonial = TESTIMONIALS.find((t) => t.featured) ?? TESTIMONIALS[0];
 
 /**
  * Luxury sidebar trust panel shown beside the booking/quote forms — a
  * black-and-gold rating/trust summary plus a "What Happens Next" process,
  * replacing the old phone/WhatsApp quick-contact boxes.
  */
-export default function ConversionTrustPanel() {
-  const t = useTranslations("forms.conversion");
-  const tPanel = useTranslations("forms.conversion.trustPanel");
-  const tA11y = useTranslations("common.a11y");
+export default async function ConversionTrustPanel() {
+  const testimonials = await getFeaturedTestimonials();
+  const featuredTestimonial = testimonials[0];
+  const [t, tPanel, tA11y] = await Promise.all([
+    getTranslations("forms.conversion"),
+    getTranslations("forms.conversion.trustPanel"),
+    getTranslations("common.a11y"),
+  ]);
 
   const trustBullets = [
     { icon: Car, label: t("fleetSizeVehicles", { count: FLEET_SIZE }) },

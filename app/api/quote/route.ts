@@ -10,7 +10,7 @@ import { isRateLimited, isHoneypotTripped, getClientIp } from "@/lib/spam-protec
 export async function POST(request: NextRequest) {
   let locale: Locale = routing.defaultLocale;
 
-  if (isRateLimited(request)) {
+  if (await isRateLimited(request)) {
     const t = await getTranslations({ locale, namespace: "forms.status" });
     return NextResponse.json({ success: false, message: t("rateLimited") }, { status: 429 });
   }

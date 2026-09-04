@@ -1,4 +1,5 @@
 import { Phone } from "lucide-react";
+import TrackedCta from "@/components/shared/TrackedCta";
 import { getTranslations } from "next-intl/server";
 import Container from "@/components/shared/Container";
 import CTAButton from "@/components/shared/CTAButton";
@@ -102,13 +103,15 @@ export default async function BookingCTA({
             </CTAButton>
           </div>
 
-          <a
-            href={getPhoneLink(contact.phone)}
+          <TrackedCta
+href={getPhoneLink(contact.phone)}
             className="mt-8 inline-flex items-center gap-2 text-sm text-smoke transition-colors hover:text-gold"
+            channel="phone"
+            placement="hero"
           >
             <Phone className="h-4 w-4" strokeWidth={1.5} />
             <Ltr>{contact.phoneDisplay}</Ltr>
-          </a>
+          </TrackedCta>
         </Reveal>
       </Container>
     </section>

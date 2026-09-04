@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 import { routing, type Locale } from "@/i18n/routing";
 import type { LocalizedText } from "@/lib/cms/localized";
+import { resolvePublicSeo, collectOgImageIds, type PublicSeo } from "./seo-fields";
+import { availableLocalesFor } from "./translation-coverage";
 import {
   getAllServices as staticGetAllServices,
   getServiceBySlug as staticGetServiceBySlug,
@@ -72,6 +74,39 @@ function pickArray(value: unknown, locale: Locale): string[] {
 }
 
 /**
+ * One batched lookup turning every `seo.ogImageId` referenced by `rows` into a
+ * usable URL. Called once per fetch rather than per row: a per-row
+ * `mediaItem.findUnique` would add an N+1 to the fleet, services and locations
+ * listing pages, which render every published row at once.
+ *
+ * Soft-deleted media is excluded, so an image an admin removed from the Media
+ * Library degrades to "no OG override" (the page falls back to the site
+ * default) instead of emitting a dead URL into Open Graph tags.
+ *
+ * Never throws: an OG image is a nice-to-have, and a media-table failure must
+ * not take down the page it decorates.
+ */
+async function resolveOgImageUrls(rows: ReadonlyArray<{ seo?: unknown }>): Promise<Map<string, string>> {
+  const ids = collectOgImageIds(rows);
+  if (ids.length === 0) return new Map();
+  try {
+    const media = await prisma.mediaItem.findMany({
+      where: { id: { in: ids }, deletedAt: null },
+      select: { id: true, url: true },
+    });
+    return new Map(media.map((m) => [m.id, m.url]));
+  } catch (err) {
+    console.error("[cms-content] OG image lookup failed, omitting overrides:", err);
+    return new Map();
+  }
+}
+
+/** True when the CMS row is marked noindex — used to keep it out of the sitemap. */
+function isSeoNoIndex(value: unknown): boolean {
+  return !!value && typeof value === "object" && (value as { noIndex?: unknown }).noIndex === true;
+}
+
+/**
  * DB-first with static fallback. Order: try the database; if the query
  * throws (connection down, unreachable, Prisma error) or the result is
  * empty (no rows migrated yet), serve the static `data/*.ts` file so the
@@ -98,7 +133,8 @@ async function withFallback<T>(run: () => Promise<T>, isEmpty: (value: T) => boo
 
 function mapService(
   row: Awaited<ReturnType<typeof fetchAllServiceRows>>[number],
-  locale: Locale
+  locale: Locale,
+  ogImageUrlById?: ReadonlyMap<string, string>
 ): PlainService {
   const ratingMetric = (row.ratingMetric ?? {}) as { value?: string; label?: unknown };
   return {
@@ -114,6 +150,11 @@ function mapService(
     faqs: row.faqs.map((faq) => ({ question: pickText(faq.question, locale), answer: pickText(faq.answer, locale) })),
     image: { src: row.image?.url ?? row.imageUrl ?? "", alt: pickText(row.imageAlt, locale) },
     tags: pickArray(row.tags, locale),
+    seo: resolvePublicSeo(row.seo, locale, ogImageUrlById) ?? undefined,
+    // A service reads as translated only when its name, summary and body copy
+    // are all present — a translated name over English body text is exactly
+    // the half-localized page this gate exists to keep out of hreflang.
+    availableLocales: availableLocalesFor([row.name, row.shortDescription, row.longDescription]),
   };
 }
 
@@ -127,7 +168,11 @@ function fetchAllServiceRows() {
 
 export async function getAllServices(locale: Locale): Promise<PlainService[]> {
   return withFallback(
-    async () => (await fetchAllServiceRows()).map((row) => mapService(row, locale)),
+    async () => {
+      const rows = await fetchAllServiceRows();
+      const ogImages = await resolveOgImageUrls(rows);
+      return rows.map((row) => mapService(row, locale, ogImages));
+    },
     (result) => result.length === 0,
     () => staticGetAllServices(locale)
   );
@@ -136,9 +181,17 @@ export async function getAllServices(locale: Locale): Promise<PlainService[]> {
 export async function getServiceBySlug(slug: string, locale: Locale): Promise<PlainService | undefined> {
   return withFallback(
     async () => {
-      const rows = await fetchAllServiceRows();
-      const row = rows.find((r) => r.slug === slug);
-      return row ? mapService(row, locale) : undefined;
+      // Targeted lookup on the unique `slug` index. This previously fetched
+      // every published service (with its image + FAQ joins) and then found
+      // one row in JS, which made a single service page's cost scale with the
+      // whole catalogue for no reason.
+      const row = await prisma.service.findUnique({
+        where: { slug },
+        include: { image: { select: { url: true } }, faqs: { orderBy: { sortOrder: "asc" } } },
+      });
+      if (!row || row.status !== "published" || row.deletedAt !== null) return undefined;
+      const ogImages = await resolveOgImageUrls([row]);
+      return mapService(row, locale, ogImages);
     },
     (result) => result === undefined,
     () => staticGetServiceBySlug(slug, locale)
@@ -149,7 +202,8 @@ export async function getServiceBySlug(slug: string, locale: Locale): Promise<Pl
 
 function mapLocation(
   row: Awaited<ReturnType<typeof fetchAllLocationRows>>[number],
-  locale: Locale
+  locale: Locale,
+  ogImageUrlById?: ReadonlyMap<string, string>
 ): PlainLocation {
   const geo = row.geo as { lat?: number; lng?: number } | null;
   const heroDesktopSrc = row.heroDesktopImage?.url ?? row.heroDesktopImageUrl;
@@ -177,6 +231,10 @@ function mapLocation(
     heroObjectPosition: row.heroObjectPosition ?? undefined,
     tags: pickArray(row.tags, locale),
     geo: geo?.lat !== undefined && geo?.lng !== undefined ? { latitude: geo.lat, longitude: geo.lng } : undefined,
+    seo: resolvePublicSeo(row.seo, locale, ogImageUrlById) ?? undefined,
+    // `name` is a proper noun kept in Latin script across all locales by
+    // design, so it is deliberately not part of the coverage check.
+    availableLocales: availableLocalesFor([row.tagline, row.shortDescription, row.longDescription]),
   };
 }
 
@@ -195,7 +253,11 @@ function fetchAllLocationRows() {
 
 export async function getAllLocations(locale: Locale): Promise<PlainLocation[]> {
   return withFallback(
-    async () => (await fetchAllLocationRows()).map((row) => mapLocation(row, locale)),
+    async () => {
+      const rows = await fetchAllLocationRows();
+      const ogImages = await resolveOgImageUrls(rows);
+      return rows.map((row) => mapLocation(row, locale, ogImages));
+    },
     (result) => result.length === 0,
     () => staticGetAllLocations(locale)
   );
@@ -204,9 +266,19 @@ export async function getAllLocations(locale: Locale): Promise<PlainLocation[]> 
 export async function getLocationBySlug(slug: string, locale: Locale): Promise<PlainLocation | undefined> {
   return withFallback(
     async () => {
-      const rows = await fetchAllLocationRows();
-      const row = rows.find((r) => r.slug === slug);
-      return row ? mapLocation(row, locale) : undefined;
+      // Targeted lookup on the unique `slug` index — see getServiceBySlug.
+      const row = await prisma.location.findUnique({
+        where: { slug },
+        include: {
+          heroDesktopImage: { select: { url: true } },
+          heroMobileImage: { select: { url: true } },
+          popularRoutes: { orderBy: { sortOrder: "asc" } },
+          faqs: { orderBy: { sortOrder: "asc" } },
+        },
+      });
+      if (!row || row.status !== "published" || row.deletedAt !== null) return undefined;
+      const ogImages = await resolveOgImageUrls([row]);
+      return mapLocation(row, locale, ogImages);
     },
     (result) => result === undefined,
     () => staticGetLocationBySlug(slug, locale)
@@ -224,6 +296,32 @@ function fetchAllFaqRows() {
     orderBy: [{ sortOrder: "asc" }],
     include: { category: { select: { key: true } } },
   });
+}
+
+/**
+ * The short FAQ list the homepage renders (and emits FAQPage schema from).
+ *
+ * Previously the homepage read `data/faqs.ts` — a separate hand-written set of
+ * six questions — while `/faqs` read the CMS hub. Two FAQ sources meant an
+ * admin could edit an answer in the CMS and leave the homepage stating the
+ * opposite, with both pages publishing conflicting FAQPage structured data for
+ * the same business.
+ *
+ * Now both read the same rows. "Booking" is preferred as the homepage slice
+ * because it is the category a first-time visitor is most likely to be asking
+ * from, with the rest of the hub as backfill so the section is never short.
+ * The static file remains the fallback for a fresh install or a DB outage,
+ * exactly like every other reader here.
+ */
+export async function getHomepageFaqs(locale: Locale, limit = 6): Promise<{ question: string; answer: string }[]> {
+  const all = await getAllFaqs(locale);
+  if (all.length === 0) return [];
+
+  const preferred = all.filter((faq) => faq.category === "booking");
+  const rest = all.filter((faq) => faq.category !== "booking");
+  return [...preferred, ...rest]
+    .slice(0, limit)
+    .map((faq) => ({ question: faq.question, answer: faq.answer }));
 }
 
 export async function getAllFaqs(locale: Locale): Promise<PlainFaqHubEntry[]> {
@@ -262,8 +360,13 @@ function pickBlock(block: unknown, locale: Locale): PlainBlogContentBlock | null
   return null;
 }
 
-function mapBlogPost(row: Awaited<ReturnType<typeof fetchAllBlogRows>>[number], locale: Locale): PlainBlogPost {
+function mapBlogPost(
+  row: Awaited<ReturnType<typeof fetchAllBlogRows>>[number],
+  locale: Locale,
+  ogImageUrlById?: ReadonlyMap<string, string>
+): PlainBlogPost {
   const seo = (row.seo ?? {}) as { title?: unknown; description?: unknown };
+  const publicSeo = resolvePublicSeo(row.seo, locale, ogImageUrlById);
   const author = (row.author ?? {}) as { name?: string; title?: unknown; email?: string };
   const content = Array.isArray(row.content)
     ? (row.content as unknown[]).map((block) => pickBlock(block, locale)).filter((b): b is PlainBlogContentBlock => b !== null)
@@ -279,6 +382,12 @@ function mapBlogPost(row: Awaited<ReturnType<typeof fetchAllBlogRows>>[number], 
     author: { name: author.name ?? "", title: pickText(author.title, locale), email: author.email },
     featuredImage: { src: row.featuredImage?.url ?? "", alt: pickText(row.featuredImage?.alt, locale) },
     content,
+    // Blog already consumed seo.title/description above; carrying the full
+    // object through means canonical, OG image and noIndex/noFollow now work
+    // for posts on the same footing as every other content type.
+    seo: publicSeo ?? undefined,
+    updatedAt: row.updatedAt.toISOString(),
+    availableLocales: availableLocalesFor([row.title, row.excerpt]),
   };
 }
 
@@ -292,7 +401,11 @@ function fetchAllBlogRows() {
 
 export async function getAllBlogPosts(locale: Locale): Promise<PlainBlogPost[]> {
   return withFallback(
-    async () => (await fetchAllBlogRows()).map((row) => mapBlogPost(row, locale)),
+    async () => {
+      const rows = await fetchAllBlogRows();
+      const ogImages = await resolveOgImageUrls(rows);
+      return rows.map((row) => mapBlogPost(row, locale, ogImages));
+    },
     (result) => result.length === 0,
     () => staticGetAllBlogPosts(locale)
   );
@@ -301,9 +414,14 @@ export async function getAllBlogPosts(locale: Locale): Promise<PlainBlogPost[]> 
 export async function getBlogPostBySlug(slug: string, locale: Locale): Promise<PlainBlogPost | undefined> {
   return withFallback(
     async () => {
-      const rows = await fetchAllBlogRows();
-      const row = rows.find((r) => r.slug === slug);
-      return row ? mapBlogPost(row, locale) : undefined;
+      // Targeted lookup on the unique `slug` index — see getServiceBySlug.
+      const row = await prisma.blogPost.findUnique({
+        where: { slug },
+        include: { featuredImage: { select: { url: true, alt: true } } },
+      });
+      if (!row || row.status !== "published" || row.deletedAt !== null) return undefined;
+      const ogImages = await resolveOgImageUrls([row]);
+      return mapBlogPost(row, locale, ogImages);
     },
     (result) => result === undefined,
     () => staticGetBlogPostBySlug(slug, locale)
@@ -366,6 +484,11 @@ export interface PublicHeroSlide {
   subtitle: string;
   desktopImageUrl: string | null;
   mobileImageUrl: string | null;
+  /** The Media Library's own alt text for the hero image. Falls back to "" so
+   *  the Hero can use its translated static alt instead — reusing the
+   *  headline as alt text (the previous behaviour) just repeats the H1 to a
+   *  screen reader and describes nothing about the photograph. */
+  imageAlt: string;
   ctas: { label: string; href: string }[];
 }
 
@@ -373,22 +496,63 @@ function fetchHeroSlideRows() {
   return prisma.heroSlide.findMany({
     where: { status: "published" },
     orderBy: { sortOrder: "asc" },
-    include: { desktopImage: { select: { url: true } }, mobileImage: { select: { url: true } } },
+    include: {
+      desktopImage: { select: { url: true, alt: true } },
+      mobileImage: { select: { url: true } },
+    },
   });
 }
 
 /**
- * No static fallback source exists — the homepage currently has a single
- * hardcoded hero (not a slideshow), so an empty array here is itself the
- * correct "use the existing static Hero" signal to `components/home/Hero.tsx`.
- * See PUBLIC_CMS_INTEGRATION.md "Homepage Hero" for the full reasoning.
+ * Published hero slides, lowest `sortOrder` first.
+ *
+ * This previously returned a hardcoded `[]` — `fetchHeroSlideRows()` was
+ * defined and never called — which meant the entire Hero Slides module
+ * (Prisma model, CRUD, admin UI, server actions, tests) wrote content that no
+ * visitor could ever see. An admin could upload art, write CTAs, hit Publish,
+ * watch it appear as "published" in the panel, and the homepage would keep
+ * rendering the hardcoded static hero with no error and no warning.
+ *
+ * An empty array is still the correct "use the static hero" signal to
+ * `components/home/Hero.tsx` — it just now means "no slides are published"
+ * rather than "this feature is switched off". The static hero therefore
+ * remains the permanent fallback for a fresh install or a database outage,
+ * matching every other reader in this file.
  */
-export async function getHeroSlides(_locale: Locale): Promise<PublicHeroSlide[]> {
-  // Empty means "use the static hero" — the same result this returned
-  // whenever no slides were configured. The database is not in the public
-  // read path (see the note on `withFallback` above); restoring
-  // admin-managed hero slides means calling `fetchHeroSlideRows()` again.
-  return [];
+export async function getHeroSlides(locale: Locale): Promise<PublicHeroSlide[]> {
+  return withFallback(
+    async () => {
+      const rows = await fetchHeroSlideRows();
+      return rows.map((row) => ({
+        title: pickText(row.title, locale),
+        subtitle: pickText(row.subtitle, locale),
+        desktopImageUrl: row.desktopImage?.url ?? null,
+        mobileImageUrl: row.mobileImage?.url ?? null,
+        imageAlt: pickText(row.desktopImage?.alt, locale),
+        ctas: Array.isArray(row.ctas)
+          ? (row.ctas as unknown[])
+              .map((cta) => {
+                const c = (cta ?? {}) as { label?: unknown; href?: unknown };
+                return {
+                  // `HeroCta.label` is a LocalizedText object written by the
+                  // admin form (see readCtas in the homepage actions), not a
+                  // plain string — so it goes through the same locale pick as
+                  // every other translated field, with the English fallback.
+                  label: pickText(c.label, locale),
+                  href: typeof c.href === "string" ? c.href.trim() : "",
+                };
+              })
+              // A CTA with no destination is a dead button, and one with no
+              // label is an empty one — drop both rather than render them.
+              .filter((cta) => cta.label && cta.href)
+          : [],
+      }));
+    },
+    // Never treat "no slides" as an error worth logging; it is the normal
+    // state for a site that has not configured any.
+    () => false,
+    () => []
+  );
 }
 
 // ── Fleet ────────────────────────────────────────────────────────────────
@@ -400,6 +564,16 @@ export async function getHeroSlides(_locale: Locale): Promise<PublicHeroSlide[]>
 // admin adds beyond these four falls back to its own English name so
 // nothing throws, though it won't participate in the same-ordering rank
 // below — a known, documented limitation (see FLEET_CMS.md).
+/**
+ * The four `VehicleCategory` rows seeded in prisma/seed.ts, mapped to the
+ * closed `FleetCategory` display union.
+ *
+ * Note there are FIVE fleet category PAGES — `electric` is the fifth, but it
+ * is not a category row: it is the `Vehicle.isElectric` boolean, so a car can
+ * be both a Sedan and electric. `getVehiclesByCategorySlug` handles that case
+ * explicitly rather than pretending it is a category here, which is why this
+ * map has four entries and FLEET_CATEGORY_SLUGS has five.
+ */
 const CATEGORY_SLUG_TO_DISPLAY: Record<string, FleetCategory> = {
   sedan: "Sedan",
   suv: "SUV",
@@ -414,7 +588,11 @@ const CATEGORY_DISPLAY_RANK: Record<FleetCategory, number> = {
   Van: 3,
 };
 
-function mapVehicle(row: Awaited<ReturnType<typeof fetchAllVehicleRows>>[number], locale: Locale): PlainFleetVehicle {
+function mapVehicle(
+  row: Awaited<ReturnType<typeof fetchAllVehicleRows>>[number],
+  locale: Locale,
+  ogImageUrlById?: ReadonlyMap<string, string>
+): PlainFleetVehicle {
   const badge = row.badge as LocalizedText | null;
   const category = CATEGORY_SLUG_TO_DISPLAY[row.category.slug] ?? ((row.category.name as LocalizedText | null)?.en as FleetCategory);
 
@@ -446,6 +624,9 @@ function mapVehicle(row: Awaited<ReturnType<typeof fetchAllVehicleRows>>[number]
     isPlaceholder: row.isPlaceholder,
     amenities: Array.isArray(row.amenities) ? (row.amenities as string[]) : undefined,
     popularFor: buildPopularForChips(row, locale),
+    seo: resolvePublicSeo(row.seo, locale, ogImageUrlById) ?? undefined,
+    // Vehicle `name`/`brand`/`model` are proper nouns and stay Latin script.
+    availableLocales: availableLocalesFor([row.description, row.longDescription, row.idealFor]),
   };
 }
 
@@ -477,9 +658,15 @@ function buildPopularForChips(
   return chips.length > 0 ? chips : undefined;
 }
 
-async function fetchAllVehicleRows() {
+/**
+ * Shared vehicle query. `extraWhere` narrows it to a single row for the detail
+ * page without duplicating the include tree (gallery + mobile variants + FAQs
+ * + category) or the popularFor FK resolution below, both of which the detail
+ * page needs just as much as the listing does.
+ */
+async function fetchVehicleRowsWhere(extraWhere: { slug?: string } = {}) {
   const rows = await prisma.vehicle.findMany({
-    where: { status: "published", deletedAt: null },
+    where: { status: "published", deletedAt: null, ...extraWhere },
     orderBy: { sortOrder: "asc" },
     include: {
       category: { select: { slug: true, name: true } },
@@ -534,6 +721,11 @@ async function fetchAllVehicleRows() {
   });
 }
 
+/** Every published vehicle — the listing/carousel path. */
+function fetchAllVehicleRows() {
+  return fetchVehicleRowsWhere();
+}
+
 /** Same category-rank ordering `getAllVehicles()` in data/fleet.ts applies
  *  (Ultra-Luxury first, down to Van), so the CMS-backed listing visually
  *  matches the static one exactly. */
@@ -543,7 +735,11 @@ function sortByCategoryRank(vehicles: PlainFleetVehicle[]): PlainFleetVehicle[] 
 
 export async function getAllVehicles(locale: Locale): Promise<PlainFleetVehicle[]> {
   return withFallback(
-    async () => sortByCategoryRank((await fetchAllVehicleRows()).map((row) => mapVehicle(row, locale))),
+    async () => {
+      const rows = await fetchAllVehicleRows();
+      const ogImages = await resolveOgImageUrls(rows);
+      return sortByCategoryRank(rows.map((row) => mapVehicle(row, locale, ogImages)));
+    },
     (result) => result.length === 0,
     () => staticGetAllVehicles(locale)
   );
@@ -552,9 +748,15 @@ export async function getAllVehicles(locale: Locale): Promise<PlainFleetVehicle[
 export async function getVehicleBySlug(slug: string, locale: Locale): Promise<PlainFleetVehicle | undefined> {
   return withFallback(
     async () => {
-      const rows = await fetchAllVehicleRows();
-      const row = rows.find((r) => r.slug === slug);
-      return row ? mapVehicle(row, locale) : undefined;
+      // Targeted lookup on the unique `slug` index. `fetchAllVehicleRows()`
+      // pulls every published vehicle with its gallery, mobile variants, FAQs
+      // and category joins plus two follow-up queries — an unreasonable cost
+      // for rendering one vehicle page, and it grew with every vehicle added.
+      const rows = await fetchVehicleRowsWhere({ slug });
+      const row = rows[0];
+      if (!row) return undefined;
+      const ogImages = await resolveOgImageUrls(rows);
+      return mapVehicle(row, locale, ogImages);
     },
     (result) => result === undefined,
     () => staticGetVehicleBySlug(slug, locale)
@@ -573,6 +775,20 @@ export async function getVehiclesByCategorySlug(categorySlug: FleetCategorySlug,
 export interface SitemapEntry {
   slug: string;
   lastModified?: Date;
+  /** Locales with real translated copy. Undefined = all six. */
+  availableLocales?: Locale[];
+}
+
+/**
+ * A sitemap must only advertise URLs the site actually wants indexed. Before
+ * this, `seo.noIndex` was written by the admin SEO Manager and read by nobody:
+ * a row an editor had explicitly marked "no index" still appeared here, and
+ * still rendered without a robots meta tag. Both halves of that are fixed —
+ * the metadata side in each route's `generateMetadata`, and the discovery side
+ * here.
+ */
+function excludeNoIndex<T extends { seo: unknown }>(rows: T[]): T[] {
+  return rows.filter((row) => !isSeoNoIndex(row.seo));
 }
 
 export async function getServiceSitemapEntries(): Promise<SitemapEntry[]> {
@@ -580,9 +796,13 @@ export async function getServiceSitemapEntries(): Promise<SitemapEntry[]> {
     async () => {
       const rows = await prisma.service.findMany({
         where: { status: "published", deletedAt: null },
-        select: { slug: true, updatedAt: true },
+        select: { slug: true, updatedAt: true, seo: true, name: true, shortDescription: true, longDescription: true },
       });
-      return rows.map((r) => ({ slug: r.slug, lastModified: r.updatedAt }));
+      return excludeNoIndex(rows).map((r) => ({
+        slug: r.slug,
+        lastModified: r.updatedAt,
+        availableLocales: availableLocalesFor([r.name, r.shortDescription, r.longDescription]),
+      }));
     },
     (result) => result.length === 0,
     () => staticGetAllServices(routing.defaultLocale).map((s) => ({ slug: s.slug }))
@@ -594,9 +814,13 @@ export async function getLocationSitemapEntries(): Promise<SitemapEntry[]> {
     async () => {
       const rows = await prisma.location.findMany({
         where: { status: "published", deletedAt: null },
-        select: { slug: true, updatedAt: true },
+        select: { slug: true, updatedAt: true, seo: true, tagline: true, shortDescription: true, longDescription: true },
       });
-      return rows.map((r) => ({ slug: r.slug, lastModified: r.updatedAt }));
+      return excludeNoIndex(rows).map((r) => ({
+        slug: r.slug,
+        lastModified: r.updatedAt,
+        availableLocales: availableLocalesFor([r.tagline, r.shortDescription, r.longDescription]),
+      }));
     },
     (result) => result.length === 0,
     () => staticGetAllLocations(routing.defaultLocale).map((l) => ({ slug: l.slug }))
@@ -608,9 +832,13 @@ export async function getBlogPostSitemapEntries(): Promise<SitemapEntry[]> {
     async () => {
       const rows = await prisma.blogPost.findMany({
         where: { status: "published", deletedAt: null },
-        select: { slug: true, publishedAt: true, updatedAt: true },
+        select: { slug: true, publishedAt: true, updatedAt: true, seo: true, title: true, excerpt: true },
       });
-      return rows.map((r) => ({ slug: r.slug, lastModified: r.publishedAt ?? r.updatedAt }));
+      return excludeNoIndex(rows).map((r) => ({
+        slug: r.slug,
+        lastModified: r.updatedAt ?? r.publishedAt,
+        availableLocales: availableLocalesFor([r.title, r.excerpt]),
+      }));
     },
     (result) => result.length === 0,
     () =>
@@ -623,9 +851,13 @@ export async function getVehicleSitemapEntries(): Promise<SitemapEntry[]> {
     async () => {
       const rows = await prisma.vehicle.findMany({
         where: { status: "published", deletedAt: null },
-        select: { slug: true, updatedAt: true },
+        select: { slug: true, updatedAt: true, seo: true, description: true, longDescription: true, idealFor: true },
       });
-      return rows.map((r) => ({ slug: r.slug, lastModified: r.updatedAt }));
+      return excludeNoIndex(rows).map((r) => ({
+        slug: r.slug,
+        lastModified: r.updatedAt,
+        availableLocales: availableLocalesFor([r.description, r.longDescription, r.idealFor]),
+      }));
     },
     (result) => result.length === 0,
     () => staticGetAllVehicles(routing.defaultLocale).map((v) => ({ slug: v.slug }))

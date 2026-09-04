@@ -183,7 +183,7 @@ function QuoteFormFields({
       setCustomerName(form.fullName.trim());
       setReference(data.reference ?? "");
       setStatus("success");
-      trackConversion("quote", form.vehicle || undefined);
+      trackConversion("quote", { item: form.vehicle || undefined, placement: "form_success" });
       setForm(EMPTY_FORM);
     } catch {
       setStatus("error");

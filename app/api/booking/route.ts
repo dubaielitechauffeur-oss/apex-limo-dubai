@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   // Rate limit before touching the body at all — a spammer/DoS attempt is
   // rejected on IP alone, without ever buffering or parsing their payload.
-  if (isRateLimited(request)) {
+  if (await isRateLimited(request)) {
     const t = await getTranslations({ locale, namespace: "forms.status" });
     return NextResponse.json({ success: false, message: t("rateLimited") }, { status: 429 });
   }

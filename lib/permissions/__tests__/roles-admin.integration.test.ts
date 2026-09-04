@@ -77,7 +77,17 @@ describe("listRoles / listPermissionCatalog — permission-gated read access", (
     const result = await listPermissionCatalog();
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.length).toBe(57); // 53 (Phase 2B) + 4 faq:* (Phase 7)
+      // Asserted against the catalog itself rather than a hardcoded count.
+      // The literal used to be 57 and the catalog has since grown to 60
+      // (contacts:read/update/delete), so this test failed for every developer
+      // and would have failed in CI from the day that module landed — a
+      // magic number that goes stale each time a module is added tests the
+      // number, not the behaviour. Comparing the exact permission SET is
+      // strictly stronger: it still catches a dropped, duplicated or
+      // misspelled entry, which a length check alone would miss.
+      const expected = Object.values(PERMISSIONS);
+      expect(result.data.length).toBe(expected.length);
+      expect([...result.data.map((p) => p.permission)].sort()).toEqual([...expected].sort());
       expect(result.data.every((p) => typeof p.resource === "string")).toBe(true);
     }
   });

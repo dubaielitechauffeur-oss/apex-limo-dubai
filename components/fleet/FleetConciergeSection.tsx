@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import TrackedCta from "@/components/shared/TrackedCta";
 import { Link } from "@/i18n/navigation";
 import { Phone } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -61,21 +62,22 @@ export default async function FleetConciergeSection() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href={getPhoneLink(contact.phone)}
+          <TrackedCta
+href={getPhoneLink(contact.phone)}
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-black transition-colors duration-200 hover:bg-gold-deep"
+            channel="phone"
+            placement="vehicle_detail"
           >
             <Phone className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
             {t("call")} <Ltr>{contact.phoneDisplay}</Ltr>
-          </a>
-          <a
-            href={getWhatsAppLink(t("whatsappMessage"), contact.whatsapp)}
-            target="_blank"
-            rel="noopener noreferrer"
+          </TrackedCta>
+          <TrackedCta href={getWhatsAppLink(t("whatsappMessage"), contact.whatsapp)}
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-gold/40 px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-gold hover:text-gold"
+            channel="whatsapp"
+            placement="vehicle_detail"
           >
             {t("whatsappUs")}
-          </a>
+          </TrackedCta>
         </div>
       </Container>
     </section>

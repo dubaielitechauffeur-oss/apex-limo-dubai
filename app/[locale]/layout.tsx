@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Analytics from "@/components/analytics/Analytics";
 import "../globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -10,11 +10,12 @@ import WhatsAppFloatButton from "@/components/layout/WhatsAppFloatButton";
 import CallFloatButton from "@/components/layout/CallFloatButton";
 import ConditionalFloatButtons from "@/components/layout/ConditionalFloatButtons";
 import ScrollToTopButton from "@/components/layout/ScrollToTopButton";
-import { getDefaultMetadata, organizationJsonLd } from "@/lib/seo";
+import { getDefaultMetadata, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import { getSiteContact } from "@/lib/public/site-contact";
 import { getDefaultSeoOverride } from "@/lib/public/site-seo";
 import { routing, type Locale } from "@/i18n/routing";
 import { logoFont } from "@/fonts/logo";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -70,13 +71,8 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
       className={`${displayFont.variable} ${bodyFont.variable} ${logoFont.variable}`}
     >
       <head>
-        <script
-          type="application/ld+json"
-
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationJsonLd(typedLocale, contact)),
-          }}
-        />
+        <JsonLd data={organizationJsonLd(typedLocale, contact)} />
+        <JsonLd data={websiteJsonLd(typedLocale)} />
       </head>
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider messages={messages}>
@@ -96,9 +92,14 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
             <CallFloatButton />
           </ConditionalFloatButtons>
           <ScrollToTopButton />
+          {/* Analytics lives INSIDE <body>. It previously sat between </body>
+              and </html>, which is not a valid document structure — React
+              hoisted the script in practice, but nothing else may legally
+              appear there. It also now carries Consent Mode v2 defaults and
+              the consent prompt (see components/analytics/Analytics.tsx). */}
+          <Analytics />
         </NextIntlClientProvider>
       </body>
-      <GoogleAnalytics gaId="G-B37R3PW9NG" />
     </html>
   );
 }

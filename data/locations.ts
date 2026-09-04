@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/routing";
+import type { PublicSeo } from "@/lib/public/seo-fields";
 import type { Localized } from "@/lib/i18n-types";
 
 export interface PopularRoute {
@@ -2144,6 +2145,12 @@ export interface PlainLocation {
   heroObjectPosition?: string;
   tags: string[];
   geo?: LocationGeo;
+  /** See the note on PlainService.seo. */
+  seo?: PublicSeo;
+  /** Locales this row actually has translated copy for. Undefined means all
+   *  six (the static data below, and any fully-translated CMS row) — see
+   *  lib/public/translation-coverage.ts. */
+  availableLocales?: Locale[];
 }
 
 export function localizeLocation(location: Location, locale: Locale): PlainLocation {

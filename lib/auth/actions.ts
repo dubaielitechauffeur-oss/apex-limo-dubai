@@ -6,6 +6,7 @@ import { AuthError, CredentialsSignin } from "next-auth";
 import { signIn, signOut } from "@/lib/auth";
 import { requireUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/db";
+import { getAppOrigin } from "@/lib/app-url";
 import { hashPassword, verifyPassword, passwordPolicySchema } from "@/lib/auth/password";
 import { generateResetToken, hashResetToken, RESET_TOKEN_TTL_MS } from "@/lib/auth/tokens";
 import { isForgotPasswordRateLimited } from "@/lib/auth/rate-limit";
@@ -88,13 +89,6 @@ export interface ForgotPasswordState {
   error?: string;
 }
 
-async function resolveOrigin(): Promise<string> {
-  const requestHeaders = await headers();
-  const proto = requestHeaders.get("x-forwarded-proto") ?? "https";
-  const host = requestHeaders.get("host") ?? requestHeaders.get("x-forwarded-host");
-  return host ? `${proto}://${host}` : "";
-}
-
 export async function forgotPasswordAction(
   _prevState: ForgotPasswordState,
   formData: FormData
@@ -102,7 +96,7 @@ export async function forgotPasswordAction(
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const requestHeaders = await headers();
 
-  if (isForgotPasswordRateLimited(requestHeaders)) {
+  if (await isForgotPasswordRateLimited(requestHeaders)) {
     return { error: "Too many requests. Please wait a while and try again." };
   }
   if (!email) {
@@ -123,7 +117,7 @@ export async function forgotPasswordAction(
       }),
     ]);
 
-    const origin = await resolveOrigin();
+    const origin = getAppOrigin();
     const resetUrl = `${origin}/admin/reset-password?token=${token}`;
 
     try {

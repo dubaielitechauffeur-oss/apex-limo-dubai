@@ -71,6 +71,20 @@ export const VEHICLE_CROSS_LINKS: Record<string, VehicleCrossLinks> = {
     serviceSlug: "luxury-chauffeur",
     locationSlug: "downtown-dubai",
   },
+  // These two were the only vehicles absent from this map, so they received no
+  // contextual inbound link from any service or location page — the weakest
+  // internally-linked pages on the site. Pairings follow the same rule as the
+  // rest: each vehicle's own `idealFor` positioning in data/fleet.ts.
+  // The V250 Falcon is the high-spec group/VIP van; the Maybach Sprinter is
+  // the executive mobile-office van, positioned for corporate roadshows.
+  "mercedes-v250-falcon": {
+    serviceSlug: "vip-transportation",
+    locationSlug: "palm-jumeirah",
+  },
+  "mercedes-maybach-sprinter": {
+    serviceSlug: "corporate-chauffeur",
+    locationSlug: "business-bay",
+  },
 };
 
 /** Vehicle slugs recommended for a given service (reverse lookup). */

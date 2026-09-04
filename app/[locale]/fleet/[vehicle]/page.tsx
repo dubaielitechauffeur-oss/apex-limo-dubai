@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import TrackedCta from "@/components/shared/TrackedCta";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import {
@@ -66,6 +67,7 @@ import {
 import { getServiceBySlug } from "@/data/services";
 import { getLocationBySlug } from "@/data/locations";
 import { VEHICLE_CROSS_LINKS } from "@/lib/cross-links";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   // "vehicle" also carries a fleet category slug (sedan/suv/van/electric) —
@@ -124,6 +126,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: t("titleTemplate", { name: vehicle.name, category: vehicle.category }),
     description: t("descriptionTemplate", { name: vehicle.name, description: vehicle.description }),
     path: `/fleet/${vehicle.slug}`,
+    seo: vehicle.seo,
+    alternateLocales: vehicle.availableLocales,
   });
 }
 
@@ -140,23 +144,75 @@ async function generateCategoryMetadata(locale: Locale, category: FleetCategoryS
   });
 }
 
-/** Car + FAQPage JSON-LD for this specific vehicle. */
+/**
+ * Car JSON-LD for this specific vehicle.
+ *
+ * `brand`, `model`, `fuelType` and luggage capacity all already existed in the
+ * data model and were simply never published — so an answer engine asking
+ * "what vehicles does Apex have?" got a name and a seat count and nothing it
+ * could compare on.
+ *
+ * `offers` carries the REAL published AED rates from `vehicle.rates` (the same
+ * numbers the pricing card on this page renders), not an invented price band.
+ * Pricing is the single most-asked pre-booking question and was previously
+ * absent from the machine-readable layer entirely — `priceRange: "$$$"` on the
+ * organization node was all any crawler could see.
+ */
 function vehicleJsonLd(vehicle: PlainFleetVehicle, locale: Locale) {
+  const url = `${SITE.url}${localizedPath(locale, `/fleet/${vehicle.slug}`)}`;
+  const provider = {
+    "@type": "LocalBusiness" as const,
+    "additionalType": "https://schema.org/LimousineService",
+    "@id": organizationId(locale),
+    name: SITE.name,
+    url: SITE.url,
+  };
+
+  // Only rates that are actually set become offers — a missing or zero rate is
+  // omitted rather than published as "free".
+  const offers = [
+    { key: "airport", price: vehicle.rates.airport, name: "Airport transfer (one way)" },
+    { key: "oneHour", price: vehicle.rates.oneHour, name: "Hourly chauffeur (1 hour)" },
+    { key: "fiveHours", price: vehicle.rates.fiveHours, name: "Half-day chauffeur (5 hours)" },
+    { key: "tenHours", price: vehicle.rates.tenHours, name: "Full-day chauffeur (10 hours)" },
+  ]
+    .filter((rate) => typeof rate.price === "number" && rate.price > 0)
+    .map((rate) => ({
+      "@type": "Offer" as const,
+      "@id": `${url}#offer-${rate.key}`,
+      name: rate.name,
+      price: String(rate.price),
+      priceCurrency: "AED",
+      availability: "https://schema.org/InStock",
+      seller: { "@id": organizationId(locale) },
+    }));
+
   return {
     "@context": "https://schema.org",
     "@type": "Car",
     inLanguage: locale,
+    "@id": `${url}#vehicle`,
     name: vehicle.name,
     description: vehicle.longDescription,
+    brand: { "@type": "Brand", name: vehicle.brand },
+    model: vehicle.model,
     vehicleSeatingCapacity: vehicle.passengers,
-    url: `${SITE.url}${localizedPath(locale, `/fleet/${vehicle.slug}`)}`,
-    provider: {
-      "@type": "LocalBusiness",
-      "additionalType": "https://schema.org/LimousineService",
-      "@id": organizationId(),
-      name: SITE.name,
-      url: SITE.url,
-    },
+    ...(vehicle.luggage != null
+      ? {
+          cargoVolume: {
+            "@type": "QuantitativeValue",
+            name: "Luggage capacity",
+            value: vehicle.luggage,
+            unitText: "suitcases",
+          },
+        }
+      : {}),
+    // `isElectric` is a real column on the Vehicle model, so this is a fact
+    // about the car rather than a guess from its name.
+    fuelType: vehicle.isElectric ? "Electric" : "Petrol",
+    url,
+    provider,
+    ...(offers.length > 0 ? { offers } : {}),
     areaServed: {
       "@type": "City",
       name: "Dubai",
@@ -220,7 +276,7 @@ function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLab
         provider: {
           "@type": "LocalBusiness",
           "additionalType": "https://schema.org/LimousineService",
-          "@id": organizationId(),
+          "@id": organizationId(locale),
           name: SITE.name,
         },
       },
@@ -264,29 +320,16 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryJsonLd(locale, category, categoryLabel, vehicles)) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(categoryContent.faqs, locale)) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd(
+      <JsonLd data={categoryJsonLd(locale, category, categoryLabel, vehicles)} />
+      <JsonLd data={faqJsonLd(categoryContent.faqs, locale)} />
+      <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("fleet"), path: "/fleet" },
                 { name: categoryLabel, path: `/fleet/${category}` },
               ],
               locale,
               tNav("home")
-            )
-          ),
-        }}
-      />
+            )} />
 
       {/* Hero — sized and animated to match the /fleet page's FleetHero
           (min-height + fade/slide-in stagger), centered content and a
@@ -612,32 +655,16 @@ export default async function VehicleDetailPage({ params }: PageProps) {
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleJsonLd(vehicle, locale as Locale)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(vehicle.faqs, locale as Locale)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd(
+      <JsonLd data={vehicleJsonLd(vehicle, locale as Locale)} />
+      <JsonLd data={faqJsonLd(vehicle.faqs, locale as Locale)} />
+      <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("fleet"), path: "/fleet" },
                 { name: vehicle.name, path: `/fleet/${vehicle.slug}` },
               ],
               locale as Locale,
               tNav("home")
-            )
-          ),
-        }}
-      />
+            )} />
 
       {/* Hero zone. Mobile (unchanged): single column — breadcrumb, title
           block, gallery, description/meta/CTA. Desktop (new): breadcrumb,
@@ -659,14 +686,38 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             <span className="text-gold">{vehicle.name}</span>
           </nav>
 
-          {/* Mobile-only info block — shows title/category/passengers before
-              the gallery. */}
-          <div className="mt-6 lg:hidden">
-            <h1 className="animate-slide-in-left font-display text-3xl text-heading [animation-delay:100ms]">
-              {vehicle.name} <span className="text-smoke">{t("withChauffeurInDubai")}</span>
+          {/* THE page heading — one <h1> element, rendered once, visible at
+              every breakpoint.
+
+              This block previously existed twice: once inside the `lg:hidden`
+              mobile column and again inside the `hidden lg:block` desktop
+              column, so every vehicle page shipped two <h1> elements in the
+              HTML with DIFFERENT text ("<name> with chauffeur in Dubai" on
+              mobile, a bare "<name>" on desktop). CSS hid one of them from
+              sight but both reached crawlers, giving the site's highest-intent
+              template an ambiguous primary heading across 15 vehicles × 6
+              locales.
+
+              Hoisting it here — between the breadcrumb and the two responsive
+              columns, which are siblings in this same container — keeps the
+              rendered order identical on both breakpoints while leaving one
+              heading in the DOM. The keyword-bearing suffix stays mobile-only
+              purely for line length; it is inside the same <h1>, so the text
+              a crawler reads is the same at every width. */}
+          <div className="mt-6 lg:mt-0">
+            <span className="label-eyebrow hidden animate-fade-in lg:block">{categoryLabel}</span>
+            <h1 className="mt-0 animate-slide-in-left font-display text-3xl text-heading [animation-delay:100ms] lg:mt-4 lg:text-5xl xl:text-6xl">
+              {vehicle.name} <span className="text-smoke lg:hidden">{t("withChauffeurInDubai")}</span>
             </h1>
-            <p className="mt-2 animate-fade-in text-base italic text-gold/90 [animation-delay:250ms]">{vehicle.tagline}</p>
-            <div className="mt-3 flex animate-fade-in flex-wrap items-center gap-2 text-sm text-smoke [animation-delay:350ms]">
+            <p className="mt-2 animate-fade-in text-base italic text-gold/90 [animation-delay:250ms] lg:mt-3 lg:text-lg">
+              {vehicle.tagline}
+            </p>
+          </div>
+
+          {/* Mobile-only info block — category/passengers/rating under the
+              shared heading above, before the gallery. */}
+          <div className="mt-3 lg:hidden">
+            <div className="flex animate-fade-in flex-wrap items-center gap-2 text-sm text-smoke [animation-delay:350ms]">
               <span>{categoryLabel}</span>
               <span className="text-gold">&bull;</span>
               <span>{t("passengersLabel", { count: vehicle.passengers })}</span>
@@ -751,12 +802,8 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           {/* Desktop-only hero — title/rating/tags, then a two-column row:
               image carousel beside an embedded quote form. */}
           <div className="hidden lg:block">
-            <span className="label-eyebrow animate-fade-in">{categoryLabel}</span>
-            <h1 className="mt-4 animate-slide-in-left font-display text-5xl text-heading [animation-delay:100ms] xl:text-6xl">
-              {vehicle.name}
-            </h1>
-            <p className="mt-3 animate-fade-in text-lg italic text-gold/90 [animation-delay:250ms]">{vehicle.tagline}</p>
-
+            {/* Eyebrow, <h1> and tagline now come from the shared heading
+                block above — see the note there. */}
             <div className="mt-4 flex animate-fade-in flex-wrap items-center gap-3 text-sm text-smoke [animation-delay:350ms]">
               <div className="flex items-center gap-2">
                 <div className="flex gap-0.5" role="img" aria-label={tA11y("ratingOutOf5Template", { rating: RATING })}>
@@ -962,31 +1009,31 @@ export default async function VehicleDetailPage({ params }: PageProps) {
             <CTAButton href={`/booking?vehicle=${vehicle.slug}`}>{t("bookNow")}</CTAButton>
             {/* Mobile-only — moved here from the hero block above (see the
                 CTA cleanup that removed the duplicate hero buttons). */}
-            <a
-              href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
-              target="_blank"
-              rel="noopener noreferrer"
+            <TrackedCta
+href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
               className="inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:hidden"
+              channel="whatsapp"
+              placement="vehicle_detail"
             >
               <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 shrink-0 fill-white">
                 <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.902 6.47L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.457-1.507l-.392-.232-4.58 1.107 1.128-4.462-.256-.406A9.77 9.77 0 0 1 5.182 15c0-5.964 4.855-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818zm5.965-8.14c-.327-.164-1.936-.955-2.237-1.064-.3-.109-.518-.164-.737.164-.218.327-.845 1.064-1.036 1.282-.19.218-.382.246-.709.082-.327-.164-1.38-.508-2.629-1.62-.972-.867-1.628-1.937-1.819-2.264-.19-.327-.02-.504.144-.667.148-.147.327-.382.49-.573.164-.19.218-.327.327-.545.109-.218.055-.41-.027-.573-.082-.164-.737-1.777-1.01-2.434-.266-.64-.537-.553-.737-.563l-.628-.011c-.218 0-.573.082-.873.41-.3.327-1.145 1.12-1.145 2.73 0 1.61 1.172 3.165 1.336 3.383.164.218 2.308 3.524 5.593 4.942.782.338 1.392.54 1.868.69.785.25 1.5.215 2.065.13.63-.094 1.936-.79 2.21-1.554.273-.764.273-1.418.19-1.555-.081-.136-.3-.218-.627-.382z" />
               </svg>
               {t("enquireWhatsapp")}
-            </a>
+            </TrackedCta>
             {/* Desktop-only — replaces the old Get Quote button. Get Quote
                 was already lg:inline-flex only, so removing it doesn't
                 change mobile at all. */}
-            <a
-              href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
-              target="_blank"
-              rel="noopener noreferrer"
+            <TrackedCta
+href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
               className="hidden h-14 items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#1EBE5A] lg:inline-flex"
+              channel="whatsapp"
+              placement="vehicle_detail"
             >
               <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 shrink-0 fill-white">
                 <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.902 6.47L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.457-1.507l-.392-.232-4.58 1.107 1.128-4.462-.256-.406A9.77 9.77 0 0 1 5.182 15c0-5.964 4.855-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818zm5.965-8.14c-.327-.164-1.936-.955-2.237-1.064-.3-.109-.518-.164-.737.164-.218.327-.845 1.064-1.036 1.282-.19.218-.382.246-.709.082-.327-.164-1.38-.508-2.629-1.62-.972-.867-1.628-1.937-1.819-2.264-.19-.327-.02-.504.144-.667.148-.147.327-.382.49-.573.164-.19.218-.327.327-.545.109-.218.055-.41-.027-.573-.082-.164-.737-1.777-1.01-2.434-.266-.64-.537-.553-.737-.563l-.628-.011c-.218 0-.573.082-.873.41-.3.327-1.145 1.12-1.145 2.73 0 1.61 1.172 3.165 1.336 3.383.164.218 2.308 3.524 5.593 4.942.782.338 1.392.54 1.868.69.785.25 1.5.215 2.065.13.63-.094 1.936-.79 2.21-1.554.273-.764.273-1.418.19-1.555-.081-.136-.3-.218-.627-.382z" />
               </svg>
               {t("enquireWhatsapp")}
-            </a>
+            </TrackedCta>
           </div>
           <p className="mt-4 text-xs uppercase tracking-wide text-white lg:text-gold/80">
             {t("trustNote")}

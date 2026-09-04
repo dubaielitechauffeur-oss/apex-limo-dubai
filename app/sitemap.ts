@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/constants";
 import { localizedPath } from "@/lib/seo";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { FLEET_CATEGORY_SLUGS } from "@/data/fleet";
 import {
   getServiceSitemapEntries,
@@ -17,19 +17,30 @@ type ChangeFrequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 
 /** One sitemap entry per locale for `path`, each cross-linked to every
  *  other locale's URL (plus x-default) via `alternates.languages` — the
- *  sitemap-level equivalent of the hreflang tags emitted in <head>. */
+ *  sitemap-level equivalent of the hreflang tags emitted in <head>.
+ *
+ *  `availableLocales` narrows that set for CMS-backed rows that are not
+ *  translated everywhere yet: a service written only in English publishes one
+ *  URL, not six near-identical ones claiming to be six languages. It must
+ *  match what each page's `generateMetadata` emits as hreflang, or the sitemap
+ *  and the page contradict each other — both read from the same
+ *  `availableLocalesFor()` result for exactly that reason. */
 function localizedEntries(
   path: string,
   lastModified: Date,
   changeFrequency: ChangeFrequency,
-  priority: number
+  priority: number,
+  availableLocales?: Locale[]
 ): MetadataRoute.Sitemap {
+  const locales = availableLocales ?? [...routing.locales];
   const languages: Record<string, string> = Object.fromEntries(
-    routing.locales.map((locale) => [locale, `${SITE.url}${localizedPath(locale, path)}`])
+    locales.map((locale) => [locale, `${SITE.url}${localizedPath(locale, path)}`])
   );
-  languages["x-default"] = `${SITE.url}${path}`;
+  if (locales.includes(routing.defaultLocale)) {
+    languages["x-default"] = `${SITE.url}${path}`;
+  }
 
-  return routing.locales.map((locale) => ({
+  return locales.map((locale) => ({
     url: `${SITE.url}${localizedPath(locale, path)}`,
     lastModified,
     changeFrequency,
@@ -78,19 +89,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const serviceRoutes = serviceEntries.flatMap((service) =>
-    localizedEntries(`/services/${service.slug}`, service.lastModified ?? now, "monthly", 0.7)
+    localizedEntries(`/services/${service.slug}`, service.lastModified ?? now, "monthly", 0.7, service.availableLocales)
   );
 
   const locationRoutes = locationEntries.flatMap((location) =>
-    localizedEntries(`/locations/${location.slug}`, location.lastModified ?? now, "monthly", 0.7)
+    localizedEntries(`/locations/${location.slug}`, location.lastModified ?? now, "monthly", 0.7, location.availableLocales)
   );
 
   const blogRoutes = blogEntries.flatMap((post) =>
-    localizedEntries(`/blog/${post.slug}`, post.lastModified ?? now, "monthly", 0.6)
+    localizedEntries(`/blog/${post.slug}`, post.lastModified ?? now, "monthly", 0.6, post.availableLocales)
   );
 
   const fleetRoutes = vehicleEntries.flatMap((vehicle) =>
-    localizedEntries(`/fleet/${vehicle.slug}`, vehicle.lastModified ?? now, "monthly", 0.7)
+    localizedEntries(`/fleet/${vehicle.slug}`, vehicle.lastModified ?? now, "monthly", 0.7, vehicle.availableLocales)
   );
 
   return [

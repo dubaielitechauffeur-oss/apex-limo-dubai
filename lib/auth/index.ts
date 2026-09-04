@@ -48,7 +48,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         rememberMe: { label: "Remember me" },
       },
       async authorize(credentials, request) {
-        if (isLoginRateLimited(request.headers)) {
+        if (await isLoginRateLimited(request.headers)) {
           throw new RateLimitedError();
         }
 

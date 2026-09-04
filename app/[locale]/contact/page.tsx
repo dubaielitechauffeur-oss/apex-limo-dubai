@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import TrackedCta from "@/components/shared/TrackedCta";
 import {
   Phone,
   MessageCircle,
@@ -27,6 +28,7 @@ import Ltr from "@/components/shared/Ltr";
 import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -81,20 +83,8 @@ export default async function ContactPage({ params }: PageProps) {
   const contactFaqs = t.raw("faqs") as { question: string; answer: string }[];
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(contactFaqs, locale as Locale)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: tNav("contact"), path: "/contact" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={faqJsonLd(contactFaqs, locale as Locale)} />
+      <JsonLd data={breadcrumbJsonLd([{ name: tNav("contact"), path: "/contact" }], locale as Locale, tNav("home"))} />
 
       {/* SECTION 1 — Luxury Contact Hero */}
       <section className="border-b border-gold/15 bg-obsidian py-20 sm:py-24">
@@ -207,24 +197,26 @@ export default async function ContactPage({ params }: PageProps) {
                 <h3 className="font-display text-lg text-white">{t("sidebar.reachUsDirectly")}</h3>
                 <ul className="mt-5 space-y-4 text-sm text-smoke">
                   <li>
-                    <a
-                      href={getPhoneLink(contact.phone)}
+                    <TrackedCta
+href={getPhoneLink(contact.phone)}
                       className="flex items-center gap-3 transition-colors hover:text-gold"
+                      channel="phone"
+                      placement="contact_page"
                     >
                       <Phone className="h-4 w-4 text-gold" strokeWidth={1.5} />
                       <Ltr>{contact.phoneDisplay}</Ltr>
-                    </a>
+                    </TrackedCta>
                   </li>
                   <li>
-                    <a
-                      href={getWhatsAppLink(tCommon("whatsappGenericMessage"), contact.whatsapp)}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <TrackedCta
+href={getWhatsAppLink(tCommon("whatsappGenericMessage"), contact.whatsapp)}
                       className="flex items-center gap-3 transition-colors hover:text-gold"
+                      channel="whatsapp"
+                      placement="contact_page"
                     >
                       <MessageCircle className="h-4 w-4 text-gold" strokeWidth={1.5} />
                       {t("sidebar.whatsappUs")}
-                    </a>
+                    </TrackedCta>
                   </li>
                   <li>
                     <a
@@ -267,15 +259,15 @@ export default async function ContactPage({ params }: PageProps) {
                   </div>
                 </dl>
                 <p className="mt-4 text-xs text-smoke">{t("sidebar.hoursDisclaimer")}</p>
-                <a
-                  href={getWhatsAppLink(t("sidebar.urgentWhatsappMessage"), contact.whatsapp)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <TrackedCta
+href={getWhatsAppLink(t("sidebar.urgentWhatsappMessage"), contact.whatsapp)}
                   className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gold transition-colors hover:text-gold-pale"
+                  channel="whatsapp"
+                  placement="contact_page"
                 >
                   <Siren className="h-3.5 w-3.5" strokeWidth={1.75} />
                   {t("sidebar.urgentWhatsapp")}
-                </a>
+                </TrackedCta>
               </div>
             </Reveal>
           </div>

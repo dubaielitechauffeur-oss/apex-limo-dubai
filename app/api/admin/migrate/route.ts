@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { Pool } from "pg";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@/lib/generated/prisma/client";
+import { timingSafeEqual } from "node:crypto";
+import { prisma } from "@/lib/db";
+import type { PrismaClient } from "@/lib/generated/prisma/client";
 import { FLEET } from "@/data/fleet";
 import type { Locale } from "@/i18n/routing";
 import { routing } from "@/i18n/routing";
@@ -9,6 +9,23 @@ import type { Prisma } from "@/lib/generated/prisma/client";
 import { getAuthzContext, isSuperAdmin } from "@/lib/permissions/context";
 
 const MIGRATE_SECRET = process.env.MIGRATE_SECRET;
+
+/**
+ * Constant-time comparison for the shared migrate secret.
+ *
+ * `===` on secrets short-circuits at the first differing byte, so response
+ * timing leaks how much of a guess was correct and the secret can be
+ * recovered byte by byte. Length is compared first because `timingSafeEqual`
+ * throws on unequal buffer lengths — that check leaks only the length, which
+ * is not sensitive here.
+ */
+function secretMatches(provided: string | null): boolean {
+  if (!MIGRATE_SECRET || !provided) return false;
+  const a = Buffer.from(provided);
+  const b = Buffer.from(MIGRATE_SECRET);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
+}
 
 function broadcast(value: string): Record<Locale, string> {
   const out = {} as Record<Locale, string>;
@@ -115,8 +132,7 @@ export async function POST(request: Request) {
   // super_admins can trigger this.
   const ctx = await getAuthzContext();
   const hasSession = isSuperAdmin(ctx);
-  const secret = request.headers.get("x-migrate-secret");
-  const hasSecret = Boolean(MIGRATE_SECRET) && secret === MIGRATE_SECRET;
+  const hasSecret = secretMatches(request.headers.get("x-migrate-secret"));
   if (!hasSession && !hasSecret) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -127,10 +143,11 @@ export async function POST(request: Request) {
     .then((body: unknown) => (body as { action?: string } | null)?.action)
     .catch(() => undefined);
 
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  const adapter = new PrismaPg(pool);
-  const prisma = new PrismaClient({ adapter });
-
+  // Reuses the shared, pooled client instead of constructing a fresh Pool +
+  // PrismaClient per request. Every call to this endpoint previously opened
+  // its own connection pool and, on any path that threw before the `finally`,
+  // leaked it — a fast way to exhaust Postgres connections from an endpoint
+  // whose whole job is heavy write traffic.
   if (action === "resync-images") {
     try {
       const imageResults = await resyncVehicleImages(prisma);
@@ -139,9 +156,11 @@ export async function POST(request: Request) {
         message: `Image re-sync complete: ${imageResults.vehiclesUpdated} vehicle(s) updated, ${imageResults.imagesLinked} image(s) linked`,
         ...imageResults,
       });
-    } finally {
-      await prisma.$disconnect();
-      await pool.end();
+    } catch (error) {
+      // Never surface a raw Prisma error to the caller: it can carry table and
+      // column names, and this endpoint is reachable with a shared secret.
+      console.error("[api/admin/migrate] resync-images failed:", error);
+      return NextResponse.json({ error: "Image re-sync failed. See server logs." }, { status: 500 });
     }
   }
 
@@ -233,9 +252,9 @@ export async function POST(request: Request) {
         results.errors.push(`${vehicle.slug}: ${e}`);
       }
     }
-  } finally {
-    await prisma.$disconnect();
-    await pool.end();
+  } catch (error) {
+    console.error("[api/admin/migrate] import failed:", error);
+    return NextResponse.json({ error: "Migration failed. See server logs." }, { status: 500 });
   }
 
   return NextResponse.json({

@@ -33,6 +33,7 @@ import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 import { LOCATIONS, type PlainLocation } from "@/data/locations";
 import { FLEET } from "@/data/fleet";
 import { vehiclesForLocation } from "@/lib/cross-links";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string; location: string }>;
@@ -65,77 +66,82 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: t("titleTemplate", { name: location.name }),
     description: t("descriptionTemplate", { shortDescription: location.shortDescription }),
     path: `/locations/${location.slug}`,
+    seo: location.seo,
+    alternateLocales: location.availableLocales,
   });
 }
 
 /**
- * LocalBusiness JSON-LD scoped to this specific service area. Uses its own
- * unique @id (rather than reusing the root organization's) since each
- * location page asserts a different areaServed/address for what would
- * otherwise be the same node — reusing the root @id across 6 location
- * pages with conflicting properties was the cause of Search Console's
- * "Invalid object type for field 'parent_node'" Review Snippet error
- * (the review data on the homepage's LocalBusiness node was getting merged
- * with these conflicting redeclarations). `parentOrganization` links back
- * to the root business (see lib/seo.ts) without conflating the two nodes.
- * Coordinates come from `location.geo` (data/locations.ts) rather than a
- * lookup map colocated with this page, so adding a new location and its
- * coordinates is a single edit in the data model, not two files kept in
- * sync by hand.
+ * Service-area JSON-LD for this district.
+ *
+ * This node used to be a second `LocalBusiness` with its own
+ * `address.addressLocality` set to the district name and `geo` coordinates
+ * attached to the business itself — six of them across the site. Apex is a
+ * service-area business with no premises in any of those districts, so that
+ * asserted six physical locations that do not exist, contradicting the single
+ * Google Business Profile listing the root `LocalBusiness` node reconciles
+ * with (`hasMap`/`sameAs` in lib/seo.ts). Google's own guidance for an SAB is
+ * to hide the address, not to invent one per neighbourhood.
+ *
+ * The honest model for "we serve this place" is a `Service` whose
+ * `areaServed` is that `Place` — the coordinates belong to the district, not
+ * to a storefront — provided by the one real business entity. Local relevance
+ * is preserved (the root node's `areaServed` already enumerates every
+ * district), the false premises claim is gone, and there is no longer a second
+ * business entity competing with the first.
  */
-function locationJsonLd(location: PlainLocation, locale: Locale, contact: SiteContact) {
+function locationServiceJsonLd(location: PlainLocation, locale: Locale, contact: SiteContact) {
   const geo = location.geo;
 
   return {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "Service",
     inLanguage: locale,
-    "additionalType": "https://schema.org/LimousineService",
-    "@id": `${SITE.url}/locations/${location.slug}#localbusiness`,
+    "@id": `${SITE.url}${localizedPath(locale, `/locations/${location.slug}`)}#service`,
     name: `${SITE.name} — ${location.name}`,
     description: location.shortDescription,
     url: `${SITE.url}${localizedPath(locale, `/locations/${location.slug}`)}`,
-    telephone: contact.phone,
-    parentOrganization: {
+    serviceType: "Chauffeur service",
+    provider: {
       "@type": "LocalBusiness",
-      "@id": organizationId(),
+      "additionalType": "https://schema.org/LimousineService",
+      "@id": organizationId(locale),
+      name: SITE.name,
+      telephone: contact.phone,
     },
     areaServed: {
       "@type": "Place",
       name: location.name,
-    },
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: location.name,
-      addressRegion: "Dubai",
-      addressCountry: "AE",
-    },
-    ...(geo
-      ? {
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: geo.latitude,
-            longitude: geo.longitude,
-          },
-        }
-      : {}),
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
-        ],
-        opens: "00:00",
-        closes: "23:59",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: location.name,
+        addressRegion: "Dubai",
+        addressCountry: "AE",
       },
-    ],
-    priceRange: PRICE_RANGE,
+      ...(geo
+        ? {
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: geo.latitude,
+              longitude: geo.longitude,
+            },
+          }
+        : {}),
+    },
+    hoursAvailable: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "00:00",
+      closes: "23:59",
+    },
   };
 }
 
@@ -166,32 +172,16 @@ export default async function LocationDetailPage({ params }: PageProps) {
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationJsonLd(location, locale as Locale, contact)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(location.faqs, locale as Locale)) }}
-      />
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd(
+      <JsonLd data={locationServiceJsonLd(location, locale as Locale, contact)} />
+      <JsonLd data={faqJsonLd(location.faqs, locale as Locale)} />
+      <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("locations"), path: "/locations" },
                 { name: location.name, path: `/locations/${location.slug}` },
               ],
               locale as Locale,
               tNav("home")
-            )
-          ),
-        }}
-      />
+            )} />
 
       {/* Hero zone — reuses the same location.image shown on this
           location's /locations listing card, so both stay in sync.

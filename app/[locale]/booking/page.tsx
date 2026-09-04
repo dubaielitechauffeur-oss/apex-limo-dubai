@@ -11,6 +11,7 @@ import { getAllLocations } from "@/data/locations";
 import { getAllVehicles } from "@/data/fleet";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { getSiteContact } from "@/lib/public/site-contact";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -38,15 +39,7 @@ export default async function BookingPage({ params }: PageProps) {
   const contact = await getSiteContact();
   return (
     <>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([{ name: t("booking.breadcrumbLabel"), path: "/booking" }], locale as Locale, tNav("home"))
-          ),
-        }}
-      />
+      <JsonLd data={breadcrumbJsonLd([{ name: t("booking.breadcrumbLabel"), path: "/booking" }], locale as Locale, tNav("home"))} />
 
       <ConversionPageIntro
         heading={t("booking.pageHeading")}

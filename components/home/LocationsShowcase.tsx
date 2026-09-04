@@ -6,7 +6,9 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import Reveal from "@/components/shared/Reveal";
-import { getAllLocations, type PlainLocation } from "@/data/locations";
+// CMS-backed — see the note in components/home/ServicesGrid.tsx.
+import { getAllLocations } from "@/lib/public/cms-content";
+import type { PlainLocation } from "@/data/locations";
 import type { Locale } from "@/i18n/routing";
 
 export interface FeaturedCard {
@@ -63,14 +65,18 @@ export default async function LocationsShowcase({
 
   const resolvedCards =
     cards ??
-    (() => {
-      const locations = getAllLocations(locale as Locale);
+    (await (async () => {
+      const locations = await getAllLocations(locale as Locale);
+      // FEATURED_LOCATIONS is a curated homepage ORDER, not a second source of
+      // location data — every card still resolves against whatever the CMS
+      // currently publishes, so a slug removed or unpublished there simply
+      // drops out of this row instead of rendering a link to a 404.
       return FEATURED_LOCATIONS.reduce<FeaturedCard[]>((acc, { slug, displayName }) => {
         const location = locations.find((l) => l.slug === slug);
         if (location) acc.push({ location, displayName });
         return acc;
       }, []);
-    })();
+    })());
 
   return (
     <section className={`border-t border-gold/10 py-24 ${tone === "dark" ? "bg-obsidian" : "bg-ivory"}`}>

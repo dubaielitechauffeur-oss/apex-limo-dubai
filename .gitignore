@@ -39,3 +39,7 @@ next-env.d.ts
 # of the repo deliberately. Anything meant to be shared belongs in
 # package.json's scripts or prisma/, both of which are tracked.
 scripts/
+
+# python bytecode from the seo-agent scripts
+__pycache__/
+*.py[cod]

@@ -11,5 +11,9 @@ export default defineConfig({
   },
   datasource: {
     url: process.env["DATABASE_URL"],
+    // Required by `prisma migrate dev` and by the CI drift check
+    // (`prisma migrate diff --from-migrations`). Unset at runtime; the app
+    // never connects to it.
+    shadowDatabaseUrl: process.env["SHADOW_DATABASE_URL"],
   },
 });

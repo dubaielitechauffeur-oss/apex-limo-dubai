@@ -13,7 +13,8 @@ import Testimonials from "@/components/home/Testimonials";
 import FAQSection from "@/components/home/FAQSection";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationReviewsJsonLd } from "@/lib/seo";
-import { getFaqs } from "@/data/faqs";
+import { getHomepageFaqs } from "@/lib/public/cms-content";
+import JsonLd from "@/components/shared/JsonLd";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -41,20 +42,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function Home({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
+  // Same rows the rendered FAQSection below uses, so the structured data can
+  // never describe questions the page does not actually show.
+  const homepageFaqs = await getHomepageFaqs(locale as Locale);
   const reviewsJsonLd = organizationReviewsJsonLd(locale as Locale);
   return (
     <>
-      <script
-        type="application/ld+json"
-
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(getFaqs(locale as Locale))) }}
-      />
-      {reviewsJsonLd ? (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsJsonLd) }}
-        />
-      ) : null}
+      <JsonLd data={faqJsonLd(homepageFaqs, locale as Locale)} />
+      {/* `JsonLd` renders nothing for a null node, so no guard is needed here. */}
+      <JsonLd data={reviewsJsonLd} />
       <Hero />
       <FeatureStrip />
       <FleetCarousel />
