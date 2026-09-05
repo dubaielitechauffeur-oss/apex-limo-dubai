@@ -41,6 +41,12 @@ const LOGIN_ERROR_MESSAGES: Record<string, string> = {
   // fix, which is the whole reason they are separate — see lib/db/diagnose.ts.
   db_unreachable:
     "Sign-in is unavailable — the server cannot reach the database. Check that the database is running and that DATABASE_URL is correct for this deployment.",
+  // The one that actually took the site down. It is not an outage and not a
+  // code fault, so neither of those messages would have helped: the database
+  // was healthy and answering, and refusing every query because the project
+  // was over its plan's limit.
+  db_quota:
+    "Sign-in is unavailable — the database provider is refusing queries because the project has exceeded a plan limit (for example its data-transfer quota). Check the database's usage and billing page.",
   db_auth:
     "Sign-in is unavailable — the database refused the server's credentials. The password in DATABASE_URL is likely out of date.",
   db_schema:
