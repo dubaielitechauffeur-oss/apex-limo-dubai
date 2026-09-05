@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { prisma } from "@/lib/db";
 import { SITE } from "@/lib/constants";
 
@@ -39,10 +40,31 @@ function staticSiteContact(): SiteContact {
  * (paired with the settings action's revalidatePath calls). On DB error
  * or when GlobalSettings is unpopulated, falls back to `SITE` in
  * `lib/constants.ts` so the public site never breaks.
+ *
+ * Wrapped in React's `cache` so the whole render shares one query. This is
+ * called from twenty-one places — the layout, most page bodies, the footer,
+ * both floating call/WhatsApp buttons, the booking CTA, the fleet carousel —
+ * and several of them are on screen together, so a single page view was
+ * issuing the same query six or eight times. `cache` deduplicates them per
+ * request; combined with the `select` below it turns roughly eight full-row
+ * fetches per render into one narrow one.
  */
-export async function getSiteContact(): Promise<SiteContact> {
+export const getSiteContact = cache(async function getSiteContact(): Promise<SiteContact> {
   try {
-    const row = await prisma.globalSettings.findFirst();
+    // `select`, not the whole row. GlobalSettings also carries `address`,
+    // `socialLinks`, `businessHours`, `footer`, `defaultSeo` and
+    // `whatsappGreeting` — six JSON columns, most of them localized across six
+    // locales — and none of them are read here. Fetching the full row shipped
+    // all of that over the wire for five short strings.
+    const row = await prisma.globalSettings.findFirst({
+      select: {
+        phone: true,
+        phoneDisplay: true,
+        whatsapp: true,
+        email: true,
+        notificationEmail: true,
+      },
+    });
     if (!row) return staticSiteContact();
     const fallback = staticSiteContact();
     return {
@@ -56,4 +78,4 @@ export async function getSiteContact(): Promise<SiteContact> {
     console.error("[site-contact] DB read failed, using static fallback:", err);
     return staticSiteContact();
   }
-}
+});

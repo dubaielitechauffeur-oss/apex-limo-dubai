@@ -28,10 +28,20 @@ import { getServicesFaqs } from "@/data/servicesFaqs";
 import JsonLd from "@/components/shared/JsonLd";
 import TrackedCta from "@/components/shared/TrackedCta";
 
-// CMS-backed content revalidates on a 5-minute cadence; admin
-// publish/unpublish also triggers an immediate revalidatePath() for this
-// route (see lib/cms/revalidate.ts) — see PUBLIC_CMS_INTEGRATION.md.
-export const revalidate = 300;
+// CMS-backed content revalidates hourly. Admin publish/unpublish also
+// triggers an immediate revalidatePath() for this route (see
+// lib/cms/revalidate.ts), which is what actually makes an edit visible — the
+// timer is only the backstop for changes made outside the admin panel, so a
+// short window bought nothing an editor could notice.
+//
+// It cost a great deal, though. With 300 URLs on a 5-minute timer, every
+// crawled or visited page re-ran its whole query set twelve times an hour,
+// and that is how a Neon free-tier data-transfer quota was exhausted — after
+// which Postgres refused EVERY query (SQLSTATE 53000), the public site
+// silently fell back to the static data/*.ts copy, and the admin panel could
+// not sign anyone in. Hourly is 12x less traffic for the same freshness.
+// See PUBLIC_CMS_INTEGRATION.md.
+export const revalidate = 3600;
 
 const ICONS: Record<string, LucideIcon> = {
   "airport-transfers": Plane,

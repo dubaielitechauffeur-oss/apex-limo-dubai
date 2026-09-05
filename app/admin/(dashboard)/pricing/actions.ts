@@ -14,9 +14,11 @@ export async function updateVehicleRatesAction(id: string, rates: VehicleRatesIn
   revalidatePath("/admin/pricing");
   // Rates are read on the homepage carousel, fleet listing/category pages,
   // and this vehicle's own detail page — all three were never invalidated
-  // before, so a rate change here only ever showed up after the 5-minute
-  // ISR window (or not at all on the homepage, which had no revalidate
-  // export at all — see revalidatePublicFleet's own doc comment).
+  // before, so a rate change here only ever showed up once the ISR window
+  // expired (or not at all on the homepage, which had no revalidate export
+  // at all — see revalidatePublicFleet's own doc comment). This on-demand
+  // call is what makes an edit immediate, which is why the ISR window itself
+  // can be an hour rather than five minutes.
   revalidatePublicFleet(result.data.slug);
   return { success: "Rates updated." };
 }

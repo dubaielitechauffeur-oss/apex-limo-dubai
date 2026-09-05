@@ -45,7 +45,7 @@ lib/cms/revalidate.ts              revalidatePath() helpers called from
 app/[locale]/{services,locations,  Public pages: swapped their data/*.ts
   faqs,blog}/*                     import for lib/public/cms-content.ts,
                                     added `await`, added
-                                    `export const revalidate = 300`
+                                    `export const revalidate = 3600`
 
 app/sitemap.ts                     Now queries published CMS content
                                     (with the same static fallback) for
@@ -218,8 +218,13 @@ alternates per entry, draft/archived/soft-deleted fixture rows excluded
 Two independent, standard layers — no custom cache-invalidation system:
 
 1. **Time-based ISR**: every CMS-backed public page sets
-   `export const revalidate = 300` — a stale page self-heals within 5
-   minutes even if an admin action's revalidation call is ever missed.
+   `export const revalidate = 3600` — a stale page self-heals within the
+   hour even if an admin action's revalidation call is ever missed. It was
+   300 (five minutes); across 300 URLs that re-ran every page's full query
+   set twelve times an hour and exhausted the database's free-tier
+   data-transfer quota, at which point Postgres refused every query and the
+   whole site fell back to the static `data/*.ts` copy. Layer 2 is what
+   makes an edit visible, so the timer only needs to be a backstop.
 2. **On-demand `revalidatePath()`**: every CMS admin action
    (`app/admin/(dashboard)/{services,locations,faq,blog,homepage}/actions.ts`)
    calls a helper from `lib/cms/revalidate.ts`
@@ -228,7 +233,7 @@ Two independent, standard layers — no custom cache-invalidation system:
    after a successful create/update/publish/unpublish/delete/restore,
    revalidating the affected public path in **all six locales** plus
    `/sitemap.xml` where relevant — so a publish is visible on the next
-   request, not after a 5-minute wait.
+   request, not after waiting out the ISR window.
 
 **Why not `unstable_cache`**: it requires the Next.js server's incremental
 cache store and throws when called outside it — including inside this

@@ -46,7 +46,7 @@ interface PageProps {
 }
 
 // See app/[locale]/services/page.tsx for the revalidation strategy note.
-export const revalidate = 300;
+export const revalidate = 3600;
 
 const ICONS: Record<string, LucideIcon> = {
   "airport-transfers": Plane,

@@ -17,7 +17,7 @@ interface PageProps {
 }
 
 // See app/[locale]/services/page.tsx for the revalidation strategy note.
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;

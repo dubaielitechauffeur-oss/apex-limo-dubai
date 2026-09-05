@@ -11,7 +11,7 @@ import {
 } from "@/lib/public/cms-content";
 
 // See app/[locale]/services/page.tsx for the revalidation strategy note.
-export const revalidate = 300;
+export const revalidate = 3600;
 
 type ChangeFrequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 
