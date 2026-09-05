@@ -87,6 +87,39 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  /**
+   * Serves the WebP version when something still asks for a legacy `.png`
+   * under `/images/fleet/` or `/images/blog/`.
+   *
+   * Those 48 photographs were converted to WebP (105.9 MB -> 15.9 MB) and the
+   * PNG originals removed. The `data/*.ts` references were updated with them —
+   * but the PUBLIC site reads vehicle and blog images from the DATABASE
+   * (`MediaItem.url`, plus the raw `imageUrl`/`heroDesktopImageUrl`/
+   * `heroMobileImageUrl`/`logoUrl` columns), and those rows were written by the
+   * import scripts with the original `.png` paths. Every one of them 404'd the
+   * moment the files went away.
+   *
+   * A rewrite rather than a redirect: it is transparent to `next/image`'s
+   * optimizer (which fetches the source URL from this same origin) and to the
+   * raw `<picture>`/`<img>` paths alike, and costs no extra round trip.
+   *
+   * `20260905000000_fix_media_png_paths` corrects the stored rows, so after it
+   * runs this rule matches nothing. It is deliberately kept anyway: it is the
+   * safety net for any environment whose database has not had that migration
+   * applied yet, for CMS rows in other environments, and for external links or
+   * cached HTML still pointing at a `.png`.
+   *
+   * Scoped to `fleet` and `blog` ONLY. `/images/brands/*.png` are real, still
+   * present, and deliberately excluded — three brand logos were kept as PNG
+   * because they are flat-colour marks with alpha.
+   */
+  async rewrites() {
+    return [
+      { source: "/images/fleet/:path*.png", destination: "/images/fleet/:path*.webp" },
+      { source: "/images/blog/:path*.png", destination: "/images/blog/:path*.webp" },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

@@ -26,6 +26,37 @@ import { prisma } from "@/lib/db";
  *  without paying for a delete on every request. */
 const PRUNE_PROBABILITY = 0.01;
 
+/**
+ * The fail-open path below used to log a full Prisma error on EVERY call.
+ * When the cause is standing rather than transient — most likely
+ * `rate_limit_counters` not existing, because deploying this app does not run
+ * `prisma migrate deploy` (see the `db:deploy` script) — that is one stack
+ * trace per login and per lead submission, for as long as the condition
+ * lasts. It buries the occasional genuine database error underneath it, which
+ * is the signal anyone diagnosing an outage is actually looking for.
+ *
+ * So: report the first failure immediately, then at most one line every five
+ * minutes. The limiter's behaviour is unchanged either way.
+ */
+const FAILURE_LOG_INTERVAL_MS = 5 * 60 * 1000;
+let lastFailureLoggedAt = 0;
+let suppressedFailures = 0;
+
+function reportFailure(err: unknown): void {
+  const now = Date.now();
+  if (now - lastFailureLoggedAt < FAILURE_LOG_INTERVAL_MS) {
+    suppressedFailures++;
+    return;
+  }
+  const alsoSuppressed = suppressedFailures > 0 ? ` (${suppressedFailures} more since the last report)` : "";
+  lastFailureLoggedAt = now;
+  suppressedFailures = 0;
+  console.error(
+    `[rate-limit] shared counter unavailable, relying on in-memory limiter${alsoSuppressed}:`,
+    err
+  );
+}
+
 export interface RateLimitOptions {
   /** Namespaced identity, e.g. "lead" or "login", combined with the client IP. */
   scope: string;
@@ -78,7 +109,7 @@ export async function consumeSharedRateLimit({
     const count = Number(rows[0]?.count ?? 0);
     return count > limit;
   } catch (err) {
-    console.error("[rate-limit] shared counter unavailable, relying on in-memory limiter:", err);
+    reportFailure(err);
     return false;
   }
 }

@@ -35,6 +35,11 @@ const LOGIN_ERROR_MESSAGES: Record<string, string> = {
   account_locked: "This account is temporarily locked after repeated failed attempts. Try again in 15 minutes.",
   account_inactive: "This account is inactive. Contact an administrator.",
   rate_limited: "Too many attempts. Please wait a few minutes and try again.",
+  // Deliberately says what is wrong. This one is not about the credentials at
+  // all, and the previous generic wording sent an operator looking for a
+  // forgotten password when the database was down.
+  service_unavailable:
+    "Sign-in is unavailable right now — the server could not reach the database. Please try again shortly.",
 };
 
 /** Only ever redirect somewhere inside `/admin` after login — `callbackUrl`

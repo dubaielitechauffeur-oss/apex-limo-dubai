@@ -26,6 +26,20 @@ class AccountLockedError extends CredentialsSignin {
 class AccountInactiveError extends CredentialsSignin {
   code = "account_inactive";
 }
+/**
+ * The database could not be reached, so this sign-in was never actually
+ * decided. Kept distinct from `InvalidCredentialsError` on purpose: an
+ * infrastructure outage previously surfaced here as Auth.js's generic
+ * `CallbackRouteError`, which the login form renders as "Something went
+ * wrong. Please try again." — indistinguishable from a typo'd password, and
+ * the reason a database outage was first reported as "the admin panel won't
+ * log in" with nothing to point at. It leaks no account information: the
+ * lookup never ran, so this answer is identical for an address that exists
+ * and one that does not.
+ */
+class ServiceUnavailableError extends CredentialsSignin {
+  code = "service_unavailable";
+}
 
 /**
  * A fixed, valid argon2id hash of an arbitrary constant string — used as the
@@ -61,10 +75,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new InvalidCredentialsError();
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email },
-          include: { role: true },
-        });
+        let user;
+        try {
+          user = await prisma.user.findUnique({
+            where: { email },
+            include: { role: true },
+          });
+        } catch (err) {
+          // Connection refused, pool timeout, missing table — anything that
+          // means "no answer" rather than "wrong answer".
+          console.error("[auth] sign-in could not reach the database:", err);
+          throw new ServiceUnavailableError();
+        }
 
         const passwordOk = await verifyPassword(user?.passwordHash ?? DUMMY_HASH, password);
 
