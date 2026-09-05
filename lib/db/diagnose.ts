@@ -18,6 +18,13 @@
 export type DbFailureKind =
   /** No TCP connection: wrong host, DNS, firewall, or the server is down/paused. */
   | "unreachable"
+  /** Reached it and it is healthy — the PROVIDER is refusing because the
+   *  project is over a usage limit. This is the one that actually happened:
+   *  Neon answered every query with SQLSTATE 53000, "Your project has
+   *  exceeded the data transfer quota". It reads exactly like an outage from
+   *  inside the app, and the fix is neither in the code nor in DATABASE_URL —
+   *  it is on the provider's billing page. */
+  | "quota"
   /** Reached it, but it refused us: bad password, wrong user, no access to the database. */
   | "auth"
   /** Reached it, but the query referenced a table or column it does not have —
@@ -58,10 +65,30 @@ const SQLSTATE_KINDS: Record<string, DbFailureKind> = {
   "3D000": "schema", // invalid_catalog_name — database does not exist
   "42P01": "schema", // undefined_table
   "42703": "schema", // undefined_column
+  // 53xxx is Postgres's "insufficient resources" class. A hosted provider
+  // uses it to refuse work the plan does not cover, which is an operator
+  // action, not a code fix — except 53300, where the practical effect really
+  // is that nothing can connect.
+  "53000": "quota", // insufficient_resources — Neon's quota refusal
+  "53100": "quota", // disk_full
+  "53200": "quota", // out_of_memory
+  "53400": "quota", // configuration_limit_exceeded
   "53300": "unreachable", // too_many_connections
   "57P01": "unreachable", // admin_shutdown
   "57P03": "unreachable", // cannot_connect_now — server still starting
 };
+
+/**
+ * Prisma reports a driver-adapter failure with a generic outer code (P2039)
+ * and puts the real SQLSTATE inside the message, as ``Database error. Code:
+ * `53000`.`` The SQLSTATE is the useful one — it names the fault, where the
+ * outer code only says "something came back from the driver" — and it carries
+ * no connection details, so it is safe to pass on.
+ */
+function sqlStateFrom(text: string): string | null {
+  const match = /Database error\. Code: `([0-9A-Za-z]{5})`/.exec(text);
+  return match ? match[1] : null;
+}
 
 function textOf(err: unknown): string {
   if (!err || typeof err !== "object") return String(err ?? "");
@@ -78,12 +105,27 @@ function textOf(err: unknown): string {
 
 export function classifyDbError(err: unknown): DbFailure {
   const e = (err ?? {}) as { code?: unknown };
-  const code = typeof e.code === "string" ? e.code : null;
+  const outerCode = typeof e.code === "string" ? e.code : null;
+  const text = textOf(err);
 
+  // The embedded SQLSTATE is more specific than Prisma's outer code whenever
+  // both are present, so it wins — both as the classification input and as the
+  // code reported back.
+  const sqlState = sqlStateFrom(text);
+  if (sqlState && SQLSTATE_KINDS[sqlState]) return { kind: SQLSTATE_KINDS[sqlState], code: sqlState };
+
+  const code = outerCode;
   if (code && CODE_KINDS[code]) return { kind: CODE_KINDS[code], code };
   if (code && SQLSTATE_KINDS[code]) return { kind: SQLSTATE_KINDS[code], code };
-
-  const text = textOf(err);
+  if (sqlState) {
+    const quotaish = /exceeded .*quota|quota .*exceeded|Upgrade your plan|limit exceeded/i.test(text);
+    if (quotaish) return { kind: "quota", code: sqlState };
+  }
+  // Provider quota refusals, for a provider whose wording differs from Neon's
+  // or that does not set a SQLSTATE we recognise.
+  if (/exceeded .*quota|quota .*exceeded|Upgrade your plan|usage limit|limit exceeded/i.test(text)) {
+    return { kind: "quota", code };
+  }
   // `pg`'s own pool exhaustion message. This is the failure mode a too-small
   // `max` combined with `connectionTimeoutMillis` produced — see lib/db/client.ts.
   if (/timeout exceeded when trying to connect|ETIMEDOUT|timed out/i.test(text)) {
