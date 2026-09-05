@@ -26,7 +26,7 @@ interface PageProps {
 // same freshness guarantee. Admin actions that touch vehicle data also
 // call revalidatePublicFleet(), which revalidates "/" immediately; this
 // export is the safety net for the rare case that revalidation is missed.
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;

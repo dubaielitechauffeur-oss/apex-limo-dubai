@@ -25,7 +25,7 @@ interface PageProps {
 }
 
 // See app/[locale]/services/page.tsx for the revalidation strategy note.
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({ slug: post.slug }));

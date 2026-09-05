@@ -79,7 +79,7 @@ lib/cms/revalidate.ts             Extended this phase: revalidatePublicFleet()
 app/[locale]/fleet/*,              Public pages + homepage carousel: swapped
 components/home/FleetCarousel.tsx  their data/fleet.ts import for
                                     lib/public/cms-content.ts, added `await`,
-                                    added `export const revalidate = 300`
+                                    added `export const revalidate = 3600`
 
 app/sitemap.ts                     Now queries getVehicleSitemapEntries()
                                     instead of the raw FLEET array
@@ -289,7 +289,7 @@ present with correct slugs.
 Same two-layer pattern as Phase 8 — no new caching architecture:
 
 1. **ISR**: `/[locale]/fleet` and `/[locale]/fleet/[vehicle]` set
-   `export const revalidate = 300`.
+   `export const revalidate = 3600`.
 2. **On-demand**: `revalidatePublicFleet(slug?)` in `lib/cms/revalidate.ts`,
    called from every mutating action in
    `app/admin/(dashboard)/fleet/actions.ts` (create/update/publish/

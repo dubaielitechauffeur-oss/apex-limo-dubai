@@ -35,11 +35,19 @@ const LOGIN_ERROR_MESSAGES: Record<string, string> = {
   account_locked: "This account is temporarily locked after repeated failed attempts. Try again in 15 minutes.",
   account_inactive: "This account is inactive. Contact an administrator.",
   rate_limited: "Too many attempts. Please wait a few minutes and try again.",
-  // Deliberately says what is wrong. This one is not about the credentials at
-  // all, and the previous generic wording sent an operator looking for a
-  // forgotten password when the database was down.
-  service_unavailable:
-    "Sign-in is unavailable right now — the server could not reach the database. Please try again shortly.",
+  // These say what is actually wrong. None of them are about the credentials,
+  // and generic wording here sent an operator looking for a forgotten password
+  // while the database was the thing that was down. Each points at a different
+  // fix, which is the whole reason they are separate — see lib/db/diagnose.ts.
+  db_unreachable:
+    "Sign-in is unavailable — the server cannot reach the database. Check that the database is running and that DATABASE_URL is correct for this deployment.",
+  db_auth:
+    "Sign-in is unavailable — the database refused the server's credentials. The password in DATABASE_URL is likely out of date.",
+  db_schema:
+    "Sign-in is unavailable — the database is missing tables or columns this version expects. Pending migrations need to be applied (npm run db:deploy).",
+  db_timeout:
+    "Sign-in is unavailable — the database did not respond in time. It may be overloaded or still starting up. Please try again shortly.",
+  db_unknown: "Sign-in is unavailable — the database returned an error. See the server logs for details.",
 };
 
 /** Only ever redirect somewhere inside `/admin` after login — `callbackUrl`

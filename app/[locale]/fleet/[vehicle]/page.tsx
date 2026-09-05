@@ -79,7 +79,7 @@ interface PageProps {
 }
 
 // See app/[locale]/services/page.tsx for the revalidation strategy note.
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   // Fetch slugs from DB so newly-added vehicles get pre-rendered too;

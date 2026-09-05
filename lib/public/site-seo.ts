@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { prisma } from "@/lib/db";
 import { routing, type Locale } from "@/i18n/routing";
 import type { SeoMeta } from "@/lib/cms/seo";
@@ -23,8 +24,14 @@ function pickText(value: unknown, locale: Locale): string {
  * configured yet (no row, or an empty title for this locale) so the caller
  * falls back to the static site copy — same DB-first + static-fallback
  * pattern as `getSiteContact()`.
+ *
+ * `cache`d for the same reason: `generateMetadata` runs on every page and
+ * shares its request scope with the page render, so without this the layout
+ * and the page each paid for their own copy of the row.
  */
-export async function getDefaultSeoOverride(locale: Locale): Promise<SiteDefaultSeo | null> {
+export const getDefaultSeoOverride = cache(async function getDefaultSeoOverride(
+  locale: Locale
+): Promise<SiteDefaultSeo | null> {
   try {
     const row = await prisma.globalSettings.findFirst({ select: { defaultSeo: true } });
     if (!row?.defaultSeo) return null;
@@ -51,4 +58,4 @@ export async function getDefaultSeoOverride(locale: Locale): Promise<SiteDefault
     console.error("[site-seo] DB read failed, using static defaults:", err);
     return null;
   }
-}
+});
