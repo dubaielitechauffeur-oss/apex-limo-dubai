@@ -26,9 +26,9 @@ import BookingCTA from "@/components/home/BookingCTA";
 import AboutHero from "@/components/about/AboutHero";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { RATING } from "@/lib/constants";
-import { getAllVehicles } from "@/data/fleet";
 import { FLEET_SIZE } from "@/lib/constants";
 import { getSiteContact } from "@/lib/public/site-contact";
+import { getAllVehicles } from "@/lib/public/cms-content";
 import { LOCATIONS } from "@/data/locations";
 import { TESTIMONIALS } from "@/data/testimonials";
 import JsonLd from "@/components/shared/JsonLd";
@@ -82,7 +82,8 @@ export default async function AboutPage({ params }: PageProps) {
   const valueItems = t.raw("values.items") as { title: string; description: string }[];
   const whyChooseItems = t.raw("whyChoose.items") as { title: string; description: string }[];
   const standardsItems = t.raw("standards.items") as string[];
-  const vehicles = getAllVehicles(locale as Locale);
+  // CMS-backed so this section lists the live fleet, in the admin's order.
+  const vehicles = await getAllVehicles(locale as Locale);
   const cardLabels = {
     imageComingSoon: tCard("imageComingSoon"),
     tenHours: tCard("tenHours"),

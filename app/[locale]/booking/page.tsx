@@ -8,8 +8,8 @@ import ConversionSeoIntro from "@/components/booking/ConversionSeoIntro";
 import ConversionTrustPanel from "@/components/booking/ConversionTrustPanel";
 import { getAllServices } from "@/data/services";
 import { getAllLocations } from "@/data/locations";
-import { getAllVehicles } from "@/data/fleet";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact } from "@/lib/public/site-contact";
 import JsonLd from "@/components/shared/JsonLd";
 
@@ -35,7 +35,10 @@ export default async function BookingPage({ params }: PageProps) {
   const tNav = await getTranslations({ locale, namespace: "common.nav" });
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const locations = getAllLocations(locale as Locale).map(({ slug, name }) => ({ slug, name }));
-  const vehicles = getAllVehicles(locale as Locale).map(({ slug, name, category }) => ({ slug, name, category }));
+  // Vehicles come from the CMS, not data/fleet.ts — a vehicle added or
+  // renamed in the admin panel has to reach this dropdown, and the static
+  // file only backs it up when the database is unreachable.
+  const vehicles = (await getAllVehicles(locale as Locale)).map(({ slug, name, category }) => ({ slug, name, category }));
   const contact = await getSiteContact();
   return (
     <>
