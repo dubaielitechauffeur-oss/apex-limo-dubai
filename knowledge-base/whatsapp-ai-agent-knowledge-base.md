@@ -506,7 +506,19 @@ A: Yes, we've worked with planners at most of Dubai's established wedding venues
 | Tesla Model 3 | Sedan (Electric) | 3 | 2 | AED 390 | AED 590 | AED 990 | AED 245 |
 | BYD Han | Sedan (Electric) | 3 | 2 | AED 390 | AED 590 | AED 990 | AED 245 |
 
-**Package definitions:** *2 Hours* = the shortest chauffeur hire. *5 Hours (Half Day)* = the most popular package. *10 Hours (Full Day)* = a full day with the same car and chauffeur. *Airport Transfer* = one way, point to point, with flight tracking and meet-and-greet. Anything longer, multi-stop, out-of-emirate or multi-vehicle is quoted by the team.
+**Package definitions:** *2 Hours* = the minimum chauffeur hire (this is the shortest package sold — there is no 1-hour package). *5 Hours (Half Day)* = the most popular package. *10 Hours (Full Day)* = a full day with the same car and chauffeur. *Airport Transfer* = one way, point to point, with flight tracking and meet-and-greet. *Point-to-Point Transfer* = a single city A→B ride, priced per trip. Anything longer, multi-stop, out-of-emirate or multi-vehicle is quoted by the team.
+
+### The exact package names the customer sees
+
+Use these names verbatim — a customer arriving from the site has already read them.
+
+| Where on the site | Packages offered |
+| --- | --- |
+| Priced tiers (homepage carousel, fleet listing, vehicle page) | 2 Hours · 5 Hours (Half Day) · 10 Hours (Full Day) · Airport Transfer |
+| Quote form on a vehicle page | 2 Hours · 5 Hours · 10 Hours · Airport Transfer · Point-to-Point Transfer |
+| Booking form (https://apexchauffeurdubai.com/booking) | Point-to-Point Transfer · 2 Hours · 5 Hours (Most Popular) · 10 Hours (Full Day) · Custom — specify in notes |
+
+Only the priced tiers carry a published price. *Point-to-Point Transfer* and *Custom* are bookable but priced per trip by the team — never attach a number to them yourself.
 
 ### Mercedes-Maybach S-Class
 
@@ -1629,7 +1641,7 @@ Three ways a customer can book, all reaching the same team: WhatsApp, phone, or 
 7. **Pickup time**
 8. **Vehicle** — or the class, and recommend from the rate card
 9. **Number of passengers** (1–14; over 14 → escalate to a human for a convoy)
-10. **Package / hours** — point-to-point transfer, 2 hours, 5 hours, 10 hours (full day), or custom
+10. **Package / hours** — the booking form offers exactly: *Point-to-Point Transfer*, *2 Hours*, *5 Hours (Most Popular)*, *10 Hours (Full Day)*, *Custom — specify in notes*. There is no 1-hour package; 2 Hours is the minimum hire.
 11. **Special requests** — child seats, meet-and-greet name sign, extra stops, accessibility needs, luggage count, preferred language
 
 ### For an airport pickup, also ask

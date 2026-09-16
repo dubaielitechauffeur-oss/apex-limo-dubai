@@ -137,6 +137,19 @@ const rateOf = (v, key) => LIVE_RATES?.[v.slug]?.[key] ?? v.rates[key];
 /** A rate of 0 renders as "Custom Quote" on the site — mirror that exactly. */
 const aed = (n) =>
   Number(n) > 0 ? `AED ${Number(n).toLocaleString("en-US")}` : "Custom Quote";
+/**
+ * Package names exactly as the public site renders them. Kept here rather
+ * than derived, because each list lives in a different component and the
+ * order the customer sees matters:
+ *   - priced tiers: components/home/FleetCarouselCard.tsx,
+ *     components/fleet/FleetListingCard.tsx, app/[locale]/fleet/[vehicle]/page.tsx
+ *   - vehicle-page quote form: components/fleet/VehicleHeroQuoteForm.tsx
+ *   - booking form: components/booking/BookingForm.tsx (messages/en/forms.json)
+ */
+const PRICED_TIERS = ["2 Hours", "5 Hours (Half Day)", "10 Hours (Full Day)", "Airport Transfer"];
+const VEHICLE_FORM_PACKAGES = ["2 Hours", "5 Hours", "10 Hours", "Airport Transfer", "Point-to-Point Transfer"];
+const BOOKING_FORM_PACKAGES = Object.values(messages.forms.hourOptions);
+
 /** The four published tiers, in the order the site shows them. */
 const publicTiers = (v) => [
   ["2 Hours", rateOf(v, "oneHour")],
@@ -305,7 +318,19 @@ w(
       `| ${v.name} | ${v.category}${v.isElectric ? " (Electric)" : ""} | ${v.passengers} | ${v.luggage ?? "—"} | ${aed(rateOf(v, "oneHour"))} | ${aed(rateOf(v, "fiveHours"))} | ${aed(rateOf(v, "tenHours"))} | ${aed(rateOf(v, "airport"))} |`,
   ),
   "",
-  "**Package definitions:** *2 Hours* = the shortest chauffeur hire. *5 Hours (Half Day)* = the most popular package. *10 Hours (Full Day)* = a full day with the same car and chauffeur. *Airport Transfer* = one way, point to point, with flight tracking and meet-and-greet. Anything longer, multi-stop, out-of-emirate or multi-vehicle is quoted by the team.",
+  "**Package definitions:** *2 Hours* = the minimum chauffeur hire (this is the shortest package sold — there is no 1-hour package). *5 Hours (Half Day)* = the most popular package. *10 Hours (Full Day)* = a full day with the same car and chauffeur. *Airport Transfer* = one way, point to point, with flight tracking and meet-and-greet. *Point-to-Point Transfer* = a single city A→B ride, priced per trip. Anything longer, multi-stop, out-of-emirate or multi-vehicle is quoted by the team.",
+  "",
+  "### The exact package names the customer sees",
+  "",
+  "Use these names verbatim — a customer arriving from the site has already read them.",
+  "",
+  "| Where on the site | Packages offered |",
+  "| --- | --- |",
+  `| Priced tiers (homepage carousel, fleet listing, vehicle page) | ${PRICED_TIERS.join(" · ")} |`,
+  `| Quote form on a vehicle page | ${VEHICLE_FORM_PACKAGES.join(" · ")} |`,
+  `| Booking form (${SITE.url}/booking) | ${BOOKING_FORM_PACKAGES.join(" · ")} |`,
+  "",
+  "Only the priced tiers carry a published price. *Point-to-Point Transfer* and *Custom* are bookable but priced per trip by the team — never attach a number to them yourself.",
   "",
 );
 for (const v of FLEET) {
@@ -408,7 +433,7 @@ w(
   "7. **Pickup time**",
   "8. **Vehicle** — or the class, and recommend from the rate card",
   "9. **Number of passengers** (1–14; over 14 → escalate to a human for a convoy)",
-  "10. **Package / hours** — point-to-point transfer, 2 hours, 5 hours, 10 hours (full day), or custom",
+  `10. **Package / hours** — the booking form offers exactly: ${BOOKING_FORM_PACKAGES.map((o) => `*${o}*`).join(", ")}. There is no 1-hour package; 2 Hours is the minimum hire.`,
   "11. **Special requests** — child seats, meet-and-greet name sign, extra stops, accessibility needs, luggage count, preferred language",
   "",
   "### For an airport pickup, also ask",
