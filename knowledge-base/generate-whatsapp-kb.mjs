@@ -49,7 +49,6 @@ function literal(file, declaration) {
     else if (c === "]" || c === "}") {
       depth -= 1;
       if (depth === 0) {
-        // eslint-disable-next-line no-new-func
         return new Function(`return (${src.slice(start, i + 1)});`)();
       }
     }
