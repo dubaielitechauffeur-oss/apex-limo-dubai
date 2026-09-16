@@ -1103,6 +1103,42 @@ Build the admin write layer:
 
 ---
 
+## Applying migrations
+
+Migrations reach production through `.github/workflows/migrate.yml`, which
+runs `prisma migrate deploy` when a schema change lands on `main`.
+
+**This is not optional plumbing.** Before it existed, nothing applied
+migrations outside CI's throwaway database: merging a schema change shipped
+code whose queries named columns production did not have. Because Prisma
+selects every column of a model, the failure was never limited to the new
+feature — adding two nullable columns to `Service` took out the admin
+Services screen entirely ("An unexpected error occurred" on load) and made
+the public service pages fall through to their `data/*.ts` fallback, quietly
+serving static copy over every CMS edit an admin had made. Neither the tests
+nor the build caught it, because CI migrates its own database before running
+either.
+
+The workflow needs a `DATABASE_URL` repository secret (Settings → Secrets and
+variables → Actions). Without one it skips with a notice rather than failing,
+so it is inert until someone supplies it.
+
+**Not in `npm run build`.** Vercel builds preview deployments as well as
+production, so migrating from the build command would let any open PR reshape
+the production schema before its code was reviewed — and it also requires
+`DATABASE_URL` to be exposed to Vercel's build step, which it is not.
+
+Rules that follow from deploying this way:
+
+- A migration must be safe against the **old code still serving requests**
+  while the new build rolls out. Additive columns and tables are; a rename or
+  a drop is not, and needs the usual two-step (add, backfill, ship, remove).
+- `migrate deploy` only applies what is pending and never generates or resets
+  anything, so re-running it is a no-op.
+- To repair a database that drifted before this workflow existed, run the
+  workflow by hand (`workflow_dispatch`) or `npx prisma migrate deploy`
+  locally against the production URL.
+
 ## Appendix A: Complete Column Reference
 
 ### Vehicle

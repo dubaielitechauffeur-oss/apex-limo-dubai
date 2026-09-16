@@ -1,0 +1,65 @@
+name: "🗄️ Migrate production database"
+
+# Applies pending Prisma migrations to the production database when a schema
+# change lands on main.
+#
+# Why this exists: nothing applied migrations outside CI's throwaway database.
+# Merging a schema change shipped code whose queries named columns production
+# did not have, and because Prisma selects every column of a model, the damage
+# was not limited to the new feature — the admin Services screen errored on
+# load and the public service pages fell through to their static fallback,
+# hiding every CMS edit. Neither CI nor the build caught it: CI migrates its
+# own database first.
+#
+# Why here rather than in `npm run build`: Vercel builds preview deployments
+# too, so a migration in the build command would let any PR's preview reshape
+# the production schema before its code was reviewed. Running on main only
+# keeps that to merges.
+#
+# Activation: add a `DATABASE_URL` repository secret pointing at production
+# (Settings → Secrets and variables → Actions). Until then this job skips
+# itself with a notice rather than failing, so merging it changes nothing.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "prisma/migrations/**"
+      - "prisma/schema.prisma"
+  # Also runnable by hand, e.g. to repair a database that drifted before this
+  # workflow existed.
+  workflow_dispatch:
+
+concurrency:
+  group: migrate-production
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: "Apply pending migrations"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Apply pending migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::notice::No DATABASE_URL secret is set, so there is nothing to migrate against."
+            echo "::notice::Add one under Settings → Secrets and variables → Actions to enable this job."
+            exit 0
+          fi
+          npx prisma migrate deploy
