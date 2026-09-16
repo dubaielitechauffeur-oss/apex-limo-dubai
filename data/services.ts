@@ -2086,6 +2086,12 @@ export interface PlainService {
   whyChoose: string[];
   faqs: { question: string; answer: string }[];
   image: { src: string; alt: string };
+  /** Full-width hero banner on /services/[service], set per breakpoint in the
+   *  admin panel. Undefined on either side means that breakpoint falls back to
+   *  `image` — which is how every service rendered before these existed, and
+   *  what the static rows below always do. */
+  heroDesktopImage?: { src: string; alt: string };
+  heroMobileImage?: { src: string; alt: string };
   tags: string[];
   /** Admin SEO Manager overrides for this row, when the CMS is the source.
    *  Always undefined for the static fallback data below — those rows have no

@@ -1,6 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { mockService, mockLocation, mockBlogPost, mockFaq, mockTestimonial, mockBrand, mockHeroSlide, mockVehicle } = vi.hoisted(
+const {
+  mockService,
+  mockLocation,
+  mockBlogPost,
+  mockFaq,
+  mockTestimonial,
+  mockBrand,
+  mockHeroSlide,
+  mockVehicle,
+  mockPageHero,
+} = vi.hoisted(
   () => ({
     mockService: { findMany: vi.fn() },
     mockLocation: { findMany: vi.fn() },
@@ -10,6 +20,7 @@ const { mockService, mockLocation, mockBlogPost, mockFaq, mockTestimonial, mockB
     mockBrand: { findMany: vi.fn() },
     mockHeroSlide: { findMany: vi.fn() },
     mockVehicle: { findMany: vi.fn() },
+    mockPageHero: { findUnique: vi.fn() },
   })
 );
 
@@ -23,6 +34,7 @@ vi.mock("@/lib/db", () => ({
     brand: mockBrand,
     heroSlide: mockHeroSlide,
     vehicle: mockVehicle,
+    pageHero: mockPageHero,
   },
 }));
 
@@ -40,6 +52,7 @@ import {
   getAllVehicles,
   getVehicleBySlug,
   getVehiclesByCategorySlug,
+  getPageHero,
   getServiceSitemapEntries,
   getLocationSitemapEntries,
   getBlogPostSitemapEntries,
@@ -275,5 +288,112 @@ describe("vehicle ordering follows the admin's sort order", () => {
     const result = await getVehiclesByCategorySlug("sedan", "en");
 
     expect(result.map((v) => v.slug)).toEqual(["sedan-b", "sedan-a"]);
+  });
+});
+
+/**
+ * A page hero has no `data/*.ts` counterpart: the built-in image compiled
+ * into ServicesHero/LocationsHero is the fallback, so every failure mode here
+ * has to resolve to `undefined` rather than throw or hand back a half-built
+ * object the component would render as a broken image.
+ */
+describe("page heroes degrade to the component's built-in image", () => {
+  it("returns undefined when the page has no row", async () => {
+    mockPageHero.findUnique.mockResolvedValue(null);
+    expect(await getPageHero("services", "en")).toBeUndefined();
+  });
+
+  it("returns undefined when a row exists but neither image is set", async () => {
+    mockPageHero.findUnique.mockResolvedValue({
+      page: "services",
+      desktopImage: null,
+      mobileImage: null,
+      imageAlt: null,
+    });
+    expect(await getPageHero("services", "en")).toBeUndefined();
+  });
+
+  it("returns undefined instead of throwing when the database is down", async () => {
+    mockPageHero.findUnique.mockRejectedValue(DB_ERROR);
+    expect(await getPageHero("services", "en")).toBeUndefined();
+  });
+
+  it("returns one breakpoint's image when only that one is set", async () => {
+    mockPageHero.findUnique.mockResolvedValue({
+      page: "locations",
+      desktopImage: null,
+      mobileImage: { url: "/uploads/locations-mobile.webp" },
+      imageAlt: null,
+    });
+
+    const hero = await getPageHero("locations", "en");
+
+    expect(hero?.mobileSrc).toBe("/uploads/locations-mobile.webp");
+    expect(hero?.desktopSrc).toBeUndefined();
+  });
+
+  it("resolves alt text in the requested locale", async () => {
+    mockPageHero.findUnique.mockResolvedValue({
+      page: "services",
+      desktopImage: { url: "/uploads/services-desktop.webp" },
+      mobileImage: { url: "/uploads/services-mobile.webp" },
+      imageAlt: { en: "Chauffeur opening a car door", ar: "سائق يفتح باب السيارة" },
+    });
+
+    expect((await getPageHero("services", "ar"))?.alt).toBe("سائق يفتح باب السيارة");
+    expect((await getPageHero("services", "en"))?.alt).toBe("Chauffeur opening a car door");
+  });
+});
+
+describe("service hero images", () => {
+  /** Minimal row in the shape `mapService()` reads. */
+  function serviceRow(overrides: Record<string, unknown> = {}) {
+    const text = { en: "copy" };
+    return {
+      slug: "airport-transfers",
+      name: text,
+      tagline: text,
+      heroSubtitle: text,
+      shortDescription: text,
+      longDescription: { en: ["copy"] },
+      ratingMetric: { value: "1", label: text },
+      benefits: { en: [] },
+      whyChoose: { en: [] },
+      tags: { en: [] },
+      faqs: [],
+      image: { url: "/uploads/card.webp" },
+      imageUrl: null,
+      imageAlt: { en: "Card image" },
+      heroDesktopImage: null,
+      heroMobileImage: null,
+      seo: null,
+      ...overrides,
+    };
+  }
+
+  it("exposes both breakpoints when the admin has set them", async () => {
+    mockService.findMany.mockResolvedValue([
+      serviceRow({
+        heroDesktopImage: { url: "/uploads/hero-desktop.webp", alt: { en: "Wide banner" } },
+        heroMobileImage: { url: "/uploads/hero-mobile.webp", alt: null },
+      }),
+    ]);
+
+    const [service] = await getAllServices("en");
+
+    expect(service.heroDesktopImage).toEqual({ src: "/uploads/hero-desktop.webp", alt: "Wide banner" });
+    // No alt of its own — it falls back to the card image's alt rather than
+    // shipping an empty one.
+    expect(service.heroMobileImage).toEqual({ src: "/uploads/hero-mobile.webp", alt: "Card image" });
+  });
+
+  it("leaves both undefined when the admin has set neither, so the page keeps using the card image", async () => {
+    mockService.findMany.mockResolvedValue([serviceRow()]);
+
+    const [service] = await getAllServices("en");
+
+    expect(service.heroDesktopImage).toBeUndefined();
+    expect(service.heroMobileImage).toBeUndefined();
+    expect(service.image.src).toBe("/uploads/card.webp");
   });
 });

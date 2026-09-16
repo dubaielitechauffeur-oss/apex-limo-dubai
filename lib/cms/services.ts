@@ -31,6 +31,8 @@ export interface ServiceDetail {
   ratingMetricValue: string;
   ratingMetricLabel: LocalizedText;
   imageId: string | null;
+  heroDesktopImageId: string | null;
+  heroMobileImageId: string | null;
   seo: SeoMeta;
   status: PublishStatus;
   sortOrder: number;
@@ -52,6 +54,8 @@ export interface ServiceInput {
   ratingMetricValue: string;
   ratingMetricLabel: LocalizedText;
   imageId: string | null;
+  heroDesktopImageId: string | null;
+  heroMobileImageId: string | null;
   seo: SeoMeta;
   status: PublishStatus;
   sortOrder: number;
@@ -174,6 +178,8 @@ export async function getService(id: string): Promise<RoleAdminResult<ServiceDet
       ratingMetricValue: ratingMetric.value ?? "",
       ratingMetricLabel: ratingMetric.label ?? emptyLocalizedText(),
       imageId: row.imageId,
+      heroDesktopImageId: row.heroDesktopImageId,
+      heroMobileImageId: row.heroMobileImageId,
       seo: (row.seo as unknown as SeoMeta | null) ?? emptySeoMeta(),
       status: row.status,
       sortOrder: row.sortOrder,
@@ -204,6 +210,8 @@ function buildData(input: ServiceInput): Prisma.ServiceUncheckedCreateInput {
     tags: localizedArrayField(input.tags, linesToArray),
     ratingMetric: { value: input.ratingMetricValue, label: input.ratingMetricLabel } as Prisma.InputJsonValue,
     imageId: input.imageId,
+    heroDesktopImageId: input.heroDesktopImageId,
+    heroMobileImageId: input.heroMobileImageId,
     seo: input.seo as unknown as Prisma.InputJsonValue,
     status: input.status,
     sortOrder: input.sortOrder,

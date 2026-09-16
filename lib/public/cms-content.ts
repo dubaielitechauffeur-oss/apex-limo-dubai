@@ -149,6 +149,14 @@ function mapService(
     whyChoose: pickArray(row.whyChoose, locale),
     faqs: row.faqs.map((faq) => ({ question: pickText(faq.question, locale), answer: pickText(faq.answer, locale) })),
     image: { src: row.image?.url ?? row.imageUrl ?? "", alt: pickText(row.imageAlt, locale) },
+    // A hero image carries the card image's alt text: it is the same subject,
+    // and MediaItem.alt is only set for images uploaded with one.
+    heroDesktopImage: row.heroDesktopImage
+      ? { src: row.heroDesktopImage.url, alt: pickText(row.heroDesktopImage.alt ?? row.imageAlt, locale) }
+      : undefined,
+    heroMobileImage: row.heroMobileImage
+      ? { src: row.heroMobileImage.url, alt: pickText(row.heroMobileImage.alt ?? row.imageAlt, locale) }
+      : undefined,
     tags: pickArray(row.tags, locale),
     seo: resolvePublicSeo(row.seo, locale, ogImageUrlById) ?? undefined,
     // A service reads as translated only when its name, summary and body copy
@@ -162,7 +170,12 @@ function fetchAllServiceRows() {
   return prisma.service.findMany({
     where: { status: "published", deletedAt: null },
     orderBy: { sortOrder: "asc" },
-    include: { image: { select: { url: true } }, faqs: { orderBy: { sortOrder: "asc" } } },
+    include: {
+      image: { select: { url: true } },
+      heroDesktopImage: { select: { url: true, alt: true } },
+      heroMobileImage: { select: { url: true, alt: true } },
+      faqs: { orderBy: { sortOrder: "asc" } },
+    },
   });
 }
 
@@ -187,7 +200,12 @@ export async function getServiceBySlug(slug: string, locale: Locale): Promise<Pl
       // whole catalogue for no reason.
       const row = await prisma.service.findUnique({
         where: { slug },
-        include: { image: { select: { url: true } }, faqs: { orderBy: { sortOrder: "asc" } } },
+        include: {
+          image: { select: { url: true } },
+          heroDesktopImage: { select: { url: true, alt: true } },
+          heroMobileImage: { select: { url: true, alt: true } },
+          faqs: { orderBy: { sortOrder: "asc" } },
+        },
       });
       if (!row || row.status !== "published" || row.deletedAt !== null) return undefined;
       const ogImages = await resolveOgImageUrls([row]);
@@ -774,6 +792,46 @@ export async function getVehiclesByCategorySlug(categorySlug: FleetCategorySlug,
   if (categorySlug === "electric") return all.filter((v) => v.isElectric);
   const display = CATEGORY_SLUG_TO_DISPLAY[categorySlug];
   return all.filter((v) => v.category === display);
+}
+
+// ── Page heroes ──────────────────────────────────────────────────────────
+
+export interface PublicPageHero {
+  desktopSrc?: string;
+  mobileSrc?: string;
+  alt?: string;
+}
+
+/**
+ * Banner imagery for a page with no CMS record of its own (/services and
+ * /locations today) — see lib/cms/page-heroes.ts for why these live in their
+ * own table.
+ *
+ * Returns `undefined` on a missing row, an empty row, or a database failure.
+ * Callers treat that as "use the built-in image", so the banner is never
+ * blank and this never has a fallback in `data/*.ts` to keep in sync: the
+ * component's own image is the fallback.
+ */
+export async function getPageHero(page: string, locale: Locale): Promise<PublicPageHero | undefined> {
+  try {
+    const row = await prisma.pageHero.findUnique({
+      where: { page },
+      include: {
+        desktopImage: { select: { url: true } },
+        mobileImage: { select: { url: true } },
+      },
+    });
+    if (!row) return undefined;
+
+    const desktopSrc = row.desktopImage?.url;
+    const mobileSrc = row.mobileImage?.url;
+    if (!desktopSrc && !mobileSrc) return undefined;
+
+    return { desktopSrc, mobileSrc, alt: pickText(row.imageAlt, locale) || undefined };
+  } catch (err) {
+    console.error("[cms-content] page hero read failed, using the built-in image:", err);
+    return undefined;
+  }
 }
 
 // ── Sitemap helpers ──────────────────────────────────────────────────────

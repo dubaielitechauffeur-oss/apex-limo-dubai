@@ -34,6 +34,8 @@ function readServiceInput(formData: FormData): ServiceInput {
     ratingMetricValue: String(formData.get("ratingMetricValue") ?? ""),
     ratingMetricLabel: readLocalizedField(formData, "ratingMetricLabel"),
     imageId: String(formData.get("imageId") ?? "") || null,
+    heroDesktopImageId: String(formData.get("heroDesktopImageId") ?? "") || null,
+    heroMobileImageId: String(formData.get("heroMobileImageId") ?? "") || null,
     seo: readSeoField(formData),
     status: (String(formData.get("status") ?? "draft") as PublishStatus),
     sortOrder: Number(formData.get("sortOrder") ?? 0) || 0,

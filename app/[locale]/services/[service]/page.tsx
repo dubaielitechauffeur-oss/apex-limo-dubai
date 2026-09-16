@@ -164,18 +164,38 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               tNav("home")
             )} />
 
-      {/* Hero zone — reuses the same service.image shown on this service's
-          /services listing card, so both stay in sync automatically. */}
+      {/* Hero zone — a service with a heroDesktopImage and/or heroMobileImage
+          swaps in those images via <picture> (same pattern as the homepage
+          Hero and the location pages), falling back to service.image for
+          whichever breakpoint has no override. A service with neither keeps
+          the original single-image behavior, sharing the /services listing
+          card image so both stay in sync automatically. */}
       <section className="relative isolate overflow-hidden bg-obsidian py-16 sm:py-20">
         <div className="absolute inset-0">
-          <Image
-            src={service.image.src}
-            alt={service.image.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
+          {service.heroDesktopImage || service.heroMobileImage ? (
+            <picture>
+              <source
+                media="(max-width: 767px)"
+                srcSet={(service.heroMobileImage ?? service.heroDesktopImage ?? service.image).src}
+              />
+              <img
+                src={(service.heroDesktopImage ?? service.image).src}
+                alt={(service.heroDesktopImage ?? service.image).alt}
+                fetchPriority="high"
+                decoding="async"
+                className="h-full w-full object-cover"
+              />
+            </picture>
+          ) : (
+            <Image
+              src={service.image.src}
+              alt={service.image.alt}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          )}
         </div>
         <div
           aria-hidden="true"
