@@ -172,7 +172,11 @@ function vehicleJsonLd(vehicle: PlainFleetVehicle, locale: Locale) {
   // omitted rather than published as "free".
   const offers = [
     { key: "airport", price: vehicle.rates.airport, name: "Airport transfer (one way)" },
-    { key: "oneHour", price: vehicle.rates.oneHour, name: "Hourly chauffeur (1 hour)" },
+    // `oneHour` is the 2-hour minimum hire, which is what the pricing card on
+    // this page renders ("2 Hours"). Publishing it as a 1-hour offer put a
+    // price in structured data for a package the site does not sell, and
+    // contradicted the visible price on the same page.
+    { key: "oneHour", price: vehicle.rates.oneHour, name: "Chauffeur hire (2 hours)" },
     { key: "fiveHours", price: vehicle.rates.fiveHours, name: "Half-day chauffeur (5 hours)" },
     { key: "tenHours", price: vehicle.rates.tenHours, name: "Full-day chauffeur (10 hours)" },
   ]
