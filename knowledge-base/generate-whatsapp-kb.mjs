@@ -134,6 +134,9 @@ const RATES_SOURCE = LIVE_RATES
   ? "live CMS rates exported to `knowledge-base/live-rates.json`"
   : "the repository's static fallback (`data/fleet.ts`) — **verify against admin → Pricing before use**";
 const rateOf = (v, key) => LIVE_RATES?.[v.slug]?.[key] ?? v.rates[key];
+/** The CMS can rename a vehicle (e.g. "Mercedes V-Class" → "Mercedes V-Class
+ *  V300"), and the name on the live page is the one a customer will quote. */
+const nameOf = (v) => LIVE_RATES?.[v.slug]?.name ?? v.name;
 /** A rate of 0 renders as "Custom Quote" on the site — mirror that exactly. */
 const aed = (n) =>
   Number(n) > 0 ? `AED ${Number(n).toLocaleString("en-US")}` : "Custom Quote";
@@ -315,7 +318,7 @@ w(
   "| --- | --- | --- | --- | --- | --- | --- | --- |",
   ...FLEET.map(
     (v) =>
-      `| ${v.name} | ${v.category}${v.isElectric ? " (Electric)" : ""} | ${v.passengers} | ${v.luggage ?? "—"} | ${aed(rateOf(v, "oneHour"))} | ${aed(rateOf(v, "fiveHours"))} | ${aed(rateOf(v, "tenHours"))} | ${aed(rateOf(v, "airport"))} |`,
+      `| ${nameOf(v)} | ${v.category}${v.isElectric ? " (Electric)" : ""} | ${v.passengers} | ${v.luggage ?? "—"} | ${aed(rateOf(v, "oneHour"))} | ${aed(rateOf(v, "fiveHours"))} | ${aed(rateOf(v, "tenHours"))} | ${aed(rateOf(v, "airport"))} |`,
   ),
   "",
   "**Package definitions:** *2 Hours* = the minimum chauffeur hire (this is the shortest package sold — there is no 1-hour package). *5 Hours (Half Day)* = the most popular package. *10 Hours (Full Day)* = a full day with the same car and chauffeur. *Airport Transfer* = one way, point to point, with flight tracking and meet-and-greet. *Point-to-Point Transfer* = a single city A→B ride, priced per trip. Anything longer, multi-stop, out-of-emirate or multi-vehicle is quoted by the team.",
@@ -335,7 +338,7 @@ w(
 );
 for (const v of FLEET) {
   w(
-    `### ${v.name}`,
+    `### ${nameOf(v)}`,
     "",
     `**Page:** ${SITE.url}/fleet/${v.slug}`,
     `**Brand/model:** ${v.brand} ${v.model} · **Class:** ${v.category}${v.isElectric ? " · Fully electric" : ""}`,
@@ -370,7 +373,7 @@ for (const [slug, c] of Object.entries(FLEET_CATEGORY_CONTENT)) {
   w(
     `#### ${title(slug)} (${SITE.url}/fleet/${slug})`,
     "",
-    `**Vehicles:** ${inCat.map((v) => v.name).join(", ") || "—"}`,
+    `**Vehicles:** ${inCat.map(nameOf).join(", ") || "—"}`,
     "",
     "**Why choose this class**",
     "",
