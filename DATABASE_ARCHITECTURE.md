@@ -1103,6 +1103,32 @@ Build the admin write layer:
 
 ---
 
+## Applying migrations
+
+`npm run build` runs `prisma migrate deploy` before `next build`, so **every
+deploy applies any pending migration before the new code serves traffic.**
+
+This is not a convenience. Before it existed, nothing applied migrations
+outside CI's throwaway database: merging a schema change shipped code whose
+queries named columns the production database did not have. Prisma selects
+every column of a model, so the failure was not limited to the new feature —
+the admin Services screen returned "An unexpected error occurred" on load,
+and the public service pages silently fell through to their `data/*.ts`
+fallback, hiding every CMS edit an admin had made. Nothing in the build or
+the tests caught it, because CI migrates its own database first.
+
+Consequences worth knowing:
+
+- **`DATABASE_URL` must be set at build time**, not just at runtime. A build
+  without it now fails loudly rather than deploying code the database cannot
+  serve.
+- `migrate deploy` only applies migrations that are pending and never
+  generates or resets anything, so repeat builds are a no-op ("No pending
+  migrations to apply").
+- Write migrations to be safe against the *old* code still serving requests
+  while the new build runs — additive columns and tables are; a rename or a
+  drop is not, and needs the usual two-step (add, backfill, ship, remove).
+
 ## Appendix A: Complete Column Reference
 
 ### Vehicle
