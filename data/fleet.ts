@@ -97,7 +97,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "mercedes-maybach-s-class",
     brand: "Mercedes-Maybach",
     model: "S-Class",
-    rates: { tenHours: 2980, fiveHours: 2190, oneHour: 1390, airport: 999, extraHour: 650, additionalCity: 650 },
+    rates: { tenHours: 3890, fiveHours: 2690, oneHour: 1890, airport: 1445, extraHour: 650, additionalCity: 650 },
     images: [
       {
         src: "/images/fleet/mercedes-maybach-s-class/mercedes-maybach-s-class-1.webp",
@@ -320,7 +320,7 @@ export const FLEET: FleetVehicle[] = [
     },
     brand: "Rolls-Royce",
     model: "Phantom Extended Wheelbase",
-    rates: { tenHours: 4890, fiveHours: 3490, oneHour: 2490, airport: 1899, extraHour: 1200, additionalCity: 1200 },
+    rates: { tenHours: 5990, fiveHours: 4490, oneHour: 3290, airport: 2490, extraHour: 1200, additionalCity: 1200 },
     images: [
       {
         src: "/images/fleet/rolls-royce-phantom/rolls-royce-phantom-1.webp",
@@ -770,7 +770,7 @@ export const FLEET: FleetVehicle[] = [
     },
     brand: "Range Rover",
     model: "Autobiography",
-    rates: { tenHours: 1999, fiveHours: 1190, oneHour: 940, airport: 750, extraHour: 400, additionalCity: 400 },
+    rates: { tenHours: 2299, fiveHours: 1390, oneHour: 1090, airport: 790, extraHour: 400, additionalCity: 400 },
     images: [
       {
         src: "/images/fleet/range-rover-autobiography/range-rover-autobiography-1.webp",
@@ -990,7 +990,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "cadillac-escalade",
     brand: "Cadillac",
     model: "Escalade ESV",
-    rates: { tenHours: 1790, fiveHours: 1390, oneHour: 890, airport: 650, extraHour: 350, additionalCity: 350 },
+    rates: { tenHours: 1990, fiveHours: 1590, oneHour: 1090, airport: 690, extraHour: 350, additionalCity: 350 },
     images: [
       {
         src: "/images/fleet/cadillac-escalade/cadillac-escalade-1.webp",
@@ -1248,7 +1248,7 @@ export const FLEET: FleetVehicle[] = [
           de: "Geöffneter Kofferraum der Mercedes V-Klasse mit fünf Koffern beladen",
         },
       },
-    ],    name: "Mercedes V-Class",
+    ],    name: "Mercedes V-Class V300",
     category: "Van",
     tagline: {
       en: "Space, styled",
@@ -2328,7 +2328,7 @@ export const FLEET: FleetVehicle[] = [
     slug: "rolls-royce-cullinan-mansory",
     brand: "Rolls-Royce",
     model: "Cullinan Mansory",
-    rates: { tenHours: 4799, fiveHours: 3199, oneHour: 2650, airport: 1399, extraHour: 1400, additionalCity: 1400 },
+    rates: { tenHours: 5290, fiveHours: 3690, oneHour: 2990, airport: 2090, extraHour: 1400, additionalCity: 1400 },
     images: [
       {
         src: "/images/fleet/rolls-royce-cullinan-mansory/rolls-royce-cullinan-mansory-1.webp",
