@@ -57,9 +57,55 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          if [ -z "$DATABASE_URL" ]; then
+          set -euo pipefail
+
+          if [ -z "${DATABASE_URL:-}" ]; then
             echo "::notice::No DATABASE_URL secret is set, so there is nothing to migrate against."
             echo "::notice::Add one under Settings → Secrets and variables → Actions to enable this job."
             exit 0
           fi
+
+          # Deploy first, and only reach for a baseline if Prisma itself
+          # asks for one. This database predates the migration workflow: it
+          # was built with `prisma db push`, so the schema exists but there is
+          # no `_prisma_migrations` table, and deploy refuses with P3005
+          # ("The database schema is not empty"). Prisma's documented answer
+          # is to record the migrations whose changes the database already has,
+          # then deploy what is genuinely new.
+          #
+          # Keying off the real error rather than a guess matters: any other
+          # failure still fails the job instead of being baselined over.
+          if npx prisma migrate deploy 2>&1 | tee /tmp/deploy.log; then
+            exit 0
+          fi
+
+          if ! grep -q "P3005" /tmp/deploy.log; then
+            echo "::error::migrate deploy failed for a reason other than a missing baseline."
+            exit 1
+          fi
+
+          newest=$(ls -1 prisma/migrations | grep -v migration_lock | sort | tail -1)
+          echo "No migration history in this database — baselining everything before $newest."
+          for dir in prisma/migrations/*/; do
+            name=$(basename "$dir")
+            if [ "$name" = "$newest" ]; then continue; fi
+            echo "  marking $name as already applied"
+            npx prisma migrate resolve --applied "$name"
+          done
+
           npx prisma migrate deploy
+
+      # A baseline that guessed wrong would leave the database quietly out of
+      # step with the schema, which is the failure mode this workflow exists
+      # to prevent. `migrate status` reporting every migration applied is the
+      # proof it did not. (`migrate diff --to-migrations` would compare more
+      # deeply but needs a shadow database, which this job has no business
+      # creating next to production.)
+      - name: Verify every migration is recorded as applied
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DATABASE_URL:-}" ]; then exit 0; fi
+          npx prisma migrate status | tee /tmp/status.log
+          grep -q "Database schema is up to date" /tmp/status.log
