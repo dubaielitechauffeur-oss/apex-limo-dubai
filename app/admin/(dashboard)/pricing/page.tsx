@@ -33,7 +33,11 @@ export default async function PricingPage() {
               <tr className="border-b border-gray-200 text-start text-xs font-semibold uppercase tracking-wide text-gray-500">
                 <th className="ps-5 pe-4 py-3 text-start">Vehicle</th>
                 <th className="pe-4 py-3 text-start">Status</th>
-                <th className="pe-3 py-3 text-start">1 Hour</th>
+                {/* The schema field is `oneHour`, but the rate it holds is the
+                    2-hour minimum package every public page sells — see
+                    PricingRateRow. Labeling this column "1 Hour" invited
+                    whoever edits rates to price a package that isn't sold. */}
+                <th className="pe-3 py-3 text-start">2 Hours</th>
                 <th className="pe-3 py-3 text-start">5 Hours</th>
                 <th className="pe-3 py-3 text-start">10 Hours</th>
                 <th className="pe-3 py-3 text-start">Airport</th>
