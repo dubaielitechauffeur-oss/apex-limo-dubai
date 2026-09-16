@@ -36,7 +36,12 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const service = result.data;
   // Guarantee this service's own image + OG image resolve in the picker
   // even when they were uploaded earlier than the library's most-recent 24.
-  const mediaLibraryItems = await ensureMediaPickerItems(initialMediaLibraryItems, [service.imageId, service.seo.ogImageId]);
+  const mediaLibraryItems = await ensureMediaPickerItems(initialMediaLibraryItems, [
+    service.imageId,
+    service.heroDesktopImageId,
+    service.heroMobileImageId,
+    service.seo.ogImageId,
+  ]);
   const canManage = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.SERVICES_UPDATE);
   const canPublish = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.SERVICES_PUBLISH);
   const canDelete = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.SERVICES_DELETE);

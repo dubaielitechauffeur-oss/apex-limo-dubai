@@ -41,6 +41,8 @@ function fixtureInput(overrides?: Partial<ServiceInput>): ServiceInput {
     ratingMetricValue: "500+",
     ratingMetricLabel: emptyLocalizedText("Happy clients"),
     imageId: null,
+    heroDesktopImageId: null,
+    heroMobileImageId: null,
     seo: emptySeoMeta(),
     status: "draft",
     sortOrder: 0,

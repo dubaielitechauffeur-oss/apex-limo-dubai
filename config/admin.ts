@@ -62,6 +62,16 @@ export const ADMIN_NAV: AdminNavSection[] = [
         moduleId: "homepage",
       },
       {
+        // Shares the `homepage` module: same class of content (site-page
+        // imagery) and the same editors, so it needs no new permission
+        // resource — see lib/cms/page-heroes.ts for the full reasoning.
+        id: "page-heroes",
+        label: "Page Heroes",
+        href: "/admin/page-heroes",
+        icon: "Image",
+        moduleId: "homepage",
+      },
+      {
         id: "fleet",
         label: "Fleet",
         href: "/admin/fleet",

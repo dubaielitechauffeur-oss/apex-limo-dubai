@@ -135,7 +135,7 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  uploadedMedia       MediaItem[]           @relation("UploadedBy")
+  uploadedMedia       MediaItem[]          @relation("UploadedBy")
   auditLogs           AuditLog[]
   passwordResetTokens PasswordResetToken[]
 
@@ -254,10 +254,15 @@ model MediaItem {
 
   blogPostsFeatured BlogPost[] @relation("BlogFeaturedImage")
 
-  servicesImage Service[] @relation("ServiceImage")
+  servicesImage       Service[] @relation("ServiceImage")
+  servicesHeroDesktop Service[] @relation("ServiceHeroDesktopImage")
+  servicesHeroMobile  Service[] @relation("ServiceHeroMobileImage")
 
   locationsHeroDesktop Location[] @relation("LocationHeroDesktopImage")
   locationsHeroMobile  Location[] @relation("LocationHeroMobileImage")
+
+  pageHeroesDesktop PageHero[] @relation("PageHeroDesktopImage")
+  pageHeroesMobile  PageHero[] @relation("PageHeroMobileImage")
 
   brandsLogo Brand[] @relation("BrandLogo")
 
@@ -387,9 +392,9 @@ model VehicleImage {
   sortOrder     Int      @default(0)
   createdAt     DateTime @default(now())
 
-  vehicle      Vehicle    @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-  media        MediaItem  @relation(fields: [mediaId], references: [id])
-  mobileMedia  MediaItem? @relation("VehicleImageMobile", fields: [mobileMediaId], references: [id])
+  vehicle     Vehicle    @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  media       MediaItem  @relation(fields: [mediaId], references: [id])
+  mobileMedia MediaItem? @relation("VehicleImageMobile", fields: [mobileMediaId], references: [id])
 
   @@index([vehicleId, sortOrder])
   @@index([mediaId])
@@ -442,32 +447,32 @@ model Booking {
 }
 
 model Quote {
-  id              String      @id @default(cuid())
-  reference       String      @unique
-  status          QuoteStatus @default(pending)
-  source          BookingSource @default(website)
-  fullName        String
-  phone           String
-  email           String
-  pickupLocation  String
-  dropoffLocation String
-  date            DateTime
-  time            String
-  vehicleId       String?
-  vehicleLabel    String
-  passengers      Int
-  hours           String
-  specialRequests String      @default("")
-  estimatedAmount Decimal?
-  currency        String      @default("AED")
-  internalNotes   String      @default("")
-  locale          String
-  ipAddress       String?
-  expiresAt       DateTime?
-  convertedBookingId String?  @unique
-  deletedAt       DateTime?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  id                 String        @id @default(cuid())
+  reference          String        @unique
+  status             QuoteStatus   @default(pending)
+  source             BookingSource @default(website)
+  fullName           String
+  phone              String
+  email              String
+  pickupLocation     String
+  dropoffLocation    String
+  date               DateTime
+  time               String
+  vehicleId          String?
+  vehicleLabel       String
+  passengers         Int
+  hours              String
+  specialRequests    String        @default("")
+  estimatedAmount    Decimal?
+  currency           String        @default("AED")
+  internalNotes      String        @default("")
+  locale             String
+  ipAddress          String?
+  expiresAt          DateTime?
+  convertedBookingId String?       @unique
+  deletedAt          DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
 
   vehicle          Vehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
   convertedBooking Booking? @relation("QuoteToBooking", fields: [convertedBookingId], references: [id], onDelete: SetNull)
@@ -501,35 +506,43 @@ model ContactSubmission {
 // ─────────────────────────────────────────────────────────────────────────────
 
 model Service {
-  id               String        @id @default(cuid())
-  slug             String        @unique
-  name             Json
-  tagline          Json
-  heroSubtitle     Json?
-  shortDescription Json
-  longDescription  Json
-  benefits         Json?
-  whyChoose        Json?
-  tags             Json?
-  ratingMetric     Json?
-  imageUrl         String?
-  imageAlt         Json?
+  id                 String        @id @default(cuid())
+  slug               String        @unique
+  name               Json
+  tagline            Json
+  heroSubtitle       Json?
+  shortDescription   Json
+  longDescription    Json
+  benefits           Json?
+  whyChoose          Json?
+  tags               Json?
+  ratingMetric       Json?
+  imageUrl           String?
+  imageAlt           Json?
   // Phase 7: proper MediaItem integration, added alongside the legacy
   // `imageUrl` string per DATABASE_ARCHITECTURE.md §7 ("MediaItem ... used
   // for ... service images") — see CMS.md for the migration rationale.
   // `imageUrl` is kept for backward compatibility, unused by the CMS form.
-  imageId          String?
-  seo              Json
-  status           PublishStatus @default(draft)
-  publishedAt      DateTime?
-  sortOrder        Int           @default(0)
-  deletedAt        DateTime?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  imageId            String?
+  // Hero media for /services/[service], separate from `imageId` (the card
+  // image on the /services listing). Both optional: a service without them
+  // falls back to the card image, which is what every service rendered
+  // before these existed.
+  heroDesktopImageId String?
+  heroMobileImageId  String?
+  seo                Json
+  status             PublishStatus @default(draft)
+  publishedAt        DateTime?
+  sortOrder          Int           @default(0)
+  deletedAt          DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
 
-  image        MediaItem?            @relation("ServiceImage", fields: [imageId], references: [id], onDelete: SetNull)
-  faqs         Faq[]
-  vehicleLinks VehicleServiceLink[]
+  image            MediaItem?           @relation("ServiceImage", fields: [imageId], references: [id], onDelete: SetNull)
+  heroDesktopImage MediaItem?           @relation("ServiceHeroDesktopImage", fields: [heroDesktopImageId], references: [id], onDelete: SetNull)
+  heroMobileImage  MediaItem?           @relation("ServiceHeroMobileImage", fields: [heroMobileImageId], references: [id], onDelete: SetNull)
+  faqs             Faq[]
+  vehicleLinks     VehicleServiceLink[]
 
   @@index([status, sortOrder])
   @@map("services")
@@ -708,6 +721,28 @@ model Faq {
 // ─────────────────────────────────────────────────────────────────────────────
 // CONTENT — HOMEPAGE
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Hero imagery for pages that have no CMS record of their own — the
+ * /services and /locations listings today, and any other standalone page
+ * that grows one later. Keyed by `page`, a stable slug the public
+ * component asks for; a missing row means the component keeps its built-in
+ * image, so adding a page here is additive and never breaks a render.
+ */
+model PageHero {
+  id             String   @id @default(cuid())
+  page           String   @unique
+  desktopImageId String?
+  mobileImageId  String?
+  imageAlt       Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  desktopImage MediaItem? @relation("PageHeroDesktopImage", fields: [desktopImageId], references: [id], onDelete: SetNull)
+  mobileImage  MediaItem? @relation("PageHeroMobileImage", fields: [mobileImageId], references: [id], onDelete: SetNull)
+
+  @@map("page_heroes")
+}
 
 model HeroSlide {
   id             String        @id @default(cuid())

@@ -33,6 +33,8 @@ export function ServiceForm({ service, mediaLibraryItems }: { service: ServiceDe
   }, [state]);
 
   const currentImage = service?.imageId ? (mediaLibraryItems.find((m) => m.id === service.imageId) ?? null) : null;
+  const heroDesktop = service?.heroDesktopImageId ? (mediaLibraryItems.find((m) => m.id === service.heroDesktopImageId) ?? null) : null;
+  const heroMobile = service?.heroMobileImageId ? (mediaLibraryItems.find((m) => m.id === service.heroMobileImageId) ?? null) : null;
   const seo = service?.seo ?? emptySeoMeta();
   const ogImage = seo.ogImageId ? (mediaLibraryItems.find((m) => m.id === seo.ogImageId) ?? null) : null;
 
@@ -73,8 +75,31 @@ export function ServiceForm({ service, mediaLibraryItems }: { service: ServiceDe
         </div>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white p-5">
-        <MediaPickerField name="imageId" label="Service image" initial={currentImage} initialItems={mediaLibraryItems} />
+      <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-5">
+        <MediaPickerField
+          name="imageId"
+          label="Service image (listing card)"
+          initial={currentImage}
+          initialItems={mediaLibraryItems}
+        />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <MediaPickerField
+            name="heroDesktopImageId"
+            label="Hero image (desktop)"
+            initial={heroDesktop}
+            initialItems={mediaLibraryItems}
+          />
+          <MediaPickerField
+            name="heroMobileImageId"
+            label="Hero image (mobile)"
+            initial={heroMobile}
+            initialItems={mediaLibraryItems}
+          />
+        </div>
+        <p className="text-xs text-gray-500">
+          Hero images are the full-width banner at the top of this service&apos;s page. Leave either blank and
+          that breakpoint falls back to the listing card image above.
+        </p>
       </div>
 
       <SeoFieldsSection seo={seo} ogImage={ogImage} mediaLibraryItems={mediaLibraryItems} />

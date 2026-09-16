@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
+import { getPageHero } from "@/lib/public/cms-content";
+import type { Locale } from "@/i18n/routing";
 import Container from "@/components/shared/Container";
 import { PRIMARY_CTA } from "@/lib/constants";
 
@@ -11,18 +13,37 @@ import { PRIMARY_CTA } from "@/lib/constants";
  */
 export default async function ServicesHero() {
   const t = await getTranslations("services.hero");
+  // Admin → Page Heroes overrides the banner below, per breakpoint. Nothing
+  // set (or the database unreachable) keeps the built-in image, so this
+  // section always renders.
+  const hero = await getPageHero("services", (await getLocale()) as Locale);
+  const fallbackSrc = "/images/services/services-hero-chauffeur-door.webp";
+  const alt = hero?.alt ?? t("imageAlt");
 
   return (
     <section className="relative isolate flex min-h-[420px] items-center overflow-hidden bg-obsidian py-20 sm:min-h-[45vh]">
       <div className="absolute inset-0">
-        <Image
-          src="/images/services/services-hero-chauffeur-door.webp"
-          alt={t("imageAlt")}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[65%_center]"
-        />
+        {hero?.desktopSrc || hero?.mobileSrc ? (
+          <picture>
+            <source media="(max-width: 767px)" srcSet={hero.mobileSrc ?? hero.desktopSrc ?? fallbackSrc} />
+            <img
+              src={hero.desktopSrc ?? fallbackSrc}
+              alt={alt}
+              fetchPriority="high"
+              decoding="async"
+              className="h-full w-full object-cover object-[65%_center]"
+            />
+          </picture>
+        ) : (
+          <Image
+            src={fallbackSrc}
+            alt={alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[65%_center]"
+          />
+        )}
       </div>
 
       {/* Dark overlay for text legibility, matching the homepage hero */}

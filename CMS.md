@@ -173,6 +173,37 @@ of fields) that a full page per item would be more clicks for no benefit.
 None of these three fields were invented to match some assumed CMS shape;
 each form exposes exactly what the schema already has.
 
+## Page heroes
+
+Every public page's hero image is admin-managed, but *where* it is edited
+depends on whether the page has a content record of its own:
+
+| Page | Edited at | Fields |
+| --- | --- | --- |
+| `/services/[service]` | the service itself | `heroDesktopImageId`, `heroMobileImageId` |
+| `/locations/[location]` | the location itself | `heroDesktopImageId`, `heroMobileImageId` |
+| `/services`, `/locations` | **Page Heroes** (`/admin/page-heroes`) | `PageHero` row keyed by `page` |
+
+A listing page has no record to hang an image on, so `PageHero` exists for
+exactly that case — one row per page, keyed by a slug from
+`PAGE_HERO_CATALOG` in `lib/cms/page-heroes.ts`. The catalog is the whole
+editable set; a page not in it cannot be edited, and a page in it with no
+row yet renders the image compiled into its component. Adding another page
+(About, FAQs, Contact) is one catalog entry plus a `getPageHero()` call in
+that page's hero component — no schema change.
+
+Both mechanisms are **additive and degrade to what rendered before**. Each
+breakpoint is independent: set only a mobile image and desktop keeps the
+old one. Set neither and nothing changes at all — a service falls back to
+its listing-card image, a listing page to its built-in file. That is also
+what happens when the database is unreachable, so a hero is never blank.
+
+Page Heroes is gated on the `homepage` permission resource rather than a
+new one: it is the same class of content (site-page imagery, not a content
+record) with the same editors, and a brand-new permission would be missing
+from every role already seeded in production, locking everyone out until a
+re-seed ran.
+
 ## Media integration
 
 The Phase 6 Media Library is the **only** image source anywhere in the
