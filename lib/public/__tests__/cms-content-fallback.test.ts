@@ -195,3 +195,85 @@ describe("empty CMS table fallback — every query resolves with zero rows", () 
     expect(result.length).toBe(FLEET.length);
   });
 });
+
+/**
+ * Ordering is the only thing the admin panel's "Sort order" field controls,
+ * and it has to survive the read layer untouched. A hardcoded category rank
+ * used to be re-applied on top of it here, so an editor could reorder two
+ * vehicles within one category but never move a Van above a Sedan — on the
+ * /fleet listing, the category pages, the homepage carousel or the related
+ * grid, all of which read `getAllVehicles`.
+ *
+ * Mocked rather than run against Postgres on purpose: the vehicles table is
+ * empty on a CI database, so a live query would resolve through the static
+ * fallback and never exercise this path at all.
+ */
+describe("vehicle ordering follows the admin's sort order", () => {
+  /** Minimal row in the shape `mapVehicle()` reads. */
+  function vehicleRow(slug: string, categorySlug: string) {
+    const text = { en: slug };
+    return {
+      slug,
+      name: slug,
+      brand: "Brand",
+      model: "Model",
+      rates: { tenHours: 0, fiveHours: 0, oneHour: 0, airport: 0, extraHour: 0, additionalCity: 0 },
+      category: { slug: categorySlug, name: { en: categorySlug } },
+      isElectric: false,
+      tagline: text,
+      description: text,
+      longDescription: text,
+      passengers: 4,
+      luggage: 2,
+      idealFor: text,
+      features: { en: [] },
+      whyChoose: { en: [] },
+      faqs: [],
+      images: [],
+      badge: null,
+      isPlaceholder: false,
+      amenities: [],
+      popularFor: [],
+      seo: null,
+    };
+  }
+
+  it("returns rows in the order the query gave them, without regrouping by category", async () => {
+    // Deliberately interleaved: a Van sits above a Sedan, which the old
+    // category rank would have reversed.
+    const rows = [
+      vehicleRow("van-first", "van"),
+      vehicleRow("sedan-second", "sedan"),
+      vehicleRow("ultra-third", "ultra-luxury"),
+      vehicleRow("suv-fourth", "suv"),
+    ];
+    mockVehicle.findMany.mockResolvedValue(rows);
+
+    const result = await getAllVehicles("en");
+
+    expect(result.map((v) => v.slug)).toEqual(["van-first", "sedan-second", "ultra-third", "suv-fourth"]);
+  });
+
+  it("asks the database for sortOrder ascending, with a stable tiebreaker", async () => {
+    mockVehicle.findMany.mockResolvedValue([vehicleRow("only", "sedan")]);
+
+    await getAllVehicles("en");
+
+    expect(mockVehicle.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] })
+    );
+  });
+
+  it("keeps that order when a category page filters the same list", async () => {
+    const rows = [
+      vehicleRow("sedan-b", "sedan"),
+      vehicleRow("van-between", "van"),
+      vehicleRow("sedan-a", "sedan"),
+    ];
+    mockVehicle.findMany.mockResolvedValue(rows);
+
+    const result = await getVehiclesByCategorySlug("sedan", "en");
+
+    expect(result.map((v) => v.slug)).toEqual(["sedan-b", "sedan-a"]);
+  });
+});

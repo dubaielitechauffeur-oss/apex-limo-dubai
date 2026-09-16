@@ -581,12 +581,6 @@ const CATEGORY_SLUG_TO_DISPLAY: Record<string, FleetCategory> = {
   "ultra-luxury": "Ultra-Luxury",
 };
 
-const CATEGORY_DISPLAY_RANK: Record<FleetCategory, number> = {
-  "Ultra-Luxury": 0,
-  Sedan: 1,
-  SUV: 2,
-  Van: 3,
-};
 
 function mapVehicle(
   row: Awaited<ReturnType<typeof fetchAllVehicleRows>>[number],
@@ -667,7 +661,10 @@ function buildPopularForChips(
 async function fetchVehicleRowsWhere(extraWhere: { slug?: string } = {}) {
   const rows = await prisma.vehicle.findMany({
     where: { status: "published", deletedAt: null, ...extraWhere },
-    orderBy: { sortOrder: "asc" },
+    // `createdAt` breaks ties so vehicles left on the default sortOrder of 0
+    // keep a stable, repeatable order instead of whatever the database
+    // happens to return that request.
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
     include: {
       category: { select: { slug: true, name: true } },
       images: {
@@ -726,19 +723,28 @@ function fetchAllVehicleRows() {
   return fetchVehicleRowsWhere();
 }
 
-/** Same category-rank ordering `getAllVehicles()` in data/fleet.ts applies
- *  (Ultra-Luxury first, down to Van), so the CMS-backed listing visually
- *  matches the static one exactly. */
-function sortByCategoryRank(vehicles: PlainFleetVehicle[]): PlainFleetVehicle[] {
-  return [...vehicles].sort((a, b) => (CATEGORY_DISPLAY_RANK[a.category] ?? 99) - (CATEGORY_DISPLAY_RANK[b.category] ?? 99));
-}
-
+/**
+ * Vehicle order is whatever the admin sets in each vehicle's **Sort order**
+ * field, and nothing else — the row order `fetchVehicleRowsWhere()` already
+ * returns.
+ *
+ * This used to be re-sorted by a hardcoded category rank (Ultra-Luxury first,
+ * down to Van), which silently outranked the editor: reordering two vehicles
+ * inside one category worked, but moving a Van above a Sedan never did, on any
+ * public surface. Sort order is the only ordering control the admin panel
+ * offers, so it decides — categories now mix freely if that is how they are
+ * numbered.
+ *
+ * Every public vehicle list reads this one function — the /fleet listing, each
+ * /fleet/[category] page (via `getVehiclesByCategorySlug`), the homepage
+ * carousel and the vehicle page's related grid — so they all order alike.
+ */
 export async function getAllVehicles(locale: Locale): Promise<PlainFleetVehicle[]> {
   return withFallback(
     async () => {
       const rows = await fetchAllVehicleRows();
       const ogImages = await resolveOgImageUrls(rows);
-      return sortByCategoryRank(rows.map((row) => mapVehicle(row, locale, ogImages)));
+      return rows.map((row) => mapVehicle(row, locale, ogImages));
     },
     (result) => result.length === 0,
     () => staticGetAllVehicles(locale)

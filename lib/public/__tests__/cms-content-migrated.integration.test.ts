@@ -91,7 +91,13 @@ describe("migrated content — homepage Testimonials/Brands", () => {
 });
 
 describe("migrated content — Fleet", () => {
-  it("getAllVehicles returns every migrated vehicle, ordered Ultra-Luxury first", async () => {
+  // NOTE: on a database seeded only by `prisma db seed` (which is all CI
+  // does), `vehicles` is empty and this resolves through the static fallback
+  // in data/fleet.ts — which is what "Ultra-Luxury first" describes. The
+  // CMS-backed path orders purely by each vehicle's admin `sortOrder`; that
+  // is covered by the mocked test in cms-content-fallback.test.ts, which does
+  // not depend on the table being populated.
+  it("getAllVehicles returns every vehicle, ordered Ultra-Luxury first", async () => {
     const vehicles = await getAllVehicles("en");
     expect(vehicles.length).toBe(FLEET.length);
     expect(vehicles[0]?.category).toBe("Ultra-Luxury");

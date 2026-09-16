@@ -8,10 +8,10 @@ import ConversionPageIntro from "@/components/booking/ConversionPageIntro";
 import ConversionSeoIntro from "@/components/booking/ConversionSeoIntro";
 import ConversionTrustPanel from "@/components/booking/ConversionTrustPanel";
 import VehicleSummaryCardClient from "@/components/booking/VehicleSummaryCardClient";
-import { getAllVehicles } from "@/data/fleet";
 import { getAllServices } from "@/data/services";
 import { getAllLocations } from "@/data/locations";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact } from "@/lib/public/site-contact";
 import JsonLd from "@/components/shared/JsonLd";
 
@@ -38,7 +38,8 @@ export default async function QuotePage({ params }: QuotePageProps) {
   const tSummary = await getTranslations({ locale, namespace: "fleet.summaryCard" });
   const services = getAllServices(locale as Locale).map(({ slug, name }) => ({ slug, name }));
   const locations = getAllLocations(locale as Locale).map(({ slug, name }) => ({ slug, name }));
-  const allVehicles = getAllVehicles(locale as Locale);
+  // CMS-backed, like the booking form — see the note there.
+  const allVehicles = await getAllVehicles(locale as Locale);
   const vehicles = allVehicles.map(({ slug, name, category }) => ({ slug, name, category }));
   // Slim, already-localized subset for VehicleSummaryCardClient — deliberately
   // excludes longDescription/features/whyChoose/faqs/full gallery so the
