@@ -480,29 +480,33 @@ A: Yes, we've worked with planners at most of Dubai's established wedding venues
 
 ## 3. FLEET & RATE CARD
 
-> **Pricing rule for the agent:** quote these as published *starting-from* rates in AED. They cover the chauffeur, fuel, tolls (Salik) and VIP valet parking. Always add that the team confirms the final price and availability before travel, and that the quoted price is then fixed — no surge pricing, no surprise fees.
+> **Where these prices come from:** the repository's static fallback (`data/fleet.ts`) — **verify against admin → Pricing before use**. They are the four packages published on the website — the same tiers a customer sees on the homepage carousel, the fleet listing and each vehicle page. Nothing else is published.
 
-### Rate card at a glance
+> **Pricing rule for the agent:** quote only the four packages below, using these exact package names. They cover the chauffeur, fuel, tolls (Salik) and VIP valet parking. Always add that the team confirms the final price and availability before travel, and that the quoted price is then fixed — no surge pricing, no surprise fees. Where a vehicle shows **Custom Quote**, do not invent a number — the team prices that trip individually.
 
-| Vehicle | Class | Pax | Luggage | Airport transfer | 1 hour | 5 hours | 10 hours | Extra hour | Additional city |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Mercedes-Maybach S-Class | Ultra-Luxury | 3 | 2 | AED 999 | AED 1,390 | AED 2,190 | AED 2,980 | AED 650 | AED 650 |
-| Rolls-Royce Phantom Extended Wheelbase | Ultra-Luxury | 3 | 2 | AED 1,899 | AED 2,490 | AED 3,490 | AED 4,890 | AED 1,200 | AED 1,200 |
-| Mercedes-Benz S-Class | Sedan | 3 | 2 | AED 590 | AED 790 | AED 1,290 | AED 2,190 | AED 300 | AED 300 |
-| Range Rover Autobiography | SUV | 4 | 3 | AED 750 | AED 940 | AED 1,190 | AED 1,999 | AED 400 | AED 400 |
-| Cadillac Escalade ESV | SUV | 5 | 4 | AED 650 | AED 890 | AED 1,390 | AED 1,790 | AED 350 | AED 350 |
-| Mercedes V-Class | Van | 7 | 6 | AED 345 | AED 290 | AED 745 | AED 1,199 | AED 250 | AED 250 |
-| Mercedes-Benz V250 Falcon Edition | Van | 7 | 6 | AED 645 | AED 590 | AED 1,090 | AED 1,790 | AED 350 | AED 350 |
-| Mercedes-Maybach Sprinter | Van | 16 | — | AED 745 | AED 690 | AED 1,090 | AED 1,990 | AED 450 | AED 450 |
-| BMW 7 Series | Sedan | 3 | 2 | AED 490 | AED 690 | AED 1,190 | AED 1,790 | AED 300 | AED 300 |
-| Lexus ES 300h | Sedan | 3 | 2 | AED 245 | AED 390 | AED 590 | AED 990 | AED 210 | AED 210 |
-| Rolls-Royce Cullinan Mansory | Ultra-Luxury | 4 | 3 | AED 1,399 | AED 2,650 | AED 3,199 | AED 4,799 | AED 1,400 | AED 1,400 |
-| Tesla Model Y | SUV (Electric) | 4 | 3 | AED 245 | AED 390 | AED 590 | AED 990 | AED 230 | AED 230 |
-| GMC Yukon Elevation | SUV | 6 | 4 | AED 445 | AED 690 | AED 890 | AED 1,490 | AED 290 | AED 290 |
-| Tesla Model 3 | Sedan (Electric) | 3 | 2 | AED 245 | AED 390 | AED 590 | AED 990 | AED 210 | AED 210 |
-| BYD Han | Sedan (Electric) | 3 | 2 | AED 245 | AED 390 | AED 590 | AED 990 | AED 240 | AED 240 |
+> **Never quote** an extra-hour rate, an additional-city/emirate surcharge, a waiting-time charge, a child-seat charge or a cancellation fee. None of those are published — the concierge team quotes them per trip.
 
-**Package definitions:** airport transfer = one way, point to point. 1 hour = hourly hire. 5 hours = half-day (most popular). 10 hours = full-day hire. Extra hour = each hour beyond the booked package. Additional city = surcharge for adding another city/emirate to the same booking.
+### Rate card at a glance (the four published packages)
+
+| Vehicle | Class | Pax | Luggage | 2 Hours | 5 Hours (Half Day) | 10 Hours (Full Day) | Airport Transfer |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Mercedes-Maybach S-Class | Ultra-Luxury | 3 | 2 | AED 1,390 | AED 2,190 | AED 2,980 | AED 999 |
+| Rolls-Royce Phantom Extended Wheelbase | Ultra-Luxury | 3 | 2 | AED 2,490 | AED 3,490 | AED 4,890 | AED 1,899 |
+| Mercedes-Benz S-Class | Sedan | 3 | 2 | AED 790 | AED 1,290 | AED 2,190 | AED 590 |
+| Range Rover Autobiography | SUV | 4 | 3 | AED 940 | AED 1,190 | AED 1,999 | AED 750 |
+| Cadillac Escalade ESV | SUV | 5 | 4 | AED 890 | AED 1,390 | AED 1,790 | AED 650 |
+| Mercedes V-Class | Van | 7 | 6 | AED 290 | AED 745 | AED 1,199 | AED 345 |
+| Mercedes-Benz V250 Falcon Edition | Van | 7 | 6 | AED 590 | AED 1,090 | AED 1,790 | AED 645 |
+| Mercedes-Maybach Sprinter | Van | 16 | — | AED 690 | AED 1,090 | AED 1,990 | AED 745 |
+| BMW 7 Series | Sedan | 3 | 2 | AED 690 | AED 1,190 | AED 1,790 | AED 490 |
+| Lexus ES 300h | Sedan | 3 | 2 | AED 390 | AED 590 | AED 990 | AED 245 |
+| Rolls-Royce Cullinan Mansory | Ultra-Luxury | 4 | 3 | AED 2,650 | AED 3,199 | AED 4,799 | AED 1,399 |
+| Tesla Model Y | SUV (Electric) | 4 | 3 | AED 390 | AED 590 | AED 990 | AED 245 |
+| GMC Yukon Elevation | SUV | 6 | 4 | AED 690 | AED 890 | AED 1,490 | AED 445 |
+| Tesla Model 3 | Sedan (Electric) | 3 | 2 | AED 390 | AED 590 | AED 990 | AED 245 |
+| BYD Han | Sedan (Electric) | 3 | 2 | AED 390 | AED 590 | AED 990 | AED 245 |
+
+**Package definitions:** *2 Hours* = the shortest chauffeur hire. *5 Hours (Half Day)* = the most popular package. *10 Hours (Full Day)* = a full day with the same car and chauffeur. *Airport Transfer* = one way, point to point, with flight tracking and meet-and-greet. Anything longer, multi-stop, out-of-emirate or multi-vehicle is quoted by the team.
 
 ### Mercedes-Maybach S-Class
 
@@ -510,7 +514,7 @@ A: Yes, we've worked with planners at most of Dubai's established wedding venues
 **Brand/model:** Mercedes-Maybach S-Class · **Class:** Ultra-Luxury
 **Capacity:** 3 passengers, 2 suitcases
 **Ideal for:** Signature executive arrivals
-**Rates:** airport AED 999 · 1h AED 1,390 · 5h AED 2,190 · 10h AED 2,980 · extra hour AED 650 · additional city AED 650
+**Published rates:** 2 Hours AED 1,390 · 5 Hours (Half Day) AED 2,190 · 10 Hours (Full Day) AED 2,980 · Airport Transfer AED 999
 
 The most exclusive sedan in the fleet — extended rear legroom, reclining executive seats, and a cabin engineered for complete calm on longer journeys.
 
@@ -548,7 +552,7 @@ A: As our most exclusive sedan, we recommend booking at least a few days ahead w
 **Brand/model:** Rolls-Royce Phantom Extended Wheelbase · **Class:** Ultra-Luxury
 **Capacity:** 3 passengers, 2 suitcases
 **Ideal for:** Weddings & signature occasions
-**Rates:** airport AED 1,899 · 1h AED 2,490 · 5h AED 3,490 · 10h AED 4,890 · extra hour AED 1,200 · additional city AED 1,200
+**Published rates:** 2 Hours AED 2,490 · 5 Hours (Half Day) AED 3,490 · 10 Hours (Full Day) AED 4,890 · Airport Transfer AED 1,899
 
 The most prestigious way to arrive in Dubai — reserved for weddings, milestone occasions, and clients who expect nothing less than the finest.
 
@@ -587,7 +591,7 @@ A: Yes, the Phantom can be booked hourly for ceremonies and photo sessions, not 
 **Brand/model:** Mercedes-Benz S-Class · **Class:** Sedan
 **Capacity:** 3 passengers, 2 suitcases
 **Ideal for:** Airport transfers & corporate travel
-**Rates:** airport AED 590 · 1h AED 790 · 5h AED 1,290 · 10h AED 2,190 · extra hour AED 300 · additional city AED 300
+**Published rates:** 2 Hours AED 790 · 5 Hours (Half Day) AED 1,290 · 10 Hours (Full Day) AED 2,190 · Airport Transfer AED 590
 
 The definitive choice for airport transfers and business travel — a hushed cabin, exceptional ride comfort, and a presence that reads confidence without excess.
 
@@ -625,7 +629,7 @@ A: Yes, hourly and full-day hire are both available — select your duration whe
 **Brand/model:** Range Rover Autobiography · **Class:** SUV
 **Capacity:** 4 passengers, 3 suitcases
 **Ideal for:** VIP transportation
-**Rates:** airport AED 750 · 1h AED 940 · 5h AED 1,190 · 10h AED 1,999 · extra hour AED 400 · additional city AED 400
+**Published rates:** 2 Hours AED 940 · 5 Hours (Half Day) AED 1,190 · 10 Hours (Full Day) AED 1,999 · Airport Transfer AED 750
 
 Effortless comfort with genuine capability — a versatile choice for VIP transportation across the city or beyond it.
 
@@ -664,7 +668,7 @@ A: Yes, every booking includes a professionally trained, licensed chauffeur.
 **Brand/model:** Cadillac Escalade ESV · **Class:** SUV
 **Capacity:** 5 passengers, 4 suitcases
 **Ideal for:** VIP & family travel
-**Rates:** airport AED 650 · 1h AED 890 · 5h AED 1,390 · 10h AED 1,790 · extra hour AED 350 · additional city AED 350
+**Published rates:** 2 Hours AED 890 · 5 Hours (Half Day) AED 1,390 · 10 Hours (Full Day) AED 1,790 · Airport Transfer AED 650
 
 A full-size luxury SUV built for VIP and family travel — commanding road presence with generous room for passengers and luggage alike.
 
@@ -702,7 +706,7 @@ A: Yes, child seats are available on request — note it under special requests 
 **Brand/model:** Mercedes-Benz V-Class · **Class:** Van
 **Capacity:** 7 passengers, 6 suitcases
 **Ideal for:** Group transfers & events
-**Rates:** airport AED 345 · 1h AED 290 · 5h AED 745 · 10h AED 1,199 · extra hour AED 250 · additional city AED 250
+**Published rates:** 2 Hours AED 290 · 5 Hours (Half Day) AED 745 · 10 Hours (Full Day) AED 1,199 · Airport Transfer AED 345
 
 A spacious, beautifully finished van for group transfers and events — seating for up to seven without sacrificing the comfort of a luxury sedan.
 
@@ -741,7 +745,7 @@ A: Absolutely. We regularly deploy multiple V-Class vans for conferences and wed
 **Brand/model:** Mercedes-Benz V250 Falcon Edition · **Class:** Van
 **Capacity:** 7 passengers, 6 suitcases
 **Ideal for:** VIP groups & executive travel
-**Rates:** airport AED 645 · 1h AED 590 · 5h AED 1,090 · 10h AED 1,790 · extra hour AED 350 · additional city AED 350
+**Published rates:** 2 Hours AED 590 · 5 Hours (Half Day) AED 1,090 · 10 Hours (Full Day) AED 1,790 · Airport Transfer AED 645
 
 A bespoke Falcon Edition conversion of the Mercedes V250 — a private, business-class cabin on wheels with reclining captain's chairs, a ceiling entertainment screen and privacy curtains for VIP guests and executive groups.
 
@@ -780,7 +784,7 @@ A: The Falcon Edition seats up to 7 guests in its VIP lounge configuration, with
 **Brand/model:** Mercedes-Maybach Sprinter · **Class:** Van
 **Capacity:** 16 passengers
 **Ideal for:** Large groups & VIP events
-**Rates:** airport AED 745 · 1h AED 690 · 5h AED 1,090 · 10h AED 1,990 · extra hour AED 450 · additional city AED 450
+**Published rates:** 2 Hours AED 690 · 5 Hours (Half Day) AED 1,090 · 10 Hours (Full Day) AED 1,990 · Airport Transfer AED 745
 
 A 16-seater Mercedes-Maybach Sprinter — the fleet's flagship luxury minibus, fitting an entire group into one chauffeur-driven Maybach cabin of individual quilted seats, a star-light ceiling and business-class comfort throughout.
 
@@ -819,7 +823,7 @@ A: Absolutely. Its 16 luxury seats, star-light ceiling and ambient lighting make
 **Brand/model:** BMW 7 Series · **Class:** Sedan
 **Capacity:** 3 passengers, 2 suitcases
 **Ideal for:** Business travel & meetings
-**Rates:** airport AED 490 · 1h AED 690 · 5h AED 1,190 · 10h AED 1,790 · extra hour AED 300 · additional city AED 300
+**Published rates:** 2 Hours AED 690 · 5 Hours (Half Day) AED 1,190 · 10 Hours (Full Day) AED 1,790 · Airport Transfer AED 490
 
 A dynamic, driver-focused luxury sedan for executives who want business-ready comfort with a sharper edge on the road.
 
@@ -857,7 +861,7 @@ A: Yes, onboard Wi-Fi is included so you can stay connected between meetings.
 **Brand/model:** Lexus ES 300h · **Class:** Sedan
 **Capacity:** 3 passengers, 2 suitcases
 **Ideal for:** Business travel & eco-conscious executive transfers
-**Rates:** airport AED 245 · 1h AED 390 · 5h AED 590 · 10h AED 990 · extra hour AED 210 · additional city AED 210
+**Published rates:** 2 Hours AED 390 · 5 Hours (Half Day) AED 590 · 10 Hours (Full Day) AED 990 · Airport Transfer AED 245
 
 The Lexus ES 300h combines a whisper-quiet hybrid powertrain with a refined, comfortable cabin — an efficient, dependable executive sedan for business travel and airport transfers across Dubai. Its smooth ride and understated elegance suit clients who want genuine comfort and a lower environmental footprint on every chauffeured journey.
 
@@ -895,7 +899,7 @@ A: Yes, hourly and full-day hire are both available on request.
 **Brand/model:** Rolls-Royce Cullinan Mansory · **Class:** Ultra-Luxury
 **Capacity:** 4 passengers, 3 suitcases
 **Ideal for:** Ultra-exclusive VIP arrivals
-**Rates:** airport AED 1,399 · 1h AED 2,650 · 5h AED 3,199 · 10h AED 4,799 · extra hour AED 1,400 · additional city AED 1,400
+**Published rates:** 2 Hours AED 2,650 · 5 Hours (Half Day) AED 3,199 · 10 Hours (Full Day) AED 4,799 · Airport Transfer AED 1,399
 
 A widebody, Mansory-customized Rolls-Royce Cullinan — the most exclusive SUV in the fleet, combining Rolls-Royce craftsmanship with bespoke Mansory design for clients who expect the absolute pinnacle of presence.
 
@@ -933,7 +937,7 @@ A: Yes, it's ideal for high-profile arrivals, VIP events, and clients who want t
 **Brand/model:** Tesla Model Y · **Class:** SUV · Fully electric
 **Capacity:** 4 passengers, 3 suitcases
 **Ideal for:** Eco-conscious city travel & corporate transfers
-**Rates:** airport AED 245 · 1h AED 390 · 5h AED 590 · 10h AED 990 · extra hour AED 230 · additional city AED 230
+**Published rates:** 2 Hours AED 390 · 5 Hours (Half Day) AED 590 · 10 Hours (Full Day) AED 990 · Airport Transfer AED 245
 
 An all-electric SUV for clients who want a modern, sustainable chauffeured experience — smooth, silent power with a minimalist, tech-forward cabin.
 
@@ -972,7 +976,7 @@ A: The Model Y comfortably holds up to 3 pieces of luggage thanks to its front a
 **Brand/model:** GMC Yukon Elevation · **Class:** SUV
 **Capacity:** 6 passengers, 4 suitcases
 **Ideal for:** Group travel & airport transfers
-**Rates:** airport AED 445 · 1h AED 690 · 5h AED 890 · 10h AED 1,490 · extra hour AED 290 · additional city AED 290
+**Published rates:** 2 Hours AED 690 · 5 Hours (Half Day) AED 890 · 10 Hours (Full Day) AED 1,490 · Airport Transfer AED 445
 
 A full-size SUV with a sportier, blacked-out Elevation aesthetic — spacious, capable, and ready for group travel or airport runs.
 
@@ -1010,7 +1014,7 @@ A: Yes, hourly and full-day hire are both available.
 **Brand/model:** Tesla Model 3 · **Class:** Sedan · Fully electric
 **Capacity:** 3 passengers, 2 suitcases
 **Ideal for:** Business travel & eco-conscious transfers
-**Rates:** airport AED 245 · 1h AED 390 · 5h AED 590 · 10h AED 990 · extra hour AED 210 · additional city AED 210
+**Published rates:** 2 Hours AED 390 · 5 Hours (Half Day) AED 590 · 10 Hours (Full Day) AED 990 · Airport Transfer AED 245
 
 A fully electric executive sedan for clients who want a quiet, efficient ride with a clean, modern cabin — ideal for city transfers and corporate travel.
 
@@ -1048,7 +1052,7 @@ A: The Model 3 comfortably holds 2 standard suitcases plus carry-ons.
 **Brand/model:** BYD Han · **Class:** Sedan · Fully electric
 **Capacity:** 3 passengers, 2 suitcases
 **Ideal for:** Executive travel & corporate transfers
-**Rates:** airport AED 245 · 1h AED 390 · 5h AED 590 · 10h AED 990 · extra hour AED 240 · additional city AED 240
+**Published rates:** 2 Hours AED 390 · 5 Hours (Half Day) AED 590 · 10 Hours (Full Day) AED 990 · Airport Transfer AED 245
 
 A flagship all-electric sedan pairing refined comfort with strong performance — a modern alternative for executive travel across Dubai.
 
@@ -2228,7 +2232,7 @@ Adapt these — don't paste them robotically.
 > Happy to arrange that. Could you share your flight number, the terminal, your drop-off address, and how many passengers and suitcases? We track your flight live, so a delay or early landing is handled automatically — your chauffeur meets you in the arrivals hall with a name sign.
 
 **Price question**
-> An airport transfer in a Mercedes S-Class starts from AED 590, and a full 10-hour day from AED 2,190. That includes the chauffeur, fuel, tolls and valet parking. Share your pickup, drop-off and date and our team will confirm the exact fixed price — what we quote is what you pay.
+> An airport transfer in a Mercedes S-Class is AED 590, and a full day (10 hours) AED 2,190. That includes the chauffeur, fuel, tolls and valet parking. Share your pickup, drop-off and date and our team will confirm the exact fixed price — what we quote is what you pay.
 
 **Vehicle recommendation**
 > For one or two executives, the Mercedes S-Class or BMW 7 Series is the usual choice. Travelling with family and checked luggage, the Cadillac Escalade or Mercedes V-Class is more comfortable. For a wedding or a VIP arrival, the Rolls-Royce Phantom or Maybach S-Class. How many passengers and suitcases are we planning for?
@@ -2250,6 +2254,8 @@ Adapt these — don't paste them robotically.
 ## 10. THINGS THE AGENT MUST NOT SAY
 
 - Any price, vehicle, route or policy not written in this file.
+- An extra-hour rate, an additional-city/emirate surcharge, a waiting-time, child-seat or cancellation charge — none are published.
+- A package other than the four published ones (2 Hours, 5 Hours, 10 Hours, Airport Transfer).
 - A guaranteed pickup time to the minute, or a named chauffeur/plate before dispatch assigns one.
 - "Your booking is confirmed" — only a human concierge confirms.
 - A street address or showroom — Apex is a service-area business across Dubai.

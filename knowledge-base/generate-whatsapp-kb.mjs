@@ -108,7 +108,42 @@ const qa = (faqs, prefix = "###") =>
   (faqs ?? [])
     .map((f) => `${prefix} Q: ${f.question}\nA: ${f.answer}`)
     .join("\n\n");
-const aed = (n) => `AED ${Number(n).toLocaleString("en-US")}`;
+/**
+ * Rates shown to customers.
+ *
+ * The public site renders EXACTLY four tiers per vehicle (homepage carousel,
+ * fleet listing card, vehicle detail page): "2 Hours", "5 Hours (Half Day)",
+ * "10 Hours (Full Day)" and "Airport Transfer". Note the site labels the
+ * `oneHour` rate as **2 Hours** — that is the published package name, so the
+ * knowledge base must use it too. `extraHour` and `additionalCity` exist in
+ * the admin Pricing panel only and are never published, so they are kept out
+ * of the agent's mouth entirely.
+ *
+ * Live figures come from the CMS (admin → Pricing), not from data/fleet.ts.
+ * Drop a `knowledge-base/live-rates.json` next to this script to override the
+ * static fallback, keyed by vehicle slug:
+ *
+ *   { "mercedes-s-class": { "oneHour": 790, "fiveHours": 1290,
+ *                           "tenHours": 2190, "airport": 590 } }
+ *
+ * Any vehicle or field missing from that file falls back to data/fleet.ts.
+ */
+const liveRatesPath = path.join(ROOT, "knowledge-base", "live-rates.json");
+const LIVE_RATES = fs.existsSync(liveRatesPath) ? JSON.parse(read("knowledge-base/live-rates.json")) : null;
+const RATES_SOURCE = LIVE_RATES
+  ? "live CMS rates exported to `knowledge-base/live-rates.json`"
+  : "the repository's static fallback (`data/fleet.ts`) — **verify against admin → Pricing before use**";
+const rateOf = (v, key) => LIVE_RATES?.[v.slug]?.[key] ?? v.rates[key];
+/** A rate of 0 renders as "Custom Quote" on the site — mirror that exactly. */
+const aed = (n) =>
+  Number(n) > 0 ? `AED ${Number(n).toLocaleString("en-US")}` : "Custom Quote";
+/** The four published tiers, in the order the site shows them. */
+const publicTiers = (v) => [
+  ["2 Hours", rateOf(v, "oneHour")],
+  ["5 Hours (Half Day)", rateOf(v, "fiveHours")],
+  ["10 Hours (Full Day)", rateOf(v, "tenHours")],
+  ["Airport Transfer", rateOf(v, "airport")],
+];
 const title = (s) => s.replace(/(^|[-\s])(\w)/g, (m) => m.toUpperCase()).replace(/-/g, " ");
 
 /* =========================== 1. AGENT BRIEF =========================== */
@@ -255,18 +290,22 @@ w(
   "",
   "## 3. FLEET & RATE CARD",
   "",
-  "> **Pricing rule for the agent:** quote these as published *starting-from* rates in AED. They cover the chauffeur, fuel, tolls (Salik) and VIP valet parking. Always add that the team confirms the final price and availability before travel, and that the quoted price is then fixed — no surge pricing, no surprise fees.",
+  `> **Where these prices come from:** ${RATES_SOURCE}. They are the four packages published on the website — the same tiers a customer sees on the homepage carousel, the fleet listing and each vehicle page. Nothing else is published.`,
   "",
-  "### Rate card at a glance",
+  "> **Pricing rule for the agent:** quote only the four packages below, using these exact package names. They cover the chauffeur, fuel, tolls (Salik) and VIP valet parking. Always add that the team confirms the final price and availability before travel, and that the quoted price is then fixed — no surge pricing, no surprise fees. Where a vehicle shows **Custom Quote**, do not invent a number — the team prices that trip individually.",
   "",
-  "| Vehicle | Class | Pax | Luggage | Airport transfer | 1 hour | 5 hours | 10 hours | Extra hour | Additional city |",
-  "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+  "> **Never quote** an extra-hour rate, an additional-city/emirate surcharge, a waiting-time charge, a child-seat charge or a cancellation fee. None of those are published — the concierge team quotes them per trip.",
+  "",
+  "### Rate card at a glance (the four published packages)",
+  "",
+  "| Vehicle | Class | Pax | Luggage | 2 Hours | 5 Hours (Half Day) | 10 Hours (Full Day) | Airport Transfer |",
+  "| --- | --- | --- | --- | --- | --- | --- | --- |",
   ...FLEET.map(
     (v) =>
-      `| ${v.name} | ${v.category}${v.isElectric ? " (Electric)" : ""} | ${v.passengers} | ${v.luggage ?? "—"} | ${aed(v.rates.airport)} | ${aed(v.rates.oneHour)} | ${aed(v.rates.fiveHours)} | ${aed(v.rates.tenHours)} | ${aed(v.rates.extraHour)} | ${aed(v.rates.additionalCity)} |`,
+      `| ${v.name} | ${v.category}${v.isElectric ? " (Electric)" : ""} | ${v.passengers} | ${v.luggage ?? "—"} | ${aed(rateOf(v, "oneHour"))} | ${aed(rateOf(v, "fiveHours"))} | ${aed(rateOf(v, "tenHours"))} | ${aed(rateOf(v, "airport"))} |`,
   ),
   "",
-  "**Package definitions:** airport transfer = one way, point to point. 1 hour = hourly hire. 5 hours = half-day (most popular). 10 hours = full-day hire. Extra hour = each hour beyond the booked package. Additional city = surcharge for adding another city/emirate to the same booking.",
+  "**Package definitions:** *2 Hours* = the shortest chauffeur hire. *5 Hours (Half Day)* = the most popular package. *10 Hours (Full Day)* = a full day with the same car and chauffeur. *Airport Transfer* = one way, point to point, with flight tracking and meet-and-greet. Anything longer, multi-stop, out-of-emirate or multi-vehicle is quoted by the team.",
   "",
 );
 for (const v of FLEET) {
@@ -277,7 +316,7 @@ for (const v of FLEET) {
     `**Brand/model:** ${v.brand} ${v.model} · **Class:** ${v.category}${v.isElectric ? " · Fully electric" : ""}`,
     `**Capacity:** ${v.passengers} passengers${v.luggage ? `, ${v.luggage} suitcases` : ""}`,
     `**Ideal for:** ${v.idealFor}`,
-    `**Rates:** airport ${aed(v.rates.airport)} · 1h ${aed(v.rates.oneHour)} · 5h ${aed(v.rates.fiveHours)} · 10h ${aed(v.rates.tenHours)} · extra hour ${aed(v.rates.extraHour)} · additional city ${aed(v.rates.additionalCity)}`,
+    `**Published rates:** ${publicTiers(v).map(([label, price]) => `${label} ${aed(price)}`).join(" · ")}`,
     "",
     v.description,
     "",
@@ -471,7 +510,7 @@ w(
   "> Happy to arrange that. Could you share your flight number, the terminal, your drop-off address, and how many passengers and suitcases? We track your flight live, so a delay or early landing is handled automatically — your chauffeur meets you in the arrivals hall with a name sign.",
   "",
   "**Price question**",
-  `> An airport transfer in a Mercedes S-Class starts from ${aed(FLEET.find((v) => v.slug === "mercedes-s-class").rates.airport)}, and a full 10-hour day from ${aed(FLEET.find((v) => v.slug === "mercedes-s-class").rates.tenHours)}. That includes the chauffeur, fuel, tolls and valet parking. Share your pickup, drop-off and date and our team will confirm the exact fixed price — what we quote is what you pay.`,
+  `> An airport transfer in a Mercedes S-Class is ${aed(rateOf(FLEET.find((v) => v.slug === "mercedes-s-class"), "airport"))}, and a full day (10 hours) ${aed(rateOf(FLEET.find((v) => v.slug === "mercedes-s-class"), "tenHours"))}. That includes the chauffeur, fuel, tolls and valet parking. Share your pickup, drop-off and date and our team will confirm the exact fixed price — what we quote is what you pay.`,
   "",
   "**Vehicle recommendation**",
   "> For one or two executives, the Mercedes S-Class or BMW 7 Series is the usual choice. Travelling with family and checked luggage, the Cadillac Escalade or Mercedes V-Class is more comfortable. For a wedding or a VIP arrival, the Rolls-Royce Phantom or Maybach S-Class. How many passengers and suitcases are we planning for?",
@@ -497,6 +536,8 @@ w(
   "## 10. THINGS THE AGENT MUST NOT SAY",
   "",
   "- Any price, vehicle, route or policy not written in this file.",
+  "- An extra-hour rate, an additional-city/emirate surcharge, a waiting-time, child-seat or cancellation charge — none are published.",
+  "- A package other than the four published ones (2 Hours, 5 Hours, 10 Hours, Airport Transfer).",
   "- A guaranteed pickup time to the minute, or a named chauffeur/plate before dispatch assigns one.",
   "- \"Your booking is confirmed\" — only a human concierge confirms.",
   "- A street address or showroom — Apex is a service-area business across Dubai.",
