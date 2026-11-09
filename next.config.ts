@@ -79,6 +79,18 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "12mb",
     },
   },
+
+  // Permanently redirect the old V-Class V300 URL to the updated V300/V250 page.
+  async redirects() {
+    return [
+      {
+        source: "/fleet/mercedes-v-class",
+        destination: "/fleet/mercedes-v-class-v300-v250",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {
@@ -87,7 +99,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-
   /**
    * Serves the WebP version when something still asks for a legacy `.png`
    * under `/images/fleet/` or `/images/blog/`.
