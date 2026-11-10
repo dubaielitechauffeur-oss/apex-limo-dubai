@@ -12,9 +12,9 @@ export const SITE = {
     "Apex Limo & Chauffeur Dubai delivers luxury airport transfers, corporate chauffeur service, and VIP transportation across Dubai — professional drivers, premium vehicles, on-time every time.",
   url: "https://apexchauffeurdubai.com",
   locale: "en-AE",
-  phone: "+971529426152",
-  phoneDisplay: "+971 52 942 6152",
-  whatsapp: "+971529426152",
+  phone: "+971526640360",
+  phoneDisplay: "+971 52 664 0360",
+  whatsapp: "+971526640360",
   email: "apexchauffeurdubai@gmail.com",
 } as const;
 

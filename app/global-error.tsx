@@ -65,7 +65,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             }}
           >
             We hit an unexpected problem loading this page. Please try again — if it keeps
-            happening, call or WhatsApp us on +971 52 942 6152 and we&apos;ll take your booking
+            happening, call or WhatsApp us on +971 52 664 0360 and we&apos;ll take your booking
             directly.
           </p>
           <button

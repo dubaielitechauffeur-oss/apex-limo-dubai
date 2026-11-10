@@ -768,9 +768,9 @@ GlobalSettings (exactly one row, enforced by application logic)
 │
 ├── companyName: String                    "Apex Limo & Chauffeur Dubai"
 ├── shortName: String                      "Apex Limo"
-├── phone: String                          "+971529426152"
-├── phoneDisplay: String                   "+971 52 942 6152"
-├── whatsapp: String                       "+971529426152"
+├── phone: String                          "+971526640360"
+├── phoneDisplay: String                   "+971 52 664 0360"
+├── whatsapp: String                       "+971526640360"
 ├── email: String                          "apexchauffeurdubai@gmail.com"
 ├── address: Json (Localized)              { "en": "Dubai, UAE", "ar": "...", ... }
 ├── defaultCurrency: String                "AED"

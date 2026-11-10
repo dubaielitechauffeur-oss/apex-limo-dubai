@@ -57,10 +57,10 @@ export function GlobalSettingsForm({ settings }: { settings: GlobalSettings | nu
           pages everywhere on the site.
         </p>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField id="phone" label="Phone (tel: link)" required hint='E.164-ish format, e.g. "+971529426152".'>
+          <FormField id="phone" label="Phone (tel: link)" required hint='E.164-ish format, e.g. "+971526640360".'>
             <input id="phone" name="phone" required defaultValue={settings?.phone} className={ADMIN_INPUT_CLASSES} />
           </FormField>
-          <FormField id="phoneDisplay" label="Phone (display)" required hint='e.g. "+971 52 942 6152".'>
+          <FormField id="phoneDisplay" label="Phone (display)" required hint='e.g. "+971 52 664 0360".'>
             <input id="phoneDisplay" name="phoneDisplay" required defaultValue={settings?.phoneDisplay} className={ADMIN_INPUT_CLASSES} />
           </FormField>
           <FormField id="whatsapp" label="WhatsApp number" required hint="Same format as phone.">

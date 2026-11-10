@@ -126,7 +126,7 @@ const jsonLd = {
   "provider": {
     "@type": "LocalBusiness",
     "name": "Apex Limo & Chauffeur Dubai",
-    "telephone": "+971529426152",
+    "telephone": "+971526640360",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Dubai",
@@ -189,7 +189,7 @@ These are the STATIC fallbacks in `lib/constants.ts`. At runtime the live
 values come from `GlobalSettings` via `lib/public/site-contact.ts`, editable in
 **/admin/settings** — so change them there, not in code.
 
-- **Phone/WhatsApp:** +971529426152
+- **Phone/WhatsApp:** +971526640360
 - **Public email (shown on site + in schema):** `apexchauffeurdubai@gmail.com`
 - **Transactional sender (Resend):** `bookings@apexchauffeurdubai.com`
 - **Location:** Dubai, UAE — service-area business, **no street address** is
