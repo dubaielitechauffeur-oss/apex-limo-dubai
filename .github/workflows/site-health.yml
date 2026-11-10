@@ -1,0 +1,52 @@
+name: "🛡️ Site Health Check"
+
+# Crawls the live site as Googlebot / Bingbot / ChatGPT every morning and
+# after every production deploy. Silent when everything passes; opens a
+# `site-health` issue (GitHub emails the owner) when something breaks, and
+# closes it by itself once fixed. See seo-agent/site_health.py.
+on:
+  schedule:
+    - cron: "17 5 * * *" # daily, ~09:17 Dubai time
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+concurrency:
+  group: site-health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: "Check live site"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # On deploy events, only successful production deploys (Vercel posts
+    # previews too). Schedule and manual runs always proceed.
+    if: >-
+      github.event_name != 'deployment_status' ||
+      (github.event.deployment_status.state == 'success' &&
+       startsWith(github.event.deployment.environment, 'Production'))
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Let the new deploy settle
+        if: github.event_name == 'deployment_status'
+        run: sleep 60
+
+      - name: Check site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python seo-agent/site_health.py

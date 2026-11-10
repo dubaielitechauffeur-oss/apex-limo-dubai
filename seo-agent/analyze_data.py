@@ -4,8 +4,9 @@ Identifies issues and suggests fixes.
 """
 import json
 import os
+import re
 from datetime import datetime
-from config import SITE_URL, SITE_NAME, THRESHOLDS, KEY_PAGES
+from config import SITE_URL, SITE_NAME, THRESHOLDS
 
 
 def load_data():
@@ -61,60 +62,6 @@ def analyze_low_ctr_pages(gsc_data):
     return issues
 
 
-def analyze_declining_pages(gsc_data):
-    """Pages losing clicks compared to previous period."""
-    issues = []
-    if not gsc_data:
-        return issues
-
-    current_pages = {
-        extract_path(r["keys"][0]): r for r in gsc_data["current"]["pages"]
-    }
-    prev_pages = {
-        extract_path(r["keys"][0]): r for r in gsc_data["previous"]["pages"]
-    }
-
-    for page, curr in current_pages.items():
-        if page in prev_pages:
-            prev = prev_pages[page]
-            curr_clicks = curr.get("clicks", 0)
-            prev_clicks = prev.get("clicks", 0)
-
-            if prev_clicks > 0:
-                change_pct = ((curr_clicks - prev_clicks) / prev_clicks) * 100
-                if change_pct < -THRESHOLDS["declining_clicks_percent"]:
-                    issues.append({
-                        "page": page,
-                        "issue": "Declining clicks",
-                        "severity": "HIGH" if change_pct < -40 else "MEDIUM",
-                        "details": f"Clicks: {prev_clicks} → {curr_clicks} ({change_pct:+.1f}%)",
-                        "fix": "Check if content is outdated, competitors outranking, or Google algorithm changes affected rankings.",
-                    })
-    return issues
-
-
-def analyze_missing_pages(gsc_data):
-    """Key pages not appearing in search at all."""
-    issues = []
-    if not gsc_data:
-        return issues
-
-    indexed_pages = {
-        extract_path(r["keys"][0]) for r in gsc_data["current"]["pages"]
-    }
-
-    for page in KEY_PAGES:
-        if page not in indexed_pages:
-            issues.append({
-                "page": page,
-                "issue": "Not appearing in search results",
-                "severity": "HIGH",
-                "details": "Zero impressions in the last 28 days",
-                "fix": "Check indexing status, ensure page is in sitemap, add internal links to this page, submit for indexing.",
-            })
-    return issues
-
-
 def analyze_high_bounce_pages(ga4_data):
     """Pages with high bounce rate → poor UX or content mismatch."""
     issues = []
@@ -133,28 +80,6 @@ def analyze_high_bounce_pages(ga4_data):
                 "severity": "MEDIUM",
                 "details": f"Bounce rate: {bounce_rate:.1f}%, Sessions: {sessions}",
                 "fix": "Improve page load speed, ensure content matches search intent, add clear CTAs, improve above-fold content.",
-            })
-    return issues
-
-
-def analyze_low_engagement(ga4_data):
-    """Pages with low session duration → content not engaging."""
-    issues = []
-    if not ga4_data:
-        return issues
-
-    for row in ga4_data["current"]["pages"]:
-        page = row.get("pagePath", "")
-        avg_duration = float(row.get("averageSessionDuration", 0))
-        sessions = int(row.get("sessions", 0))
-
-        if avg_duration < THRESHOLDS["low_session_duration"] and sessions >= 10:
-            issues.append({
-                "page": page,
-                "issue": "Very low session duration",
-                "severity": "MEDIUM",
-                "details": f"Avg duration: {avg_duration:.0f}s, Sessions: {sessions}",
-                "fix": "Add more engaging content, images, internal links. Check if page content matches user intent.",
             })
     return issues
 
@@ -183,139 +108,263 @@ def analyze_keyword_opportunities(gsc_data):
     return opportunities[:15]
 
 
-def generate_report(issues, opportunities, gsc_data, ga4_data):
-    """Generate markdown report for GitHub Issue."""
-    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+STATE_MARKER = "seo-state"
 
-    # Categorize issues by severity
-    high = [i for i in issues if i["severity"] == "HIGH"]
-    medium = [i for i in issues if i["severity"] == "MEDIUM"]
+COVERAGE_URDU = {
+    "Submitted and indexed": "Indexed",
+    "Indexed, not submitted in sitemap": "Indexed (sitemap se bahar)",
+    "Crawled - currently not indexed": "Crawl hua, index nahi",
+    "Discovered - currently not indexed": "Mila, abhi crawl nahi hua",
+    "Page with redirect": "Redirect",
+    "Duplicate, Google chose different canonical than user": "Google ne doosra page chuna",
+    "Alternate page with proper canonical tag": "Doosre page ka alternate",
+    "URL is unknown to Google": "Google ko abhi pata nahi",
+    "Excluded by ‘noindex’ tag": "noindex laga hai",
+    "Not found (404)": "404",
+}
 
-    # Summary stats
-    total_clicks = 0
-    total_impressions = 0
-    if gsc_data and "current" in gsc_data:
-        for row in gsc_data["current"]["pages"]:
-            total_clicks += row.get("clicks", 0)
-            total_impressions += row.get("impressions", 0)
+SOURCE_BUCKETS = [
+    ("Google", ("google",)),
+    ("Bing", ("bing",)),
+    ("ChatGPT", ("chatgpt", "openai")),
+    ("Doosre AI (Perplexity, Copilot, Gemini…)", ("perplexity", "copilot", "gemini", "claude", "deepseek")),
+    ("Direct (seedha link / bookmark)", ("(direct)",)),
+    ("Social (Instagram, Facebook…)", ("instagram", "facebook", "fb", "t.co", "twitter", "linkedin", "tiktok", "youtube", "whatsapp")),
+]
 
-    report = f"""# 🔍 SEO Agent Report — {SITE_NAME}
-**Generated:** {now}
-**Period:** {gsc_data['period']['start'] if gsc_data else 'N/A'} → {gsc_data['period']['end'] if gsc_data else 'N/A'}
 
----
+def load_json(path):
+    if os.path.exists(path):
+        with open(path) as f:
+            return json.load(f)
+    return None
 
-## 📊 Overview
-| Metric | Value |
-|--------|-------|
-| Total Clicks (GSC) | {total_clicks:,} |
-| Total Impressions (GSC) | {total_impressions:,} |
-| Avg CTR | {(total_clicks/total_impressions*100) if total_impressions > 0 else 0:.1f}% |
-| Issues Found | 🔴 {len(high)} High, 🟡 {len(medium)} Medium |
-| Keyword Opportunities | {len(opportunities)} |
 
----
+def change(prev, curr):
+    """'+12%' style difference, or a plain arrow when the base is too small to mean much."""
+    if prev in (None, 0):
+        return "naya" if curr else "—"
+    pct = (curr - prev) / prev * 100
+    arrow = "⬆️" if pct > 0 else ("⬇️" if pct < 0 else "➖")
+    return f"{arrow} {pct:+.0f}%"
 
-## 🔴 High Priority Issues
-"""
 
-    if high:
-        for i, issue in enumerate(high, 1):
-            report += f"""
-### {i}. {issue['issue']} — `{issue['page']}`
-- **Details:** {issue['details']}
-- **Suggested Fix:** {issue['fix']}
-"""
+def bucket_sources(rows):
+    totals = {name: 0 for name, _ in SOURCE_BUCKETS}
+    totals["Baqi"] = 0
+    for row in rows or []:
+        source = row.get("sessionSource", "").lower()
+        sessions = int(row.get("sessions", 0))
+        for name, needles in SOURCE_BUCKETS:
+            if any(n in source for n in needles):
+                totals[name] += sessions
+                break
+        else:
+            totals["Baqi"] += sessions
+    return totals
+
+
+def previous_state():
+    """State block embedded in the last weekly report, for week-on-week index changes."""
+    try:
+        import github_api
+        issue = github_api.latest_issue("seo-report")
+    except Exception:  # noqa: BLE001 — first run, no token, or API hiccup
+        return {}
+    body = (issue or {}).get("body") or ""
+    match = re.search(rf"<!-- {STATE_MARKER}: (.*?) -->", body, re.S)
+    try:
+        return json.loads(match.group(1)) if match else {}
+    except json.JSONDecodeError:
+        return {}
+
+
+def build_report(gsc, ga4, index, health, prev_state, opportunities, low_ctr, bounce):
+    today = datetime.now().strftime("%d %b %Y")
+    alerts, actions = [], []
+
+    # ── Health ──
+    health_level = (health or {}).get("level", "unknown")
+    if health_level == "critical":
+        alerts.append("🔴")
+        actions.append("**Site Alert** issue khula hai — us ka link Claude ko bhejein.")
+    elif health_level == "warning":
+        alerts.append("🟡")
+        actions.append("Site Alert issue mein chhote masle hain — fursat mein dekh lein.")
+
+    # ── Data availability ──
+    for name, data in (("Search Console", gsc), ("Google Analytics", ga4), ("Index check", index)):
+        if not data or data.get("error"):
+            alerts.append("🟡")
+            actions.append(f"{name} ka data nahi mila ({(data or {}).get('error', 'file nahi bani')[:120]}). Claude ko batayein.")
+
+    # ── Search totals ──
+    totals = (gsc or {}).get("totals") or {}
+    week, prev_week = totals.get("week") or {}, totals.get("prev_week") or {}
+    clicks, prev_clicks = week.get("clicks", 0), prev_week.get("clicks", 0)
+    if prev_clicks >= 10 and clicks < prev_clicks * 0.7:
+        alerts.append("🟡")
+        actions.append(f"Google clicks {prev_clicks} se {clicks} pe aa gaye (30% se zyada kami). Claude ko report ka link bhejein.")
+
+    # ── Index status ──
+    pages = (index or {}).get("pages") or []
+    indexed_now = {p["path"] for p in pages if p.get("verdict") == "PASS"}
+    indexed_before = set(prev_state.get("indexed", []))
+    newly_indexed = [p["path"] for p in pages if p["path"] in indexed_now and p["path"] not in indexed_before] if indexed_before else []
+    dropped = [p["path"] for p in pages if p["path"] in indexed_before and p["path"] not in indexed_now and not p.get("error")]
+    if "/" in {p["path"] for p in pages} and "/" not in indexed_now and not any(p.get("error") for p in pages if p["path"] == "/"):
+        alerts.append("🔴")
+        actions.append("**Homepage Google index mein nahi hai.** Foran Claude ko batayein.")
+    if dropped:
+        alerts.append("🟡")
+        actions.append(f"{len(dropped)} aham page(s) Google index se nikle: {', '.join(dropped[:5])}. Claude ko batayein.")
+
+    # ── Leads ──
+    weekly = (ga4 or {}).get("weekly") or {}
+    leads = ((weekly.get("week") or {}).get("leads") or {})
+    prev_leads = ((weekly.get("prev_week") or {}).get("leads") or {})
+    if prev_leads.get("total", 0) >= 3 and leads.get("total", 0) == 0:
+        alerts.append("🟡")
+        actions.append("Is hafte website se **ek bhi enquiry click** record nahi hua. Ek test booking bhej kar check karein.")
+
+    status = "🔴" if "🔴" in alerts else ("🟡" if alerts else "🟢")
+    headline = {
+        "🟢": "Is hafte sab theek hai",
+        "🟡": "Kuch cheezen dekhne wali hain",
+        "🔴": "Foran tawajjuh chahiye",
+    }[status]
+
+    out = [
+        f"# {status} Weekly SEO Report — {today}",
+        (f"**Google data:** {week['start']} → {week['end']} (Search Console ~3 din peeche chalta hai)" if week else "**Google data:** is hafte nahi mila"),
+        "",
+        f"> ### {status} {headline}",
+        "> 👉 **Aap ko kya karna hai:** " + ("Kuch nahi." if not actions else ""),
+    ]
+    for a in actions:
+        out.append(f"> - {a}")
+
+    # Google search
+    out += ["", "## 📈 Google Search — is hafta vs pichla hafta", "| | Pichla hafta | Is hafta | Farq |", "|---|---:|---:|---|"]
+    if week:
+        out.append(f"| Clicks | {prev_clicks:,} | {clicks:,} | {change(prev_clicks, clicks)} |")
+        out.append(f"| Impressions | {prev_week.get('impressions', 0):,} | {week.get('impressions', 0):,} | {change(prev_week.get('impressions', 0), week.get('impressions', 0))} |")
+        out.append(f"| CTR | {prev_week.get('ctr', 0) * 100:.1f}% | {week.get('ctr', 0) * 100:.1f}% | |")
+        out.append(f"| Average position | {prev_week.get('position', 0):.1f} | {week.get('position', 0):.1f} | (kam = behtar) |")
+        d28, p28 = totals.get("days28") or {}, totals.get("prev_days28") or {}
+        out.append(f"\n**Pichle 28 din:** {d28.get('clicks', 0):,} clicks · {d28.get('impressions', 0):,} impressions (us se pehle 28 din: {p28.get('clicks', 0):,} clicks · {p28.get('impressions', 0):,} impressions)")
     else:
-        report += "\n✅ No high priority issues found!\n"
+        out.append("| — | | | Data nahi mila |")
 
-    report += "\n---\n\n## 🟡 Medium Priority Issues\n"
-
-    if medium:
-        for i, issue in enumerate(medium, 1):
-            report += f"""
-### {i}. {issue['issue']} — `{issue['page']}`
-- **Details:** {issue['details']}
-- **Suggested Fix:** {issue['fix']}
-"""
+    # GA4
+    out += ["", "## 👥 Visitors aur enquiries (Google Analytics)"]
+    if weekly:
+        now_src = bucket_sources((weekly.get("week") or {}).get("sources"))
+        prev_src = bucket_sources((weekly.get("prev_week") or {}).get("sources"))
+        out += ["| Kahan se aaye | Pichla hafta | Is hafta |", "|---|---:|---:|"]
+        for name in now_src:
+            if now_src[name] or prev_src[name]:
+                out.append(f"| {name} | {prev_src[name]} | {now_src[name]} |")
+        out.append(f"| **Total visits** | **{sum(prev_src.values())}** | **{sum(now_src.values())}** |")
+        channel_names = {"whatsapp": "WhatsApp", "phone": "Call", "booking": "Booking form", "quote": "Quote form", "contact": "Contact form"}
+        split = ", ".join(f"{channel_names.get(k, k)} {v}" for k, v in sorted((leads.get("by_channel") or {}).items(), key=lambda kv: -kv[1]))
+        out.append(
+            f"\n**Enquiry clicks** (WhatsApp, call, forms): pichla hafta **{prev_leads.get('total', 0)}** → is hafta **{leads.get('total', 0)}**"
+            + (f" ({split})" if split else "")
+        )
+        out.append("<sub>Sirf un visitors ke clicks gine jaate hain jinhon ne cookie consent diya — asal enquiries is se zyada ho sakti hain.</sub>")
     else:
-        report += "\n✅ No medium priority issues found!\n"
+        out.append("Data nahi mila.")
 
-    report += "\n---\n\n## 🚀 Keyword Opportunities (Rank 8-20)\n"
-    report += "These queries are close to page 1 top spots — optimizing content could boost them:\n\n"
-
-    if opportunities:
-        report += "| Query | Position | Impressions | Clicks | CTR |\n"
-        report += "|-------|----------|-------------|--------|-----|\n"
-        for opp in opportunities:
-            report += f"| {opp['query']} | {opp['position']:.1f} | {opp['impressions']:,} | {opp['clicks']:,} | {opp['ctr']:.1f}% |\n"
+    # Index status
+    out += ["", f"## 📑 Aham pages Google index mein — {len(indexed_now)}/{len(pages)} ✅" if pages else "## 📑 Aham pages Google index mein"]
+    if pages:
+        if newly_indexed:
+            out.append(f"✅ **Naye index hue:** {', '.join(f'`{p}`' for p in newly_indexed)}")
+        if dropped:
+            out.append(f"❌ **Index se nikle:** {', '.join(f'`{p}`' for p in dropped)}")
+        not_indexed = [p for p in pages if p.get("verdict") != "PASS"]
+        if not_indexed:
+            out.append("\n**Abhi index nahi:**")
+            for p in not_indexed:
+                reason = COVERAGE_URDU.get(p.get("coverage"), p.get("coverage") or p.get("error", "")[:80])
+                out.append(f"- `{p['path']}` — {reason}")
+        out += ["", "<details><summary>Saare pages ki list</summary>", "", "| Page | Status | Aakhri crawl |", "|---|---|---|"]
+        for p in pages:
+            mark = "✅" if p.get("verdict") == "PASS" else "❌"
+            crawl = (p.get("last_crawl") or "")[:10] or "—"
+            reason = COVERAGE_URDU.get(p.get("coverage"), p.get("coverage") or p.get("error", "")[:60])
+            out.append(f"| `{p['path']}` | {mark} {reason} | {crawl} |")
+        out += ["", "</details>"]
     else:
-        report += "No keyword opportunities found in this period.\n"
+        out.append("Is hafte index check nahi ho saka.")
 
-    report += f"""
----
+    # Queries
+    queries = sorted(((gsc or {}).get("current") or {}).get("queries") or [], key=lambda r: (-r.get("clicks", 0), -r.get("impressions", 0)))[:10]
+    out += ["", "## 🔍 Log Google pe kya search karke aaye (pichle 28 din, top 10)"]
+    if queries:
+        out += ["| Search | Clicks | Impressions | Position |", "|---|---:|---:|---:|"]
+        for r in queries:
+            out.append(f"| {r['keys'][0]} | {r.get('clicks', 0)} | {r.get('impressions', 0)} | {r.get('position', 0):.1f} |")
+    else:
+        out.append("Data nahi mila.")
 
-## ⚡ Action Required
+    # Health
+    out += ["", "## 🛡️ Site health"]
+    if health:
+        if health_level == "ok":
+            out.append(f"🟢 Sab theek — sitemap ke {health['pages_checked']} pages aur un ke saare internal links check hue, koi masla nahi.")
+        else:
+            out.append(f"{'🔴' if health_level == 'critical' else '🟡'} Masle mile — tafseel **Site Alert** issue mein:")
+            for problem in (health.get("problems") or {}).values():
+                out.append(f"- {problem['title']} ({len(problem['items'])})")
+    else:
+        out.append("Check nahi chal saka.")
 
-**Aapko kya karna hai:**
-1. Is report ko review karein
-2. Agar fix chahiye to comment karein: **`fix karo`**
-3. Claude Code automatically changes karega aur PR banayega
-4. PR review karein, agar theek hai to comment karein: **`merge karo`**
+    # Suggestions — optional, capped
+    tips = []
+    for o in opportunities[:3]:
+        tips.append(f"\"{o['query']}\" Google pe position {o['position']:.0f} pe hai ({o['impressions']} impressions) — thodi mehnat se pehle page pe aa sakta hai.")
+    for i in low_ctr[:2]:
+        tips.append(f"`{i['page']}` achhi position pe hai lekin log kam click karte hain ({i['details']}) — title/description behtar ho sakta hai.")
+    for i in bounce[:1]:
+        tips.append(f"`{i['page']}` pe zyada log foran wapas chale jaate hain ({i['details']}).")
+    if tips:
+        out += ["", "## 💡 Mashware (zaroori nahi, jab waqt ho)"] + [f"- {t}" for t in tips]
+        out.append("\nIn mein se kuch karwana ho to is issue pe comment karein: **`fix karo`**")
 
-> ⚠️ Koi bhi change bina aapki approval ke deploy nahi hoga.
-
----
-*Generated by SEO Agent • [{SITE_NAME}]({SITE_URL})*
-"""
-
-    return report
+    state = {"date": datetime.now().strftime("%Y-%m-%d"), "indexed": sorted(indexed_now) if pages else prev_state.get("indexed", []), "week_clicks": clicks}
+    out += [
+        "",
+        "---",
+        f"*Har Monday automatic · Rozana site check alag se chalta hai aur masla ho to hi alert banata hai · [{SITE_NAME}]({SITE_URL})*",
+        f"<!-- {STATE_MARKER}: {json.dumps(state)} -->",
+    ]
+    return f"{status} Weekly SEO Report — {today}", "\n".join(out)
 
 
 def run_analysis():
-    """Main analysis function."""
-    print("🔍 Running SEO analysis...")
+    """Build the weekly report from whatever data the fetch steps produced."""
+    print("🔍 Building weekly report...")
+    gsc = load_json("seo-agent/data/gsc_data.json")
+    ga4 = load_json("seo-agent/data/ga4_data.json")
+    index = load_json("seo-agent/data/index_status.json")
+    health = load_json("seo-agent/data/site_health.json")
 
-    gsc_data, ga4_data = load_data()
+    ok_gsc = gsc if gsc and not gsc.get("error") else None
+    ok_ga4 = ga4 if ga4 and not ga4.get("error") else None
+    opportunities = analyze_keyword_opportunities(ok_gsc) if ok_gsc else []
+    low_ctr = (analyze_low_ctr_pages(ok_gsc) or []) if ok_gsc else []
+    bounce = sorted(analyze_high_bounce_pages(ok_ga4), key=lambda i: -int(re.search(r"Sessions: (\d+)", i["details"]).group(1))) if ok_ga4 else []
 
-    if not gsc_data and not ga4_data:
-        print("❌ No data found! Run fetch scripts first.")
-        return None
+    title, report = build_report(gsc, ga4, index, health, previous_state(), opportunities, low_ctr, bounce)
 
-    # Collect all issues
-    all_issues = []
-    all_issues.extend(analyze_low_ctr_pages(gsc_data))
-    all_issues.extend(analyze_declining_pages(gsc_data))
-    all_issues.extend(analyze_missing_pages(gsc_data))
-    all_issues.extend(analyze_high_bounce_pages(ga4_data))
-    all_issues.extend(analyze_low_engagement(ga4_data))
-
-    # Get keyword opportunities
-    opportunities = analyze_keyword_opportunities(gsc_data)
-
-    print(f"   Found {len(all_issues)} issues, {len(opportunities)} keyword opportunities")
-
-    # Generate report
-    report = generate_report(all_issues, opportunities, gsc_data, ga4_data)
-
-    # Save report
     os.makedirs("seo-agent/data", exist_ok=True)
-    report_path = "seo-agent/data/report.md"
-    with open(report_path, "w") as f:
+    with open("seo-agent/data/report.md", "w") as f:
         f.write(report)
-
-    # Save issues as JSON (for Claude Code to consume)
-    issues_path = "seo-agent/data/issues.json"
-    with open(issues_path, "w") as f:
-        json.dump({
-            "issues": all_issues,
-            "opportunities": opportunities,
-            "generated_at": datetime.now().isoformat(),
-        }, f, indent=2)
-
-    print(f"✅ Report saved to {report_path}")
-    print(f"✅ Issues saved to {issues_path}")
-
+    with open("seo-agent/data/report_meta.json", "w") as f:
+        json.dump({"title": title}, f, ensure_ascii=False)
+    print(f"✅ {title}")
     return report
 
 

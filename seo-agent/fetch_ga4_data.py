@@ -107,6 +107,31 @@ def fetch_landing_pages(client, start_date, end_date):
     )
 
 
+def fetch_sources(client, start_date, end_date):
+    """Sessions per source (google, bing, chatgpt.com, (direct), ...)."""
+    return run_report(client, ["sessionSource"], ["sessions"], start_date, end_date, limit=100)
+
+
+def fetch_leads(client, start_date, end_date):
+    """`generate_lead` events — every WhatsApp/phone click and booking/quote/
+    contact form success (lib/analytics.ts). Split by `lead_source` when that
+    parameter is registered as a custom dimension in GA4; otherwise the total
+    alone."""
+    total = sum(
+        int(r["eventCount"])
+        for r in run_report(client, ["eventName"], ["eventCount"], start_date, end_date, limit=200)
+        if r["eventName"] == "generate_lead"
+    )
+    by_channel = {}
+    try:
+        for r in run_report(client, ["eventName", "customEvent:lead_source"], ["eventCount"], start_date, end_date, limit=200):
+            if r["eventName"] == "generate_lead":
+                by_channel[r["customEvent:lead_source"]] = int(r["eventCount"])
+    except Exception:  # noqa: BLE001 — dimension not registered; total is still useful
+        by_channel = {}
+    return {"total": total, "by_channel": by_channel}
+
+
 def fetch_all_ga4_data():
     """Fetch all GA4 data."""
     client = get_ga4_client()
@@ -119,6 +144,10 @@ def fetch_all_ga4_data():
     prev_start = (
         datetime.now() - timedelta(days=1 + days + THRESHOLDS["compare_days"])
     ).strftime("%Y-%m-%d")
+
+    end = datetime.now() - timedelta(days=1)
+    week = (end - timedelta(days=6)).strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d")
+    prev_week = (end - timedelta(days=13)).strftime("%Y-%m-%d"), (end - timedelta(days=7)).strftime("%Y-%m-%d")
 
     print(f"📈 Fetching GA4 data: {start_date} → {end_date}")
 
@@ -135,6 +164,10 @@ def fetch_all_ga4_data():
             "pages": fetch_page_metrics(client, prev_start, prev_end),
             "landing_pages": fetch_landing_pages(client, prev_start, prev_end),
         },
+        "weekly": {
+            "week": {"start": week[0], "end": week[1], "sources": fetch_sources(client, *week), "leads": fetch_leads(client, *week)},
+            "prev_week": {"start": prev_week[0], "end": prev_week[1], "sources": fetch_sources(client, *prev_week), "leads": fetch_leads(client, *prev_week)},
+        },
         "fetched_at": datetime.now().isoformat(),
     }
 
@@ -150,4 +183,10 @@ def fetch_all_ga4_data():
 
 
 if __name__ == "__main__":
-    fetch_all_ga4_data()
+    try:
+        fetch_all_ga4_data()
+    except Exception as error:  # noqa: BLE001 — see fetch_gsc_data.py
+        os.makedirs("seo-agent/data", exist_ok=True)
+        with open("seo-agent/data/ga4_data.json", "w") as f:
+            json.dump({"error": str(error)[:300], "fetched_at": datetime.now().isoformat()}, f)
+        print(f"❌ GA4 fetch failed: {error}")

@@ -1,60 +1,42 @@
 """
-Create a GitHub Issue with the SEO report.
+Publish the weekly report as a GitHub issue and close the previous ones.
+
+Only the newest report stays open, so the Issues tab shows one current report
+instead of a growing pile (38 had accumulated by Nov 2026). Older reports stay
+readable as closed issues.
 """
-import os
 import json
-import requests
-from datetime import datetime
-from config import GITHUB_REPO, GITHUB_TOKEN
+import os
 
+import github_api
 
-def create_github_issue(report_md):
-    """Create a GitHub Issue with the report."""
-    token = GITHUB_TOKEN or os.getenv("GITHUB_TOKEN")
-    if not token:
-        print("❌ GITHUB_TOKEN not set!")
-        return None
-
-    today = datetime.now().strftime("%Y-%m-%d")
-    title = f"🔍 SEO Report — {today}"
-
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/issues"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-    }
-
-    payload = {
-        "title": title,
-        "body": report_md,
-        "labels": ["seo-report", "automated"],
-    }
-
-    response = requests.post(url, headers=headers, json=payload)
-
-    if response.status_code == 201:
-        issue = response.json()
-        print(f"✅ Issue created: {issue['html_url']}")
-        return issue
-    else:
-        print(f"❌ Failed to create issue: {response.status_code}")
-        print(response.text)
-        return None
+LABEL = "seo-report"
 
 
 def main():
-    """Read report and create issue."""
     report_path = "seo-agent/data/report.md"
-
     if not os.path.exists(report_path):
         print("❌ Report not found! Run analyze_data.py first.")
         return
 
     with open(report_path) as f:
-        report_md = f.read()
+        body = f.read()
+    title = "📊 Weekly SEO Report"
+    meta_path = "seo-agent/data/report_meta.json"
+    if os.path.exists(meta_path):
+        with open(meta_path) as f:
+            title = json.load(f).get("title", title)
 
-    create_github_issue(report_md)
+    previous = github_api.list_open_issues(LABEL)
+    issue = github_api.create_issue(title, body, [LABEL, "automated"])
+    if not issue and not github_api.DRY_RUN:
+        return
+
+    new_number = issue["number"] if issue else None
+    for old in previous:
+        if old["number"] != new_number:
+            github_api.close_issue(old["number"], f"Nayi report aa gayi: #{new_number}" if new_number else None)
+    print(f"Closed {len(previous)} older report issue(s).")
 
 
 if __name__ == "__main__":
