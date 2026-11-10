@@ -1,8 +1,10 @@
-name: "🔍 SEO Agent — Fetch & Report"
+name: "🔍 SEO Agent — Weekly Report"
 
+# One short report every Monday (~08:40 Dubai time). It used to run three
+# times a week and list 200+ "issues"; see seo-agent/analyze_data.py.
 on:
   schedule:
-    - cron: "0 6 * * 1,4,6"
+    - cron: "41 4 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -13,11 +15,13 @@ env:
   GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
   GSC_PROPERTY: ${{ secrets.GSC_PROPERTY }}
   GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   fetch-and-report:
     name: "Fetch Data & Create Report"
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repo
@@ -31,20 +35,24 @@ jobs:
       - name: Install dependencies
         run: pip install -r seo-agent/requirements.txt
 
-      - name: Fetch GSC data
-        working-directory: .
+      # Each data step records its own failure in its JSON file instead of
+      # stopping the run, so a lost permission shows up IN the report rather
+      # than as a missing report (which is how a 403 went unnoticed in Nov 2026).
+      - name: Fetch Search Console data
         run: python seo-agent/fetch_gsc_data.py
 
-      - name: Fetch GA4 data
-        working-directory: .
+      - name: Fetch Google Analytics data
         run: python seo-agent/fetch_ga4_data.py
 
-      - name: Analyze & generate report
-        working-directory: .
+      - name: Check index status of key pages
+        run: python seo-agent/fetch_index_status.py
+
+      - name: Site health summary
+        continue-on-error: true
+        run: python seo-agent/site_health.py --no-issue
+
+      - name: Build report
         run: python seo-agent/analyze_data.py
 
-      - name: Create GitHub Issue with report
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: .
+      - name: Publish report and close older ones
         run: python seo-agent/create_issue.py

@@ -43,3 +43,6 @@ scripts/
 # python bytecode from the seo-agent scripts
 __pycache__/
 *.py[cod]
+
+# SEO agent run output (fetched data, generated report) — produced fresh in CI
+seo-agent/data/

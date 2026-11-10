@@ -118,3 +118,68 @@ def load_key_pages():
 
 
 KEY_PAGES = load_key_pages()
+
+
+# ─── Site health check (seo-agent/site_health.py) ───
+#
+# The check fetches pages from HEALTH_BASE_URL but judges canonicals and
+# sitemap entries against SITE_URL, so it can be pointed at a local or
+# preview build without every canonical looking "wrong".
+HEALTH_BASE_URL = os.getenv("HEALTH_BASE_URL", SITE_URL).rstrip("/")
+
+# The public business number. Every page renders it (header, floating
+# buttons, LocalBusiness schema) from /admin/settings. If the site starts
+# showing something else — or an old number comes back from the static
+# fallback during a database outage — the daily check says so.
+# Change this here when the business number changes on purpose.
+EXPECTED_PHONE = os.getenv("EXPECTED_PHONE", "971526640360")
+RETIRED_PHONES = ["971529426152"]
+
+# Crawlers that must see the homepage. The August–November 2026 outage served
+# a 404 to exactly these user agents while browsers saw a 200, so each one is
+# checked individually rather than trusting a single request.
+CRAWLER_USER_AGENTS = {
+    "Googlebot": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Bingbot": "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)",
+    "ChatGPT": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot",
+    "ChatGPT Search": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot",
+    "WhatsApp preview": "WhatsApp/2.24.1.0 A",
+}
+
+# ─── Weekly index check (seo-agent/fetch_index_status.py) ───
+#
+# The pages whose Google index status the weekly report lists, via the Search
+# Console URL Inspection API (quota: 2,000 inspections/day, so 30 a week is
+# nothing). Ordered by business importance; the report keeps this order.
+TOP_PAGES = [
+    "/",
+    "/services",
+    "/fleet",
+    "/locations",
+    "/services/airport-transfers",
+    "/services/luxury-chauffeur",
+    "/services/corporate-chauffeur",
+    "/services/vip-transportation",
+    "/services/wedding-chauffeur",
+    "/services/event-transportation",
+    "/locations/dubai-international-airport-dxb",
+    "/locations/dubai-marina",
+    "/locations/downtown-dubai",
+    "/locations/palm-jumeirah",
+    "/locations/business-bay",
+    "/locations/jbr",
+    "/fleet/mercedes-s-class",
+    "/fleet/mercedes-maybach-s-class",
+    "/fleet/rolls-royce-phantom",
+    "/fleet/mercedes-v-class-v300-v250",
+    "/fleet/cadillac-escalade",
+    "/fleet/range-rover-autobiography",
+    "/fleet/rolls-royce-cullinan-mansory",
+    "/about",
+    "/contact",
+    "/faqs",
+    "/blog",
+    "/ar",
+    "/ru",
+    "/fr",
+]
