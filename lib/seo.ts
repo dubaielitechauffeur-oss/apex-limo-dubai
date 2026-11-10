@@ -200,28 +200,40 @@ export function buildMetadata({
   const effectiveTitle = seo?.title || title;
   const effectiveDescription = clampDescription(seo?.description || description);
   const selfUrl = `${SITE.url}${localizedPath(locale, path)}`;
-  const canonical = seo?.canonical || selfUrl;
+  // The SEO Manager stores ONE canonical per row, not one per locale. Applying
+  // it to every locale pointed all five translations at the same (English)
+  // URL and turned each into an "Alternative page with proper canonical tag".
+  // It is honoured on the default locale only; translations stay
+  // self-canonical and are tied together by hreflang instead.
+  const canonical = (locale === routing.defaultLocale && seo?.canonical) || selfUrl;
   const effectiveImages = seo?.ogImageUrl ? [seo.ogImageUrl] : images;
 
+  // A CMS page rendered in a locale it has no translation for shows the
+  // English fallback copy under a translated URL. It stays reachable (the
+  // language switcher and internal links lead there) but is kept out of the
+  // index, so it no longer competes as a near-duplicate of the English page.
+  // The sitemap and hreflang already leave these URLs out (same
+  // `alternateLocales` source).
+  const isUntranslated = alternateLocales !== undefined && !alternateLocales.includes(locale);
+
   // An explicit `robots` argument (the 404 branch of a detail route) always
-  // wins; otherwise a CMS noIndex/noFollow tick becomes a real robots
-  // directive. When neither applies, the page inherits the site-wide default
-  // from the root layout rather than restating it.
-  const seoRobots: Metadata["robots"] | undefined =
-    seo && (seo.noIndex || seo.noFollow)
-      ? {
-          index: !seo.noIndex,
-          follow: !seo.noFollow,
-          googleBot: { index: !seo.noIndex, follow: !seo.noFollow },
-        }
+  // wins; otherwise a CMS noIndex/noFollow tick, or a missing translation,
+  // becomes a real robots directive. When none applies, the page inherits the
+  // site-wide default from the root layout rather than restating it.
+  const noIndex = Boolean(seo?.noIndex) || isUntranslated;
+  const noFollow = Boolean(seo?.noFollow);
+  const derivedRobots: Metadata["robots"] | undefined =
+    noIndex || noFollow
+      ? { index: !noIndex, follow: !noFollow, googleBot: { index: !noIndex, follow: !noFollow } }
       : undefined;
-  const effectiveRobots = robots ?? seoRobots;
+  const effectiveRobots = robots ?? derivedRobots;
 
   // Every locale's URL for this path, plus x-default pointing at the
   // unprefixed (English) URL — the entry point Google's hreflang guidance
   // recommends for visitors whose language doesn't match any listed locale.
   // Narrowed to `alternateLocales` when the caller knows some locales have no
-  // real translation for this specific page.
+  // real translation for this specific page. A noindexed untranslated page
+  // carries no hreflang: it is not part of the language cluster.
   const hreflangLocales = alternateLocales ?? [...routing.locales];
   const languages: Record<string, string> = Object.fromEntries(
     hreflangLocales.map((l) => [l, `${SITE.url}${localizedPath(l, path)}`])
@@ -235,7 +247,7 @@ export function buildMetadata({
   return {
     title: effectiveTitle,
     description: effectiveDescription,
-    alternates: { canonical, languages },
+    alternates: isUntranslated ? { canonical } : { canonical, languages },
     ...(effectiveRobots ? { robots: effectiveRobots } : {}),
     openGraph: {
       type,
