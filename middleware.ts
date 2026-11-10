@@ -5,20 +5,15 @@ import { auth } from "./lib/auth/edge";
 
 const intlMiddleware = createMiddleware(routing);
 
-// Known crawler user agents are exempted from Accept-Language auto-redirect
-// at the root path only — so they always see the unprefixed English URL as
-// the crawl entry point instead of being bounced to a locale guessed from a
-// weak/inconsistent Accept-Language header (translated locales are found via
-// hreflang/sitemap instead). Scoped to "/" specifically (see the pathname
-// check below) rather than every path: a request like "/en/booking" isn't
-// ambiguous — routing.localePrefix "as-needed" always strips the redundant
-// default-locale prefix, deterministically, with no Accept-Language guessing
-// involved — so bots need intlMiddleware to run there too. Exempting bots
-// from intlMiddleware unconditionally on every path (the previous behavior)
-// left that redundant "/en" prefix on crawled URLs unresolved, which is what
-// Search Console was flagging as a redirect error for Googlebot specifically.
-const BOT_UA_PATTERN =
-  /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|discordbot|linkedinbot|pinterest|embedly|quora link preview|outbrain|vkshare|w3c_validator|lighthouse|pagespeed/i;
+// There is deliberately no crawler special case here. Locale detection is
+// off (`localeDetection: false` in i18n/routing.ts), so the URL alone decides
+// the locale and intlMiddleware treats bots and visitors identically.
+//
+// A bot-only branch used to return `NextResponse.next()` for "/" without
+// intlMiddleware's internal rewrite to "/en". No route exists at the bare
+// root (pages live under app/[locale]), so every crawler — Googlebot,
+// Bingbot, ChatGPT, Perplexity and WhatsApp link previews — got a 404 for
+// the homepage while browsers got a 200.
 
 /**
  * `app/admin` is a sibling route tree to `app/[locale]`, deliberately
@@ -48,15 +43,6 @@ export default auth((request) => {
     if (isAuthenticated && isPublicAdminPage) {
       return NextResponse.redirect(new URL("/admin", request.nextUrl.origin));
     }
-    return NextResponse.next();
-  }
-
-  const userAgent = request.headers.get("user-agent") ?? "";
-  if (pathname === "/" && BOT_UA_PATTERN.test(userAgent)) {
-    // Skip locale negotiation/redirect for bots only at the ambiguous root
-    // path — let the request through as-is (the unprefixed default-locale
-    // route). Every other path is unambiguous and goes through
-    // intlMiddleware below regardless of user agent.
     return NextResponse.next();
   }
 

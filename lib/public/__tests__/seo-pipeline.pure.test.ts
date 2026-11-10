@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { resolvePublicSeo, collectOgImageIds } from "@/lib/public/seo-fields";
 import { availableLocalesFor, narrowLocales } from "@/lib/public/translation-coverage";
-import { clampDescription } from "@/lib/seo";
+import { clampDescription, localizedPath } from "@/lib/seo";
 
 /**
  * Guards the SEO Manager → public metadata pipeline.
@@ -154,5 +154,24 @@ describe("clampDescription", () => {
   it("does not leave dangling punctuation before the ellipsis", () => {
     const out = clampDescription("Dubai chauffeur service, ".repeat(20));
     expect(out).not.toMatch(/[,\s]…$/);
+  });
+});
+
+describe("localizedPath", () => {
+  it("leaves English unprefixed", () => {
+    expect(localizedPath("en", "/")).toBe("/");
+    expect(localizedPath("en", "/fleet")).toBe("/fleet");
+  });
+
+  it("prefixes other locales", () => {
+    expect(localizedPath("ar", "/fleet/mercedes-s-class")).toBe("/ar/fleet/mercedes-s-class");
+  });
+
+  it("never emits a trailing slash for a translated homepage", () => {
+    // `/ar/` 308-redirects to `/ar`, so the slashed form must never reach a
+    // canonical, hreflang, sitemap or JSON-LD URL.
+    for (const locale of ["ar", "ru", "zh", "fr", "de"] as const) {
+      expect(localizedPath(locale, "/")).toBe(`/${locale}`);
+    }
   });
 });
