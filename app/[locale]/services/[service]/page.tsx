@@ -34,10 +34,9 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
-import { getAllServices, getServiceBySlug } from "@/lib/public/cms-content";
+import { getAllServices, getServiceBySlug, getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 import { SERVICES, type PlainService } from "@/data/services";
-import { FLEET } from "@/data/fleet";
 import { vehiclesForService } from "@/lib/cross-links";
 import JsonLd from "@/components/shared/JsonLd";
 
@@ -146,15 +145,18 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   // Up to 3 related vehicles (previously only the first match rendered) —
   // stronger internal linking without turning this into a full grid.
-  const relatedVehicleSlugs = vehiclesForService(service.slug).slice(0, 3);
-  const relatedVehicles = relatedVehicleSlugs
-    .map((slug) => FLEET.find((v) => v.slug === slug))
-    .filter((v): v is (typeof FLEET)[number] => Boolean(v));
+  // Read from the CMS, not data/fleet.ts, so a renamed or unpublished
+  // vehicle is never linked and CMS-only vehicles can be.
+  const publishedVehicles = await getAllVehicles(locale as Locale);
+  const relatedVehicles = vehiclesForService(service.slug)
+    .map((slug) => publishedVehicles.find((v) => v.slug === slug))
+    .filter((v): v is (typeof publishedVehicles)[number] => Boolean(v))
+    .slice(0, 3);
 
   return (
     <div>
       <JsonLd data={serviceJsonLd(service, locale as Locale, contact)} />
-      <JsonLd data={faqJsonLd(service.faqs, locale as Locale)} />
+      {service.faqs.length > 0 ? <JsonLd data={faqJsonLd(service.faqs, locale as Locale)} /> : null}
       <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("services"), path: "/services" },

@@ -10,7 +10,7 @@ import { getSiteContact } from "@/lib/public/site-contact";
 
 const RECOMMENDATION_SLUGS = {
   mercedesSClass: "mercedes-s-class",
-  mercedesVClass: "mercedes-v-class",
+  mercedesVClass: "mercedes-v-class-v300-v250",
   rollsRoyce: "rolls-royce-phantom",
   rangeRover: "range-rover-autobiography",
 } as const;

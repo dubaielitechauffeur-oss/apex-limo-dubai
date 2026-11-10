@@ -1202,7 +1202,8 @@ export const FLEET: FleetVehicle[] = [
     ],
   },
   {
-    slug: "mercedes-v-class",
+    // Matches the live CMS slug; /fleet/mercedes-v-class 301s here (next.config.ts).
+    slug: "mercedes-v-class-v300-v250",
     badge: {
       en: "Most Popular",
       ar: "الأكثر رواجًا",
