@@ -66,6 +66,9 @@ const CONTENT_SECURITY_POLICY = [
  */
 const RETIRED_VEHICLE_REDIRECTS: ReadonlyArray<readonly [from: string, to: string]> = [
   ["mercedes-v-class", "mercedes-v-class-v300-v250"],
+  // Intermediate slug between the two V-Class renames; GSC still lists
+  // /ar/fleet/mercedes-v-class-v300 as crawled.
+  ["mercedes-v-class-v300", "mercedes-v-class-v300-v250"],
   ["bentley-flying-spur", "ultra-luxury"],
   ["rolls-royce-ghost", "rolls-royce-phantom"],
   ["mercedes-e-class", "sedan"],
