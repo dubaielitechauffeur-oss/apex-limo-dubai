@@ -17,9 +17,9 @@ import type { BookingFormData, QuoteFormData, ContactFormData } from "@/lib/type
  */
 
 const contact: CustomerEmailContact = {
-  phone: "+971529426152",
-  phoneDisplay: "+971 52 942 6152",
-  whatsapp: "+971529426152",
+  phone: "+971526640360",
+  phoneDisplay: "+971 52 664 0360",
+  whatsapp: "+971526640360",
   email: "bookings@apexchauffeurdubai.com",
 };
 
@@ -66,9 +66,9 @@ describe("customer confirmation emails", () => {
     expect(html).toContain("Chat with us on WhatsApp");
     // Deep link built from the admin-editable number, "+" stripped, with the
     // reference pre-filled so the customer doesn't have to repeat it.
-    expect(html).toContain("https://wa.me/971529426152");
+    expect(html).toContain("https://wa.me/971526640360");
     expect(html).toContain("APX-12345");
-    expect(html).toContain("tel:+971529426152");
+    expect(html).toContain("tel:+971526640360");
   });
 
   it("does not tell the customer the booking is confirmed", () => {
