@@ -82,21 +82,23 @@ interface PageProps {
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  // Fetch slugs from DB so newly-added vehicles get pre-rendered too;
-  // fall back to the static list if the DB is unreachable at build time.
-  let dbSlugs: string[] = [];
+  // Pre-render the published vehicles the CMS actually has. The static list
+  // is used only when the database is unreachable at build time or has no
+  // published vehicles yet — merging it in unconditionally used to pre-render
+  // retired slugs as live pages (see withSlugFallback in cms-content.ts).
+  let vehicleSlugs: string[] = [];
   try {
     const { prisma } = await import("@/lib/db");
     const rows = await prisma.vehicle.findMany({
       where: { status: "published", deletedAt: null },
       select: { slug: true },
     });
-    dbSlugs = rows.map((r) => r.slug);
+    vehicleSlugs = rows.map((r) => r.slug);
   } catch {
-    dbSlugs = FLEET.map((v) => v.slug);
+    vehicleSlugs = [];
   }
-  const allVehicleSlugs = Array.from(new Set([...dbSlugs, ...FLEET.map((v) => v.slug)]));
-  const vehicleParams = allVehicleSlugs.map((slug) => ({ vehicle: slug }));
+  if (vehicleSlugs.length === 0) vehicleSlugs = FLEET.map((v) => v.slug);
+  const vehicleParams = vehicleSlugs.map((slug) => ({ vehicle: slug }));
   const categoryParams = FLEET_CATEGORY_SLUGS.map((category) => ({ vehicle: category }));
   return [...vehicleParams, ...categoryParams];
 }
@@ -325,7 +327,7 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
   return (
     <div>
       <JsonLd data={categoryJsonLd(locale, category, categoryLabel, vehicles)} />
-      <JsonLd data={faqJsonLd(categoryContent.faqs, locale)} />
+      {categoryContent.faqs.length > 0 ? <JsonLd data={faqJsonLd(categoryContent.faqs, locale)} /> : null}
       <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("fleet"), path: "/fleet" },
@@ -660,7 +662,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   return (
     <div>
       <JsonLd data={vehicleJsonLd(vehicle, locale as Locale)} />
-      <JsonLd data={faqJsonLd(vehicle.faqs, locale as Locale)} />
+      {vehicle.faqs.length > 0 ? <JsonLd data={faqJsonLd(vehicle.faqs, locale as Locale)} /> : null}
       <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("fleet"), path: "/fleet" },

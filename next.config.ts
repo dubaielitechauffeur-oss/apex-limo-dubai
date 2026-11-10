@@ -52,6 +52,26 @@ const CONTENT_SECURITY_POLICY = [
   "frame-ancestors 'self'",
 ].join("; ");
 
+/**
+ * Vehicle slugs that no longer exist, each sent (301) to its closest live
+ * page — the renamed vehicle where there is one, otherwise the category page.
+ * Every pair is redirected in all six locales: the old rule covered only the
+ * unprefixed English URL, which left `/ar/fleet/mercedes-v-class` and its
+ * siblings live.
+ *
+ * Search Console's crawl stats showed Googlebot repeatedly hitting the
+ * retired slugs below as 404s, so they still carry inbound links worth
+ * keeping. Never list a slug that is live in the CMS: the redirect runs
+ * before the page and would hide it.
+ */
+const RETIRED_VEHICLE_REDIRECTS: ReadonlyArray<readonly [from: string, to: string]> = [
+  ["mercedes-v-class", "mercedes-v-class-v300-v250"],
+  ["bentley-flying-spur", "ultra-luxury"],
+  ["rolls-royce-ghost", "rolls-royce-phantom"],
+  ["mercedes-e-class", "sedan"],
+  ["toyota-land-cruiser", "suv"],
+];
+
 const SECURITY_HEADERS = [
   { key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -80,15 +100,15 @@ const nextConfig: NextConfig = {
     },
   },
 
-  // Permanently redirect the old V-Class V300 URL to the updated V300/V250 page.
   async redirects() {
-    return [
+    return RETIRED_VEHICLE_REDIRECTS.flatMap(([from, to]) => [
+      { source: `/fleet/${from}`, destination: `/fleet/${to}`, permanent: true },
       {
-        source: "/fleet/mercedes-v-class",
-        destination: "/fleet/mercedes-v-class-v300-v250",
+        source: `/:locale(ar|ru|zh|fr|de)/fleet/${from}`,
+        destination: `/:locale/fleet/${to}`,
         permanent: true,
       },
-    ];
+    ]);
   },
 
   async headers() {

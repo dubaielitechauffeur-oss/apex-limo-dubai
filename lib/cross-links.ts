@@ -21,7 +21,7 @@ export const VEHICLE_CROSS_LINKS: Record<string, VehicleCrossLinks> = {
     serviceSlug: "airport-transfers",
     locationSlug: "dubai-international-airport-dxb",
   },
-  "mercedes-v-class": {
+  "mercedes-v-class-v300-v250": {
     serviceSlug: "event-transportation",
     locationSlug: "downtown-dubai",
   },
@@ -84,6 +84,12 @@ export const VEHICLE_CROSS_LINKS: Record<string, VehicleCrossLinks> = {
   "mercedes-maybach-sprinter": {
     serviceSlug: "corporate-chauffeur",
     locationSlug: "business-bay",
+  },
+  // Added in the CMS only (no data/fleet.ts entry), so it had no contextual
+  // inbound link at all. Paired like its sibling, the Cullinan Mansory.
+  "rolls-royce-cullinan-black-badge": {
+    serviceSlug: "vip-transportation",
+    locationSlug: "palm-jumeirah",
   },
 };
 

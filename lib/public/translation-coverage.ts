@@ -55,6 +55,48 @@ export function availableLocalesFor(requiredFields: readonly unknown[]): Locale[
 }
 
 /**
+ * Collapses a blog post's localized content blocks into one localized value
+ * per locale, so `availableLocalesFor` can test the BODY as well as the
+ * title and excerpt. Without it, a post with a translated title and excerpt
+ * but an English-only body was published as six languages.
+ *
+ * A locale counts as having body copy when at least one block carries text
+ * in it — the same "any entry has text" rule array fields already use.
+ */
+export function blockContentCopy(content: unknown): Partial<Record<Locale, string>> {
+  const out: Partial<Record<Locale, string>> = {};
+  if (!Array.isArray(content)) return out;
+  const add = (value: unknown) => {
+    if (!value || typeof value !== "object") return;
+    for (const locale of routing.locales) {
+      const entry = (value as Partial<Record<Locale, unknown>>)[locale];
+      const text = Array.isArray(entry)
+        ? entry.filter((v) => typeof v === "string").join(" ")
+        : typeof entry === "string"
+          ? entry
+          : "";
+      if (text.trim()) out[locale] = `${out[locale] ?? ""} ${text}`.trim();
+    }
+  };
+  for (const block of content) {
+    if (!block || typeof block !== "object") continue;
+    const b = block as { text?: unknown; items?: unknown };
+    add(b.text);
+    if (Array.isArray(b.items)) {
+      for (const item of b.items) {
+        if (item && typeof item === "object") {
+          add((item as { question?: unknown }).question);
+          add((item as { answer?: unknown }).answer);
+        }
+      }
+    } else {
+      add(b.items);
+    }
+  }
+  return out;
+}
+
+/**
  * Narrows an entity's available locales to those the site actually serves.
  * Returns `undefined` when every locale is present, which lets callers treat
  * "fully translated" as the no-op case and skip passing the list around.

@@ -63,7 +63,7 @@ const FEATURED_FLEET_SLUGS = [
   "rolls-royce-phantom",
   "mercedes-s-class",
   "range-rover-autobiography",
-  "mercedes-v-class",
+  "mercedes-v-class-v300-v250",
 ];
 
 /** Icon order matches whyChoose.items in messages/{locale}/about.json. */

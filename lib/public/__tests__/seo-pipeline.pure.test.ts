@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { resolvePublicSeo, collectOgImageIds } from "@/lib/public/seo-fields";
-import { availableLocalesFor, narrowLocales } from "@/lib/public/translation-coverage";
-import { clampDescription, localizedPath } from "@/lib/seo";
+import { availableLocalesFor, narrowLocales, blockContentCopy } from "@/lib/public/translation-coverage";
+import { clampDescription, localizedPath, buildMetadata } from "@/lib/seo";
 
 /**
  * Guards the SEO Manager → public metadata pipeline.
@@ -173,5 +173,75 @@ describe("localizedPath", () => {
     for (const locale of ["ar", "ru", "zh", "fr", "de"] as const) {
       expect(localizedPath(locale, "/")).toBe(`/${locale}`);
     }
+  });
+});
+
+describe("buildMetadata — untranslated locales", () => {
+  const base = { title: "T", description: "D", path: "/fleet/x" } as const;
+
+  it("noindexes (but follows) a locale the page has no translation for, with no hreflang", () => {
+    const meta = buildMetadata({ ...base, locale: "ar", alternateLocales: ["en", "de"] });
+    expect(meta.robots).toMatchObject({ index: false, follow: true });
+    expect(meta.alternates?.languages).toBeUndefined();
+    expect(meta.alternates?.canonical).toBe("https://apexchauffeurdubai.com/ar/fleet/x");
+  });
+
+  it("leaves a translated locale indexable with its hreflang cluster", () => {
+    const meta = buildMetadata({ ...base, locale: "de", alternateLocales: ["en", "de"] });
+    expect(meta.robots).toBeUndefined();
+    expect(Object.keys(meta.alternates?.languages ?? {})).toEqual(["en", "de", "x-default"]);
+  });
+
+  it("leaves fully translated pages untouched", () => {
+    expect(buildMetadata({ ...base, locale: "ar" }).robots).toBeUndefined();
+  });
+
+  it("keeps a CMS noFollow alongside the untranslated noindex", () => {
+    const seo = { title: "", description: "", canonical: null, ogImageUrl: null, noIndex: false, noFollow: true };
+    const meta = buildMetadata({ ...base, locale: "ar", alternateLocales: ["en"], seo });
+    expect(meta.robots).toMatchObject({ index: false, follow: false });
+  });
+});
+
+describe("buildMetadata — CMS canonical override", () => {
+  const seo = {
+    title: "",
+    description: "",
+    canonical: "https://apexchauffeurdubai.com/services/airport-transfers",
+    ogImageUrl: null,
+    noIndex: false,
+    noFollow: false,
+  };
+
+  it("applies on the default locale", () => {
+    const meta = buildMetadata({ locale: "en", title: "T", description: "D", path: "/services/x", seo });
+    expect(meta.alternates?.canonical).toBe(seo.canonical);
+  });
+
+  it("does not repoint translations at the English URL", () => {
+    const meta = buildMetadata({ locale: "fr", title: "T", description: "D", path: "/services/x", seo });
+    expect(meta.alternates?.canonical).toBe("https://apexchauffeurdubai.com/fr/services/x");
+  });
+});
+
+describe("blockContentCopy", () => {
+  it("counts a locale only when some block has text in it", () => {
+    const content = [
+      { type: "heading", text: { en: "Hello", ar: "مرحبا" } },
+      { type: "paragraph", text: { en: "Body", ar: "" } },
+      { type: "list", items: { en: ["a"], de: ["b"] } },
+      { type: "faq", items: [{ question: { en: "Q?", fr: "Q ?" }, answer: { en: "A" } }] },
+    ];
+    expect(availableLocalesFor([blockContentCopy(content)])).toEqual(["en", "ar", "fr", "de"]);
+  });
+
+  it("treats an English-only body as English-only", () => {
+    const content = [{ type: "paragraph", text: { en: "Only English" } }];
+    const title = { en: "T", ar: "ع", ru: "Т", zh: "标", fr: "T", de: "T" };
+    expect(availableLocalesFor([title, blockContentCopy(content)])).toEqual(["en"]);
+  });
+
+  it("returns nothing for non-array content", () => {
+    expect(blockContentCopy(null)).toEqual({});
   });
 });

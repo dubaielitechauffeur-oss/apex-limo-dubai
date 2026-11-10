@@ -28,10 +28,9 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
 import { SITE, PRICE_RANGE, getWhatsAppLink } from "@/lib/constants";
-import { getAllLocations, getLocationBySlug } from "@/lib/public/cms-content";
+import { getAllLocations, getLocationBySlug, getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 import { LOCATIONS, type PlainLocation } from "@/data/locations";
-import { FLEET } from "@/data/fleet";
 import { vehiclesForLocation } from "@/lib/cross-links";
 import JsonLd from "@/components/shared/JsonLd";
 
@@ -165,15 +164,18 @@ export default async function LocationDetailPage({ params }: PageProps) {
 
   // Up to 3 related vehicles (previously only the first match rendered) —
   // stronger internal linking without turning this into a full grid.
-  const relatedVehicleSlugs = vehiclesForLocation(location.slug).slice(0, 3);
-  const relatedVehicles = relatedVehicleSlugs
-    .map((slug) => FLEET.find((v) => v.slug === slug))
-    .filter((v): v is (typeof FLEET)[number] => Boolean(v));
+  // Read from the CMS, not data/fleet.ts, so a renamed or unpublished
+  // vehicle is never linked and CMS-only vehicles can be.
+  const publishedVehicles = await getAllVehicles(locale as Locale);
+  const relatedVehicles = vehiclesForLocation(location.slug)
+    .map((slug) => publishedVehicles.find((v) => v.slug === slug))
+    .filter((v): v is (typeof publishedVehicles)[number] => Boolean(v))
+    .slice(0, 3);
 
   return (
     <div>
       <JsonLd data={locationServiceJsonLd(location, locale as Locale, contact)} />
-      <JsonLd data={faqJsonLd(location.faqs, locale as Locale)} />
+      {location.faqs.length > 0 ? <JsonLd data={faqJsonLd(location.faqs, locale as Locale)} /> : null}
       <JsonLd data={breadcrumbJsonLd(
               [
                 { name: tNav("locations"), path: "/locations" },

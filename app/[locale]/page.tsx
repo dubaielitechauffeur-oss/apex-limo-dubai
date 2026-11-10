@@ -48,7 +48,7 @@ export default async function Home({ params }: PageProps) {
   const reviewsJsonLd = organizationReviewsJsonLd(locale as Locale);
   return (
     <>
-      <JsonLd data={faqJsonLd(homepageFaqs, locale as Locale)} />
+      {homepageFaqs.length > 0 ? <JsonLd data={faqJsonLd(homepageFaqs, locale as Locale)} /> : null}
       {/* `JsonLd` renders nothing for a null node, so no guard is needed here. */}
       <JsonLd data={reviewsJsonLd} />
       <Hero />

@@ -35,7 +35,7 @@ export default async function FaqsPage({ params }: PageProps) {
   const faqs = await getAllFaqs(locale as Locale);
   return (
     <div>
-      <JsonLd data={faqJsonLd(faqs, locale as Locale)} />
+      {faqs.length > 0 ? <JsonLd data={faqJsonLd(faqs, locale as Locale)} /> : null}
       <JsonLd data={breadcrumbJsonLd([{ name: tNav("faqs"), path: "/faqs" }], locale as Locale, tNav("home"))} />
 
       {/* Hero */}
