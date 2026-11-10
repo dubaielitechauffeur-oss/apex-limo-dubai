@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { PlainPopularForChip } from "@/data/fleet";
 
 /**
@@ -12,13 +12,7 @@ import type { PlainPopularForChip } from "@/data/fleet";
  * Kept as a small presentational component so mobile + desktop views
  * on the vehicle page can both use it without repeating markup.
  */
-export function VehiclePopularForChips({
-  chips,
-  locale,
-}: {
-  chips: PlainPopularForChip[];
-  locale: string;
-}) {
+export function VehiclePopularForChips({ chips }: { chips: PlainPopularForChip[] }) {
   const t = useTranslations("fleet.detail");
   if (chips.length === 0) return null;
   return (
@@ -28,7 +22,7 @@ export function VehiclePopularForChips({
           <span>{t("popularFor")}</span>
           {chip.serviceLabel && chip.serviceSlug ? (
             <Link
-              href={`/${locale}/services/${chip.serviceSlug}`}
+              href={`/services/${chip.serviceSlug}`}
               className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
             >
               {chip.serviceLabel}
@@ -39,7 +33,7 @@ export function VehiclePopularForChips({
           {chip.serviceLabel && chip.locationLabel ? <span>{t("inConnector")}</span> : null}
           {chip.locationLabel && chip.locationSlug ? (
             <Link
-              href={`/${locale}/locations/${chip.locationSlug}`}
+              href={`/locations/${chip.locationSlug}`}
               className="text-gold underline underline-offset-4 transition-colors hover:text-gold-deep"
             >
               {chip.locationLabel}

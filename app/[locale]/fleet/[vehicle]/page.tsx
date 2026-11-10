@@ -775,7 +775,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               <VehicleAmenitiesChips amenities={vehicle.amenities} />
             ) : null}
             {vehicle.popularFor && vehicle.popularFor.length > 0 ? (
-              <VehiclePopularForChips chips={vehicle.popularFor} locale={locale} />
+              <VehiclePopularForChips chips={vehicle.popularFor} />
             ) : relatedService || relatedLocation ? (
               <p className="mt-6 text-sm text-smoke">
                 {relatedService ? (
@@ -847,7 +847,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               <VehicleAmenitiesChips amenities={vehicle.amenities} />
             ) : null}
             {vehicle.popularFor && vehicle.popularFor.length > 0 ? (
-              <VehiclePopularForChips chips={vehicle.popularFor} locale={locale} />
+              <VehiclePopularForChips chips={vehicle.popularFor} />
             ) : relatedService || relatedLocation ? (
               <p className="mt-6 text-sm text-smoke">
                 {relatedService ? (

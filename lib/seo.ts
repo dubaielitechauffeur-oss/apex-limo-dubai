@@ -48,9 +48,17 @@ export function clampDescription(text: string, max = MAX_DESCRIPTION_LENGTH): st
   return `${cut.replace(/[\s,;:.\u060C\u061B-]+$/u, "")}\u2026`;
 }
 
-/** Prefixes `path` with the locale segment for every locale except the default. */
+/**
+ * Prefixes `path` with the locale segment for every locale except the default.
+ *
+ * The root path maps to `/ar`, not `/ar/`: the site has no trailing slashes,
+ * so `/ar/` answers with a 308 to `/ar`. Emitting the slashed form put a
+ * redirecting URL into every translated homepage's canonical, hreflang,
+ * sitemap entry, breadcrumb and JSON-LD.
+ */
 export function localizedPath(locale: Locale, path: string): string {
-  return locale === routing.defaultLocale ? path : `/${locale}${path}`;
+  if (locale === routing.defaultLocale) return path;
+  return path === "/" ? `/${locale}` : `/${locale}${path}`;
 }
 
 /**
