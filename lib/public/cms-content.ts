@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db";
 import { routing, type Locale } from "@/i18n/routing";
 import type { LocalizedText } from "@/lib/cms/localized";
 import { resolvePublicSeo, collectOgImageIds, type PublicSeo } from "./seo-fields";
-import { availableLocalesFor } from "./translation-coverage";
+import { availableLocalesFor, blockContentCopy } from "./translation-coverage";
 import {
   getAllServices as staticGetAllServices,
   getServiceBySlug as staticGetServiceBySlug,
@@ -129,6 +129,36 @@ async function withFallback<T>(run: () => Promise<T>, isEmpty: (value: T) => boo
   }
 }
 
+/**
+ * Single-slug lookups need a narrower fallback than `withFallback`.
+ *
+ * A slug the database does not have is NOT a reason to serve the static
+ * copy. When the table holds published rows, the CMS is the source of truth:
+ * a vehicle, service, location or post that an editor unpublished, deleted or
+ * renamed must 404, not come back from `data/*.ts` at its old URL. Falling
+ * back on "not found" is what kept `/ar/fleet/mercedes-v-class` and similar
+ * retired slugs answering 200 and indexable after the CMS had moved on.
+ *
+ * The static copy still stands in when it should: the query throws (database
+ * down) or the table has no published rows at all (nothing migrated yet).
+ */
+async function withSlugFallback<T>(
+  run: () => Promise<T | undefined>,
+  countPublished: () => Promise<number>,
+  fallback: () => T | undefined
+): Promise<T | undefined> {
+  try {
+    const result = await run();
+    if (result !== undefined) return result;
+    return (await countPublished()) === 0 ? fallback() : undefined;
+  } catch (err) {
+    console.error("[cms-content] DB read failed, using static fallback:", err);
+    return fallback();
+  }
+}
+
+const PUBLISHED = { status: "published", deletedAt: null } as const;
+
 // ── Services ─────────────────────────────────────────────────────────────
 
 function mapService(
@@ -192,7 +222,7 @@ export async function getAllServices(locale: Locale): Promise<PlainService[]> {
 }
 
 export async function getServiceBySlug(slug: string, locale: Locale): Promise<PlainService | undefined> {
-  return withFallback(
+  return withSlugFallback(
     async () => {
       // Targeted lookup on the unique `slug` index. This previously fetched
       // every published service (with its image + FAQ joins) and then found
@@ -211,7 +241,7 @@ export async function getServiceBySlug(slug: string, locale: Locale): Promise<Pl
       const ogImages = await resolveOgImageUrls([row]);
       return mapService(row, locale, ogImages);
     },
-    (result) => result === undefined,
+    () => prisma.service.count({ where: PUBLISHED }),
     () => staticGetServiceBySlug(slug, locale)
   );
 }
@@ -282,7 +312,7 @@ export async function getAllLocations(locale: Locale): Promise<PlainLocation[]> 
 }
 
 export async function getLocationBySlug(slug: string, locale: Locale): Promise<PlainLocation | undefined> {
-  return withFallback(
+  return withSlugFallback(
     async () => {
       // Targeted lookup on the unique `slug` index — see getServiceBySlug.
       const row = await prisma.location.findUnique({
@@ -298,7 +328,7 @@ export async function getLocationBySlug(slug: string, locale: Locale): Promise<P
       const ogImages = await resolveOgImageUrls([row]);
       return mapLocation(row, locale, ogImages);
     },
-    (result) => result === undefined,
+    () => prisma.location.count({ where: PUBLISHED }),
     () => staticGetLocationBySlug(slug, locale)
   );
 }
@@ -405,7 +435,7 @@ function mapBlogPost(
     // for posts on the same footing as every other content type.
     seo: publicSeo ?? undefined,
     updatedAt: row.updatedAt.toISOString(),
-    availableLocales: availableLocalesFor([row.title, row.excerpt]),
+    availableLocales: availableLocalesFor([row.title, row.excerpt, blockContentCopy(row.content)]),
   };
 }
 
@@ -430,7 +460,7 @@ export async function getAllBlogPosts(locale: Locale): Promise<PlainBlogPost[]> 
 }
 
 export async function getBlogPostBySlug(slug: string, locale: Locale): Promise<PlainBlogPost | undefined> {
-  return withFallback(
+  return withSlugFallback(
     async () => {
       // Targeted lookup on the unique `slug` index — see getServiceBySlug.
       const row = await prisma.blogPost.findUnique({
@@ -441,7 +471,7 @@ export async function getBlogPostBySlug(slug: string, locale: Locale): Promise<P
       const ogImages = await resolveOgImageUrls([row]);
       return mapBlogPost(row, locale, ogImages);
     },
-    (result) => result === undefined,
+    () => prisma.blogPost.count({ where: PUBLISHED }),
     () => staticGetBlogPostBySlug(slug, locale)
   );
 }
@@ -770,7 +800,7 @@ export async function getAllVehicles(locale: Locale): Promise<PlainFleetVehicle[
 }
 
 export async function getVehicleBySlug(slug: string, locale: Locale): Promise<PlainFleetVehicle | undefined> {
-  return withFallback(
+  return withSlugFallback(
     async () => {
       // Targeted lookup on the unique `slug` index. `fetchAllVehicleRows()`
       // pulls every published vehicle with its gallery, mobile variants, FAQs
@@ -782,7 +812,7 @@ export async function getVehicleBySlug(slug: string, locale: Locale): Promise<Pl
       const ogImages = await resolveOgImageUrls(rows);
       return mapVehicle(row, locale, ogImages);
     },
-    (result) => result === undefined,
+    () => prisma.vehicle.count({ where: PUBLISHED }),
     () => staticGetVehicleBySlug(slug, locale)
   );
 }
@@ -896,12 +926,12 @@ export async function getBlogPostSitemapEntries(): Promise<SitemapEntry[]> {
     async () => {
       const rows = await prisma.blogPost.findMany({
         where: { status: "published", deletedAt: null },
-        select: { slug: true, publishedAt: true, updatedAt: true, seo: true, title: true, excerpt: true },
+        select: { slug: true, publishedAt: true, updatedAt: true, seo: true, title: true, excerpt: true, content: true },
       });
       return excludeNoIndex(rows).map((r) => ({
         slug: r.slug,
         lastModified: r.updatedAt ?? r.publishedAt,
-        availableLocales: availableLocalesFor([r.title, r.excerpt]),
+        availableLocales: availableLocalesFor([r.title, r.excerpt, blockContentCopy(r.content)]),
       }));
     },
     (result) => result.length === 0,

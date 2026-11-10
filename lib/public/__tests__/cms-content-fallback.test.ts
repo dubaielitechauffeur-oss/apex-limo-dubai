@@ -12,14 +12,14 @@ const {
   mockPageHero,
 } = vi.hoisted(
   () => ({
-    mockService: { findMany: vi.fn() },
+    mockService: { findMany: vi.fn(), findUnique: vi.fn(), count: vi.fn() },
     mockLocation: { findMany: vi.fn() },
     mockBlogPost: { findMany: vi.fn() },
     mockFaq: { findMany: vi.fn() },
     mockTestimonial: { findMany: vi.fn(), count: vi.fn() },
     mockBrand: { findMany: vi.fn() },
     mockHeroSlide: { findMany: vi.fn() },
-    mockVehicle: { findMany: vi.fn() },
+    mockVehicle: { findMany: vi.fn(), count: vi.fn() },
     mockPageHero: { findUnique: vi.fn() },
   })
 );
@@ -81,6 +81,7 @@ describe("database failure fallback — every query throws", () => {
 
   it("getServiceBySlug falls back to the static lookup", async () => {
     mockService.findMany.mockRejectedValue(DB_ERROR);
+    mockService.findUnique.mockRejectedValue(DB_ERROR);
     const result = await getServiceBySlug("airport-transfers", "en");
     expect(result?.slug).toBe("airport-transfers");
   });
@@ -206,6 +207,43 @@ describe("empty CMS table fallback — every query resolves with zero rows", () 
     mockVehicle.findMany.mockResolvedValue([]);
     const result = await getAllVehicles("en");
     expect(result.length).toBe(FLEET.length);
+  });
+});
+
+/**
+ * A slug the CMS does not have must 404 while the CMS holds published rows.
+ * Falling back to data/*.ts on "not found" kept retired and renamed slugs
+ * (e.g. /ar/fleet/mercedes-v-class) answering 200 and indexable.
+ */
+describe("single-slug lookups — static copy only when the CMS is down or empty", () => {
+  it("getVehicleBySlug returns undefined for a slug the populated CMS does not have", async () => {
+    mockVehicle.findMany.mockResolvedValue([]);
+    mockVehicle.count.mockResolvedValue(16);
+    expect(await getVehicleBySlug(FLEET[0].slug, "en")).toBeUndefined();
+  });
+
+  it("getVehicleBySlug falls back to static data when the table has no published rows", async () => {
+    mockVehicle.findMany.mockResolvedValue([]);
+    mockVehicle.count.mockResolvedValue(0);
+    expect((await getVehicleBySlug(FLEET[0].slug, "en"))?.slug).toBe(FLEET[0].slug);
+  });
+
+  it("getVehicleBySlug falls back to static data when the count itself fails", async () => {
+    mockVehicle.findMany.mockResolvedValue([]);
+    mockVehicle.count.mockRejectedValue(DB_ERROR);
+    expect((await getVehicleBySlug(FLEET[0].slug, "en"))?.slug).toBe(FLEET[0].slug);
+  });
+
+  it("getServiceBySlug returns undefined for an unpublished or missing service", async () => {
+    mockService.findUnique.mockResolvedValue(null);
+    mockService.count.mockResolvedValue(6);
+    expect(await getServiceBySlug("airport-transfers", "en")).toBeUndefined();
+  });
+
+  it("getServiceBySlug falls back to static data when the table has no published rows", async () => {
+    mockService.findUnique.mockResolvedValue(null);
+    mockService.count.mockResolvedValue(0);
+    expect((await getServiceBySlug("airport-transfers", "en"))?.slug).toBe("airport-transfers");
   });
 });
 
