@@ -3,6 +3,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import type { LocalizedText } from "@/lib/cms/localized";
 import { resolvePublicSeo, collectOgImageIds, type PublicSeo } from "./seo-fields";
 import { availableLocalesFor, blockContentCopy } from "./translation-coverage";
+import { rewriteRetiredLinks } from "@/lib/retired-slugs";
 import {
   getAllServices as staticGetAllServices,
   getServiceBySlug as staticGetServiceBySlug,
@@ -63,14 +64,19 @@ import {
  * PUBLIC_CMS_INTEGRATION.md "Caching & Revalidation".
  */
 
+// Every localized string the public site reads from the CMS passes through
+// these two helpers, so links to retired vehicle slugs inside editor-written
+// copy are repointed here once instead of in each renderer — see
+// lib/retired-slugs.ts.
 function pickText(value: unknown, locale: Locale): string {
   const record = (value ?? {}) as Partial<Record<Locale, string>>;
-  return record[locale] || record[routing.defaultLocale] || "";
+  return rewriteRetiredLinks(record[locale] || record[routing.defaultLocale] || "");
 }
 
 function pickArray(value: unknown, locale: Locale): string[] {
   const record = (value ?? {}) as Partial<Record<Locale, string[]>>;
-  return record[locale] ?? record[routing.defaultLocale] ?? [];
+  const items = record[locale] ?? record[routing.defaultLocale] ?? [];
+  return Array.isArray(items) ? items.map((item) => (typeof item === "string" ? rewriteRetiredLinks(item) : item)) : items;
 }
 
 /**

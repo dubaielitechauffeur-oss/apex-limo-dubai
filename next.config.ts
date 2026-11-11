@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { RETIRED_VEHICLE_REDIRECTS } from "./lib/retired-slugs";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
@@ -51,29 +52,6 @@ const CONTENT_SECURITY_POLICY = [
   "form-action 'self'",
   "frame-ancestors 'self'",
 ].join("; ");
-
-/**
- * Vehicle slugs that no longer exist, each sent (301) to its closest live
- * page — the renamed vehicle where there is one, otherwise the category page.
- * Every pair is redirected in all six locales: the old rule covered only the
- * unprefixed English URL, which left `/ar/fleet/mercedes-v-class` and its
- * siblings live.
- *
- * Search Console's crawl stats showed Googlebot repeatedly hitting the
- * retired slugs below as 404s, so they still carry inbound links worth
- * keeping. Never list a slug that is live in the CMS: the redirect runs
- * before the page and would hide it.
- */
-const RETIRED_VEHICLE_REDIRECTS: ReadonlyArray<readonly [from: string, to: string]> = [
-  ["mercedes-v-class", "mercedes-v-class-v300-v250"],
-  // Intermediate slug between the two V-Class renames; GSC still lists
-  // /ar/fleet/mercedes-v-class-v300 as crawled.
-  ["mercedes-v-class-v300", "mercedes-v-class-v300-v250"],
-  ["bentley-flying-spur", "ultra-luxury"],
-  ["rolls-royce-ghost", "rolls-royce-phantom"],
-  ["mercedes-e-class", "sedan"],
-  ["toyota-land-cruiser", "suv"],
-];
 
 const SECURITY_HEADERS = [
   { key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY },
