@@ -289,6 +289,20 @@ describe("vehicle ordering follows the admin's sort order", () => {
     };
   }
 
+  it("repoints links to retired vehicle slugs inside CMS copy", async () => {
+    const row = {
+      ...vehicleRow("mercedes-v250-falcon", "van"),
+      longDescription: { en: "Compare with the [V-Class](/fleet/mercedes-v-class).", ar: "[V](/ar/fleet/mercedes-v-class)" },
+      features: { en: ["See /fleet/rolls-royce-ghost"] },
+    };
+    mockVehicle.findMany.mockResolvedValue([row]);
+    const [en] = await getAllVehicles("en");
+    expect(en.longDescription).toBe("Compare with the [V-Class](/fleet/mercedes-v-class-v300-v250).");
+    expect(en.features).toEqual(["See /fleet/rolls-royce-phantom"]);
+    const [ar] = await getAllVehicles("ar");
+    expect(ar.longDescription).toBe("[V](/ar/fleet/mercedes-v-class-v300-v250)");
+  });
+
   it("returns rows in the order the query gave them, without regrouping by category", async () => {
     // Deliberately interleaved: a Van sits above a Sedan, which the old
     // category rank would have reversed.
