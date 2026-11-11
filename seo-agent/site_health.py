@@ -14,6 +14,7 @@ during that period.
 Usage:
     python seo-agent/site_health.py                # check + manage the alert issue
     python seo-agent/site_health.py --no-issue     # check only (weekly report uses this)
+    python seo-agent/site_health.py --no-issue --strict   # CI: exit 1 on any problem
     HEALTH_BASE_URL=http://127.0.0.1:3000 DRY_RUN=1 python seo-agent/site_health.py
 """
 import argparse
@@ -76,6 +77,12 @@ PROBLEM_TYPES = {
                       "Admin panel → Settings mein Phone aur WhatsApp number check karein. Agar number jaan boojh kar badla hai to Claude ko batayein taake check update ho."),
     "phone_retired": ("warning", "Purana phone number abhi bhi site pe hai",
                       "Ye pages purana number dikha rahe hain. Aksar ye admin panel ke content text mein likha hota hai — wahan badal dein."),
+    "retired_redirect": ("critical", "Purani gaadiyon ke redirects kaam nahi kar rahe",
+                         "Purane URL (Google ke index mein) ab sahi jagah nahi jaate. Claude ko is issue ka link bhejein."),
+    "hreflang": ("warning", "Language links (hreflang) ghalat",
+                 "Translated pages ke aapas ke links mein ghalti hai (jaise /ar/ slash ke saath). Claude ko link bhejein."),
+    "hreflang_header": ("warning", "Server header mein extra language links",
+                        "Website har page ke saath 6 languages ka header bhej rahi hai jo page ke andar ke links se takrata hai. Claude ko link bhejein."),
     "www": ("warning", "www wala address sahi redirect nahi ho raha",
             "Vercel → Project → Settings → Domains mein www ko apexchauffeurdubai.com pe redirect karein."),
 }
@@ -91,12 +98,16 @@ class PageParser(HTMLParser):
         self.title = ""
         self.h1_count = 0
         self.links = []
+        self.hreflangs = []
         self._in_title = False
 
     def handle_starttag(self, tag, attrs):
         a = {k.lower(): (v or "") for k, v in attrs}
-        if tag == "link" and "canonical" in a.get("rel", "").lower().split():
+        rel = a.get("rel", "").lower().split()
+        if tag == "link" and "canonical" in rel:
             self.canonical = a.get("href")
+        elif tag == "link" and "alternate" in rel and a.get("hreflang"):
+            self.hreflangs.append(a.get("href", ""))
         elif tag == "meta" and a.get("name", "").lower() in ("robots", "googlebot"):
             self.robots.append(a.get("content", "").lower())
         elif tag == "title" and not self.title:
@@ -220,6 +231,11 @@ def check_page(path):
         c = urlparse(page.canonical)
         if c.netloc != SITE_HOST or to_path(page.canonical) != path or (c.path.endswith("/") and c.path != "/"):
             result["problems"].append(("canonical", f"{path}: canonical {page.canonical}"))
+    for href in page.hreflangs:
+        h = urlparse(href)
+        if h.netloc != SITE_HOST or (h.path not in ("", "/") and h.path.endswith("/")):
+            result["problems"].append(("hreflang", f"{path}: {href}"))
+            break
     if not page.title.strip():
         result["problems"].append(("title_h1", f"{path}: title nahi"))
     if page.h1_count == 0:
@@ -255,6 +271,37 @@ def check_link(path):
     return path, status, location, detail
 
 
+def retired_redirects():
+    """(from, to) pairs from lib/retired-slugs.ts — the same list next.config.ts redirects."""
+    source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "lib", "retired-slugs.ts")
+    try:
+        with open(source) as f:
+            text = f.read()
+    except OSError:
+        return []
+    return re.findall(r'\["([a-z0-9-]+)",\s*"([a-z0-9-]+)"\]', text)
+
+
+def check_retired_redirects(findings):
+    """Every retired vehicle slug must 301/308 to its target, unprefixed and prefixed."""
+    for old, new in retired_redirects():
+        for prefix in ("", "/ar"):
+            status, location, _ = fetch(f"{HEALTH_BASE_URL}{prefix}/fleet/{old}")
+            if status not in (301, 308) or to_path(location) != f"{prefix}/fleet/{new}":
+                findings.add("retired_redirect", f"{prefix}/fleet/{old} → {status} {to_path(location) if location else ''}".strip())
+
+
+def check_link_header(findings):
+    """next-intl's `alternateLinks` must stay off: an HTTP Link header listing all
+    six locales contradicts the narrowed hreflang in the HTML (fixed Nov 2026)."""
+    try:
+        r = requests.get(f"{HEALTH_BASE_URL}/fleet", headers={"User-Agent": GOOGLEBOT}, allow_redirects=False, timeout=TIMEOUT)
+    except requests.RequestException:
+        return
+    if "hreflang" in r.headers.get("link", "").lower():
+        findings.add("hreflang_header", "/fleet response mein `Link: …hreflang` header")
+
+
 def check_www(findings):
     if HEALTH_BASE_URL != SITE_URL.rstrip("/"):
         return  # only meaningful against the production domain
@@ -268,6 +315,8 @@ def run_checks():
     check_crawlers(findings)
     check_robots(findings)
     check_www(findings)
+    check_retired_redirects(findings)
+    check_link_header(findings)
     sitemap_paths = load_sitemap(findings)
 
     with ThreadPoolExecutor(WORKERS) as pool:
@@ -378,6 +427,7 @@ def manage_issue(summary):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-issue", action="store_true", help="check only; do not open or close the alert issue")
+    parser.add_argument("--strict", action="store_true", help="exit 1 when any problem is found (CI gate)")
     args = parser.parse_args()
 
     findings, summary = run_checks()
@@ -396,6 +446,12 @@ def main():
 
     if not args.no_issue:
         manage_issue(summary)
+
+    if args.strict and summary["level"] != "ok":
+        for kind, problem in summary["problems"].items():
+            for item in problem["items"][:10]:
+                print(f"::error title={problem['title']}::{item}")
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
