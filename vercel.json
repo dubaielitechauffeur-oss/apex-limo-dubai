@@ -1,4 +1,5 @@
 {
+  "buildCommand": "node build-tools/build-with-retry.mjs",
   "redirects": [
     {
       "source": "/services/airport-transfer",
