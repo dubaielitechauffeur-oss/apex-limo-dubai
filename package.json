@@ -15,6 +15,7 @@
     "db:migrate-content": "tsx prisma/migrate-public-content.ts",
     "db:migrate-fleet-content": "tsx prisma/migrate-fleet-content.ts",
     "db:studio": "prisma studio",
+    "fonts:sync": "node fonts/sync-google-fonts.mjs",
     "postinstall": "prisma generate",
     "test": "vitest run",
     "test:watch": "vitest"
