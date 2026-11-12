@@ -98,8 +98,24 @@ jobs:
       - name: Test
         run: npx vitest run
 
+      # next/font/google downloads the font files from Google during the
+      # build. When that download hiccups the build fails with a
+      # "next/font/google" / "internal/font/google" error even though the code
+      # is fine (main run #34 and PR #169 on 12 Nov 2026). Retry once, only for
+      # that error; any other build failure still fails immediately.
       - name: Production build
-        run: npm run build
+        run: |
+          set -o pipefail
+          if npm run build 2>&1 | tee build.log; then
+            exit 0
+          fi
+          if grep -qE "next/font/google|internal/font/google|fonts\.googleapis\.com|fonts\.gstatic\.com" build.log; then
+            echo "::warning::Google Fonts download failed during the build; retrying once in 20s"
+            sleep 20
+            npm run build
+          else
+            exit 1
+          fi
 
       # Runs the daily site health check (seo-agent/site_health.py) against
       # THIS build before it can be merged, so SEO regressions never reach
