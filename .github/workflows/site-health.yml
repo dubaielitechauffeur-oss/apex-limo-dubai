@@ -5,8 +5,15 @@ name: "🛡️ Site Health Check"
 # `site-health` issue (GitHub emails the owner) when something breaks, and
 # closes it by itself once fixed. See seo-agent/site_health.py.
 on:
+  # Three runs a day. GitHub's scheduled runs are best-effort: on 11 Nov the
+  # 05:17 run fired 7.5 hours late, and on 12 Nov it had not fired by 12:53
+  # UTC. Extra slots keep at least one check a day when one is delayed or
+  # dropped. A healthy run is silent and a known problem only re-comments
+  # when it changes, so more runs do not mean more emails.
   schedule:
-    - cron: "17 5 * * *" # daily, ~09:17 Dubai time
+    - cron: "17 5 * * *" # ~09:17 Dubai
+    - cron: "43 11 * * *" # ~15:43 Dubai
+    - cron: "29 18 * * *" # ~22:29 Dubai
   deployment_status:
   workflow_dispatch:
 
