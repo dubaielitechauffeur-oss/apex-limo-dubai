@@ -39,7 +39,7 @@ interface PageProps {
 }
 
 // See app/[locale]/services/page.tsx for the revalidation strategy note.
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   return LOCATIONS.map((location) => ({ location: location.slug }));

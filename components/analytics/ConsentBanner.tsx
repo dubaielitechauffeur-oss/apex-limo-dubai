@@ -2,7 +2,12 @@
 
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
-import { CONSENT_STORAGE_KEY, type ConsentDecision } from "@/lib/consent";
+import {
+  CONSENT_STORAGE_KEY,
+  parseGeoCookie,
+  requiresAnalyticsConsent,
+  type ConsentDecision,
+} from "@/lib/consent";
 
 declare global {
   interface Window {
@@ -73,6 +78,28 @@ function getServerSnapshot(): ConsentDecision | null {
   return null;
 }
 
+// ── Region, read from the cookie middleware sets ─────────────────────────────
+//
+// The page HTML is cached and identical for everyone, so it cannot know the
+// visitor's country. The server snapshot is `false` (render nothing); in the
+// browser the cookie decides. A missing cookie fails closed — `true`.
+
+function subscribeToNothing() {
+  return () => {};
+}
+
+function getRequiredSnapshot(): boolean {
+  try {
+    return requiresAnalyticsConsent(parseGeoCookie(document.cookie));
+  } catch {
+    return true;
+  }
+}
+
+function getRequiredServerSnapshot(): boolean {
+  return false;
+}
+
 /**
  * Analytics consent prompt for visitors in jurisdictions that require one.
  *
@@ -81,10 +108,15 @@ function getServerSnapshot(): ConsentDecision | null {
  * DENIED, so no analytics cookie exists until someone accepts here. Declining
  * is a real choice that persists, not a dismissal that re-prompts.
  *
- * Rendered only when `required` is true — visitors outside those jurisdictions
+ * Rendered only when consent is required (decided in the browser) — visitors outside those jurisdictions
  * never see a banner, and their consent defaults to granted at the gtag layer.
  */
-export default function ConsentBanner({ required }: { required: boolean }) {
+export default function ConsentBanner() {
+  const required = useSyncExternalStore(
+    subscribeToNothing,
+    getRequiredSnapshot,
+    getRequiredServerSnapshot,
+  );
   const t = useTranslations("common.consent");
   const stored = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 

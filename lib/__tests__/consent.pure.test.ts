@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { requiresAnalyticsConsent } from "@/lib/consent";
+import { requiresAnalyticsConsent, parseGeoCookie } from "@/lib/consent";
 
 /**
  * Guards the analytics-consent gate. GA4 previously loaded unconditionally on
@@ -45,5 +45,18 @@ describe("requiresAnalyticsConsent", () => {
     // speaker in Ireland is. The locale must never drive this.
     expect(requiresAnalyticsConsent("AE")).toBe(false);
     expect(requiresAnalyticsConsent("IE")).toBe(true);
+  });
+});
+
+describe("parseGeoCookie", () => {
+  it("reads the country from a cookie string", () => {
+    expect(parseGeoCookie("a=1; apex-geo=de; b=2")).toBe("DE");
+    expect(parseGeoCookie("apex-geo=AE")).toBe("AE");
+  });
+  it("returns null when absent or malformed (fails closed upstream)", () => {
+    expect(parseGeoCookie("")).toBeNull();
+    expect(parseGeoCookie(null)).toBeNull();
+    expect(parseGeoCookie("x-apex-geo=DE")).toBeNull();
+    expect(parseGeoCookie("apex-geo=DEU")).toBeNull();
   });
 });

@@ -30,6 +30,9 @@ import { getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 import JsonLd from "@/components/shared/JsonLd";
 
+/** Cached for a day; admin edits call revalidatePath (lib/cms/revalidate.ts). */
+export const revalidate = 86400;
+
 interface PageProps {
   params: Promise<{ locale: string }>;
 }

@@ -33,6 +33,9 @@ import { LOCATIONS } from "@/data/locations";
 import { TESTIMONIALS } from "@/data/testimonials";
 import JsonLd from "@/components/shared/JsonLd";
 
+/** Cached for a day; admin edits call revalidatePath (lib/cms/revalidate.ts). */
+export const revalidate = 86400;
+
 interface PageProps {
   params: Promise<{ locale: string }>;
 }

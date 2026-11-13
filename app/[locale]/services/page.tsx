@@ -41,7 +41,7 @@ import TrackedCta from "@/components/shared/TrackedCta";
 // silently fell back to the static data/*.ts copy, and the admin panel could
 // not sign anyone in. Hourly is 12x less traffic for the same freshness.
 // See PUBLIC_CMS_INTEGRATION.md.
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 const ICONS: Record<string, LucideIcon> = {
   "airport-transfers": Plane,
