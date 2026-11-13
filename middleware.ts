@@ -2,6 +2,7 @@ import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 import { auth } from "./lib/auth/edge";
+import { GEO_COOKIE_NAME } from "./lib/consent";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -46,7 +47,25 @@ export default auth((request) => {
     return NextResponse.next();
   }
 
-  return intlMiddleware(request);
+  const response = intlMiddleware(request);
+
+  // Hand the visitor's country to the browser (see GEO_COOKIE_NAME in
+  // lib/consent.ts). Reading the geo header here, instead of with `headers()`
+  // inside a Server Component, is what lets public pages be cached: middleware
+  // runs on every request even when the page itself comes from the ISR cache.
+  // Only rewritten when the value changes, so repeat visits add no header.
+  const country = (
+    request.headers.get("x-vercel-ip-country") ?? request.headers.get("cf-ipcountry")
+  )?.toUpperCase();
+  if (country && /^[A-Z]{2}$/.test(country) && request.cookies.get(GEO_COOKIE_NAME)?.value !== country) {
+    response.cookies.set(GEO_COOKIE_NAME, country, {
+      path: "/",
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24,
+    });
+  }
+  return response;
 });
 
 export const config = {

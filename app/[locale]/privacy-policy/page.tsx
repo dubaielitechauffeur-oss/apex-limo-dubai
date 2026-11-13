@@ -10,6 +10,9 @@ import { getSiteContact } from "@/lib/public/site-contact";
 import { formatDate } from "@/lib/format";
 import JsonLd from "@/components/shared/JsonLd";
 
+/** Cached for a day; admin edits call revalidatePath (lib/cms/revalidate.ts). */
+export const revalidate = 86400;
+
 interface PageProps {
   params: Promise<{ locale: string }>;
 }

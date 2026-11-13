@@ -15,6 +15,9 @@ import { getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact } from "@/lib/public/site-contact";
 import JsonLd from "@/components/shared/JsonLd";
 
+/** Cached for a day; admin edits call revalidatePath (lib/cms/revalidate.ts). */
+export const revalidate = 86400;
+
 interface QuotePageProps {
   params: Promise<{ locale: string }>;
 }

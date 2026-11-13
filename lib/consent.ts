@@ -13,7 +13,7 @@
  * regex/heuristic so adding or removing a jurisdiction is a one-line edit with
  * an obvious diff.
  */
-const CONSENT_REQUIRED_COUNTRIES: ReadonlySet<string> = new Set([
+export const CONSENT_REQUIRED_COUNTRIES: ReadonlySet<string> = new Set([
   // EU 27
   "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR",
   "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL",
@@ -45,3 +45,24 @@ export function requiresAnalyticsConsent(country: string | null | undefined): bo
 export const CONSENT_STORAGE_KEY = "apex-analytics-consent-v1";
 
 export type ConsentDecision = "granted" | "denied";
+
+/**
+ * Cookie that carries the visitor's country from the edge to the browser.
+ *
+ * Why a cookie and not a request header read in a Server Component: calling
+ * `headers()` anywhere in the render tree opts EVERY page into dynamic
+ * rendering, which silently disables `export const revalidate` — each visit
+ * (and every bot hit) then re-runs the page on the server and wakes the
+ * database. Middleware runs on every request even when the page itself is
+ * served from cache, so it stamps the country here, and the browser decides
+ * whether consent is required. Plain (not HttpOnly) on purpose: client script
+ * must read it. It holds a two-letter country code only.
+ */
+export const GEO_COOKIE_NAME = "apex-geo";
+
+/** Reads the country code out of a `document.cookie` string, or null. */
+export function parseGeoCookie(cookieString: string | null | undefined): string | null {
+  if (!cookieString) return null;
+  const match = cookieString.match(/(?:^|;\s*)apex-geo=([A-Za-z]{2})(?:;|$)/);
+  return match ? match[1].toUpperCase() : null;
+}

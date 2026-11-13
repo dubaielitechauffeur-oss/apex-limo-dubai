@@ -1,6 +1,5 @@
-import { headers } from "next/headers";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { requiresAnalyticsConsent } from "@/lib/consent";
+import { CONSENT_REQUIRED_COUNTRIES } from "@/lib/consent";
 import ConsentBanner from "./ConsentBanner";
 
 /**
@@ -21,43 +20,46 @@ const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || "G-B37R3PW9NG";
  * what stops a returning visitor's stored "granted" being missed on a fast
  * page load.
  *
- * A static string with no interpolation of request or user data — the only
- * variable is the boolean below, and it is stringified from a value this
- * module computes, never from input.
+ * Whether consent is required is decided IN THE BROWSER from the `apex-geo`
+ * cookie that middleware sets (see lib/consent.ts for why this is not a
+ * server-side header read). No cookie / unknown country fails closed: denied.
+ *
+ * The script is a static string. The only interpolated value is the
+ * country list, produced by JSON.stringify from this repo's own constant —
+ * never from request or user data.
  */
-function consentDefaultScript(requiresConsent: boolean): string {
-  const state = requiresConsent ? "denied" : "granted";
-  return `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'analytics_storage':'${state}','ad_storage':'${state}','ad_user_data':'${state}','ad_personalization':'${state}','wait_for_update':500});`;
-}
+const CONSENT_DEFAULT_SCRIPT = (() => {
+  const countries = JSON.stringify([...CONSENT_REQUIRED_COUNTRIES]);
+  return (
+    "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}" +
+    "(function(){var c='';try{var m=document.cookie.match(/(?:^|;\\s*)apex-geo=([A-Za-z]{2})(?:;|$)/);if(m)c=m[1].toUpperCase();}catch(e){}" +
+    `var s=(!c||${countries}.indexOf(c)!==-1)?'denied':'granted';` +
+    "gtag('consent','default',{'analytics_storage':s,'ad_storage':s,'ad_user_data':s,'ad_personalization':s,'wait_for_update':500});})();"
+  );
+})();
 
 /**
  * Analytics for the public site: Consent Mode defaults, the GA4 tag, and the
  * consent prompt where one is legally required.
  *
- * Region comes from the CDN geo header rather than the locale — a German
- * speaker browsing from Dubai is not covered by GDPR, and an English speaker
- * in Ireland is. `x-vercel-ip-country` is set by Vercel's edge; other hosts
- * commonly set `cf-ipcountry`. When neither is present, `requiresAnalyticsConsent`
- * fails closed and shows the banner.
+ * Region comes from the CDN geo header (stamped into a cookie by middleware)
+ * rather than the locale — a German speaker browsing from Dubai is not covered
+ * by GDPR, and an English speaker in Ireland is. `x-vercel-ip-country` is set
+ * by Vercel's edge; other hosts commonly set `cf-ipcountry`.
  *
- * This is a Server Component, so the geo lookup costs no client JavaScript and
- * the consent default is in the initial HTML — ahead of the tag it governs.
+ * This is deliberately NOT async and reads no request data: it must not make
+ * the pages that render it dynamic, so they can be served from the ISR cache.
  */
-export default async function Analytics() {
-  const requestHeaders = await headers();
-  const country =
-    requestHeaders.get("x-vercel-ip-country") ?? requestHeaders.get("cf-ipcountry");
-  const requiresConsent = requiresAnalyticsConsent(country);
-
+export default function Analytics() {
   return (
     <>
       <script
         id="consent-defaults"
-        // Static, self-authored string — see consentDefaultScript above.
-        dangerouslySetInnerHTML={{ __html: consentDefaultScript(requiresConsent) }}
+        // Static, self-authored string — see CONSENT_DEFAULT_SCRIPT above.
+        dangerouslySetInnerHTML={{ __html: CONSENT_DEFAULT_SCRIPT }}
       />
       <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
-      <ConsentBanner required={requiresConsent} />
+      <ConsentBanner />
     </>
   );
 }
