@@ -35,7 +35,6 @@ function blogListJsonLd(posts: PlainBlogPost[], locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
     name: `${SITE.name} Journal`,
     url: `${SITE.url}/blog`,
     itemListElement: posts.map((post, index) => ({

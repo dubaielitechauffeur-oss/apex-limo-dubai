@@ -19,7 +19,7 @@ import FAQAccordion from "@/components/shared/FAQAccordion";
 import Reveal from "@/components/shared/Reveal";
 import ServicesHero from "@/components/services/ServicesHero";
 import BookingCTA from "@/components/home/BookingCTA";
-import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
+import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath, SERVICE_AREA_ADDRESS } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { getAllServices } from "@/lib/public/cms-content";
 import { getSiteContact } from "@/lib/public/site-contact";
@@ -72,7 +72,6 @@ function servicesJsonLd(locale: Locale, services: PlainService[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
     name: `${SITE.name} Services`,
     url: `${SITE.url}${localizedPath(locale, "/services")}`,
     itemListElement: services.map((service, index) => ({
@@ -87,6 +86,7 @@ function servicesJsonLd(locale: Locale, services: PlainService[]) {
           "additionalType": "https://schema.org/LimousineService",
           "@id": organizationId(locale),
           name: SITE.name,
+          address: SERVICE_AREA_ADDRESS,
         },
         areaServed: {
           "@type": "City",
@@ -167,6 +167,9 @@ export default async function ServicesPage({ params }: PageProps) {
                       className="inline-flex flex-1 items-center justify-center rounded-lg bg-gold px-5 py-3 text-xs font-bold uppercase tracking-wide text-obsidian transition-colors duration-200 hover:bg-gold-deep"
                     >
                       {t("learnMore")}
+                      {/* Visually hidden, but part of the link text: a bare "Learn More" tells
+                          crawlers and screen-reader users nothing about the destination. */}
+                      <span className="sr-only"> — {service.name}</span>
                     </Link>
                     <TrackedCta
                       href={whatsappHref}

@@ -32,7 +32,7 @@ import ServiceFaqSection from "@/components/services/ServiceFaqSection";
 import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
-import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
+import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath, SERVICE_AREA_ADDRESS } from "@/lib/seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { getAllServices, getServiceBySlug, getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
@@ -104,7 +104,6 @@ function serviceJsonLd(service: PlainService, locale: Locale, contact: SiteConta
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    inLanguage: locale,
     name: service.name,
     description: service.shortDescription,
     url: `${SITE.url}${localizedPath(locale, `/services/${service.slug}`)}`,
@@ -114,6 +113,7 @@ function serviceJsonLd(service: PlainService, locale: Locale, contact: SiteConta
       "additionalType": "https://schema.org/LimousineService",
       "@id": organizationId(locale),
       name: SITE.name,
+      address: SERVICE_AREA_ADDRESS,
       url: SITE.url,
       telephone: contact.phone,
     },
@@ -221,7 +221,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             <Icon className="h-9 w-9 animate-fade-in text-gold [animation-delay:100ms]" strokeWidth={1.5} />
             <span className="mt-5 block animate-fade-in label-eyebrow [animation-delay:150ms]">{service.tagline}</span>
             <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:150ms] sm:text-5xl">
-              {t("detail.titleSuffix", { name: service.name })}
+              {t.has(`detail.h1.${service.slug}`) ? t(`detail.h1.${service.slug}`) : t("detail.titleSuffix", { name: service.name })}
             </h1>
             <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
               {service.heroSubtitle}

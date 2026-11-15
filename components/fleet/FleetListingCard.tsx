@@ -12,6 +12,10 @@ import type { SiteContact } from "@/lib/public/site-contact";
 interface FleetListingCardProps {
   vehicle: PlainFleetVehicle;
   contact: SiteContact;
+  /** Heading level of the card title. Defaults to "h3" (cards that sit under
+   *  a section heading); /fleet passes "h2" because its cards follow the
+   *  page <h1> directly, and skipping a level breaks the heading outline. */
+  headingLevel?: "h2" | "h3";
 }
 
 interface SpecItemProps {
@@ -62,7 +66,7 @@ function PriceItem({ label, price, priceOnRequestLabel }: PriceItemProps) {
  * FleetCarouselCard (homepage carousel and the vehicle detail page's
  * "related vehicles" grid), so this redesign never touches that one.
  */
-export default async function FleetListingCard({ vehicle, contact }: FleetListingCardProps) {
+export default async function FleetListingCard({ vehicle, contact, headingLevel: Heading = "h3" }: FleetListingCardProps) {
   const t = await getTranslations("fleet.listingCard");
   const tSummary = await getTranslations("fleet.summaryCard");
   const cover = vehicle.images?.[0];
@@ -109,9 +113,9 @@ export default async function FleetListingCard({ vehicle, contact }: FleetListin
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-deep">
           {vehicle.brand}
         </p>
-        <h3 className="mt-1 font-display text-3xl font-bold uppercase leading-[1.05] text-obsidian sm:text-4xl">
+        <Heading className="mt-1 font-display text-3xl font-bold uppercase leading-[1.05] text-obsidian sm:text-4xl">
           {vehicle.model}
-        </h3>
+        </Heading>
 
         <p className="mt-2 line-clamp-2 text-sm leading-snug text-graphite">
           {vehicle.description}

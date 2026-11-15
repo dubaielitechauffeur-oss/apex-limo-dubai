@@ -117,9 +117,9 @@ export default function VehicleHeroQuoteForm({ vehicle, contact }: VehicleHeroQu
         className="flex h-full flex-col items-center justify-center rounded-2xl border border-gold/20 bg-charcoal p-8 text-center"
       >
         <CheckCircle2 className="h-10 w-10 text-gold" strokeWidth={1.5} />
-        <h3 className="mt-5 font-display text-2xl text-heading">
+        <h2 className="mt-5 font-display text-2xl text-heading">
           {fullName ? t("thankYouName", { name: fullName.split(" ")[0] }) : t("thankYou")}
-        </h3>
+        </h2>
         <p className="mt-3 text-sm leading-relaxed text-smoke">
           {t("quoteReceivedTemplate", { name: vehicle.name })}
           {reference ? (
@@ -149,7 +149,7 @@ export default function VehicleHeroQuoteForm({ vehicle, contact }: VehicleHeroQu
   return (
     <div className="rounded-2xl border border-gold/20 bg-charcoal p-6 shadow-[0_20px_45px_-28px_rgba(0,0,0,0.9)] xl:p-8">
       <p className="text-[11px] uppercase tracking-wide text-smoke">{tDetail("priceOnRequest")}</p>
-      <h3 className="mt-1 font-display text-xl text-heading">{t("requestQuote")}</h3>
+      <h2 className="mt-1 font-display text-xl text-heading">{t("requestQuote")}</h2>
       <p className="mt-1 text-xs text-smoke">{t("approxRouteNote")}</p>
 
       <form onSubmit={handleSubmit} noValidate className="mt-5 space-y-4">

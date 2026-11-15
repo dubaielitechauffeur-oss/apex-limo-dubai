@@ -26,7 +26,7 @@ import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import RichParagraph from "@/components/services/RichParagraph";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
-import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
+import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath, SERVICE_AREA_ADDRESS } from "@/lib/seo";
 import { SITE, PRICE_RANGE, getWhatsAppLink } from "@/lib/constants";
 import { getAllLocations, getLocationBySlug, getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
@@ -95,7 +95,6 @@ function locationServiceJsonLd(location: PlainLocation, locale: Locale, contact:
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    inLanguage: locale,
     "@id": `${SITE.url}${localizedPath(locale, `/locations/${location.slug}`)}#service`,
     name: `${SITE.name} — ${location.name}`,
     description: location.shortDescription,
@@ -106,6 +105,7 @@ function locationServiceJsonLd(location: PlainLocation, locale: Locale, contact:
       "additionalType": "https://schema.org/LimousineService",
       "@id": organizationId(locale),
       name: SITE.name,
+      address: SERVICE_AREA_ADDRESS,
       telephone: contact.phone,
     },
     areaServed: {
@@ -242,7 +242,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
             <Icon className="h-9 w-9 animate-fade-in text-gold [animation-delay:100ms]" strokeWidth={1.5} />
             <span className="mt-5 block animate-fade-in label-eyebrow [animation-delay:150ms]">{location.tagline}</span>
             <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:150ms] sm:text-5xl">
-              {t("detail.titleTemplate", { name: location.name })}
+              {t.has(`detail.h1.${location.slug}`) ? t(`detail.h1.${location.slug}`) : t("detail.titleTemplate", { name: location.name })}
             </h1>
             <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
               {location.heroSubtitle}

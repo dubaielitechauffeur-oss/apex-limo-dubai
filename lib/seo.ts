@@ -290,6 +290,19 @@ export function organizationId(locale: Locale = routing.defaultLocale): string {
 }
 
 /**
+ * Service-area-business address: city + country only, deliberately no street
+ * address (see the note inside `organizationJsonLd`). Shared by every
+ * LocalBusiness node the site emits, because Google validates each node on its
+ * own and flags any LocalBusiness block that has no `name` or `address`.
+ */
+export const SERVICE_AREA_ADDRESS = {
+  "@type": "PostalAddress",
+  addressLocality: "Dubai",
+  addressRegion: "Dubai",
+  addressCountry: "AE",
+} as const;
+
+/**
  * LocalBusiness JSON-LD for the organization. Uses "LocalBusiness" as the
  * primary @type (rather than the more specific "LimousineService") because
  * Google's Review Snippet rich result only accepts self-published
@@ -316,7 +329,6 @@ export function organizationJsonLd(
     logo: `${SITE.url}/images/brand/apex-logo.webp`,
     telephone: contact?.phone ?? SITE.phone,
     email: contact?.email ?? SITE.email,
-    inLanguage: locale,
     // Service-area business: coverage is declared through areaServed rather
     // than a storefront address. Dubai city + the wider UAE is the honest
     // top-level claim; the per-district entries are derived from
@@ -347,12 +359,7 @@ export function organizationJsonLd(
     // the GBP listing and risks a mismatch/suspension. City + country is the
     // correct, complete shape for this business model — do not "fix" this by
     // adding an address.
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Dubai",
-      addressRegion: "Dubai",
-      addressCountry: "AE",
-    },
+    address: SERVICE_AREA_ADDRESS,
     // Chauffeur service operates 24/7; the office/support line keeps
     // separate hours — both reflect the real hours quoted in
     // messages/*/contact.json (sidebar.chauffeurService / supportHours),
@@ -402,7 +409,10 @@ export function organizationReviewsJsonLd(locale: Locale = routing.defaultLocale
     "@type": "LocalBusiness",
     "additionalType": "https://schema.org/LimousineService",
     "@id": organizationId(locale),
-    inLanguage: locale,
+    // Google validates this block on its own, so it needs the required
+    // LocalBusiness fields too (same values as the site-wide node).
+    name: SITE.name,
+    address: SERVICE_AREA_ADDRESS,
     ...fields,
   };
 }
@@ -612,7 +622,6 @@ export function breadcrumbJsonLd(
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    inLanguage: locale,
     itemListElement: crumbs.map((crumb, index) => ({
       "@type": "ListItem",
       position: index + 1,

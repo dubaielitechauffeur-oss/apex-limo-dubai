@@ -7,7 +7,7 @@
   "learnMore": "Learn More",
   "hero": {
     "eyebrow": "Our Services",
-    "title": "Chauffeur Services in Dubai",
+    "title": "Chauffeur Services Dubai",
     "subtitle": "From a single airport pickup to a fully coordinated wedding convoy — every Apex service is built around punctuality, discretion, and a fleet that matches the occasion.",
     "cta": "Book Chauffeur",
     "imageAlt": "Apex Limo chauffeur in white gloves opening the door of a black Mercedes S-Class with the Dubai skyline and Burj Khalifa behind"
@@ -49,7 +49,14 @@
     "faqTitleTemplate": "{name} FAQs",
     "faqSubtitle": "Answers to the questions we hear most about this service.",
     "viewAllFaqs": "View All FAQs",
-    "relatedVehiclesAnd": "and"
+    "relatedVehiclesAnd": "and",
+    "h1": {
+      "luxury-chauffeur": "Luxury Private Chauffeur Car Hire Service Dubai",
+      "airport-transfers": "Luxury Airport Transfer and Chauffeur Service in Dubai",
+      "vip-transportation": "VIP Limousine Dubai – Luxury Transportation",
+      "wedding-chauffeur": "Wedding Chauffeur Dubai – Luxury Wedding Transportation",
+      "event-transportation": "Event Chauffeur Service Dubai"
+    }
   },
   "finalCta": {
     "eyebrow": "Ready When You Are",
