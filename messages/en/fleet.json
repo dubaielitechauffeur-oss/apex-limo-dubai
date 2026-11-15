@@ -43,7 +43,7 @@
   },
   "hero": {
     "eyebrow": "Luxury Chauffeur Fleet",
-    "titleTemplate": "{count} Luxury Vehicles for Every Occasion",
+    "titleTemplate": "Luxury Chauffeur Fleet Dubai",
     "subtitle": "Choose from executive sedans, VIP SUVs, luxury vans, and chauffeur-driven vehicles available across Dubai and the UAE.",
     "luxuryVehiclesTemplate": "{count} Luxury Vehicles",
     "professionalChauffeurs": "Professional Chauffeurs",
@@ -231,6 +231,13 @@
     "faqEyebrow": "Common Questions",
     "faqTitleTemplate": "{category} FAQs",
     "faqSubtitle": "Answers to the questions we hear most about this category.",
-    "viewAllFaqs": "View All FAQs"
+    "viewAllFaqs": "View All FAQs",
+    "h1": {
+      "sedan": "Luxury Sedan Chauffeur Service Dubai",
+      "suv": "Luxury SUV Chauffeur Service Dubai",
+      "van": "Luxury Van Chauffeur Service Dubai",
+      "ultra-luxury": "Ultra-Luxury Chauffeur Cars Dubai",
+      "electric": "Electric Chauffeur Cars Dubai"
+    }
   }
 }

@@ -1,11 +1,11 @@
 {
   "home": {
-    "title": "Premium Chauffeur & Limousine Service in Dubai",
-    "description": "Luxury airport transfers, corporate chauffeur services, VIP transportation and executive travel across Dubai and the UAE. Book a professional chauffeur in minutes."
+    "title": "Luxury Chauffeur Services Dubai",
+    "description": "Experience luxury chauffeur services in Dubai. Travel in premium vehicles with professional drivers for airport, business and private journeys."
   },
   "fleet": {
-    "title": "Luxury Fleet — 50+ Chauffeur-Driven Cars in Dubai",
-    "description": "Browse Apex Limo's 50+ vehicle Dubai fleet: Mercedes S-Class, BMW 7 Series, Range Rover, Rolls-Royce Phantom & more. Professional chauffeurs, instant quotes, 24/7 booking."
+    "title": "Luxury Chauffeur Fleet Dubai",
+    "description": "Explore our luxury fleet in Dubai: premium sedans, SUVs, vans, electric vehicles and ultra-luxury cars with professional chauffeur service."
   },
   "fleetVehicle": {
     "titleTemplate": "{name} | Chauffeur-Driven {category} in Dubai",
@@ -17,11 +17,25 @@
     "titleTemplate": "{category} Fleet | Chauffeur-Driven Hire in Dubai",
     "descriptionTemplate": "Explore Apex Limo's {category} fleet in Dubai — chauffeur-driven vehicles for airport transfers, corporate travel, and events. Book online or get an instant quote.",
     "notFoundTitle": "Category Not Found",
-    "notFoundDescription": "This fleet category could not be found."
+    "notFoundDescription": "This fleet category could not be found.",
+    "title": {
+      "sedan": "Luxury Sedan Chauffeur Service Dubai",
+      "suv": "Luxury SUV Chauffeur Service Dubai",
+      "van": "Luxury Van Chauffeur Service Dubai",
+      "ultra-luxury": "Ultra-Luxury Chauffeur Cars Dubai",
+      "electric": "Electric Chauffeur Cars Dubai"
+    },
+    "description": {
+      "sedan": "Choose a luxury sedan with professional chauffeur service in Dubai. Enjoy comfortable, refined transport for business, airport and private travel.",
+      "suv": "Travel in comfort with our luxury SUV fleet in Dubai. Choose premium SUVs with professional chauffeurs for business, private travel and special occasions.",
+      "van": "Travel comfortably with our luxury van chauffeur service in Dubai. Ideal for groups, families, corporate travel, events and private transportation.",
+      "ultra-luxury": "Travel in exceptional comfort with our ultra-luxury cars in Dubai. Enjoy premium vehicles, professional chauffeurs and an exclusive travel experience.",
+      "electric": "Discover premium electric chauffeur cars in Dubai. Enjoy quiet, comfortable and professional transportation with modern luxury vehicles."
+    }
   },
   "services": {
-    "title": "Chauffeur Services in Dubai",
-    "description": "Airport transfers, corporate chauffeur, luxury chauffeur, VIP transportation, event transportation, and wedding chauffeur service across Dubai and the UAE."
+    "title": "Chauffeur Services Dubai",
+    "description": "Explore premium chauffeur services in Dubai, including airport transfers, corporate travel, private transportation, weddings, events and VIP services."
   },
   "service": {
     "titleTemplate": "{name} in Dubai",
@@ -30,8 +44,8 @@
     "notFoundDescription": "This service could not be found."
   },
   "locations": {
-    "title": "Areas We Serve in Dubai",
-    "description": "Chauffeur service across Dubai Marina, Palm Jumeirah, Downtown Dubai, Business Bay, JBR, and Dubai International Airport (DXB)."
+    "title": "Chauffeur Service Locations in Dubai",
+    "description": "Explore our chauffeur service locations across Dubai. Book professional chauffeur transport for business, airport transfers, private travel and events."
   },
   "location": {
     "titleTemplate": "Chauffeur Service in {name} | Dubai",
@@ -40,39 +54,39 @@
     "notFoundDescription": "This service area could not be found."
   },
   "blog": {
-    "title": "Journal",
-    "description": "Travel tips, chauffeur guides, airport transfer advice, business travel insights and luxury transportation updates from Apex Limo & Chauffeur Dubai."
+    "title": "Chauffeur & Luxury Travel Blog Dubai",
+    "description": "Explore chauffeur service tips, Dubai travel guides, luxury transportation insights, airport transfer advice and expert information from our team."
   },
   "blogPost": {
     "notFoundTitle": "Article Not Found",
     "notFoundDescription": "This article could not be found on the Apex Limo journal."
   },
   "about": {
-    "title": "About Us — 10+ Years of Trusted Chauffeur Service",
-    "description": "10+ years, a 50+ vehicle luxury fleet, and a 4.9-star rated service — meet the team behind Apex Limo & Chauffeur Dubai and see why clients across the UAE trust us."
+    "title": "About Us | Luxury Chauffeur Service",
+    "description": "Learn about our premium Dubai chauffeur service: luxury vehicles, professional drivers, airport transfers, corporate transportation and private travel."
   },
   "contact": {
-    "title": "Contact Us — 24/7 Chauffeur Bookings & Support",
-    "description": "Call, WhatsApp, or message Apex Limo & Chauffeur Dubai 24/7 for bookings, corporate accounts, and urgent chauffeur requests. Fast response, always available."
+    "title": "Contact Us | Get in Touch",
+    "description": "Contact us to arrange luxury chauffeur services, airport transfers, private transportation, corporate travel and special event transportation in Dubai."
   },
   "faqs": {
-    "title": "Frequently Asked Questions",
-    "description": "Find answers about chauffeur services, airport transfers, pricing, bookings, fleet options and luxury transportation across Dubai and the UAE."
+    "title": "Chauffeur Service Dubai FAQs",
+    "description": "Find answers to frequently asked questions about our luxury vehicles, chauffeur services, bookings, airport transfers and transportation across Dubai."
   },
   "booking": {
     "title": "Book a Chauffeur in Dubai",
-    "description": "Book a professional chauffeur in Dubai in minutes. Choose your vehicle, set your pickup and drop-off, and our team will confirm your reservation shortly."
+    "description": "Book a professional chauffeur in Dubai. Reserve a luxury vehicle with a reliable driver for airport transfers, business travel, events and private trips."
   },
   "quote": {
-    "title": "Get an Instant Quote",
-    "description": "Get a fast, no-obligation quote for chauffeur, airport transfer, or VIP transportation services in Dubai. Tell us your trip details and we'll respond shortly."
+    "title": "Chauffeur Service Quote Dubai",
+    "description": "Request a personalized chauffeur service quote for airport transfers, corporate travel, private transportation, events and luxury journeys in Dubai."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
-    "description": "How Apex Limo & Chauffeur Dubai collects, uses, and protects the personal data of clients booking chauffeur, airport transfer, corporate travel, and event transportation services in Dubai and the UAE."
+    "description": "Read our privacy policy to understand how we collect, use, protect and manage information when you use our website and services."
   },
   "terms": {
     "title": "Terms & Conditions",
-    "description": "Terms and conditions for Apex Limo & Chauffeur Dubai, covering bookings, cancellations, refunds, payments, chauffeur services, client responsibilities, liability, and service availability across Dubai and the UAE."
+    "description": "Review the terms and conditions governing the use of our website, bookings, chauffeur services, transportation and related services."
   }
 }

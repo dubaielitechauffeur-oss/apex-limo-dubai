@@ -44,7 +44,6 @@ function fleetJsonLd(locale: Locale, vehicles: Awaited<ReturnType<typeof getAllV
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
     name: `${SITE.name} Fleet`,
     url: `${SITE.url}${localizedPath(locale, "/fleet")}`,
     itemListElement: vehicles.map((vehicle, index) => ({
@@ -54,13 +53,9 @@ function fleetJsonLd(locale: Locale, vehicles: Awaited<ReturnType<typeof getAllV
         "@type": "Car",
         name: vehicle.name,
         description: vehicle.description,
+        brand: { "@type": "Brand", name: vehicle.brand },
+        model: vehicle.model,
         vehicleSeatingCapacity: vehicle.passengers,
-        provider: {
-          "@type": "LocalBusiness",
-          "additionalType": "https://schema.org/LimousineService",
-          "@id": organizationId(locale),
-          name: SITE.name,
-        },
       },
     })),
   };
@@ -107,7 +102,7 @@ export default async function FleetPage({ params }: PageProps) {
           <div className="flex flex-col gap-8">
             {vehicles.map((vehicle, index) => (
               <Reveal key={vehicle.slug} delay={Math.min(index * 60, 300)}>
-                <FleetListingCard vehicle={vehicle} contact={contact} />
+                <FleetListingCard vehicle={vehicle} contact={contact} headingLevel="h2" />
               </Reveal>
             ))}
           </div>

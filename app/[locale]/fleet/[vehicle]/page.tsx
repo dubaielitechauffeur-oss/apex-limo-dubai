@@ -140,8 +140,12 @@ async function generateCategoryMetadata(locale: Locale, category: FleetCategoryS
 
   return buildMetadata({
     locale,
-    title: t("titleTemplate", { category: categoryLabel }),
-    description: t("descriptionTemplate", { category: categoryLabel }),
+    // Hand-written per-category copy wins; any category without it keeps the
+    // generated template (so a future category still gets sensible metadata).
+    title: t.has(`title.${category}`) ? t(`title.${category}`) : t("titleTemplate", { category: categoryLabel }),
+    description: t.has(`description.${category}`)
+      ? t(`description.${category}`)
+      : t("descriptionTemplate", { category: categoryLabel }),
     path: `/fleet/${category}`,
   });
 }
@@ -162,14 +166,6 @@ async function generateCategoryMetadata(locale: Locale, category: FleetCategoryS
  */
 function vehicleJsonLd(vehicle: PlainFleetVehicle, locale: Locale) {
   const url = `${SITE.url}${localizedPath(locale, `/fleet/${vehicle.slug}`)}`;
-  const provider = {
-    "@type": "LocalBusiness" as const,
-    "additionalType": "https://schema.org/LimousineService",
-    "@id": organizationId(locale),
-    name: SITE.name,
-    url: SITE.url,
-  };
-
   // Only rates that are actually set become offers — a missing or zero rate is
   // omitted rather than published as "free".
   const offers = [
@@ -196,7 +192,6 @@ function vehicleJsonLd(vehicle: PlainFleetVehicle, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "Car",
-    inLanguage: locale,
     "@id": `${url}#vehicle`,
     name: vehicle.name,
     description: vehicle.longDescription,
@@ -217,12 +212,11 @@ function vehicleJsonLd(vehicle: PlainFleetVehicle, locale: Locale) {
     // about the car rather than a guess from its name.
     fuelType: vehicle.isElectric ? "Electric" : "Petrol",
     url,
-    provider,
+    // `provider` and `areaServed` are not properties of Car (Search Console
+    // reported them as unrecognised). The business is still linked through
+    // each offer's `seller` @id below, and the site-wide LocalBusiness node
+    // already declares where it serves.
     ...(offers.length > 0 ? { offers } : {}),
-    areaServed: {
-      "@type": "City",
-      name: "Dubai",
-    },
   };
 }
 
@@ -268,7 +262,6 @@ function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLab
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
     name: `${SITE.name} ${categoryLabel} Fleet`,
     url: `${SITE.url}${localizedPath(locale, `/fleet/${category}`)}`,
     itemListElement: vehicles.map((vehicle, index) => ({
@@ -278,13 +271,9 @@ function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLab
         "@type": "Car",
         name: vehicle.name,
         description: vehicle.description,
+        brand: { "@type": "Brand", name: vehicle.brand },
+        model: vehicle.model,
         vehicleSeatingCapacity: vehicle.passengers,
-        provider: {
-          "@type": "LocalBusiness",
-          "additionalType": "https://schema.org/LimousineService",
-          "@id": organizationId(locale),
-          name: SITE.name,
-        },
       },
     })),
   };
@@ -367,7 +356,7 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
               {t("eyebrow")}
             </span>
             <h1 className="mt-4 animate-slide-in-left font-display text-4xl leading-[1.05] text-heading [animation-delay:150ms] sm:text-6xl">
-              {t("titleTemplate", { category: categoryLabel })}
+              {t.has(`h1.${category}`) ? t(`h1.${category}`) : t("titleTemplate", { category: categoryLabel })}
             </h1>
             <p className="mx-auto mt-6 max-w-xl animate-fade-in text-base leading-relaxed text-smoke [animation-delay:300ms] sm:text-lg">
               {t(`subtitle.${category}`)}

@@ -39,7 +39,6 @@ function locationsJsonLd(locale: Locale, locations: PlainLocation[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
     name: `${SITE.name} Service Areas`,
     url: `${SITE.url}${localizedPath(locale, "/locations")}`,
     itemListElement: locations.map((location, index) => ({
