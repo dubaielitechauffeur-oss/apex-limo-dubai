@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { resetPasswordEmailHtml } from "@/lib/email-templates";
+import { resetPasswordEmailHtml, inviteEmailHtml } from "@/lib/email-templates";
 import { assertResendConfigured, formatSubmittedAt, FROM_ADDRESS } from "@/lib/notifications";
 
 /** Sends a password reset link to the account holder via the same verified
@@ -13,6 +13,23 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string): P
     to: email,
     subject: "Reset your Apex Limo admin password",
     html: resetPasswordEmailHtml(resetUrl, formatSubmittedAt()),
+  });
+
+  if (error) {
+    throw new Error(`Resend error: ${error.message}`);
+  }
+}
+
+/** Sends an admin-panel invitation with a one-time "set your password" link. */
+export async function sendInviteEmail(email: string, name: string, roleLabel: string, inviteUrl: string): Promise<void> {
+  assertResendConfigured();
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
+    to: email,
+    subject: "You have been invited to the Apex Limo admin panel",
+    html: inviteEmailHtml(name, roleLabel, inviteUrl),
   });
 
   if (error) {

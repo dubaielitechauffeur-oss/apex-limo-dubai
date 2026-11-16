@@ -5,6 +5,12 @@ import { randomBytes, createHash } from "node:crypto";
  *  link (referrer, shared inbox, email scanner) stays exploitable. */
 export const RESET_TOKEN_TTL_MS = 60 * 60 * 1000;
 
+/** An invitation is opened by someone who was not expecting the email at a
+ *  particular moment (unlike a reset the user just asked for), so it gets
+ *  days rather than an hour. It is still single-use, and an administrator
+ *  can disable the account or send a fresh link at any time. */
+export const INVITE_TOKEN_TTL_MS = 72 * 60 * 60 * 1000;
+
 /**
  * The token that goes in the emailed URL is never persisted — only its
  * SHA-256 digest is stored in `PasswordResetToken.tokenHash`. This mirrors

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { assignUserRole, setUserActive, adminSendPasswordReset } from "@/lib/permissions/roles-admin";
+import { assignUserRole, setUserActive, adminSendPasswordReset, inviteUser } from "@/lib/permissions/roles-admin";
 
 /**
  * Thin Server Action wrappers around `lib/permissions/roles-admin.ts`'s
@@ -40,4 +40,20 @@ export async function sendPasswordResetAction(userId: string): Promise<UserActio
   const result = await adminSendPasswordReset(userId);
   if (!result.success) return { error: result.error };
   return { success: `Password reset email sent to ${result.data.email}.` };
+}
+
+export async function inviteUserAction(_prevState: UserActionState, formData: FormData): Promise<UserActionState> {
+  const result = await inviteUser({
+    name: String(formData.get("name") ?? ""),
+    email: String(formData.get("email") ?? ""),
+    roleId: String(formData.get("roleId") ?? ""),
+  });
+  if (!result.success) return { error: result.error };
+
+  revalidatePath("/admin/users");
+  return {
+    success: result.data.emailSent
+      ? `Invitation sent to ${result.data.email}. They set their own password from the link (valid 72 hours).`
+      : `Account created for ${result.data.email}, but the email could not be sent. Open the user and use “Send password reset”.`,
+  };
 }

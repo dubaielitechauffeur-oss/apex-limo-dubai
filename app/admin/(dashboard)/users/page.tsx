@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { UserPlus } from "lucide-react";
 import { requirePermission } from "@/lib/permissions/guard";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
+import { hasPermission, isSuperAdmin } from "@/lib/permissions/context";
 import { listUsers, type ListUsersParams } from "@/lib/admin/users";
 import { listRoles } from "@/lib/permissions/roles-admin";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
@@ -36,7 +38,8 @@ function buildHref(base: string, params: Record<string, string | undefined>, pag
 }
 
 export default async function UsersListPage({ searchParams }: UsersPageProps) {
-  await requirePermission(PERMISSIONS.USERS_READ);
+  const ctx = await requirePermission(PERMISSIONS.USERS_READ);
+  const canInvite = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.USERS_CREATE);
 
   const params = await searchParams;
   const listParams: ListUsersParams = {
@@ -109,7 +112,21 @@ export default async function UsersListPage({ searchParams }: UsersPageProps) {
 
   return (
     <div>
-      <PageHeader title="Users & Roles" subtitle={`${total} user${total === 1 ? "" : "s"} across the admin panel.`} />
+      <PageHeader
+        title="Users & Roles"
+        subtitle={`${total} user${total === 1 ? "" : "s"} across the admin panel.`}
+        actions={
+          canInvite ? (
+            <Link
+              href="/admin/users/invite"
+              className="inline-flex items-center gap-1.5 rounded-md bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800"
+            >
+              <UserPlus className="h-4 w-4" aria-hidden="true" />
+              Invite user
+            </Link>
+          ) : null
+        }
+      />
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <SearchInput placeholder="Search by name or email…" />
