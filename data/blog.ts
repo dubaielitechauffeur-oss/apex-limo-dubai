@@ -67,7 +67,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "luxury-chauffeur-service-dubai-guide",
     title: {
-      en: "Luxury Chauffeur Service Dubai: Complete Guide for Business & Leisure Travelers",
+      en: "Luxury Chauffeur Service Dubai: Complete Guide",
       ar: "خدمة السائق الفاخر في دبي: دليل شامل لسفر الأعمال والترفيه",
       ru: "Роскошный шофёр в Дубае: полное руководство для деловых и туристических поездок",
       zh: "迪拜豪华专属司机服务:商务与休闲出行完整指南",
@@ -564,7 +564,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "dubai-airport-transfer-vs-taxi",
     title: {
-      en: "Dubai Airport Transfer Guide: Why Chauffeur Service Beats Traditional Taxis",
+      en: "Dubai Airport Transfer vs Taxi: Which Is Better?",
       ar: "دليل نقل مطار دبي: لماذا تتفوق خدمة السائق الخاص على سيارات الأجرة التقليدية",
       ru: "Путеводитель по трансферу из аэропорта Дубая: почему шофёрский сервис превосходит обычные такси",
       zh: "迪拜机场接送指南:为什么专属司机服务胜过传统出租车",
@@ -1097,7 +1097,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "mercedes-s-class-chauffeur-dubai",
     title: {
-      en: "Mercedes S-Class Chauffeur Service Dubai: The Executive Standard",
+      en: "Mercedes S-Class Chauffeur Dubai: Luxury Travel Guide",
       ar: "خدمة سائق مرسيدس S-Class في دبي: المعيار التنفيذي",
       ru: "Услуги шофёра на Mercedes S-Class в Дубае: эталон для руководителей",
       zh: "迪拜奔驰S级专属司机服务:行政标准之选",
@@ -2113,7 +2113,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "dubai-city-tours-private-chauffeur",
     title: {
-      en: "Dubai City Tours with a Private Chauffeur: Travel in Comfort",
+      en: "Dubai City Tours with a Private Chauffeur",
       ar: "جولات دبي السياحية مع سائق خاص: سافر براحة",
       ru: "Городские экскурсии по Дубаю с личным шофёром: путешествуйте с комфортом",
       zh: "私人专属司机带您畅游迪拜城市观光:舒适出行",
@@ -2630,7 +2630,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "wedding-chauffeur-service-dubai",
     title: {
-      en: "Wedding Chauffeur Service Dubai: Luxury Transportation for Your Special Day",
+      en: "Wedding Chauffeur Service Dubai: Complete Guide",
       ar: "خدمة سائق حفلات الزفاف في دبي: نقل فاخر ليومك المميز",
       ru: "Свадебный шофёрский сервис в Дубае: роскошный транспорт для вашего особенного дня",
       zh: "迪拜婚礼专车服务:为您的特殊日子打造豪华出行",
