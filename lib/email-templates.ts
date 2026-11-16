@@ -153,6 +153,53 @@ export function resetPasswordEmailHtml(resetUrl: string, timestamp: string): str
 </div>`;
 }
 
+/**
+ * Invitation to the admin panel, sent when an administrator adds a user from
+ * Users & Roles. Same shell as the reset email: the invitee sets their own
+ * password through the one-time link, so nobody ever sends or knows it.
+ */
+export function inviteEmailHtml(inviteeName: string, roleLabel: string, inviteUrl: string): string {
+  const safeUrl = escapeHtml(inviteUrl);
+  return `
+<div style="background:#f6f4ef;padding:32px 16px;font-family:Arial,Helvetica,sans-serif;">
+  <table role="presentation" width="100%" style="max-width:560px;margin:0 auto;background:#ffffff;border-collapse:collapse;">
+    <tr>
+      <td style="background:#0a0a0a;padding:28px 32px;">
+        <span style="color:#d4af37;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:bold;">
+          Apex Limo &amp; Chauffeur Dubai — Admin
+        </span>
+        <h1 style="color:#ffffff;font-size:20px;line-height:1.3;margin:10px 0 0;font-family:Georgia,'Times New Roman',serif;font-weight:normal;">
+          You have been given access
+        </h1>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:28px 32px;">
+        <p style="margin:0 0 12px;color:#0a0a0a;font-size:14px;line-height:1.6;">
+          Hello ${escapeHtml(inviteeName)},
+        </p>
+        <p style="margin:0 0 20px;color:#0a0a0a;font-size:14px;line-height:1.6;">
+          You have been invited to the Apex Limo &amp; Chauffeur Dubai admin panel with the <strong>${escapeHtml(roleLabel)}</strong> role. Click the button below to set your password and sign in with this email address.
+        </p>
+        <a href="${safeUrl}" style="display:inline-block;background:#c9a96e;color:#1a1a1a;font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;padding:14px 28px;border-radius:6px;">
+          Set Password &amp; Sign In
+        </a>
+        <p style="margin:24px 0 0;color:#57534e;font-size:12px;line-height:1.6;">
+          This link expires in 72 hours and can only be used once. If you were not expecting this invitation, you can ignore this email.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:16px 32px;background:#faf8f3;border-top:2px solid #e9d68a;">
+        <span style="font-size:11px;color:#8a8680;word-break:break-all;">
+          If the button doesn't work, copy this link: ${safeUrl}
+        </span>
+      </td>
+    </tr>
+  </table>
+</div>`;
+}
+
 /* -------------------------------------------------------------------------
  * Customer-facing confirmation emails
  *

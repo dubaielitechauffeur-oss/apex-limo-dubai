@@ -2,8 +2,8 @@ import { prisma } from "@/lib/db";
 import { getAppOrigin } from "@/lib/app-url";
 import { headers } from "next/headers";
 import { writeAuditLog } from "@/lib/audit/log";
-import { generateResetToken, RESET_TOKEN_TTL_MS } from "@/lib/auth/tokens";
-import { sendPasswordResetEmail } from "@/lib/auth/email";
+import { generateResetToken, RESET_TOKEN_TTL_MS, INVITE_TOKEN_TTL_MS } from "@/lib/auth/tokens";
+import { sendPasswordResetEmail, sendInviteEmail } from "@/lib/auth/email";
 import { getAuthzContext, hasPermission, isSuperAdmin } from "./context";
 import { logRoleChange, logUnauthorizedAccess } from "./audit";
 import { ALL_PERMISSIONS, PERMISSIONS, permissionResource } from "./catalog";
@@ -289,4 +289,91 @@ export async function adminSendPasswordReset(targetUserId: string): Promise<Role
   });
 
   return { success: true, data: { email: targetUser.email } };
+}
+
+/**
+ * Invite a new person to the admin panel — the "add a user by email, pick
+ * their access level" flow of Search Console or Analytics.
+ *
+ * The account is created with NO password. The invitee receives a one-time
+ * link (the same hashed-token mechanism as a password reset, with a longer
+ * expiry) and chooses their own password, so the inviter never knows or
+ * sends a credential, and the invitee must control the mailbox to get in.
+ *
+ * Guards:
+ *  - `users:create`, which only super_admin holds.
+ *  - The super_admin role cannot be granted by invitation. Giving someone
+ *    full control, including over other users, stays a deliberate second
+ *    step (change the role afterwards) rather than one dropdown choice away.
+ *  - An email that already has an account — active, disabled or deleted —
+ *    is refused rather than silently re-activated.
+ */
+export async function inviteUser(input: {
+  name: string;
+  email: string;
+  roleId: string;
+}): Promise<RoleAdminResult<{ userId: string; email: string; emailSent: boolean }>> {
+  const ctx = await getAuthzContext();
+  if (!ctx) return { success: false, error: "Not signed in." };
+
+  if (!hasPermission(ctx, PERMISSIONS.USERS_CREATE)) {
+    await logUnauthorizedAccess(ctx, PERMISSIONS.USERS_CREATE, "missing_permission");
+    return { success: false, error: "You do not have permission to invite users." };
+  }
+
+  const name = input.name.replace(/\s+/g, " ").trim();
+  const email = input.email.trim().toLowerCase();
+  if (name.length < 2 || name.length > 100) return { success: false, error: "Enter the person's name." };
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { success: false, error: "Enter a valid email address." };
+  }
+
+  const role = await prisma.role.findUnique({ where: { id: input.roleId }, select: { id: true, name: true } });
+  if (!role) return { success: false, error: "Choose a role." };
+  if (role.name === "super_admin") {
+    await logUnauthorizedAccess(ctx, PERMISSIONS.USERS_CREATE, "super_admin_invite_attempt");
+    return { success: false, error: "Super Admin cannot be given by invitation. Invite with another role first." };
+  }
+
+  const existing = await prisma.user.findFirst({
+    where: { email: { equals: email, mode: "insensitive" } },
+    select: { id: true },
+  });
+  if (existing) return { success: false, error: "A user with this email already exists." };
+
+  const { token, tokenHash } = generateResetToken();
+  const user = await prisma.user.create({
+    data: {
+      name,
+      email,
+      roleId: role.id,
+      isActive: true,
+      passwordHash: null,
+      passwordResetTokens: { create: { tokenHash, expiresAt: new Date(Date.now() + INVITE_TOKEN_TTL_MS) } },
+    },
+    select: { id: true },
+  });
+
+  await writeAuditLog({
+    action: "create",
+    entityType: "user",
+    entityId: user.id,
+    userId: ctx.userId,
+    userName: ctx.roleName,
+    changes: [{ field: "invited", targetUser: name, email, role: role.name }],
+  });
+
+  // Configured origin, never the request's Host header — see lib/app-url.ts.
+  const inviteUrl = `${getAppOrigin()}/admin/reset-password?token=${token}&invite=1`;
+  let emailSent = true;
+  try {
+    await sendInviteEmail(email, name, role.name.replace(/_/g, " "), inviteUrl);
+  } catch (error) {
+    // The account exists either way. The inviter is told the email failed and
+    // can use "Send password reset" on the user's page to deliver a new link.
+    console.error("[admin] Failed to send invitation email:", error);
+    emailSent = false;
+  }
+
+  return { success: true, data: { userId: user.id, email, emailSent } };
 }
