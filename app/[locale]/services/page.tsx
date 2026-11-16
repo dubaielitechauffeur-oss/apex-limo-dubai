@@ -20,6 +20,7 @@ import Reveal from "@/components/shared/Reveal";
 import ServicesHero from "@/components/services/ServicesHero";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath, SERVICE_AREA_ADDRESS } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { getAllServices } from "@/lib/public/cms-content";
 import { getSiteContact } from "@/lib/public/site-contact";
@@ -61,6 +62,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "metadata.services" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("services", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/services",

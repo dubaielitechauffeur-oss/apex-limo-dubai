@@ -1,5 +1,8 @@
 import { getRequestConfig } from "next-intl/server";
-import { routing } from "./routing";
+import { routing, type Locale } from "./routing";
+import { loadMessages } from "./load-messages";
+import { getMessageOverrides } from "@/lib/public/page-seo";
+import { getMessageValue, sanitizeMessageOverride, withMessageValue } from "@/lib/seo-pages/messages";
 
 /**
  * Per-request message loading. Namespaces are added here as later phases
@@ -13,36 +16,17 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
-  const [common, home, services, locations, fleet, blog, about, contact, faqs, metadata, legal, forms] = await Promise.all([
-    import(`../messages/${locale}/common.json`).then((m) => m.default),
-    import(`../messages/${locale}/home.json`).then((m) => m.default),
-    import(`../messages/${locale}/services.json`).then((m) => m.default),
-    import(`../messages/${locale}/locations.json`).then((m) => m.default),
-    import(`../messages/${locale}/fleet.json`).then((m) => m.default),
-    import(`../messages/${locale}/blog.json`).then((m) => m.default),
-    import(`../messages/${locale}/about.json`).then((m) => m.default),
-    import(`../messages/${locale}/contact.json`).then((m) => m.default),
-    import(`../messages/${locale}/faqs.json`).then((m) => m.default),
-    import(`../messages/${locale}/metadata.json`).then((m) => m.default),
-    import(`../messages/${locale}/legal.json`).then((m) => m.default),
-    import(`../messages/${locale}/forms.json`).then((m) => m.default),
-  ]);
+  let messages = await loadMessages(locale as Locale);
 
-  return {
-    locale,
-    messages: {
-      common,
-      home,
-      services,
-      locations,
-      fleet,
-      blog,
-      about,
-      contact,
-      faqs,
-      metadata,
-      legal,
-      forms,
-    },
-  };
+  // Headings edited in the admin "Page SEO" screens (H1/H2/H3 of pages that
+  // are built from these message files). Each saved heading replaces exactly
+  // one message for this locale; with nothing saved this is a no-op and the
+  // imported JSON is returned untouched. `withMessageValue` copies along the
+  // path instead of mutating, because the JSON modules are shared singletons.
+  for (const [key, value] of await getMessageOverrides(locale as Locale)) {
+    const safe = sanitizeMessageOverride(value, getMessageValue(messages, key));
+    if (safe) messages = withMessageValue(messages, key, safe);
+  }
+
+  return { locale, messages };
 });

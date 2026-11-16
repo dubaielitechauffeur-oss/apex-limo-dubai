@@ -6,6 +6,7 @@ import Section from "@/components/shared/Section";
 import BlogSearch from "@/components/blog/BlogSearch";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { SITE } from "@/lib/constants";
 import { blogImageExists } from "@/lib/blogImage";
 import { getAllBlogPosts } from "@/lib/public/cms-content";
@@ -24,6 +25,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "metadata.blog" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("blog", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/blog",

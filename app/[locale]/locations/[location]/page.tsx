@@ -27,6 +27,7 @@ import RichParagraph from "@/components/services/RichParagraph";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath, SERVICE_AREA_ADDRESS } from "@/lib/seo";
+import { headingOverride } from "@/lib/public/seo-fields";
 import { SITE, PRICE_RANGE, getWhatsAppLink } from "@/lib/constants";
 import { getAllLocations, getLocationBySlug, getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
@@ -155,6 +156,8 @@ export default async function LocationDetailPage({ params }: PageProps) {
 
   const t = await getTranslations("locations");
   const tNav = await getTranslations("common.nav");
+  // Section headings an editor set for this location (admin → Locations → SEO).
+  const hd = (slot: string, fallback: string) => headingOverride(location.seo, slot, fallback, { name: location.name });
   const Icon = location.isAirport ? Plane : MapPin;
   const otherLocations = (await getAllLocations(locale as Locale))
     .filter((l) => l.slug !== location.slug)
@@ -242,7 +245,8 @@ export default async function LocationDetailPage({ params }: PageProps) {
             <Icon className="h-9 w-9 animate-fade-in text-gold [animation-delay:100ms]" strokeWidth={1.5} />
             <span className="mt-5 block animate-fade-in label-eyebrow [animation-delay:150ms]">{location.tagline}</span>
             <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:150ms] sm:text-5xl">
-              {t.has(`detail.h1.${location.slug}`) ? t(`detail.h1.${location.slug}`) : t("detail.titleTemplate", { name: location.name })}
+              {location.seo?.h1 ||
+                (t.has(`detail.h1.${location.slug}`) ? t(`detail.h1.${location.slug}`) : t("detail.titleTemplate", { name: location.name }))}
             </h1>
             <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
               {location.heroSubtitle}
@@ -318,7 +322,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
           <Reveal>
             <SectionHeading
               eyebrow={t("detail.whyApexEyebrow")}
-              title={t("detail.whyChooseTitleTemplate", { name: location.name })}
+              title={hd("whyChoose", t("detail.whyChooseTitleTemplate", { name: location.name }))}
               align="left"
               tone="light"
             />
@@ -342,7 +346,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
           <Reveal>
             <span className="label-eyebrow">{t("detail.popularRoutesEyebrow")}</span>
             <h2 className="mt-4 max-w-2xl font-display text-3xl text-white sm:text-4xl">
-              {t("detail.commonJourneysTitleTemplate", { name: location.name })}
+              {hd("commonJourneys", t("detail.commonJourneysTitleTemplate", { name: location.name }))}
             </h2>
           </Reveal>
 
@@ -396,7 +400,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
             <Reveal>
               <span className="label-eyebrow">{t("detail.commonQuestionsEyebrow")}</span>
               <h2 className="mt-4 font-display text-3xl text-white sm:text-4xl">
-                {t("detail.faqTitleTemplate", { name: location.name })}
+                {hd("faq", t("detail.faqTitleTemplate", { name: location.name }))}
               </h2>
             </Reveal>
 
@@ -434,7 +438,7 @@ export default async function LocationDetailPage({ params }: PageProps) {
           scoped to the other areas we serve besides this one. */}
       <LocationsShowcase
         eyebrow={t("detail.exploreMoreEyebrow")}
-        title={t("detail.otherAreasTitle")}
+        title={hd("otherAreas", t("detail.otherAreasTitle"))}
         subtitle={t("detail.otherAreasSubtitleTemplate", { siteName: SITE.name })}
         cards={otherLocations.map((related) => ({ location: related }))}
       />

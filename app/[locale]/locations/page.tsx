@@ -11,6 +11,7 @@ import Reveal from "@/components/shared/Reveal";
 import BookingCTA from "@/components/home/BookingCTA";
 import LocationsHero from "@/components/locations/LocationsHero";
 import { buildMetadata, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { SITE } from "@/lib/constants";
 import { getAllLocations } from "@/lib/public/cms-content";
 import type { PlainLocation } from "@/data/locations";
@@ -28,6 +29,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "metadata.locations" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("locations", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/locations",

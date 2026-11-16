@@ -83,6 +83,22 @@ Admin panel → Prisma → lib/public/cms-content.ts → page → HTML
   descriptions, canonicals, hreflang, OG and robots are produced. It applies
   admin SEO Manager overrides (`<Model>.seo`) on top of the page template, and
   clamps descriptions to 158 characters.
+- **Admin-editable SEO (everything an editor can change without code):**
+  - *Pages that are a CMS record* (service, location, vehicle, blog post) —
+    meta title, meta description, H1 and section headings live on the row's
+    `seo` JSON column, edited in that record's form.
+  - *Pages with no record* (home, about, contact, FAQs, listings, booking,
+    quote, the five fleet categories, legal pages) plus shared sections and
+    per-type heading templates — one `PageSeo` row each, edited in
+    **/admin/seo → Page SEO**. The list of pages and their H1/H2/H3 slots is
+    `lib/seo-pages/catalog.ts`; add a heading there to make it editable.
+  - Headings are next-intl messages, so a saved heading is merged over the
+    message in `i18n/request.ts` (`scope: "message"`), or read per page with
+    `headingOverride()` when the heading is a shared template
+    (`scope: "page"`). Blank always means "keep the built-in text", and a
+    heading typed in English never changes another language.
+  - A meta title that already contains "Apex" is used exactly as typed;
+    otherwise the layout appends `| Apex Limo & Chauffeur Dubai`.
 - **Structured data:** always `<JsonLd data={...} />`
   (`components/shared/JsonLd.tsx`). Never hand-write a
   `<script type="application/ld+json">` — the component escapes `<`/`>`/`&`,

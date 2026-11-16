@@ -17,6 +17,9 @@ import { SITE } from "@/lib/constants";
  * Revisit it only if the site starts publishing proprietary data or original
  * photography it intends to license.
  *
+ * `/booking?…` and `/quote?…` (query-string variants only) are disallowed as
+ * crawl-budget housekeeping; the bare `/booking` and `/quote` pages are not.
+ *
  * `/admin` is disallowed here, but robots.txt only prevents CRAWLING, not
  * indexing of a URL discovered elsewhere — the real protection is the
  * middleware auth gate plus the `noindex` sent by the admin layout.
@@ -27,7 +30,20 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/admin/", "/admin"],
+        disallow: [
+          "/api/",
+          "/admin/",
+          "/admin",
+          // Form-prefill links: every vehicle, service and location page links
+          // to /booking?vehicle=… and /quote?service=… to pre-select a field.
+          // Each is the same page as /booking or /quote (and canonicalises to
+          // it), but a crawler still fetches all ~240 of them across the six
+          // locales and reports each as a page with no self-referencing
+          // hreflang. Blocking the query-string variants keeps the two real
+          // pages crawlable and stops the duplicates being fetched at all.
+          "/*booking?",
+          "/*quote?",
+        ],
       },
     ],
     sitemap: `${SITE.url}/sitemap.xml`,

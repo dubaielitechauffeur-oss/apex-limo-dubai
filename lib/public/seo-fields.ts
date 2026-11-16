@@ -30,6 +30,11 @@ export interface PublicSeo {
   ogImageUrl: string | null;
   noIndex: boolean;
   noFollow: boolean;
+  /** Editor-set H1 for this locale, or empty to keep the page's own heading. */
+  h1: string;
+  /** Editor-set section headings for this locale, keyed by slot. Only
+   *  non-empty entries are present. */
+  headings: Record<string, string>;
 }
 
 /** Shape of the stored JSON, as far as the public read path cares. */
@@ -40,6 +45,32 @@ interface StoredSeo {
   ogImageId?: unknown;
   noIndex?: unknown;
   noFollow?: unknown;
+  h1?: unknown;
+  headings?: unknown;
+}
+
+/**
+ * Like `pickLocalized` but with NO fallback to English.
+ *
+ * Headings (and the meta of pages that have real translations in
+ * `messages/<locale>`) must not fall back: an English H1 typed for
+ * /about would otherwise replace the Arabic heading on /ar/about, swapping a
+ * translated page's main heading for a foreign-language one.
+ */
+function pickStrict(value: unknown, locale: Locale): string {
+  const record = (value ?? {}) as Partial<Record<Locale, string>>;
+  const text = record[locale];
+  return typeof text === "string" ? text.trim() : "";
+}
+
+function pickHeadings(value: unknown, locale: Locale): Record<string, string> {
+  const out: Record<string, string> = {};
+  if (!value || typeof value !== "object") return out;
+  for (const [key, localized] of Object.entries(value as Record<string, unknown>)) {
+    const text = pickStrict(localized, locale);
+    if (text) out[key] = text;
+  }
+  return out;
 }
 
 function pickLocalized(value: unknown, locale: Locale): string {
@@ -61,24 +92,61 @@ function pickLocalized(value: unknown, locale: Locale): string {
 export function resolvePublicSeo(
   value: unknown,
   locale: Locale,
-  ogImageUrlById?: ReadonlyMap<string, string>
+  ogImageUrlById?: ReadonlyMap<string, string>,
+  { strictLocale = false }: { strictLocale?: boolean } = {}
 ): PublicSeo | null {
   if (!value || typeof value !== "object") return null;
   const stored = value as StoredSeo;
 
-  const title = pickLocalized(stored.title, locale);
-  const description = pickLocalized(stored.description, locale);
+  // CMS records keep the long-standing English fallback for title and
+  // description (a record with no translation is served in English anyway).
+  // `strictLocale` is for pages whose other-locale copy comes from real
+  // translations in `messages/<locale>` — see `pickStrict`.
+  const pick = strictLocale ? pickStrict : pickLocalized;
+  const title = pick(stored.title, locale);
+  const description = pick(stored.description, locale);
+  const h1 = pickStrict(stored.h1, locale);
+  const headings = pickHeadings(stored.headings, locale);
   const canonical = typeof stored.canonical === "string" && stored.canonical.trim() ? stored.canonical.trim() : null;
   const ogImageId = typeof stored.ogImageId === "string" && stored.ogImageId ? stored.ogImageId : null;
   const ogImageUrl = ogImageId ? (ogImageUrlById?.get(ogImageId) ?? null) : null;
   const noIndex = stored.noIndex === true;
   const noFollow = stored.noFollow === true;
 
-  if (!title && !description && !canonical && !ogImageUrl && !noIndex && !noFollow) {
+  if (
+    !title &&
+    !description &&
+    !canonical &&
+    !ogImageUrl &&
+    !noIndex &&
+    !noFollow &&
+    !h1 &&
+    Object.keys(headings).length === 0
+  ) {
     return null;
   }
 
-  return { title, description, canonical, ogImageUrl, noIndex, noFollow };
+  return { title, description, canonical, ogImageUrl, noIndex, noFollow, h1, headings };
+}
+
+/**
+ * The heading to render for one slot of a page: the editor's override when
+ * one is saved for this locale, otherwise the page's built-in text.
+ *
+ * `{placeholder}` tokens in an override are filled from `params`, so an
+ * editor can write "Why Choose Apex for {name}" on a record as well.
+ */
+export function headingOverride(
+  seo: Pick<PublicSeo, "headings"> | null | undefined,
+  slot: string,
+  fallback: string,
+  params?: Record<string, string | number>
+): string {
+  const override = seo?.headings?.[slot];
+  if (!override) return fallback;
+  return override.replace(/\{\s*([A-Za-z0-9_]+)\s*\}/g, (match, name: string) =>
+    params && name in params ? String(params[name]) : match
+  );
 }
 
 /** Collects every `seo.ogImageId` across a set of rows, for one batched media lookup. */

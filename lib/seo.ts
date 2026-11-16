@@ -169,7 +169,7 @@ interface BuildMetadataOptions {
    * second metadata path, so a page cannot end up with a template title and a
    * CMS canonical disagreeing with each other.
    */
-  seo?: PublicSeo | null;
+  seo?: Omit<PublicSeo, "h1" | "headings"> | null;
   /**
    * Which locales this page genuinely exists in. Defaults to every configured
    * locale (correct for static pages, whose copy is fully translated in
@@ -179,6 +179,11 @@ interface BuildMetadataOptions {
    * `lib/public/translation-coverage.ts`.
    */
   alternateLocales?: Locale[];
+}
+
+/** True when a title already carries the brand, so no suffix should be added. */
+export function titleNamesBrand(title: string): boolean {
+  return /\bapex\b|أبيكس|апекс/i.test(title);
 }
 
 /** Helper for generating page-level metadata that inherits site defaults, with
@@ -198,6 +203,13 @@ export function buildMetadata({
   // CMS values win over the template-generated ones, field by field, so an
   // editor can override just the title and keep the generated description.
   const effectiveTitle = seo?.title || title;
+  // The root layout appends " | <site name>" to every page title. An
+  // editor-written title that already names the brand ("… | Apex Chauffeur")
+  // must be used exactly as typed, or it ships with the brand twice and runs
+  // past what a search result can show. A title without the brand keeps the
+  // automatic suffix, so existing short CMS titles are unaffected.
+  const documentTitle: Metadata["title"] =
+    seo?.title && titleNamesBrand(seo.title) ? { absolute: seo.title } : effectiveTitle;
   const effectiveDescription = clampDescription(seo?.description || description);
   const selfUrl = `${SITE.url}${localizedPath(locale, path)}`;
   // The SEO Manager stores ONE canonical per row, not one per locale. Applying
@@ -245,7 +257,7 @@ export function buildMetadata({
   }
 
   return {
-    title: effectiveTitle,
+    title: documentTitle,
     description: effectiveDescription,
     alternates: isUntranslated ? { canonical } : { canonical, languages },
     ...(effectiveRobots ? { robots: effectiveRobots } : {}),
