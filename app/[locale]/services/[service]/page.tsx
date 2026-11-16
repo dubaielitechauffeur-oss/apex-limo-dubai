@@ -33,6 +33,7 @@ import DirectionalIcon from "@/components/shared/DirectionalIcon";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath, SERVICE_AREA_ADDRESS } from "@/lib/seo";
+import { headingOverride } from "@/lib/public/seo-fields";
 import { SITE, getWhatsAppLink } from "@/lib/constants";
 import { getAllServices, getServiceBySlug, getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
@@ -135,6 +136,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   const t = await getTranslations("services");
   const tNav = await getTranslations("common.nav");
+  // Section headings an editor set for this service (admin → Services → SEO).
+  const hd = (slot: string, fallback: string) => headingOverride(service.seo, slot, fallback, { name: service.name });
   const Icon = ICONS[service.slug] ?? Crown;
   const MetricIcon = METRIC_ICONS[service.slug] ?? Users;
   const otherServices = (await getAllServices(locale as Locale))
@@ -221,7 +224,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             <Icon className="h-9 w-9 animate-fade-in text-gold [animation-delay:100ms]" strokeWidth={1.5} />
             <span className="mt-5 block animate-fade-in label-eyebrow [animation-delay:150ms]">{service.tagline}</span>
             <h1 className="mt-4 animate-slide-in-left font-display text-3xl text-heading [animation-delay:150ms] sm:text-5xl">
-              {t.has(`detail.h1.${service.slug}`) ? t(`detail.h1.${service.slug}`) : t("detail.titleSuffix", { name: service.name })}
+              {service.seo?.h1 ||
+                (t.has(`detail.h1.${service.slug}`) ? t(`detail.h1.${service.slug}`) : t("detail.titleSuffix", { name: service.name }))}
             </h1>
             <p className="mt-5 animate-fade-in text-sm leading-relaxed text-smoke [animation-delay:300ms] sm:text-base">
               {service.heroSubtitle}
@@ -270,7 +274,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           contextual to this service */}
       <ServiceRatingSection
         eyebrow={t("detail.ratingEyebrow")}
-        title={t("detail.ratingTitleTemplate", { name: service.name })}
+        title={hd("rating", t("detail.ratingTitleTemplate", { name: service.name }))}
         metricIcon={MetricIcon}
         metricValue={service.ratingMetric.value}
         metricLabel={service.ratingMetric.label}
@@ -291,7 +295,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         {/* Benefits */}
         <div className="mt-20">
           <Reveal>
-            <SectionHeading eyebrow={t("detail.benefitsEyebrow")} title={t("detail.benefitsTitle")} align="left" tone="light" />
+            <SectionHeading eyebrow={t("detail.benefitsEyebrow")} title={hd("benefits", t("detail.benefitsTitle"))} align="left" tone="light" />
           </Reveal>
           <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
             {service.benefits.map((benefit, index) => (
@@ -308,7 +312,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <Reveal>
             <SectionHeading
               eyebrow={t("detail.whyApexEyebrow")}
-              title={t("detail.whyChooseTitleTemplate", { name: service.name })}
+              title={hd("whyChoose", t("detail.whyChooseTitleTemplate", { name: service.name }))}
               align="left"
               tone="light"
             />
@@ -329,7 +333,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <OtherServicesGrid
         services={otherServices}
         eyebrow={t("otherServices.eyebrow")}
-        title={t("otherServices.title")}
+        title={hd("otherServices", t("otherServices.title"))}
         subtitle={t("otherServices.subtitle")}
         learnMoreLabel={t("learnMore")}
       />
@@ -341,7 +345,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <ServiceFaqSection
         faqs={service.faqs}
         eyebrow={t("detail.faqEyebrow")}
-        title={t("detail.faqTitleTemplate", { name: service.name })}
+        title={hd("faq", t("detail.faqTitleTemplate", { name: service.name }))}
         subtitle={t("detail.faqSubtitle")}
         viewAllLabel={t("detail.viewAllFaqs")}
       />

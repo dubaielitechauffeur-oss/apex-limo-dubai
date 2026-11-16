@@ -5,6 +5,7 @@ import Container from "@/components/shared/Container";
 import Section from "@/components/shared/Section";
 import Ltr from "@/components/shared/Ltr";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { SITE } from "@/lib/constants";
 import { getSiteContact } from "@/lib/public/site-contact";
 import { formatDate } from "@/lib/format";
@@ -22,6 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "metadata.terms" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("terms", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/terms",

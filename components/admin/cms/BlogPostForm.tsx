@@ -8,6 +8,7 @@ import { LocalizedField } from "@/components/admin/cms/LocalizedField";
 import { MediaPickerField } from "@/components/admin/cms/MediaPickerField";
 import { SlugField } from "@/components/admin/cms/SlugField";
 import { SeoFieldsSection } from "@/components/admin/cms/SeoFieldsSection";
+import { RECORD_HEADING_SLOTS } from "@/lib/seo-pages/catalog";
 import { PublishStatusSelect } from "@/components/admin/cms/PublishStatusControls";
 import { FormField, SelectField, ADMIN_INPUT_CLASSES } from "@/components/admin/ui/FormField";
 import { useToast } from "@/components/admin/ui/Toast";
@@ -103,7 +104,14 @@ export function BlogPostForm({
         </div>
       </div>
 
-      <SeoFieldsSection seo={seo} ogImage={ogImage} mediaLibraryItems={mediaLibraryItems} />
+      <SeoFieldsSection
+        seo={seo}
+        ogImage={ogImage}
+        mediaLibraryItems={mediaLibraryItems}
+        showH1
+        h1Hint="Blank uses the post title as the main heading."
+        headingSlots={RECORD_HEADING_SLOTS.blogPost}
+      />
 
       <div className="grid grid-cols-1 gap-4 rounded-lg border border-gray-200 bg-white p-5 sm:grid-cols-2">
         <PublishStatusSelect defaultValue={post?.status ?? "draft"} />

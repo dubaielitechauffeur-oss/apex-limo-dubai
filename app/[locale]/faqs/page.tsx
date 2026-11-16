@@ -5,6 +5,7 @@ import Container from "@/components/shared/Container";
 import BookingCTA from "@/components/home/BookingCTA";
 import FaqHubClient from "@/components/faqs/FaqHubClient";
 import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { getAllFaqs } from "@/lib/public/cms-content";
 import { FAQ_CATEGORIES } from "@/data/faqHub";
 import JsonLd from "@/components/shared/JsonLd";
@@ -21,6 +22,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "metadata.faqs" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("faqs", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/faqs",

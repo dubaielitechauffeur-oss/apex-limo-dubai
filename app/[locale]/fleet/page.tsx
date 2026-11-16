@@ -12,6 +12,7 @@ import FleetConciergeSection from "@/components/fleet/FleetConciergeSection";
 import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { SITE } from "@/lib/constants";
 import { getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact } from "@/lib/public/site-contact";
@@ -30,6 +31,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "metadata.fleet" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("fleet", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/fleet",
@@ -50,7 +54,10 @@ function fleetJsonLd(locale: Locale, vehicles: Awaited<ReturnType<typeof getAllV
       "@type": "ListItem",
       position: index + 1,
       item: {
-        "@type": "Car",
+        // `Vehicle`, not `Car`: Google treats `Car` as a dealer vehicle
+        // listing and flags each item for a missing VIN, model year and
+        // sale offer. These are chauffeur-driven vehicles, not cars for sale.
+        "@type": "Vehicle",
         name: vehicle.name,
         description: vehicle.description,
         brand: { "@type": "Brand", name: vehicle.brand },

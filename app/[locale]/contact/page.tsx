@@ -26,6 +26,7 @@ import ContactFaqAccordion from "@/components/contact/ContactFaqAccordion";
 import ContactForm from "@/components/contact/ContactForm";
 import Ltr from "@/components/shared/Ltr";
 import { buildMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { getPhoneLink, getWhatsAppLink } from "@/lib/constants";
 import { getSiteContact, type SiteContact } from "@/lib/public/site-contact";
 import JsonLd from "@/components/shared/JsonLd";
@@ -42,6 +43,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "metadata.contact" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("contact", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/contact",

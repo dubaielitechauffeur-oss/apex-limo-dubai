@@ -9,6 +9,7 @@ import {
   getBlogPostSitemapEntries,
   getVehicleSitemapEntries,
 } from "@/lib/public/cms-content";
+import { getNoIndexPagePaths } from "@/lib/public/page-seo";
 
 // See app/[locale]/services/page.tsx for the revalidation strategy note.
 export const revalidate = 3600;
@@ -51,6 +52,8 @@ function localizedEntries(
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  // Pages set to "No-index" in admin → SEO Manager → Page SEO.
+  const noIndexPaths = await getNoIndexPagePaths();
 
   const staticPaths: Array<[string, ChangeFrequency, number]> = [
     ["/", "weekly", 1],
@@ -67,15 +70,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ["/terms", "yearly", 0.2],
   ];
 
-  const staticRoutes = staticPaths.flatMap(([path, changeFrequency, priority]) =>
-    localizedEntries(path, now, changeFrequency, priority)
-  );
+  const staticRoutes = staticPaths
+    .filter(([path]) => !noIndexPaths.has(path))
+    .flatMap(([path, changeFrequency, priority]) => localizedEntries(path, now, changeFrequency, priority));
 
   // Fleet category listing pages (/fleet/sedan, etc.) are fixed route
   // segments, not content rows — always present regardless of how many
   // vehicles currently populate them.
-  const fleetCategoryRoutes = FLEET_CATEGORY_SLUGS.flatMap((category) =>
-    localizedEntries(`/fleet/${category}`, now, "weekly", 0.75)
+  const fleetCategoryRoutes = FLEET_CATEGORY_SLUGS.filter((category) => !noIndexPaths.has(`/fleet/${category}`)).flatMap(
+    (category) => localizedEntries(`/fleet/${category}`, now, "weekly", 0.75)
   );
 
   // Published, non-deleted CMS entries when available, falling back to the

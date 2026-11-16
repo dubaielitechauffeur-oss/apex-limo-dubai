@@ -132,7 +132,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <time dateTime={post.publishDate} className="text-xs uppercase tracking-wide text-graphite">
               {formatDate(post.publishDate, locale as Locale)}
             </time>
-            <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-5xl">{post.title}</h1>
+            <h1 className="mt-4 font-display text-3xl text-obsidian sm:text-5xl">{post.seo?.h1 || post.title}</h1>
             <p className="mt-5 text-sm leading-relaxed text-graphite sm:text-base">{post.excerpt}</p>
 
             {/* Author byline */}

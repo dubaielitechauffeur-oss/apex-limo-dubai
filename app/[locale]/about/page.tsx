@@ -25,6 +25,7 @@ import FleetCarouselCard from "@/components/home/FleetCarouselCard";
 import BookingCTA from "@/components/home/BookingCTA";
 import AboutHero from "@/components/about/AboutHero";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { RATING } from "@/lib/constants";
 import { FLEET_SIZE } from "@/lib/constants";
 import { getSiteContact } from "@/lib/public/site-contact";
@@ -45,6 +46,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "metadata.about" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("about", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/about",

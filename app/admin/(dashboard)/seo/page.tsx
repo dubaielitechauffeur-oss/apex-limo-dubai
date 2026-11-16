@@ -6,14 +6,17 @@ import { getInitialMediaPickerItems, ensureMediaPickerItems } from "@/lib/cms/me
 import { emptySeoMeta, type SeoMeta } from "@/lib/cms/seo";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { DefaultSeoForm } from "@/components/admin/seo/DefaultSeoForm";
+import { PageSeoList } from "@/components/admin/seo/PageSeoList";
+import { listPageSeo } from "@/lib/cms/page-seo";
 
 export const metadata: Metadata = { title: "SEO Manager — Admin" };
 
 export default async function SeoPage() {
   await requirePermission(PERMISSIONS.SEO_READ);
-  const [settingsResult, initialMediaLibraryItems] = await Promise.all([
+  const [settingsResult, initialMediaLibraryItems, pagesResult] = await Promise.all([
     getGlobalSettings(),
     getInitialMediaPickerItems(),
+    listPageSeo(),
   ]);
 
   const seo = (settingsResult.success ? (settingsResult.data?.defaultSeo as unknown as SeoMeta | null) : null) ?? emptySeoMeta();
@@ -25,9 +28,28 @@ export default async function SeoPage() {
     <div>
       <PageHeader
         title="SEO Manager"
-        subtitle="Site-wide default meta title, description, and social share image. Per-page SEO (Fleet, Services, Locations, Blog…) is edited from each of those modules and always takes priority over these defaults."
+        subtitle="Meta title, meta description, H1 and section headings (H2/H3) for every page of the site."
       />
-      <DefaultSeoForm seo={seo} mediaLibraryItems={mediaLibraryItems} />
+
+      <section>
+        <h2 className="text-base font-semibold text-gray-900">Page SEO</h2>
+        <p className="mt-1 max-w-3xl text-sm text-gray-500">
+          Pick a page to edit its meta title, meta description, H1 and section headings. Anything left blank keeps
+          the built-in text.
+        </p>
+        {pagesResult.success ? (
+          <PageSeoList items={pagesResult.data} />
+        ) : (
+          <p className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">{pagesResult.error}</p>
+        )}
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-base font-semibold text-gray-900">Site-wide defaults</h2>
+        <div className="mt-4 max-w-4xl">
+          <DefaultSeoForm seo={seo} mediaLibraryItems={mediaLibraryItems} />
+        </div>
+      </section>
     </div>
   );
 }

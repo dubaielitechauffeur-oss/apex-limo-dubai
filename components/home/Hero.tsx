@@ -1,5 +1,6 @@
 // Homepage hero section
 import { getTranslations, getLocale } from "next-intl/server";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { Link } from "@/i18n/navigation";
 import { Clock, Car, Languages, Calendar, ArrowRight } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -18,6 +19,9 @@ export default async function Hero() {
   // admin-created slide replaces its image/title/subtitle/CTAs in place
   // rather than turning this into a carousel. See PUBLIC_CMS_INTEGRATION.md.
   const slide = slides[0] ?? null;
+  // Admin → SEO Manager → Page SEO → Homepage → H1. When set it is the page's
+  // main heading in place of the slide title (or the built-in two-line one).
+  const h1Override = (await getPageSeo("home", locale))?.h1 || null;
 
   const TRUST_INDICATORS = [
     { icon: Clock, label: t("trustConcierge") },
@@ -74,7 +78,11 @@ export default async function Hero() {
             {t("eyebrow")}
           </span>
 
-          {slide ? (
+          {h1Override ? (
+            <h1 className="mt-6 animate-slide-in-left font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
+              {h1Override}
+            </h1>
+          ) : slide ? (
             <h1 className="mt-6 animate-slide-in-left font-display text-5xl leading-[1.05] text-heading sm:text-6xl lg:text-7xl">
               {slide.title}
             </h1>

@@ -11,6 +11,7 @@ import VehicleSummaryCardClient from "@/components/booking/VehicleSummaryCardCli
 import { getAllServices } from "@/data/services";
 import { getAllLocations } from "@/data/locations";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
 import { getAllVehicles } from "@/lib/public/cms-content";
 import { getSiteContact } from "@/lib/public/site-contact";
 import JsonLd from "@/components/shared/JsonLd";
@@ -27,6 +28,9 @@ export async function generateMetadata({ params }: QuotePageProps): Promise<Meta
   const t = await getTranslations({ locale, namespace: "metadata.quote" });
   return buildMetadata({
     locale: locale as Locale,
+    // Admin → SEO Manager → Page SEO overrides for this page (title,
+    // description, canonical, share image, robots). Null when nothing is saved.
+    seo: await getPageSeo("quote", locale as Locale),
     title: t("title"),
     description: t("description"),
     path: "/quote",

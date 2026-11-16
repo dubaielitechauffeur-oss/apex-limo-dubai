@@ -744,6 +744,22 @@ model PageHero {
   @@map("page_heroes")
 }
 
+/// Per-page SEO for public pages that have no CMS record of their own
+/// (homepage, about, contact, listings, fleet categories, legal pages…).
+/// One row per catalog entry in `lib/seo-pages/catalog.ts`, keyed by its
+/// `page` slug. `seo` is the same embedded shape every content model stores
+/// (`SeoMeta`), including the `h1` and `headings` overrides. A page with no
+/// row renders exactly as it did before this table existed.
+model PageSeo {
+  id        String   @id @default(cuid())
+  page      String   @unique
+  seo       Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("page_seo")
+}
+
 model HeroSlide {
   id             String        @id @default(cuid())
   title          Json

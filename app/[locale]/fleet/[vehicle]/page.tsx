@@ -52,6 +52,9 @@ import FleetListingCard from "@/components/fleet/FleetListingCard";
 import CoverageBlock from "@/components/shared/CoverageBlock";
 import BookingCTA from "@/components/home/BookingCTA";
 import { buildMetadata, faqJsonLd, organizationId, breadcrumbJsonLd, localizedPath } from "@/lib/seo";
+import { getPageSeo } from "@/lib/public/page-seo";
+import { headingOverride } from "@/lib/public/seo-fields";
+import { fleetCategoryPageKey } from "@/lib/seo-pages/catalog";
 import { SITE, RATING, getWhatsAppLink } from "@/lib/constants";
 import { formatAedPrice } from "@/lib/format";
 import { getSiteContact } from "@/lib/public/site-contact";
@@ -147,6 +150,8 @@ async function generateCategoryMetadata(locale: Locale, category: FleetCategoryS
       ? t(`description.${category}`)
       : t("descriptionTemplate", { category: categoryLabel }),
     path: `/fleet/${category}`,
+    // Admin → SEO Manager → Page SEO → "Fleet category — …".
+    seo: await getPageSeo(fleetCategoryPageKey(category), locale),
   });
 }
 
@@ -191,7 +196,13 @@ function vehicleJsonLd(vehicle: PlainFleetVehicle, locale: Locale) {
 
   return {
     "@context": "https://schema.org",
-    "@type": "Car",
+    // `Vehicle`, not `Car`. Google reads `Car` as a dealer "Vehicle listing"
+    // (a car FOR SALE) and reports every node as invalid for lacking a VIN,
+    // model year, item condition and a sale offer — none of which apply to a
+    // chauffeur-driven vehicle. `Vehicle` is Car's parent type and defines
+    // every property used here (brand, model, seating, cargo, fuel type), so
+    // nothing is lost for answer engines.
+    "@type": "Vehicle",
     "@id": `${url}#vehicle`,
     name: vehicle.name,
     description: vehicle.longDescription,
@@ -268,7 +279,8 @@ function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLab
       "@type": "ListItem",
       position: index + 1,
       item: {
-        "@type": "Car",
+        // `Vehicle`, not `Car` — see the note in `vehicleJsonLd` above.
+        "@type": "Vehicle",
         name: vehicle.name,
         description: vehicle.description,
         brand: { "@type": "Brand", name: vehicle.brand },
@@ -297,6 +309,9 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
   const categoryLabel = t(`labels.${category}`);
   const filledStars = Math.round(parseFloat(RATING));
   const categoryContent = getFleetCategoryContent(category, locale);
+  // Admin → SEO Manager → Page SEO → this category: H1 and section headings.
+  const pageSeo = await getPageSeo(fleetCategoryPageKey(category), locale);
+  const hd = (slot: string, fallback: string) => headingOverride(pageSeo, slot, fallback, { category: categoryLabel });
 
   const TRUST_ITEMS = [
     { icon: Car, label: t("vehicleCountTemplate", { count: vehicles.length }) },
@@ -356,7 +371,8 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
               {t("eyebrow")}
             </span>
             <h1 className="mt-4 animate-slide-in-left font-display text-4xl leading-[1.05] text-heading [animation-delay:150ms] sm:text-6xl">
-              {t.has(`h1.${category}`) ? t(`h1.${category}`) : t("titleTemplate", { category: categoryLabel })}
+              {pageSeo?.h1 ||
+                (t.has(`h1.${category}`) ? t(`h1.${category}`) : t("titleTemplate", { category: categoryLabel }))}
             </h1>
             <p className="mx-auto mt-6 max-w-xl animate-fade-in text-base leading-relaxed text-smoke [animation-delay:300ms] sm:text-lg">
               {t(`subtitle.${category}`)}
@@ -404,7 +420,7 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
           <Reveal>
             <SectionHeading
               eyebrow={t("listingEyebrow")}
-              title={t("listingTitleTemplate", { category: categoryLabel })}
+              title={hd("listing", t("listingTitleTemplate", { category: categoryLabel }))}
               align="left"
               tone="light"
             />
@@ -442,7 +458,7 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
           <Reveal>
             <SectionHeading
               eyebrow={t("whyChooseEyebrow")}
-              title={t("whyChooseTitleTemplate", { category: categoryLabel })}
+              title={hd("whyChoose", t("whyChooseTitleTemplate", { category: categoryLabel }))}
               align="left"
               tone="light"
             />
@@ -469,7 +485,7 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
           <Reveal>
             <SectionHeading
               eyebrow={t("occasionsEyebrow")}
-              title={t("occasionsTitleTemplate", { category: categoryLabel })}
+              title={hd("occasions", t("occasionsTitleTemplate", { category: categoryLabel }))}
               align="left"
               tone="dark"
             />
@@ -497,7 +513,7 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
           <Reveal>
             <SectionHeading
               eyebrow={tDetail("howItWorksEyebrow")}
-              title={t("howToBookTitleTemplate", { category: categoryLabel })}
+              title={hd("howToBook", t("howToBookTitleTemplate", { category: categoryLabel }))}
               align="left"
               tone="light"
             />
@@ -530,7 +546,7 @@ async function FleetCategoryListing({ locale, category }: { locale: Locale; cate
       <ServiceFaqSection
         faqs={categoryContent.faqs}
         eyebrow={t("faqEyebrow")}
-        title={t("faqTitleTemplate", { category: categoryLabel })}
+        title={hd("faq", t("faqTitleTemplate", { category: categoryLabel }))}
         subtitle={t("faqSubtitle")}
         viewAllLabel={t("viewAllFaqs")}
       />
@@ -558,6 +574,8 @@ export default async function VehicleDetailPage({ params }: PageProps) {
   const tNav = await getTranslations("common.nav");
   const tCard = await getTranslations("fleet.card");
   const tA11y = await getTranslations("common.a11y");
+  // Section headings an editor set for this vehicle (admin → Fleet → SEO).
+  const vhd = (slot: string, fallback: string) => headingOverride(vehicle.seo, slot, fallback, { name: vehicle.name });
   const cardLabels = {
     imageComingSoon: tCard("imageComingSoon"),
     tenHours: tCard("tenHours"),
@@ -702,7 +720,13 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <div className="mt-6 lg:mt-0">
             <span className="label-eyebrow hidden animate-fade-in lg:block">{categoryLabel}</span>
             <h1 className="mt-0 animate-slide-in-left font-display text-3xl text-heading [animation-delay:100ms] lg:mt-4 lg:text-5xl xl:text-6xl">
-              {vehicle.name} <span className="text-smoke lg:hidden">{t("withChauffeurInDubai")}</span>
+              {vehicle.seo?.h1 ? (
+                vehicle.seo.h1
+              ) : (
+                <>
+                  {vehicle.name} <span className="text-smoke lg:hidden">{t("withChauffeurInDubai")}</span>
+                </>
+              )}
             </h1>
             <p className="mt-2 animate-fade-in text-base italic text-gold/90 [animation-delay:250ms] lg:mt-3 lg:text-lg">
               {vehicle.tagline}
@@ -887,7 +911,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
           <Reveal>
             <SectionHeading
               eyebrow={t("onboardEyebrow")}
-              title={t("featuresTitle")}
+              title={vhd("features", t("featuresTitle"))}
               align="left"
               tone="dark"
             />
@@ -907,7 +931,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
         {/* Pricing */}
         <Reveal>
           <h2 className="font-display text-2xl text-heading sm:text-3xl">
-            {t("availablePackages")}
+            {vhd("packages", t("availablePackages"))}
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
             {t("packagesSubtitle")}
@@ -1058,7 +1082,7 @@ href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
           <Reveal>
             <SectionHeading
               eyebrow={t("onboardEyebrow")}
-              title={t("featuresTitle")}
+              title={vhd("features", t("featuresTitle"))}
               align="left"
               tone="dark"
             />
@@ -1089,7 +1113,7 @@ href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
           <Reveal>
             <SectionHeading
               eyebrow={t("whyThisVehicleEyebrow")}
-              title={t("whyChooseTitleTemplate", { name: vehicle.name })}
+              title={vhd("whyChoose", t("whyChooseTitleTemplate", { name: vehicle.name }))}
               align="left"
               tone="dark"
             />
@@ -1116,7 +1140,7 @@ href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
           <Reveal>
             <SectionHeading
               eyebrow={t("howItWorksEyebrow")}
-              title={t("howItWorksTitle")}
+              title={vhd("howItWorks", t("howItWorksTitle"))}
               align="left"
               tone="dark"
             />
@@ -1150,7 +1174,7 @@ href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
         <Reveal className="max-w-3xl">
           <SectionHeading
             eyebrow={t("vehicleEyebrow")}
-            title={t("aboutTitleTemplate", { name: vehicle.name })}
+            title={vhd("about", t("aboutTitleTemplate", { name: vehicle.name }))}
             align="left"
             tone="light"
           />
@@ -1168,7 +1192,7 @@ href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
         <Reveal>
           <SectionHeading
             eyebrow={t("exploreMoreEyebrow")}
-            title={t("exploreSimilarTitle")}
+            title={vhd("similar", t("exploreSimilarTitle"))}
             tone="dark"
           />
         </Reveal>
@@ -1183,7 +1207,7 @@ href={getWhatsAppLink(whatsappMessage, contact.whatsapp)}
       </Section>
 
       {/* FAQ — dedicated accordion section, light background matching About. */}
-      <VehicleFaqSection vehicleName={vehicle.name} />
+      <VehicleFaqSection vehicleName={vehicle.name} title={vehicle.seo?.headings?.faq ? vhd("faq", "") : undefined} />
 
       <BookingCTA />
     </div>

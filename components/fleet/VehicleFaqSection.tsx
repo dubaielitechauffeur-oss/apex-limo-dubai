@@ -9,6 +9,9 @@ import Reveal from "@/components/shared/Reveal";
 
 interface VehicleFaqSectionProps {
   vehicleName: string;
+  /** Editor-set heading for this vehicle (admin → Fleet → SEO). Falls back
+   *  to the shared "{name} FAQs" template when absent. */
+  title?: string;
 }
 
 const FAQ_KEYS = ["q1", "q2", "q3", "q4", "q5", "q6"] as const;
@@ -20,7 +23,7 @@ const FAQ_KEYS = ["q1", "q2", "q3", "q4", "q5", "q6"] as const;
  * than sourced from vehicle.faqs (which continues to back the page's
  * FAQPage JSON-LD, unaffected by this section).
  */
-export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProps) {
+export default function VehicleFaqSection({ vehicleName, title }: VehicleFaqSectionProps) {
   const t = useTranslations("fleet.faqSection");
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const faqs = FAQ_KEYS.map((key) => ({
@@ -35,7 +38,7 @@ export default function VehicleFaqSection({ vehicleName }: VehicleFaqSectionProp
           <Reveal>
             <SectionHeading
               eyebrow={t("eyebrow")}
-              title={t("titleTemplate", { name: vehicleName })}
+              title={title || t("titleTemplate", { name: vehicleName })}
               subtitle={t("subtitleTemplate", { name: vehicleName })}
               align="left"
               tone="light"
