@@ -714,9 +714,10 @@ export default async function VehicleDetailPage({ params }: PageProps) {
               Hoisting it here — between the breadcrumb and the two responsive
               columns, which are siblings in this same container — keeps the
               rendered order identical on both breakpoints while leaving one
-              heading in the DOM. The keyword-bearing suffix stays mobile-only
-              purely for line length; it is inside the same <h1>, so the text
-              a crawler reads is the same at every width. */}
+              heading in the DOM. The keyword-bearing suffix is shown at every
+              width: it used to be hidden on desktop for line length, which
+              made the visible H1 read "<name> Dubai" on a phone and a bare
+              "<name>" on a desktop. */}
           <div className="mt-6 lg:mt-0">
             <span className="label-eyebrow hidden animate-fade-in lg:block">{categoryLabel}</span>
             <h1 className="mt-0 animate-slide-in-left font-display text-3xl text-heading [animation-delay:100ms] lg:mt-4 lg:text-5xl xl:text-6xl">
@@ -724,7 +725,7 @@ export default async function VehicleDetailPage({ params }: PageProps) {
                 vehicle.seo.h1
               ) : (
                 <>
-                  {vehicle.name} <span className="text-smoke lg:hidden">{t("withChauffeurInDubai")}</span>
+                  {vehicle.name} <span className="text-smoke">{t("withChauffeurInDubai")}</span>
                 </>
               )}
             </h1>
