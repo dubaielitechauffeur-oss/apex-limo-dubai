@@ -87,7 +87,7 @@ export function hasPermission(ctx: AuthzContext | null, permission: Permission):
   return ctx.permissions.includes(permission);
 }
 
-/** True for any of the 7 approved system roles — false for a future custom
+/** True for any of the system roles — false for a future custom
  *  (non-system) role, which by definition isn't one of the enumerated
  *  `SystemRole` names even though it's a perfectly valid `Role` row. */
 export function hasSystemRole(ctx: AuthzContext | null): boolean {

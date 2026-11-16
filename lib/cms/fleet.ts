@@ -4,6 +4,7 @@ import { PERMISSIONS } from "@/lib/permissions/catalog";
 import type { RoleAdminResult } from "@/lib/permissions/roles-admin";
 import type { Prisma, PublishStatus } from "@/lib/generated/prisma/client";
 import { requireCmsPermission } from "./guard";
+import { hasPermission, isSuperAdmin, type AuthzContext } from "@/lib/permissions/context";
 import { isValidSlug } from "./slug";
 import { emptyLocalizedText, type LocalizedText } from "./localized";
 import { emptySeoMeta, type SeoMeta } from "./seo";
@@ -436,9 +437,24 @@ function validateVehicleInput(input: VehicleInput): string | null {
   return null;
 }
 
+const ZERO_RATES: VehicleRatesInput = { tenHours: 0, fiveHours: 0, oneHour: 0, airport: 0, extraHour: 0, additionalCity: 0 };
+
+/**
+ * The vehicle form carries the rate fields, so `fleet:update` alone used to be
+ * enough to change prices — which made "pricing is read-only" untrue for any
+ * role that can edit vehicles but holds no `pricing:update` (the `agency`
+ * role). Rates submitted by such a caller are discarded server-side: an
+ * edit keeps the stored rates, a new vehicle starts at zero (price on
+ * request). Roles that do hold `pricing:update` are unaffected.
+ */
+function canSetRates(ctx: AuthzContext): boolean {
+  return isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.PRICING_UPDATE);
+}
+
 export async function createVehicle(input: VehicleInput): Promise<RoleAdminResult<{ id: string }>> {
   const gate = await requireCmsPermission(PERMISSIONS.FLEET_CREATE);
   if (!gate.success) return gate;
+  if (!canSetRates(gate.data)) input = { ...input, rates: ZERO_RATES };
 
   const slugError = await assertSlugAvailable(input.slug);
   if (slugError) return { success: false, error: slugError };
@@ -466,6 +482,9 @@ export async function updateVehicle(id: string, input: VehicleInput): Promise<Ro
 
   const existing = await prisma.vehicle.findFirst({ where: { id, deletedAt: null } });
   if (!existing) return { success: false, error: "Vehicle not found." };
+  if (!canSetRates(gate.data)) {
+    input = { ...input, rates: (existing.rates as unknown as VehicleRatesInput | null) ?? ZERO_RATES };
+  }
 
   const slugError = await assertSlugAvailable(input.slug, id);
   if (slugError) return { success: false, error: slugError };

@@ -27,6 +27,7 @@ const INPUT_CLASSES =
 export function PricingRateRow({
   vehicle,
   onUpdate,
+  readOnly = false,
 }: {
   vehicle: VehiclePricingItem;
   /** Pass a bound Server Action reference (e.g.
@@ -34,6 +35,10 @@ export function PricingRateRow({
    *  StatusTransitionControl.tsx for why this must be bound, not an inline
    *  closure, when crossing the Server → Client Component boundary. */
   onUpdate: (rates: VehicleRatesInput) => Promise<CmsActionState>;
+  /** True for a role with `pricing:read` only: rates are shown, not editable.
+   *  (The server refuses the save regardless — this just stops the screen
+   *  offering an action that would fail.) */
+  readOnly?: boolean;
 }) {
   const [rates, setRates] = useState<VehicleRatesInput>(vehicle.rates);
   const [isPending, startTransition] = useTransition();
@@ -75,21 +80,25 @@ export function PricingRateRow({
             step={1}
             value={rates[field.key]}
             onChange={(e) => handleChange(field.key, e.target.value)}
-            disabled={isPending}
+            disabled={isPending || readOnly}
             aria-label={`${vehicle.name} — ${field.label} (AED)`}
             className={INPUT_CLASSES}
           />
         </td>
       ))}
       <td className="pe-5 py-3">
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={isPending || !dirty}
-          className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          {isPending ? "Saving…" : "Save"}
-        </button>
+        {readOnly ? (
+          <span className="text-xs text-gray-400">View only</span>
+        ) : (
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={isPending || !dirty}
+            className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {isPending ? "Saving…" : "Save"}
+          </button>
+        )}
       </td>
     </tr>
   );

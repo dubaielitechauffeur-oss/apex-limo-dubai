@@ -70,6 +70,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
               mediaLibraryItems={mediaLibraryItems}
               servicesForPopularFor={parentOptionsResult.success ? parentOptionsResult.data.services : []}
               locationsForPopularFor={parentOptionsResult.success ? parentOptionsResult.data.locations : []}
+            canEditRates={isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.PRICING_UPDATE)}
             />
           ) : (
             <ErrorState title="Read-only" description="You do not have permission to edit vehicles." />
