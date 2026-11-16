@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Invite User — Admin" };
 
 /** Most access first, so the list reads from "can do almost everything" down
  *  to "can only look". Super Admin is not offered — see `inviteUser`. */
-const ROLE_ORDER = ["admin", "content_manager", "seo_manager", "fleet_manager", "booking_manager", "viewer"];
+const ROLE_ORDER = ["admin", "agency", "content_manager", "seo_manager", "fleet_manager", "booking_manager", "viewer"];
 
 export default async function InviteUserPage() {
   await requirePermission(PERMISSIONS.USERS_CREATE);

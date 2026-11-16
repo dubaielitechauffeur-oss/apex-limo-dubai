@@ -21,7 +21,9 @@ const ALWAYS_BLOCKED =
 
 export function InviteUserForm({ roles }: { roles: InviteRoleOption[] }) {
   const [state, formAction, isPending] = useActionState(inviteUserAction, initialState);
-  const [roleId, setRoleId] = useState(roles[0]?.id ?? "");
+  // No role is pre-selected: the first one listed is the widest, and access
+  // that broad should be a deliberate click, not a default.
+  const [roleId, setRoleId] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const { showToast } = useToast();
   const router = useRouter();

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { requirePermission } from "@/lib/permissions/guard";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
+import { hasPermission, isSuperAdmin } from "@/lib/permissions/context";
 import { listVehicleRates } from "@/lib/cms/fleet";
 import { PageHeader } from "@/components/admin/ui/PageHeader";
 import { PricingRateRow } from "@/components/admin/pricing/PricingRateRow";
@@ -9,7 +10,8 @@ import { updateVehicleRatesAction } from "./actions";
 export const metadata: Metadata = { title: "Pricing — Admin" };
 
 export default async function PricingPage() {
-  await requirePermission(PERMISSIONS.PRICING_READ);
+  const ctx = await requirePermission(PERMISSIONS.PRICING_READ);
+  const canUpdate = isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.PRICING_UPDATE);
   const result = await listVehicleRates();
   const vehicles = result.success ? result.data : [];
 
@@ -48,7 +50,7 @@ export default async function PricingPage() {
             </thead>
             <tbody>
               {vehicles.map((vehicle) => (
-                <PricingRateRow key={vehicle.id} vehicle={vehicle} onUpdate={updateVehicleRatesAction.bind(null, vehicle.id)} />
+                <PricingRateRow key={vehicle.id} vehicle={vehicle} onUpdate={updateVehicleRatesAction.bind(null, vehicle.id)} readOnly={!canUpdate} />
               ))}
             </tbody>
           </table>

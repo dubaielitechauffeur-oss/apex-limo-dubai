@@ -1,7 +1,8 @@
 import { PERMISSIONS, type Permission } from "./catalog";
 
 /**
- * The 7 approved system roles — unchanged from Phase 2B/2C. This module is
+ * The system roles — the 7 approved in Phase 2B/2C plus `agency` (added for
+ * an external SEO agency; see its entry below). This module is
  * the single source of truth for what each one grants; `prisma/seed.ts`
  * imports `ROLE_PERMISSIONS` from here instead of repeating string
  * literals, so the seeded database and this catalog can never drift apart.
@@ -15,6 +16,7 @@ export const SYSTEM_ROLES = [
   "booking_manager",
   "content_manager",
   "seo_manager",
+  "agency",
   "viewer",
 ] as const;
 
@@ -113,6 +115,30 @@ export const ROLE_PERMISSIONS: Record<SystemRole, Permission[]> = {
     P.TRANSLATIONS_READ,
     P.MEDIA_READ,
   ],
+  // External SEO agency. Everything an agency needs to do the on-page work
+  // end to end — every content module with full create/edit/publish/delete,
+  // including vehicles and fleet categories, plus the SEO Manager — and
+  // nothing that is the business's own:
+  //   - no bookings / quotes / contacts: customer names and phone numbers
+  //     never reach a third party;
+  //   - settings and pricing are read-only: the public phone, WhatsApp and
+  //     email (where every lead goes) and the rates cannot be changed;
+  //   - no users, audit log or analytics.
+  // Wider than `seo_manager` (which cannot edit vehicles, create pages, or
+  // touch media, and CAN edit settings), narrower than `admin`.
+  agency: [
+    P.SEO_READ, P.SEO_UPDATE,
+    P.FLEET_CREATE, P.FLEET_READ, P.FLEET_UPDATE, P.FLEET_DELETE, P.FLEET_PUBLISH,
+    P.SERVICES_CREATE, P.SERVICES_READ, P.SERVICES_UPDATE, P.SERVICES_DELETE, P.SERVICES_PUBLISH,
+    P.LOCATIONS_CREATE, P.LOCATIONS_READ, P.LOCATIONS_UPDATE, P.LOCATIONS_DELETE, P.LOCATIONS_PUBLISH,
+    P.BLOG_CREATE, P.BLOG_READ, P.BLOG_UPDATE, P.BLOG_DELETE, P.BLOG_PUBLISH,
+    P.FAQ_CREATE, P.FAQ_READ, P.FAQ_UPDATE, P.FAQ_DELETE,
+    P.HOMEPAGE_CREATE, P.HOMEPAGE_READ, P.HOMEPAGE_UPDATE, P.HOMEPAGE_DELETE, P.HOMEPAGE_PUBLISH,
+    P.MEDIA_CREATE, P.MEDIA_READ, P.MEDIA_UPDATE, P.MEDIA_DELETE,
+    P.TRANSLATIONS_READ,
+    P.SETTINGS_READ,
+    P.PRICING_READ,
+  ],
   viewer: [
     P.FLEET_READ,
     P.BOOKINGS_READ,
@@ -140,5 +166,7 @@ export const ROLE_DESCRIPTIONS: Record<SystemRole, string> = {
   booking_manager: "Booking & quote lifecycle management",
   content_manager: "Content management — blog, services, locations, homepage, FAQs, media",
   seo_manager: "SEO metadata management across all content entities",
+  agency:
+    "External SEO agency — full editing of SEO, services, locations, fleet, blog, FAQs, homepage and media. Settings and pricing are view-only. No customer data, no users",
   viewer: "Read-only access to all modules",
 };

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { requirePermission } from "@/lib/permissions/guard";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
+import { hasPermission, isSuperAdmin } from "@/lib/permissions/context";
 import { listVehicleCategories } from "@/lib/cms/fleet";
 import { listFaqParentOptions } from "@/lib/cms/faq";
 import { getInitialMediaPickerItems } from "@/lib/cms/media-picker-actions";
@@ -11,7 +12,7 @@ import { VehicleForm } from "@/components/admin/cms/VehicleForm";
 export const metadata: Metadata = { title: "New Vehicle — Admin" };
 
 export default async function NewVehiclePage() {
-  await requirePermission(PERMISSIONS.FLEET_CREATE);
+  const ctx = await requirePermission(PERMISSIONS.FLEET_CREATE);
   const [categoriesResult, mediaLibraryItems, parentOptionsResult] = await Promise.all([
     listVehicleCategories(),
     getInitialMediaPickerItems(),
@@ -45,6 +46,7 @@ export default async function NewVehiclePage() {
         mediaLibraryItems={mediaLibraryItems}
         servicesForPopularFor={parentOptionsResult.success ? parentOptionsResult.data.services : []}
         locationsForPopularFor={parentOptionsResult.success ? parentOptionsResult.data.locations : []}
+      canEditRates={isSuperAdmin(ctx) || hasPermission(ctx, PERMISSIONS.PRICING_UPDATE)}
       />
     </div>
   );

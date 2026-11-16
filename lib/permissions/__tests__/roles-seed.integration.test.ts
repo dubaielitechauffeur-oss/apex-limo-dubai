@@ -55,4 +55,29 @@ describe("seeded roles match the RBAC catalog (integration)", () => {
       }
     }
   });
+
+  it("agency can edit every content module and the SEO Manager", async () => {
+    const agency = await prisma.role.findUniqueOrThrow({ where: { name: "agency" } });
+    for (const resource of ["fleet", "services", "locations", "blog", "homepage"]) {
+      for (const action of ["create", "read", "update", "delete", "publish"]) {
+        expect(agency.permissions, `${resource}:${action}`).toContain(`${resource}:${action}`);
+      }
+    }
+    for (const permission of ["seo:read", "seo:update", "faq:update", "media:create", "media:update"]) {
+      expect(agency.permissions).toContain(permission);
+    }
+  });
+
+  it("agency never sees customer data and cannot change settings, pricing or users", async () => {
+    const agency = await prisma.role.findUniqueOrThrow({ where: { name: "agency" } });
+    const forbiddenResources = ["bookings", "quotes", "contacts", "users", "audit", "analytics"];
+    for (const permission of agency.permissions) {
+      expect(forbiddenResources, permission).not.toContain(permission.split(":")[0]);
+    }
+    expect(agency.permissions).toContain("settings:read");
+    expect(agency.permissions).toContain("pricing:read");
+    for (const permission of ["settings:update", "pricing:create", "pricing:update", "pricing:delete", "translations:update"]) {
+      expect(agency.permissions).not.toContain(permission);
+    }
+  });
 });

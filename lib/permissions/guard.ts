@@ -89,7 +89,7 @@ export async function requireRole(role: SystemRole): Promise<AuthzContext> {
   return ctx;
 }
 
-/** Any of the 7 approved system roles — rejects a hypothetical future
+/** Any of the system roles — rejects a hypothetical future
  *  custom role from an operation that's explicitly scoped to the built-in
  *  set (none currently need this, but it closes the type at the boundary
  *  rather than leaving `roleName` as a bare `string`). */
