@@ -47,7 +47,15 @@ export async function listPageSeo(): Promise<RoleAdminResult<PageSeoListItem[]>>
   const gate = await requireCmsPermission(PERMISSIONS.SEO_READ);
   if (!gate.success) return gate;
 
-  const rows = await prisma.pageSeo.findMany();
+  // Fail soft: this list shares a screen with the site-wide Default SEO form,
+  // which must stay usable if the `page_seo` migration has not run yet.
+  let rows: Awaited<ReturnType<typeof prisma.pageSeo.findMany>>;
+  try {
+    rows = await prisma.pageSeo.findMany();
+  } catch (err) {
+    console.error("[page-seo] list failed:", err);
+    return { success: false, error: "Page SEO is not available yet — the database migration for it has not been applied." };
+  }
   const byPage = new Map(rows.map((row) => [row.page, row]));
 
   return {
