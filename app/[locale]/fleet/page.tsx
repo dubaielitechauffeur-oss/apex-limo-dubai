@@ -41,8 +41,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /**
- * Structured data for the fleet listing — an ItemList of Car entities,
- * giving search engines machine-readable specs for each vehicle.
+ * Structured data for the fleet listing — a summary ItemList that points at
+ * each vehicle's own page, the format Google documents for listing pages.
+ *
+ * The items are deliberately NOT inline `Vehicle` nodes. schema.org's
+ * `Vehicle` is a subtype of `Product`, so Google validated every inline
+ * vehicle as a product snippet and reported each one invalid for having no
+ * `offers`, `review` or `aggregateRating` (16 invalid items per locale).
+ * The full `Vehicle` node, with its real AED rates as `offers`, lives on
+ * the vehicle detail page (`vehicleJsonLd` in fleet/[vehicle]/page.tsx).
  */
 function fleetJsonLd(locale: Locale, vehicles: Awaited<ReturnType<typeof getAllVehicles>>) {
   return {
@@ -53,17 +60,8 @@ function fleetJsonLd(locale: Locale, vehicles: Awaited<ReturnType<typeof getAllV
     itemListElement: vehicles.map((vehicle, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      item: {
-        // `Vehicle`, not `Car`: Google treats `Car` as a dealer vehicle
-        // listing and flags each item for a missing VIN, model year and
-        // sale offer. These are chauffeur-driven vehicles, not cars for sale.
-        "@type": "Vehicle",
-        name: vehicle.name,
-        description: vehicle.description,
-        brand: { "@type": "Brand", name: vehicle.brand },
-        model: vehicle.model,
-        vehicleSeatingCapacity: vehicle.passengers,
-      },
+      name: vehicle.name,
+      url: `${SITE.url}${localizedPath(locale, `/fleet/${vehicle.slug}`)}`,
     })),
   };
 }

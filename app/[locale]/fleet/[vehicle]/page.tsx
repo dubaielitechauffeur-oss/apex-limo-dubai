@@ -275,18 +275,15 @@ function categoryJsonLd(locale: Locale, category: FleetCategorySlug, categoryLab
     "@type": "ItemList",
     name: `${SITE.name} ${categoryLabel} Fleet`,
     url: `${SITE.url}${localizedPath(locale, `/fleet/${category}`)}`,
+    // Summary list (name + link) rather than inline `Vehicle` nodes: Google
+    // validates a `Vehicle` as a product snippet and reports it invalid
+    // without offers — see the note on `fleetJsonLd` in fleet/page.tsx. The
+    // full node with its rates is on each vehicle's own page.
     itemListElement: vehicles.map((vehicle, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      item: {
-        // `Vehicle`, not `Car` — see the note in `vehicleJsonLd` above.
-        "@type": "Vehicle",
-        name: vehicle.name,
-        description: vehicle.description,
-        brand: { "@type": "Brand", name: vehicle.brand },
-        model: vehicle.model,
-        vehicleSeatingCapacity: vehicle.passengers,
-      },
+      name: vehicle.name,
+      url: `${SITE.url}${localizedPath(locale, `/fleet/${vehicle.slug}`)}`,
     })),
   };
 }
