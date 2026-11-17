@@ -1,6 +1,5 @@
 import { revalidatePath } from "next/cache";
 import { routing } from "@/i18n/routing";
-import { localizedPath } from "@/lib/seo";
 
 /**
  * Phase 8 revalidation: called from CMS server actions after a successful
@@ -9,15 +8,45 @@ import { localizedPath } from "@/lib/seo";
  * already make. Public pages read straight from Prisma (lib/public/
  * cms-content.ts, no `unstable_cache`), so revalidating the route is
  * enough to force a fresh render on next request — no cache tag plumbing
- * needed. Time-based ISR (`export const revalidate = 300` on each public
- * page) is the fallback if an admin action's revalidation is ever missed.
+ * needed. Time-based ISR (`export const revalidate = 86400` on each public
+ * page, kept long to hold Neon compute down) is only the fallback if an
+ * admin action's revalidation is ever missed.
  * See PUBLIC_CMS_INTEGRATION.md "Caching & Revalidation".
+ *
+ * Cost: `revalidatePath` only marks cache entries stale. Nothing renders
+ * and nothing queries the database until someone next requests that page,
+ * and then once. So narrow calls here cost roughly one render per affected
+ * URL per admin save.
  */
 
-function revalidateAllLocales(path: string) {
+/**
+ * The path a page is CACHED under, which is not always its public URL.
+ * English is served unprefixed (`/fleet`) but next-intl's middleware rewrites
+ * it to `/en/fleet` internally, and the ISR cache entry is keyed by that
+ * rewritten path. `revalidatePath("/fleet")` therefore matched nothing: the
+ * other five locales refreshed on save while English waited out the 24-hour
+ * timer (verified against a production build: `/fleet` stayed a cache HIT,
+ * `/en/fleet` turned it into a MISS).
+ */
+export function cachedPath(locale: string, path: string): string {
+  return path === "/" ? `/${locale}` : `/${locale}${path}`;
+}
+
+export function revalidateAllLocales(path: string) {
   for (const locale of routing.locales) {
-    revalidatePath(localizedPath(locale, path));
+    revalidatePath(cachedPath(locale, path));
   }
+}
+
+/**
+ * Every public page in every locale. `revalidatePath` on the locale layout
+ * reaches all routes beneath it, including the legal pages. For changes that
+ * genuinely show on every page (site-wide header/footer contact details,
+ * default SEO, shared section headings) and are rarely made.
+ */
+export function revalidateEntireSite() {
+  revalidatePath("/[locale]", "layout");
+  revalidatePath("/sitemap.xml");
 }
 
 export function revalidatePublicServices(slug?: string) {

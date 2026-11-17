@@ -3,21 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { updateGlobalSettings, type GlobalSettingsInput } from "@/lib/admin/settings";
 import type { CmsActionState } from "@/app/admin/(dashboard)/services/actions";
+import { revalidateEntireSite } from "@/lib/cms/revalidate";
 
 export type { CmsActionState };
 
-/** Revalidates every public route that reads `getSiteContact()` — the
- *  site-wide chrome (header/footer/floating buttons/notice modal) plus
- *  every page that independently calls it for its own contact display or
- *  JSON-LD, across all 6 locales. */
+/** Revalidates every public page. `getSiteContact()` feeds the site-wide
+ *  chrome (header, footer, floating WhatsApp/phone buttons, notice modal)
+ *  and the LocalBusiness JSON-LD in the locale layout, so a new phone number
+ *  shows on every page — fleet, blog, locations and vehicle pages included,
+ *  which the old seven-route list missed (they kept the old number until the
+ *  24-hour ISR timer ran out). Settings change a few times a year, and pages
+ *  re-render lazily on their next request, so the cost is negligible. */
 function revalidatePublicContact() {
-  const routes = ["/", "/contact", "/booking", "/quote", "/services", "/privacy-policy", "/terms"];
-  const locales = ["en", "ar", "ru", "zh", "fr", "de"];
-  for (const route of routes) {
-    for (const locale of locales) {
-      revalidatePath(`/${locale}${route === "/" ? "" : route}`);
-    }
-  }
+  revalidateEntireSite();
 }
 
 export async function updateGlobalSettingsAction(_prevState: CmsActionState, formData: FormData): Promise<CmsActionState> {
