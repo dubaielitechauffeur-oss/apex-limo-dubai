@@ -25,6 +25,9 @@ export const RETIRED_VEHICLE_REDIRECTS: ReadonlyArray<readonly [from: string, to
   ["rolls-royce-ghost", "rolls-royce-phantom"],
   ["mercedes-e-class", "sedan"],
   ["toyota-land-cruiser", "suv"],
+  // Search Console still reports /fleet/bmw-5-series as a 404; the 7 Series
+  // is the closest live BMW.
+  ["bmw-5-series", "bmw-7-series"],
 ];
 
 const RETIRED = new Map(RETIRED_VEHICLE_REDIRECTS);

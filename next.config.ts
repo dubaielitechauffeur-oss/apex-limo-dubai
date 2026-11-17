@@ -82,14 +82,26 @@ const nextConfig: NextConfig = {
   },
 
   async redirects() {
-    return RETIRED_VEHICLE_REDIRECTS.flatMap(([from, to]) => [
+    // English is unprefixed (`localePrefix: "as-needed"`), so `/en/...` is
+    // never a real URL. next-intl's middleware strips the prefix with a 307
+    // (temporary) redirect, which Search Console reports as "Redirect error"
+    // for /en/booking and /en/fleet and keeps the /en URLs on file. A
+    // permanent redirect here runs before the middleware and tells Google to
+    // drop them. It does not affect next-intl's internal rewrite of "/" to
+    // "/en", because config redirects only see the incoming request.
+    const englishPrefix = [
+      { source: "/en", destination: "/", permanent: true },
+      { source: "/en/:path*", destination: "/:path*", permanent: true },
+    ];
+
+    return [...englishPrefix, ...RETIRED_VEHICLE_REDIRECTS.flatMap(([from, to]) => [
       { source: `/fleet/${from}`, destination: `/fleet/${to}`, permanent: true },
       {
         source: `/:locale(ar|ru|zh|fr|de)/fleet/${from}`,
         destination: `/:locale/fleet/${to}`,
         permanent: true,
       },
-    ]);
+    ])];
   },
 
   async headers() {
