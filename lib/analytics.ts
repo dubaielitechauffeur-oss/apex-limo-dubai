@@ -38,7 +38,8 @@ export type CtaPlacement =
   | "vehicle_card"
   | "vehicle_detail"
   | "contact_page"
-  | "form_success";
+  | "form_success"
+  | "offer_popup";
 
 interface LeadEventParams {
   /** Vehicle or service slug/name — categorical, never customer data. */
