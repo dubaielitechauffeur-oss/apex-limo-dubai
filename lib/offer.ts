@@ -7,7 +7,7 @@ export const VCLASS_OFFER = {
   enabled: true,
   /** ISO date-time after which the popup stops rendering (server-checked in
    *  the layout). `null` = no end date. Example: "2027-01-31T23:59:59+04:00" */
-  endsAt: null as string | null,
+  endsAt: "2026-12-01T23:59:59+04:00" as string | null,
   /** Promo code shown in the popup and pre-filled into the WhatsApp message. */
   code: "VCLASS30",
   discountPercent: 30,
