@@ -16,6 +16,8 @@ import { getDefaultSeoOverride } from "@/lib/public/site-seo";
 import { routing, type Locale } from "@/i18n/routing";
 import { logoFont } from "@/fonts/logo";
 import JsonLd from "@/components/shared/JsonLd";
+import OfferPopup from "@/components/layout/OfferPopup";
+import { isOfferActive } from "@/lib/offer";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -92,6 +94,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
             <CallFloatButton />
           </ConditionalFloatButtons>
           <ScrollToTopButton />
+          {isOfferActive() && <OfferPopup whatsapp={contact.whatsapp} />}
           {/* Analytics lives INSIDE <body>. It previously sat between </body>
               and </html>, which is not a valid document structure — React
               hoisted the script in practice, but nothing else may legally

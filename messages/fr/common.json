@@ -102,5 +102,22 @@
     "body": "Nous utilisons des cookies d'analyse pour comprendre comment les visiteurs utilisent ce site afin de l'améliorer. Rien n'est enregistré avant votre accord, et un refus n'affectera pas votre réservation.",
     "accept": "Accepter",
     "decline": "Refuser"
+  },
+  "offerPopup": {
+    "badge": "Offre limitée",
+    "eyebrow": "Chauffeur Mercedes Classe V",
+    "off": "DE RÉDUCTION",
+    "title": "Découvrez Dubaï en Mercedes Classe V",
+    "description": "Spacieuse 7 places avec sièges en cuir noir, eau en bouteille et place pour 5 valises. Réservez votre chauffeur Classe V maintenant et économisez {percent}%.",
+    "codeLabel": "Code promo",
+    "copy": "Copier",
+    "copied": "Copié",
+    "whatsappCta": "Réserver sur WhatsApp",
+    "viewCta": "Voir la Classe V",
+    "later": "Peut-être plus tard",
+    "terms": "Valable jusqu'au 1er décembre. Conditions applicables.",
+    "close": "Fermer l'offre",
+    "imageAlt": "Mercedes Classe V noire vue avant trois-quarts dans un showroom au sol en marbre",
+    "whatsappMessage": "Bonjour, je souhaite réserver la Mercedes Classe V avec {percent}% de réduction. Code promo : {code}"
   }
 }

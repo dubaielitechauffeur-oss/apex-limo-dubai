@@ -102,5 +102,22 @@
     "body": "We use analytics cookies to understand how visitors use this site so we can improve it. Nothing is stored until you accept, and declining will not affect your booking.",
     "accept": "Accept",
     "decline": "Decline"
+  },
+  "offerPopup": {
+    "badge": "Limited Offer",
+    "eyebrow": "Mercedes V-Class Chauffeur",
+    "off": "OFF",
+    "title": "Travel Dubai in a Mercedes V-Class",
+    "description": "Spacious 7-seater with black leather seats, bottled water and room for 5 suitcases. Book your V-Class chauffeur now and save {percent}%.",
+    "codeLabel": "Promo code",
+    "copy": "Copy",
+    "copied": "Copied",
+    "whatsappCta": "Book on WhatsApp",
+    "viewCta": "View V-Class",
+    "later": "Maybe later",
+    "terms": "Valid till 1 December. Terms apply.",
+    "close": "Close offer",
+    "imageAlt": "Black Mercedes V-Class front three-quarter view in a marble-floored showroom",
+    "whatsappMessage": "Hi, I want to book the Mercedes V-Class with {percent}% off. Promo code: {code}"
   }
 }

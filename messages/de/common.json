@@ -102,5 +102,22 @@
     "body": "Wir verwenden Analyse-Cookies, um zu verstehen, wie Besucher diese Website nutzen, und sie zu verbessern. Vor Ihrer Zustimmung wird nichts gespeichert, und eine Ablehnung wirkt sich nicht auf Ihre Buchung aus.",
     "accept": "Akzeptieren",
     "decline": "Ablehnen"
+  },
+  "offerPopup": {
+    "badge": "Zeitlich begrenztes Angebot",
+    "eyebrow": "Mercedes V-Klasse mit Chauffeur",
+    "off": "RABATT",
+    "title": "Dubai in der Mercedes V-Klasse erleben",
+    "description": "Geräumiger Siebensitzer mit schwarzen Ledersitzen, Wasser und Platz für 5 Koffer. Buchen Sie jetzt Ihren V-Klasse-Chauffeur und sparen Sie {percent}%.",
+    "codeLabel": "Promo-Code",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "whatsappCta": "Per WhatsApp buchen",
+    "viewCta": "V-Klasse ansehen",
+    "later": "Vielleicht später",
+    "terms": "Gültig bis 1. Dezember. Es gelten die Bedingungen.",
+    "close": "Angebot schließen",
+    "imageAlt": "Schwarze Mercedes V-Klasse in Vorderansicht von schräg vorne in einem Showroom mit Marmorboden",
+    "whatsappMessage": "Hallo, ich möchte die Mercedes V-Klasse mit {percent}% Rabatt buchen. Promo-Code: {code}"
   }
 }

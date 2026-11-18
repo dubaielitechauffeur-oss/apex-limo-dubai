@@ -102,5 +102,22 @@
     "body": "我们使用分析类 Cookie 了解访客如何使用本网站,以便持续改进。在您同意之前不会存储任何数据,拒绝也不会影响您的预订。",
     "accept": "接受",
     "decline": "拒绝"
+  },
+  "offerPopup": {
+    "badge": "限时优惠",
+    "eyebrow": "梅赛德斯V级专车司机",
+    "off": "折扣",
+    "title": "乘坐梅赛德斯V级畅游迪拜",
+    "description": "宽敞7座,黑色真皮座椅,配瓶装水,可放5个行李箱。立即预订V级专车司机,立省{percent}%。",
+    "codeLabel": "优惠码",
+    "copy": "复制",
+    "copied": "已复制",
+    "whatsappCta": "通过WhatsApp预订",
+    "viewCta": "查看V级",
+    "later": "稍后再说",
+    "terms": "优惠有效期至12月1日,须遵守相关条款。",
+    "close": "关闭优惠",
+    "imageAlt": "黑色梅赛德斯V级前四分之三视角,置身大理石地面展厅",
+    "whatsappMessage": "您好,我想预订梅赛德斯V级,享{percent}%折扣。优惠码:{code}"
   }
 }
