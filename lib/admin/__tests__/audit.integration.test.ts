@@ -69,7 +69,10 @@ describe("listAuditLogs — filtering", () => {
 
   it("a future date range (from tomorrow) returns zero results", async () => {
     mockSessionFor(users.super_admin);
-    const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    // The date filter means Dubai calendar days (lib/admin/format.ts), so
+    // "tomorrow" is tomorrow in Dubai. A UTC date is "today" in Dubai for the
+    // four hours after 20:00 UTC, and the test failed in that window.
+    const tomorrow = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Dubai" }).format(new Date(Date.now() + 24 * 60 * 60 * 1000));
     const result = await listAuditLogs({ from: tomorrow });
     expect(result.success).toBe(true);
     if (result.success) expect(result.data.entries.length).toBe(0);

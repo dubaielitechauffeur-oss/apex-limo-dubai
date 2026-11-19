@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { writeAuditLog } from "@/lib/audit/log";
+import { readSnapshot } from "@/lib/audit/records";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import type { RoleAdminResult } from "@/lib/permissions/roles-admin";
 import type { Prisma, PublishStatus } from "@/lib/generated/prisma/client";
@@ -92,7 +93,7 @@ export async function updateVehicleCategory(id: string, input: VehicleCategoryIn
       sortOrder: input.sortOrder,
     },
   });
-  await writeAuditLog({ action: "update", entityType: "vehicle_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
+  await writeAuditLog({ action: "update", entityType: "vehicle_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -110,7 +111,7 @@ export async function deleteVehicleCategory(id: string): Promise<RoleAdminResult
   }
 
   await prisma.vehicleCategory.delete({ where: { id } });
-  await writeAuditLog({ action: "delete", entityType: "vehicle_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug }] });
+  await writeAuditLog({ action: "delete", entityType: "vehicle_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", before: existing.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -482,6 +483,8 @@ export async function updateVehicle(id: string, input: VehicleInput): Promise<Ro
 
   const existing = await prisma.vehicle.findFirst({ where: { id, deletedAt: null } });
   if (!existing) return { success: false, error: "Vehicle not found." };
+  // Full snapshot, gallery included, so the audit entry shows image changes too.
+  const before = await readSnapshot("vehicle", id);
   if (!canSetRates(gate.data)) {
     input = { ...input, rates: (existing.rates as unknown as VehicleRatesInput | null) ?? ZERO_RATES };
   }
@@ -507,7 +510,7 @@ export async function updateVehicle(id: string, input: VehicleInput): Promise<Ro
       data: { ...data, images: { create: buildImageCreatePayload(input.imageIds, input.mobileImageIds) } },
     }),
   ]);
-  await writeAuditLog({ action: "update", entityType: "vehicle", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
+  await writeAuditLog({ action: "update", entityType: "vehicle", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: before ?? existing, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -523,6 +526,7 @@ export async function setVehicleStatus(id: string, status: PublishStatus): Promi
   await writeAuditLog({
     action: status === "published" ? "publish" : status === "archived" ? "archive" : "unpublish",
     entityType: "vehicle", entityId: id, userId: gate.data.userId, userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "status", before: existing.status, after: status }],
   });
 
@@ -537,7 +541,7 @@ export async function softDeleteVehicle(id: string): Promise<RoleAdminResult<{ i
   if (!existing) return { success: false, error: "Vehicle not found." };
 
   await prisma.vehicle.update({ where: { id }, data: { deletedAt: new Date() } });
-  await writeAuditLog({ action: "delete", entityType: "vehicle", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug }] });
+  await writeAuditLog({ action: "delete", entityType: "vehicle", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", before: existing.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -550,7 +554,7 @@ export async function restoreVehicle(id: string): Promise<RoleAdminResult<{ id: 
   if (!existing || !existing.deletedAt) return { success: false, error: "Vehicle not found or not deleted." };
 
   await prisma.vehicle.update({ where: { id }, data: { deletedAt: null } });
-  await writeAuditLog({ action: "restore", entityType: "vehicle", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", after: existing.slug }] });
+  await writeAuditLog({ action: "restore", entityType: "vehicle", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", after: existing.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -624,6 +628,7 @@ export async function updateVehicleRates(id: string, rates: VehicleRatesInput): 
     entityId: id,
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "rates", before: JSON.stringify(existing.rates), after: JSON.stringify(rates) }],
   });
 

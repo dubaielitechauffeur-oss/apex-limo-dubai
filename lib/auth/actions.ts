@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { AuthError, CredentialsSignin } from "next-auth";
 import { signIn, signOut } from "@/lib/auth";
-import { requireUser } from "@/lib/auth/session";
+import { getSession, requireUser } from "@/lib/auth/session";
+import { writeAuditLog } from "@/lib/audit/log";
 import { prisma } from "@/lib/db";
 import { getAppOrigin } from "@/lib/app-url";
 import { hashPassword, verifyPassword, passwordPolicySchema } from "@/lib/auth/password";
@@ -93,10 +94,27 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
     throw error;
   }
 
+  await logSessionEvent("login", email);
   redirect(callbackUrl);
 }
 
+/** Records sign-in/out in the audit log so the owner can see when each
+ *  person (the SEO agency included) was in the admin. Never blocks the
+ *  sign-in or sign-out itself. */
+async function logSessionEvent(action: "login" | "logout", email: string | null | undefined): Promise<void> {
+  if (!email) return;
+  try {
+    const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() }, select: { id: true } });
+    if (!user) return;
+    await writeAuditLog({ action, entityType: "user", entityId: user.id, userId: user.id, changes: [] });
+  } catch (error) {
+    console.error(`[audit] ${action} log failed`, error);
+  }
+}
+
 export async function logoutAction(): Promise<void> {
+  const session = await getSession().catch(() => null);
+  await logSessionEvent("logout", session?.user?.email);
   await signOut({ redirect: false });
   redirect("/admin/login");
 }

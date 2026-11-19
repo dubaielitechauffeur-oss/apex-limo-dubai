@@ -13,6 +13,9 @@ import { ErrorState } from "@/components/admin/ui/ErrorState";
 import { AuditChanges } from "@/components/admin/audit/AuditChanges";
 import { formatAdminDateTime } from "@/lib/admin/format";
 import type { AdminAuditEntry } from "@/lib/admin/audit";
+import { UndoButton } from "@/components/admin/audit/UndoButton";
+import { getAuthzContext, isSuperAdmin } from "@/lib/permissions/context";
+import { readableChanges } from "@/lib/audit/present";
 
 export const metadata: Metadata = { title: "Audit Log — Admin" };
 
@@ -71,7 +74,9 @@ export default async function AuditLogPage({ searchParams }: AuditPageProps) {
     page: params.page ? Number(params.page) : 1,
   };
 
-  const [result, entityTypes] = await Promise.all([listAuditLogs(listParams), listAuditEntityTypes()]);
+  const [result, entityTypes, ctx] = await Promise.all([listAuditLogs(listParams), listAuditEntityTypes(), getAuthzContext()]);
+  // Undo is owner-only; other roles that can read the log see no button.
+  const canUndo = !!ctx && isSuperAdmin(ctx);
 
   if (!result.success) {
     return (
@@ -83,7 +88,7 @@ export default async function AuditLogPage({ searchParams }: AuditPageProps) {
   }
 
   const columns: DataTableColumn<AdminAuditEntry>[] = [
-    { key: "createdAt", header: "Timestamp", render: (row) => formatAdminDateTime(row.createdAt) },
+    { key: "createdAt", header: "Time (Dubai)", render: (row) => formatAdminDateTime(row.createdAt) },
     { key: "userName", header: "User", render: (row) => row.userName },
     {
       key: "action",
@@ -99,6 +104,18 @@ export default async function AuditLogPage({ searchParams }: AuditPageProps) {
     },
     { key: "changes", header: "Details", render: (row) => <AuditChanges changes={row.changes} />, hideOnMobile: true },
     { key: "ipAddress", header: "IP", render: (row) => row.ipAddress ?? "—", hideOnMobile: true },
+    {
+      key: "undo",
+      header: "Undo",
+      render: (row) =>
+        row.undone ? (
+          <span className="text-xs text-gray-500">Undone</span>
+        ) : canUndo && row.undoable ? (
+          <UndoButton entryId={row.id} label={readableChanges(row.changes).label ?? row.entityType.replace(/_/g, " ")} />
+        ) : (
+          <span className="text-gray-300">—</span>
+        ),
+    },
   ];
 
   const { entries, total, page, pageSize, totalPages } = result.data;

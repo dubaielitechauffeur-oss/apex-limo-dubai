@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { writeAuditLog } from "@/lib/audit/log";
+import { readSnapshot } from "@/lib/audit/records";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import type { RoleAdminResult } from "@/lib/permissions/roles-admin";
 import type { Prisma, PublishStatus } from "@/lib/generated/prisma/client";
@@ -57,7 +58,7 @@ export async function updateBlogCategory(id: string, input: BlogCategoryInput): 
   if (slugOwner && slugOwner.id !== id) return { success: false, error: "This slug is already in use." };
 
   await prisma.blogCategory.update({ where: { id }, data: { slug: input.slug, name: input.name as Prisma.InputJsonValue, sortOrder: input.sortOrder } });
-  await writeAuditLog({ action: "update", entityType: "blog_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
+  await writeAuditLog({ action: "update", entityType: "blog_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
   return { success: true, data: { id } };
 }
 
@@ -68,7 +69,7 @@ export async function deleteBlogCategory(id: string): Promise<RoleAdminResult<{ 
   if (!existing) return { success: false, error: "Category not found." };
 
   await prisma.blogCategory.delete({ where: { id } });
-  await writeAuditLog({ action: "delete", entityType: "blog_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug }] });
+  await writeAuditLog({ action: "delete", entityType: "blog_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", before: existing.slug }] });
   return { success: true, data: { id } };
 }
 
@@ -351,6 +352,8 @@ export async function updateBlogPost(id: string, input: BlogPostInput): Promise<
 
   const existing = await prisma.blogPost.findFirst({ where: { id, deletedAt: null } });
   if (!existing) return { success: false, error: "Blog post not found." };
+  // Full snapshot, tags included, so the audit entry shows tag changes too.
+  const before = await readSnapshot("blog_post", id);
 
   const slugError = await assertSlugAvailable(input.slug, id);
   if (slugError) return { success: false, error: slugError };
@@ -365,7 +368,7 @@ export async function updateBlogPost(id: string, input: BlogPostInput): Promise<
     prisma.blogPostTag.deleteMany({ where: { blogPostId: id } }),
     prisma.blogPost.update({ where: { id }, data: { ...data, tags: { create: input.tagIds.map((tagId) => ({ tagId })) } } }),
   ]);
-  await writeAuditLog({ action: "update", entityType: "blog_post", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
+  await writeAuditLog({ action: "update", entityType: "blog_post", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: before ?? existing, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -381,6 +384,7 @@ export async function setBlogPostStatus(id: string, status: PublishStatus): Prom
   await writeAuditLog({
     action: status === "published" ? "publish" : status === "archived" ? "archive" : "unpublish",
     entityType: "blog_post", entityId: id, userId: gate.data.userId, userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "status", before: existing.status, after: status }],
   });
 
@@ -395,7 +399,7 @@ export async function softDeleteBlogPost(id: string): Promise<RoleAdminResult<{ 
   if (!existing) return { success: false, error: "Blog post not found." };
 
   await prisma.blogPost.update({ where: { id }, data: { deletedAt: new Date() } });
-  await writeAuditLog({ action: "delete", entityType: "blog_post", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug }] });
+  await writeAuditLog({ action: "delete", entityType: "blog_post", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", before: existing.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -408,7 +412,7 @@ export async function restoreBlogPost(id: string): Promise<RoleAdminResult<{ id:
   if (!existing || !existing.deletedAt) return { success: false, error: "Blog post not found or not deleted." };
 
   await prisma.blogPost.update({ where: { id }, data: { deletedAt: null } });
-  await writeAuditLog({ action: "restore", entityType: "blog_post", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", after: existing.slug }] });
+  await writeAuditLog({ action: "restore", entityType: "blog_post", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", after: existing.slug }] });
 
   return { success: true, data: { id } };
 }

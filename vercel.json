@@ -1,5 +1,11 @@
 {
   "buildCommand": "node build-tools/build-with-retry.mjs",
+  "crons": [
+    {
+      "path": "/api/cron/audit-report",
+      "schedule": "0 20 * * *"
+    }
+  ],
   "redirects": [
     {
       "source": "/services/airport-transfer",

@@ -93,7 +93,7 @@ export async function updateHeroSlide(id: string, input: HeroSlideInput): Promis
       sortOrder: input.sortOrder,
     },
   });
-  await writeAuditLog({ action: "update", entityType: "hero_slide", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "title", after: input.title.en }] });
+  await writeAuditLog({ action: "update", entityType: "hero_slide", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "title", after: input.title.en }] });
   return { success: true, data: { id } };
 }
 
@@ -107,6 +107,7 @@ export async function setHeroSlideStatus(id: string, status: PublishStatus): Pro
   await writeAuditLog({
     action: status === "published" ? "publish" : status === "archived" ? "archive" : "unpublish",
     entityType: "hero_slide", entityId: id, userId: gate.data.userId, userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "status", before: existing.status, after: status }],
   });
   return { success: true, data: { id } };
@@ -119,7 +120,7 @@ export async function deleteHeroSlide(id: string): Promise<RoleAdminResult<{ id:
   if (!existing) return { success: false, error: "Hero slide not found." };
 
   await prisma.heroSlide.delete({ where: { id } });
-  await writeAuditLog({ action: "delete", entityType: "hero_slide", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "title", before: (existing.title as LocalizedText | null)?.en }] });
+  await writeAuditLog({ action: "delete", entityType: "hero_slide", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "title", before: (existing.title as LocalizedText | null)?.en }] });
   return { success: true, data: { id } };
 }
 
@@ -171,7 +172,7 @@ export async function updateTestimonial(id: string, input: TestimonialInput): Pr
   if (input.rating < 1 || input.rating > 5) return { success: false, error: "Rating must be between 1 and 5." };
 
   await prisma.testimonial.update({ where: { id }, data: input });
-  await writeAuditLog({ action: "update", entityType: "testimonial", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "name", after: input.name }] });
+  await writeAuditLog({ action: "update", entityType: "testimonial", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "name", after: input.name }] });
   return { success: true, data: { id } };
 }
 
@@ -182,7 +183,7 @@ export async function deleteTestimonial(id: string): Promise<RoleAdminResult<{ i
   if (!existing) return { success: false, error: "Testimonial not found." };
 
   await prisma.testimonial.delete({ where: { id } });
-  await writeAuditLog({ action: "delete", entityType: "testimonial", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "name", before: existing.name }] });
+  await writeAuditLog({ action: "delete", entityType: "testimonial", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "name", before: existing.name }] });
   return { success: true, data: { id } };
 }
 
@@ -232,7 +233,7 @@ export async function updateBrand(id: string, input: BrandInput): Promise<RoleAd
   if (nameOwner && nameOwner.id !== id) return { success: false, error: "A brand with this name already exists." };
 
   await prisma.brand.update({ where: { id }, data: { name: input.name, logoId: input.logoId, sortOrder: input.sortOrder } });
-  await writeAuditLog({ action: "update", entityType: "brand", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "name", before: existing.name, after: input.name }] });
+  await writeAuditLog({ action: "update", entityType: "brand", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "name", before: existing.name, after: input.name }] });
   return { success: true, data: { id } };
 }
 
@@ -243,6 +244,6 @@ export async function deleteBrand(id: string): Promise<RoleAdminResult<{ id: str
   if (!existing) return { success: false, error: "Brand not found." };
 
   await prisma.brand.delete({ where: { id } });
-  await writeAuditLog({ action: "delete", entityType: "brand", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "name", before: existing.name }] });
+  await writeAuditLog({ action: "delete", entityType: "brand", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "name", before: existing.name }] });
   return { success: true, data: { id } };
 }

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { writeAuditLog } from "@/lib/audit/log";
+import { readSnapshot } from "@/lib/audit/records";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import type { RoleAdminResult } from "@/lib/permissions/roles-admin";
 import type { Prisma } from "@/lib/generated/prisma/client";
@@ -105,6 +106,7 @@ export async function updatePageHero(page: string, input: PageHeroInput): Promis
     imageAlt: input.imageAlt as Prisma.InputJsonValue,
   };
 
+  const before = await readSnapshot("page_hero", page);
   await prisma.pageHero.upsert({
     where: { page },
     create: { page, ...data },
@@ -115,6 +117,7 @@ export async function updatePageHero(page: string, input: PageHeroInput): Promis
     action: "update",
     entityType: "page_hero",
     entityId: page,
+    before,
     userId: gate.data.userId,
     userName: gate.data.roleName,
     changes: [

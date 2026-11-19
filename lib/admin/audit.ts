@@ -4,6 +4,8 @@ import { logUnauthorizedAccess } from "@/lib/permissions/audit";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import type { RoleAdminResult } from "@/lib/permissions/roles-admin";
 import type { AuditAction } from "@/lib/generated/prisma/client";
+import { DUBAI_UTC_OFFSET } from "@/lib/admin/format";
+import { findUndoneIds, isUndoable } from "@/lib/audit/undo";
 
 export interface AdminAuditEntry {
   id: string;
@@ -15,6 +17,10 @@ export interface AdminAuditEntry {
   changes: unknown;
   ipAddress: string | null;
   createdAt: Date;
+  /** Has complete before/after values and has not been undone yet. */
+  undoable: boolean;
+  /** A later entry undid this one. */
+  undone: boolean;
 }
 
 export interface ListAuditParams {
@@ -69,8 +75,9 @@ export async function listAuditLogs(params: ListAuditParams): Promise<RoleAdminR
   const pageSize = Math.min(100, Math.max(1, params.pageSize ?? DEFAULT_PAGE_SIZE));
 
   const createdAt: { gte?: Date; lte?: Date } = {};
-  if (params.from) createdAt.gte = new Date(`${params.from}T00:00:00.000Z`);
-  if (params.to) createdAt.lte = new Date(`${params.to}T23:59:59.999Z`);
+  // The date pickers mean Dubai calendar days, not UTC ones.
+  if (params.from) createdAt.gte = new Date(`${params.from}T00:00:00.000${DUBAI_UTC_OFFSET}`);
+  if (params.to) createdAt.lte = new Date(`${params.to}T23:59:59.999${DUBAI_UTC_OFFSET}`);
 
   const where = {
     ...(params.action && isKnownAuditAction(params.action) ? { action: params.action } : {}),
@@ -95,6 +102,7 @@ export async function listAuditLogs(params: ListAuditParams): Promise<RoleAdminR
       take: pageSize,
     }),
   ]);
+  const undoneIds = await findUndoneIds(rows.filter((row) => isUndoable(row)).map((row) => row.id));
 
   return {
     success: true,
@@ -109,6 +117,8 @@ export async function listAuditLogs(params: ListAuditParams): Promise<RoleAdminR
         changes: row.changes,
         ipAddress: row.ipAddress,
         createdAt: row.createdAt,
+        undoable: isUndoable(row) && !undoneIds.has(row.id),
+        undone: undoneIds.has(row.id),
       })),
       total,
       page,

@@ -81,7 +81,7 @@ export async function updateFaqCategory(id: string, input: FaqCategoryInput): Pr
     where: { id },
     data: { key: input.key, name: input.name as Prisma.InputJsonValue, showChip: input.showChip, sortOrder: input.sortOrder },
   });
-  await writeAuditLog({ action: "update", entityType: "faq_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "key", before: existing.key, after: input.key }] });
+  await writeAuditLog({ action: "update", entityType: "faq_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "key", before: existing.key, after: input.key }] });
 
   return { success: true, data: { id } };
 }
@@ -97,7 +97,7 @@ export async function deleteFaqCategory(id: string): Promise<RoleAdminResult<{ i
   // safely detaches its FAQs (they become uncategorized) rather than
   // deleting or blocking on them.
   await prisma.faqCategory.delete({ where: { id } });
-  await writeAuditLog({ action: "delete", entityType: "faq_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "key", before: existing.key }] });
+  await writeAuditLog({ action: "delete", entityType: "faq_category", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "key", before: existing.key }] });
 
   return { success: true, data: { id } };
 }
@@ -298,7 +298,7 @@ export async function updateFaq(id: string, input: FaqInput): Promise<RoleAdminR
       ...parentFields(input),
     },
   });
-  await writeAuditLog({ action: "update", entityType: "faq", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "question", before: (existing.question as LocalizedText | null)?.en, after: input.question.en }] });
+  await writeAuditLog({ action: "update", entityType: "faq", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "question", before: (existing.question as LocalizedText | null)?.en, after: input.question.en }] });
 
   return { success: true, data: { id } };
 }
@@ -311,7 +311,7 @@ export async function deleteFaq(id: string): Promise<RoleAdminResult<{ id: strin
   if (!existing) return { success: false, error: "FAQ not found." };
 
   await prisma.faq.delete({ where: { id } });
-  await writeAuditLog({ action: "delete", entityType: "faq", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "question", before: (existing.question as LocalizedText | null)?.en }] });
+  await writeAuditLog({ action: "delete", entityType: "faq", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "question", before: (existing.question as LocalizedText | null)?.en }] });
 
   return { success: true, data: { id } };
 }
