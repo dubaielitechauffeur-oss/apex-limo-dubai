@@ -265,6 +265,7 @@ export async function updateService(id: string, input: ServiceInput): Promise<Ro
     entityId: id,
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "slug", before: existing.slug, after: input.slug }],
   });
 
@@ -288,6 +289,7 @@ export async function setServiceStatus(id: string, status: PublishStatus): Promi
     entityId: id,
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "status", before: existing.status, after: status }],
   });
 
@@ -308,6 +310,7 @@ export async function softDeleteService(id: string): Promise<RoleAdminResult<{ i
     entityId: id,
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "slug", before: existing.slug }],
   });
 
@@ -328,6 +331,7 @@ export async function restoreService(id: string): Promise<RoleAdminResult<{ id: 
     entityId: id,
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "slug", after: existing.slug }],
   });
 

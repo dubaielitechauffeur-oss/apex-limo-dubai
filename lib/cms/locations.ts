@@ -257,7 +257,7 @@ export async function updateLocation(id: string, input: LocationInput): Promise<
   data.publishedAt = willBePublished ? (existing.publishedAt ?? new Date()) : wasPublished ? existing.publishedAt : null;
 
   await prisma.location.update({ where: { id }, data });
-  await writeAuditLog({ action: "update", entityType: "location", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
+  await writeAuditLog({ action: "update", entityType: "location", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", before: existing.slug, after: input.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -273,6 +273,7 @@ export async function setLocationStatus(id: string, status: PublishStatus): Prom
   await writeAuditLog({
     action: status === "published" ? "publish" : status === "archived" ? "archive" : "unpublish",
     entityType: "location", entityId: id, userId: gate.data.userId, userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "status", before: existing.status, after: status }],
   });
 
@@ -287,7 +288,7 @@ export async function softDeleteLocation(id: string): Promise<RoleAdminResult<{ 
   if (!existing) return { success: false, error: "Location not found." };
 
   await prisma.location.update({ where: { id }, data: { deletedAt: new Date() } });
-  await writeAuditLog({ action: "delete", entityType: "location", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", before: existing.slug }] });
+  await writeAuditLog({ action: "delete", entityType: "location", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", before: existing.slug }] });
 
   return { success: true, data: { id } };
 }
@@ -300,7 +301,7 @@ export async function restoreLocation(id: string): Promise<RoleAdminResult<{ id:
   if (!existing || !existing.deletedAt) return { success: false, error: "Location not found or not deleted." };
 
   await prisma.location.update({ where: { id }, data: { deletedAt: null } });
-  await writeAuditLog({ action: "restore", entityType: "location", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, changes: [{ field: "slug", after: existing.slug }] });
+  await writeAuditLog({ action: "restore", entityType: "location", entityId: id, userId: gate.data.userId, userName: gate.data.roleName, before: existing, changes: [{ field: "slug", after: existing.slug }] });
 
   return { success: true, data: { id } };
 }

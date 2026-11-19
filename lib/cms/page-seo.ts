@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { writeAuditLog } from "@/lib/audit/log";
+import { readSnapshot } from "@/lib/audit/records";
 import { PERMISSIONS } from "@/lib/permissions/catalog";
 import type { RoleAdminResult } from "@/lib/permissions/roles-admin";
 import type { Prisma } from "@/lib/generated/prisma/client";
@@ -135,12 +136,14 @@ export async function updatePageSeo(page: string, input: SeoMeta): Promise<RoleA
   };
 
   const data = { seo: seo as unknown as Prisma.InputJsonValue };
+  const before = await readSnapshot("page_seo", page);
   await prisma.pageSeo.upsert({ where: { page }, create: { page, ...data }, update: data });
 
   await writeAuditLog({
     action: "update",
     entityType: "page_seo",
     entityId: page,
+    before,
     userId: gate.data.userId,
     userName: gate.data.roleName,
     changes: [

@@ -5,18 +5,31 @@
  * timestamps (last login, audit log entries), so it gets its own small
  * helper rather than reshaping the public one.
  */
+/**
+ * The business runs on Dubai time. Without an explicit zone these formatters
+ * used the server's, which on Vercel is UTC, so every timestamp in the admin
+ * (bookings, quotes, audit log, last login) read four hours early. Dubai has
+ * no daylight saving, so the fixed zone is always right.
+ */
+export const ADMIN_TIME_ZONE = "Asia/Dubai";
+
+/** Dubai's fixed UTC offset, for turning a Dubai calendar day into UTC bounds. */
+export const DUBAI_UTC_OFFSET = "+04:00";
+
 const formatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
   month: "short",
   year: "numeric",
   hour: "2-digit",
   minute: "2-digit",
+  timeZone: ADMIN_TIME_ZONE,
 });
 
 const dateOnlyFormatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
   month: "short",
   year: "numeric",
+  timeZone: ADMIN_TIME_ZONE,
 });
 
 export function formatAdminDateTime(value: Date | string): string {

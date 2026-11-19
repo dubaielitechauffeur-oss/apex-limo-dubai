@@ -102,6 +102,7 @@ export async function updateGlobalSettings(input: GlobalSettingsInput): Promise<
     entityId: existing?.id ?? "global",
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: existing ?? undefined,
     changes: Object.entries(data).map(([field, after]) => ({
       field,
       before: existing ? String((existing as unknown as Record<string, unknown>)[field] ?? "") : undefined,
@@ -152,6 +153,7 @@ export async function updateDefaultSeo(input: SeoMeta): Promise<RoleAdminResult<
     entityId: existing?.id ?? "global",
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: existing ?? undefined,
     changes: [{ field: "defaultSeo" }],
   });
 

@@ -83,6 +83,7 @@ export async function renameFolder(id: string, name: string): Promise<RoleAdminR
     entityId: id,
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: folder,
     changes: [{ field: "name", before: folder.name, after: trimmed }],
   });
 
@@ -156,6 +157,7 @@ export async function deleteFolder(id: string): Promise<RoleAdminResult<{ id: st
     entityId: id,
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: { id: folder.id, name: folder.name, parentId: folder.parentId },
     changes: [{ field: "name", before: folder.name }],
   });
 

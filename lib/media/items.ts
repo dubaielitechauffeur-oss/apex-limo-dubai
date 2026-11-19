@@ -327,6 +327,7 @@ export async function updateMediaMetadata(id: string, input: UpdateMediaMetadata
     action: "update",
     entityType: "media_item",
     entityId: id,
+    before: existing,
     userId: gate.data.userId,
     userName: gate.data.roleName,
     changes: [{ field: "metadata", updated: Object.keys(input) }],
@@ -423,6 +424,7 @@ export async function deleteMedia(id: string): Promise<RoleAdminResult<{ id: str
     entityId: id,
     userId: gate.data.userId,
     userName: gate.data.roleName,
+    before: existing,
     changes: [{ field: "originalFilename", before: existing.originalFilename }, { field: "usageAtDeletion", value: usage.length }],
   });
 
